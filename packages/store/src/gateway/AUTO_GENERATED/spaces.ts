@@ -126,6 +126,16 @@ const injectedRtkApi = api
         query: (queryArg) => ({ url: `/v1/spaces/${queryArg.spaceId}/members/${queryArg.userId}`, method: 'DELETE' }),
         invalidatesTags: ['spaces'],
       }),
+      spaceSafesGetPendingTransactionsV1: build.query<
+        SpaceSafesGetPendingTransactionsV1ApiResponse,
+        SpaceSafesGetPendingTransactionsV1ApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/v1/spaces/${queryArg.spaceId}/safes/pending-transactions`,
+          params: { limit: queryArg.limit, offset: queryArg.offset },
+        }),
+        providesTags: ['spaces'],
+      }),
     }),
     overrideExisting: false,
   })
@@ -358,6 +368,41 @@ export type UpdateMemberAliasDto = {
   /** The new alias for the member */
   alias: string
 }
+export type SpaceSafesGetPendingTransactionsV1ApiResponse =
+  /** status 200 Pending transactions retrieved successfully */ SpacePendingTransactionsPage
+export type SpaceSafesGetPendingTransactionsV1ApiArg = {
+  /** Space ID to get pending transactions for */
+  spaceId: number
+  limit?: number
+  offset?: number
+}
+export type SpacePendingTransactionsPage = {
+  count?: number | null
+  next?: string | null
+  previous?: string | null
+  results: (SpacePendingTransactionConflictHeader | SpacePendingTransactionLabel | SpacePendingTransactionItem)[]
+}
+export type SpacePendingTransactionConflictHeader = {
+  type: 'CONFLICT_HEADER'
+  nonce: number
+}
+export type SpacePendingTransactionLabel = {
+  type: 'LABEL'
+  label: string
+}
+export type SpacePendingTransactionItem = {
+  type: 'TRANSACTION'
+  transaction: SpacePendingTransaction
+  conflictType: 'None' | 'HasNext' | 'End'
+}
+export type SpacePendingTransaction = {
+  id: string
+  timestamp: number
+  txStatus: string
+  txInfo: object
+  executionInfo?: object | null
+  safeAppInfo?: object | null
+}
 export const {
   useAddressBooksGetAddressBookItemsV1Query,
   useLazyAddressBooksGetAddressBookItemsV1Query,
@@ -384,4 +429,6 @@ export const {
   useMembersUpdateRoleV1Mutation,
   useMembersUpdateAliasV1Mutation,
   useMembersRemoveUserV1Mutation,
+  useSpaceSafesGetPendingTransactionsV1Query,
+  useLazySpaceSafesGetPendingTransactionsV1Query,
 } = injectedRtkApi
