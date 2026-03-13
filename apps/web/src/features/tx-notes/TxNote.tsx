@@ -3,8 +3,10 @@ import type { TransactionDetails } from '@safe-global/safe-gateway-typescript-sd
 import InfoIcon from '@/public/images/notifications/info.svg'
 import { isMultisigDetailedExecutionInfo } from '@/utils/transaction-guards'
 import EthHashInfo from '@/components/common/EthHashInfo'
+import { useTranslation } from 'react-i18next'
 
 export function TxNote({ txDetails }: { txDetails: TransactionDetails | undefined }) {
+  const { t } = useTranslation()
   const note = txDetails?.note
   if (!note) return null
 
@@ -14,16 +16,16 @@ export function TxNote({ txDetails }: { txDetails: TransactionDetails | undefine
   return (
     <div>
       <Typography variant="h5" display="flex" alignItems="center" justifyItems="center">
-        Note
+        {t('txNotes.noteHeading')}
         <Tooltip
           data-testid="tx-note-tooltip"
           title={
             <Stack data-testid="note-creator" direction="row" gap={1}>
-              <span>By </span>
+              <span>{t('txNotes.noteBy')}</span>
               {creator ? (
                 <EthHashInfo avatarSize={20} address={creator.value} showName onlyName />
               ) : (
-                <span>transaction creator</span>
+                <span>{t('txNotes.noteCreator')}</span>
               )}
             </Stack>
           }

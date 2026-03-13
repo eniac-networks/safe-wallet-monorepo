@@ -9,6 +9,7 @@ import { OVERVIEW_EVENTS, trackEvent, WALLET_EVENTS } from '@/services/analytics
 import { TX_EVENTS, TX_TYPES } from '@/services/analytics/events/transactions'
 import madProps from '@/utils/mad-props'
 import React, { type ReactElement, type SyntheticEvent, useContext, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { CircularProgress, Box, Button, CardActions, Divider, Alert } from '@mui/material'
 import classNames from 'classnames'
 
@@ -44,6 +45,7 @@ export const CounterfactualForm = ({
   safeTx?: SafeTransaction
   isCreation?: boolean
 }): ReactElement => {
+  const { t } = useTranslation()
   const wallet = useWallet()
   const chain = useCurrentChain()
   const { safeAddress } = useSafeInfo()
@@ -113,18 +115,18 @@ export const CounterfactualForm = ({
     <>
       <form onSubmit={handleSubmit}>
         <Alert severity="info" sx={{ mb: 2, border: 0 }}>
-          Executing this transaction will activate your account.
+          {t('counterfactual.executingWillActivate')}
           <br />
           <ul style={{ margin: 0, padding: '4px 16px 0' }}>
             <li>
-              Base fee: &asymp;{' '}
+              {t('counterfactual.baseFee')} &asymp;{' '}
               <strong>
                 {getTotalFeeFormatted(advancedParams.maxFeePerGas, BigInt(gasLimit?.safeTxGas || '0'), chain)}{' '}
                 {chain?.nativeCurrency.symbol}
               </strong>
             </li>
             <li>
-              One-time activation fee: &asymp;{' '}
+              {t('counterfactual.oneTimeActivationFee')} &asymp;{' '}
               <strong>
                 {getTotalFeeFormatted(advancedParams.maxFeePerGas, BigInt(gasLimit?.safeDeploymentGas || '0'), chain)}{' '}
                 {chain?.nativeCurrency.symbol}
@@ -149,22 +151,21 @@ export const CounterfactualForm = ({
           <NonOwnerError />
         ) : isExecutionLoop ? (
           <ErrorMessage>
-            Cannot execute a transaction from the Safe Account itself, please connect a different account.
+            {t('counterfactual.cannotExecuteFromSafe')}
           </ErrorMessage>
         ) : !walletCanPay ? (
-          <ErrorMessage>Your connected wallet doesn&apos;t have enough funds to execute this transaction.</ErrorMessage>
+          <ErrorMessage>{t('newSafe.insufficientFunds')}</ErrorMessage>
         ) : (
           gasLimitError && (
             <ErrorMessage error={gasLimitError}>
-              This transaction will most likely fail.
-              {` To save gas costs, ${isCreation ? 'avoid creating' : 'reject'} this transaction.`}
+              {t('counterfactual.txWillFail', { action: isCreation ? t('counterfactual.avoidCreating') : t('counterfactual.rejectTx') })}
             </ErrorMessage>
           )
         )}
 
         {submitError && (
           <Box mt={1}>
-            <ErrorMessage error={submitError}>Error submitting the transaction. Please try again.</ErrorMessage>
+            <ErrorMessage error={submitError}>{t('counterfactual.errorSubmitting')}</ErrorMessage>
           </Box>
         )}
 
@@ -175,7 +176,7 @@ export const CounterfactualForm = ({
           <CheckWallet allowNonOwner={onlyExecute} checkNetwork={!submitDisabled}>
             {(isOk) => (
               <Button variant="contained" type="submit" disabled={!isOk || submitDisabled} sx={{ minWidth: '112px' }}>
-                {!isSubmittable ? <CircularProgress size={20} /> : 'Execute'}
+                {!isSubmittable ? <CircularProgress size={20} /> : t('transactions.execute')}
               </Button>
             )}
           </CheckWallet>

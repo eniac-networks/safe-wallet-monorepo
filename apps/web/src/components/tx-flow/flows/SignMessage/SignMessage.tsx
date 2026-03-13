@@ -16,6 +16,7 @@ import { useTheme } from '@mui/material/styles'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { useContext, useEffect } from 'react'
 import type { ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import type { RequestId } from '@safe-global/safe-apps-sdk'
 import EthHashInfo from '@/components/common/EthHashInfo'
 import RequiredIcon from '@/public/images/messages/required.svg'
@@ -95,52 +96,56 @@ const MessageHashField = ({ label, hashValue }: { label: string; hashValue: stri
   </>
 )
 
-const DialogHeader = ({ threshold }: { threshold: number }) => (
-  <>
-    <Box
-      sx={{
-        textAlign: 'center',
-        mb: 2,
-      }}
-    >
-      <SvgIcon component={RequiredIcon} viewBox="0 0 32 32" fontSize="large" />
-    </Box>
-    <Typography
-      variant="h4"
-      gutterBottom
-      sx={{
-        textAlign: 'center',
-      }}
-    >
-      Confirm message
-    </Typography>
-    {threshold > 1 && (
-      <Typography
-        variant="body1"
+const DialogHeader = ({ threshold }: { threshold: number }) => {
+  const { t } = useTranslation()
+  return (
+    <>
+      <Box
         sx={{
           textAlign: 'center',
           mb: 2,
         }}
       >
-        To sign this message, collect signatures from <b>{threshold} signers</b> of your Safe Account.
+        <SvgIcon component={RequiredIcon} viewBox="0 0 32 32" fontSize="large" />
+      </Box>
+      <Typography
+        variant="h4"
+        gutterBottom
+        sx={{
+          textAlign: 'center',
+        }}
+      >
+        {t('signMessage.confirmMessage')}
       </Typography>
-    )}
-  </>
-)
+      {threshold > 1 && (
+        <Typography
+          variant="body1"
+          sx={{
+            textAlign: 'center',
+            mb: 2,
+          }}
+        >
+          {t('signMessage.collectSignaturesFrom')} <b>{threshold} {t('signMessage.signersLabel')}</b> {t('signMessage.ofYourSafeAccount')}
+        </Typography>
+      )}
+    </>
+  )
+}
 
 const MessageDialogError = ({ isOwner, submitError }: { isOwner: boolean; submitError: Error | undefined }) => {
+  const { t } = useTranslation()
   const wallet = useWallet()
   const onboard = useOnboard()
 
   const errorMessage =
     !wallet || !onboard
-      ? 'No wallet is connected.'
+      ? t('signMessage.noWalletConnected')
       : !isOwner
-        ? "You are currently not a signer of this Safe Account and won't be able to confirm this message."
+        ? t('signMessage.notASigner')
         : submitError && isWalletRejection(submitError)
-          ? 'User rejected signing.'
+          ? t('newSafe.userRejectedSigning')
           : submitError
-            ? 'Error confirming the message. Please try again.'
+            ? t('signMessage.errorConfirmingMessage')
             : null
 
   if (errorMessage) {
@@ -150,6 +155,7 @@ const MessageDialogError = ({ isOwner, submitError }: { isOwner: boolean; submit
 }
 
 const AlreadySignedByOwnerMessage = ({ hasSigned }: { hasSigned: boolean }) => {
+  const { t } = useTranslation()
   const onboard = useOnboard()
 
   const handleSwitchWallet = () => {
@@ -170,11 +176,11 @@ const AlreadySignedByOwnerMessage = ({ hasSigned }: { hasSigned: boolean }) => {
         }}
       >
         <Grid item xs={7}>
-          Your connected wallet has already signed this message.
+          {t('signMessage.connectedWalletSigned')}
         </Grid>
         <Grid item xs={4}>
           <Button variant="contained" size="small" onClick={handleSwitchWallet} fullWidth>
-            Switch wallet
+            {t('signMessage.switchWallet')}
           </Button>
         </Grid>
       </Grid>
@@ -189,6 +195,7 @@ const BlindSigningWarning = ({
   isBlindSigningEnabled: boolean
   isBlindSigningPayload: boolean
 }) => {
+  const { t } = useTranslation()
   const router = useRouter()
   const query = router.query.safe ? { safe: router.query.safe } : undefined
 
@@ -198,19 +205,19 @@ const BlindSigningWarning = ({
 
   return (
     <ErrorMessage level={isBlindSigningEnabled ? 'warning' : 'error'}>
-      This request involves{' '}
+      {t('signMessage.blindSigningInvolves')}{' '}
       <Link component={NextLink} href={{ pathname: AppRoutes.settings.security, query }}>
-        blind signing
+        {t('signMessage.blindSigning')}
       </Link>
-      , which can lead to unpredictable outcomes.
+      {t('signMessage.unpredictableOutcomes')}
       <br />
       {isBlindSigningEnabled ? (
-        'Proceed with caution.'
+        t('signMessage.proceedWithCaution')
       ) : (
         <>
-          If you wish to proceed, you must first{' '}
+          {t('signMessage.mustEnableFirst')}{' '}
           <Link component={NextLink} href={{ pathname: AppRoutes.settings.security, query }}>
-            enable blind signing
+            {t('signMessage.enableBlindSigning')}
           </Link>
           .
         </>
@@ -220,6 +227,7 @@ const BlindSigningWarning = ({
 }
 
 const SuccessCard = ({ safeMessage, onContinue }: { safeMessage: MessageItem; onContinue: () => void }) => {
+  const { t } = useTranslation()
   return (
     <TxCard>
       <Typography
@@ -229,12 +237,12 @@ const SuccessCard = ({ safeMessage, onContinue }: { safeMessage: MessageItem; on
           textAlign: 'center',
         }}
       >
-        Message successfully signed
+        {t('signMessage.messageSigned')}
       </Typography>
       <MsgSigners msg={safeMessage} showOnlyConfirmations showMissingSignatures />
       <CardActions>
         <Button variant="contained" color="primary" onClick={onContinue} disabled={!safeMessage.preparedSignature}>
-          Continue
+          {t('common.continue')}
         </Button>
       </CardActions>
     </TxCard>
@@ -249,6 +257,7 @@ export type SignMessageProps = BaseProps & {
 }
 
 const SignMessage = ({ message, origin, requestId }: SignMessageProps): ReactElement => {
+  const { t } = useTranslation()
   // Hooks & variables
   const { setTxFlow } = useContext(TxModalContext)
   const { setSafeMessage: setContextSafeMessage } = useContext(SafeTxContext)
@@ -325,7 +334,7 @@ const SignMessage = ({ message, origin, requestId }: SignMessageProps): ReactEle
           <DialogHeader threshold={safe.threshold} />
 
           {isEip712 && (
-            <ErrorBoundary fallback={<div>Error parsing data</div>}>
+            <ErrorBoundary fallback={<div>{t('signMessage.errorParsingData')}</div>}>
               <ApprovalEditor safeMessage={decodedMessage} />
             </ErrorBoundary>
           )}
@@ -342,19 +351,19 @@ const SignMessage = ({ message, origin, requestId }: SignMessageProps): ReactEle
               mb: 1,
             }}
           >
-            Message: <CopyButton text={decodedMessageAsString} />
+            {t('signMessage.messageLabel')} <CopyButton text={decodedMessageAsString} />
           </Typography>
           <DecodedMsg message={decodedMessage} isInModal />
 
           <Accordion sx={{ mt: 2 }}>
             <AccordionSummary data-testid="message-details" expandIcon={<ExpandMoreIcon />}>
-              SafeMessage details
+              {t('signMessage.safeMessageDetails')}
             </AccordionSummary>
             <AccordionDetails>
-              <MessageHashField label="SafeMessage" hashValue={safeMessageMessage} />
-              <MessageHashField label="SafeMessage hash" hashValue={safeMessageHash} />
-              <MessageHashField label="Domain hash" hashValue={domainHash} />
-              <MessageHashField label="Message hash" hashValue={messageHash} />
+              <MessageHashField label={t('safeMessages.safeMessage')} hashValue={safeMessageMessage} />
+              <MessageHashField label={t('signMessage.safeMessageHashLabel')} hashValue={safeMessageHash} />
+              <MessageHashField label={t('signMessage.domainHash')} hashValue={domainHash} />
+              <MessageHashField label={t('safeMessages.messageHash')} hashValue={messageHash} />
             </AccordionDetails>
           </Accordion>
 
@@ -371,11 +380,11 @@ const SignMessage = ({ message, origin, requestId }: SignMessageProps): ReactEle
             <AlreadySignedByOwnerMessage hasSigned={signedByCurrentSafe} />
 
             <InfoBox
-              title="Collect all the confirmations"
+              title={t('signMessage.collectAllConfirmations')}
               message={
                 requestId && !hasSignature
-                  ? 'Please keep this modal open until all signers confirm this message. Closing the modal will abort the signing request.'
-                  : 'The signature will be submitted to the requesting app when the message is fully signed.'
+                  ? t('signMessage.keepModalOpen')
+                  : t('signMessage.signatureSubmitted')
               }
             >
               <MsgSigners
@@ -388,7 +397,7 @@ const SignMessage = ({ message, origin, requestId }: SignMessageProps): ReactEle
 
             {hasSignature && (
               <InfoBox
-                title="Share the link with other owners"
+                title={t('signMessage.shareWithOwners')}
                 message={
                   <>
                     <Typography
@@ -396,8 +405,7 @@ const SignMessage = ({ message, origin, requestId }: SignMessageProps): ReactEle
                         mb: 2,
                       }}
                     >
-                      The owners will receive a notification about signing the message. You can also share the link with
-                      them to speed up the process.
+                      {t('signMessage.shareWithOwnersMessage')}
                     </Typography>
                     <MsgShareLink safeMessageHash={safeMessageHash} button />
                   </>
@@ -412,14 +420,14 @@ const SignMessage = ({ message, origin, requestId }: SignMessageProps): ReactEle
 
             <RiskConfirmationError />
 
-            {!safe.deployed && <ErrorMessage>Your Safe Account is not activated yet.</ErrorMessage>}
+            {!safe.deployed && <ErrorMessage>{t('signMessage.safeNotActivated')}</ErrorMessage>}
           </TxCard>
           <TxCard>
             <CardActions>
               <CheckWallet checkNetwork={!isDisabled}>
                 {(isOk) => (
                   <Button variant="contained" color="primary" onClick={handleSign} disabled={!isOk || isDisabled}>
-                    Sign
+                    {t('safeMessages.sign')}
                   </Button>
                 )}
               </CheckWallet>

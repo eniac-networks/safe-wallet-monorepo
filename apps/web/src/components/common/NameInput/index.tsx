@@ -3,6 +3,7 @@ import { TextField } from '@mui/material'
 import get from 'lodash/get'
 import { Controller, type FieldError, useFormContext } from 'react-hook-form'
 import inputCss from '@/styles/inputs.module.css'
+import { useTranslation } from 'react-i18next'
 
 const NameInput = ({
   name,
@@ -12,6 +13,7 @@ const NameInput = ({
   name: string
   required?: boolean
 }) => {
+  const { t } = useTranslation()
   const { formState, control } = useFormContext() || {}
   // the name can be a path: e.g. "owner.3.name"
   const fieldError = get(formState.errors, name) as FieldError | undefined
@@ -24,7 +26,7 @@ const NameInput = ({
         maxLength: 50,
         required,
         validate: (value) => {
-          if (value?.trim() === '' && required) return 'Required'
+          if (value?.trim() === '' && required) return t('common.required')
           return true
         },
       }}
@@ -34,7 +36,7 @@ const NameInput = ({
           {...field}
           {...props}
           variant="outlined"
-          label={<>{fieldError?.type === 'maxLength' ? 'Maximum 50 symbols' : fieldError?.message || props.label}</>}
+          label={<>{fieldError?.type === 'maxLength' ? t('common.maxLength') : fieldError?.message || props.label}</>}
           error={Boolean(fieldError)}
           fullWidth
           onChange={(e) => onChange(e)}

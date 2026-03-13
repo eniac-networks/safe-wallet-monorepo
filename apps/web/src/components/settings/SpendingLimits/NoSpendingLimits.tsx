@@ -1,10 +1,12 @@
 import { Grid, Typography } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 
 import BeneficiaryIcon from '@/public/images/settings/spending-limit/beneficiary.svg'
 import AssetAmountIcon from '@/public/images/settings/spending-limit/asset-amount.svg'
 import TimeIcon from '@/public/images/settings/spending-limit/time.svg'
 
 export const NoSpendingLimits = () => {
+  const { t } = useTranslation()
   return (
     <Grid
       container
@@ -20,32 +22,27 @@ export const NoSpendingLimits = () => {
       </Grid>
       <Grid item sm={10}>
         <Typography>
-          <b>Select beneficiary</b>
+          <b>{t('settings.selectBeneficiary')}</b>
         </Typography>
-        <Typography>
-          Choose an account that will benefit from this allowance. The beneficiary does not have to be a signer of this
-          Safe Account
-        </Typography>
+        <Typography>{t('settings.selectBeneficiaryDescription')}</Typography>
       </Grid>
       <Grid item sm={2}>
         <AssetAmountIcon data-testid="asset-icon" />
       </Grid>
       <Grid item sm={10}>
         <Typography>
-          <b>Select asset and amount</b>
+          <b>{t('settings.selectAssetAndAmount')}</b>
         </Typography>
-        <Typography>You can set allowances for any asset stored in your Safe Account</Typography>
+        <Typography>{t('settings.selectAssetDescription')}</Typography>
       </Grid>
       <Grid item sm={2}>
         <TimeIcon data-testid="time-icon" />
       </Grid>
       <Grid item sm={10}>
         <Typography>
-          <b>Select time</b>
+          <b>{t('settings.selectTime')}</b>
         </Typography>
-        <Typography>
-          You can choose to set a one-time allowance or to have it automatically refill after a defined time-period
-        </Typography>
+        <Typography>{t('settings.selectTimeDescription')}</Typography>
       </Grid>
     </Grid>
   )

@@ -1,6 +1,7 @@
 import { undeployedSafesSlice } from '@/features/counterfactual/store/undeployedSafesSlice'
 import { DialogContent, Alert, AlertTitle, DialogActions, Button, Box, SvgIcon } from '@mui/material'
 import type { ReactElement, Dispatch, SetStateAction } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import ModalDialog from '@/components/common/ModalDialog'
 import { useAppDispatch } from '@/store'
@@ -31,6 +32,7 @@ export const ImportDialog = ({
   jsonData: string | undefined
   setJsonData: Dispatch<SetStateAction<string | undefined>>
 }): ReactElement => {
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const { addedSafes, addressBook, addressBookEntriesCount, settings, safeApps, undeployedSafes, visitedSafes, error } =
     useGlobalImportJsonParser(jsonData)
@@ -84,7 +86,7 @@ export const ImportDialog = ({
       showNotification({
         variant: 'success',
         groupKey: 'global-import-success',
-        message: 'Successfully imported data',
+        message: t('settings.successfullyImported'),
       }),
     )
 
@@ -92,7 +94,7 @@ export const ImportDialog = ({
   }
 
   return (
-    <ModalDialog open onClose={handleClose} dialogTitle="Data import" hideChainIndicator>
+    <ModalDialog open onClose={handleClose} dialogTitle={t('settings.dataImport')} hideChainIndicator>
       <DialogContent>
         {!jsonData || !fileName ? (
           <Box mt={2}>
@@ -124,9 +126,8 @@ export const ImportDialog = ({
             />
             {!isDisabled && (
               <Alert severity="warning">
-                <AlertTitle sx={{ fontWeight: 700 }}>Overwrite your current data?</AlertTitle>
-                This action will overwrite your currently added Safe Accounts, address book and settings with those from
-                the imported file.
+                <AlertTitle sx={{ fontWeight: 700 }}>{t('settings.overwriteDataTitle')}</AlertTitle>
+                {t('settings.overwriteDataDescription')}
               </Alert>
             )}
           </>
@@ -134,7 +135,7 @@ export const ImportDialog = ({
       </DialogContent>
       <DialogActions>
         <Button data-testid="dialog-cancel-btn" onClick={handleClose}>
-          Cancel
+          {t('common.cancel')}
         </Button>
         <Button
           data-testid="dialog-import-btn"
@@ -143,7 +144,7 @@ export const ImportDialog = ({
           disableElevation
           disabled={isDisabled}
         >
-          Import
+          {t('settings.import')}
         </Button>
       </DialogActions>
     </ModalDialog>

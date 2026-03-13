@@ -3,12 +3,14 @@ import { Alert, AlertTitle } from '@mui/material'
 import ExternalLink from '@/components/common/ExternalLink'
 
 import { HelpCenterArticle } from '@safe-global/utils/config/constants'
+import { useTranslation } from 'react-i18next'
 
 type ThirdPartyCookiesWarningProps = {
   onClose: () => void
 }
 
 export const ThirdPartyCookiesWarning = ({ onClose }: ThirdPartyCookiesWarningProps): React.ReactElement => {
+  const { t } = useTranslation()
   return (
     <Alert
       severity="warning"
@@ -21,10 +23,9 @@ export const ThirdPartyCookiesWarning = ({ onClose }: ThirdPartyCookiesWarningPr
       })}
     >
       <AlertTitle>
-        Third party cookies are disabled. Safe Apps may therefore not work properly. You can find out more information
-        about this{' '}
+        {t('safeApps.thirdPartyCookiesTitle')}{' '}
         <ExternalLink href={HelpCenterArticle.COOKIES} fontSize="inherit">
-          here
+          {t('safeApps.cookiesWarningHere')}
         </ExternalLink>
       </AlertTitle>
     </Alert>

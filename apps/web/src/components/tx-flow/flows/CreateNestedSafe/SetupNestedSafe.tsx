@@ -16,6 +16,7 @@ import {
 import classNames from 'classnames'
 import { Controller, FormProvider, useFieldArray, useForm, useFormContext } from 'react-hook-form'
 import { useContext, type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import InfoIcon from '@/public/images/notifications/info.svg'
 import AddIcon from '@/public/images/common/add.svg'
@@ -51,6 +52,7 @@ export enum SetupNestedSafeFormAssetFields {
 }
 
 export function SetUpNestedSafe(): ReactElement {
+  const { t } = useTranslation()
   const addressBook = useAddressBook()
   const safeAddress = useSafeAddress()
   const randomName = useMnemonicPrefixedSafeName('Nested')
@@ -74,21 +76,20 @@ export function SetUpNestedSafe(): ReactElement {
       <FormProvider {...formMethods}>
         <form onSubmit={formMethods.handleSubmit(onFormSubmit)}>
           <Typography variant="body2" mt={1}>
-            Name your Nested Safe and select which assets to fund it with. All selected assets will be transferred when
-            deployed.
+            {t('nestedSafe.setupDescription')}
           </Typography>
 
           <FormControl fullWidth sx={{ mt: 3 }}>
             <NameInput
               data-testid="nested-safe-name-input"
               name={SetupNestedSafeFormFields.name}
-              label="Name"
+              label={t('newSafe.nameLabel')}
               placeholder={fallbackName}
               InputLabelProps={{ shrink: true }}
               InputProps={{
                 endAdornment: (
                   <Tooltip
-                    title="This name is stored locally and will never be shared with us or any third parties."
+                    title={t('newSafe.nameTooltip')}
                     arrow
                     placement="top"
                   >
@@ -107,7 +108,7 @@ export function SetUpNestedSafe(): ReactElement {
 
           <CardActions>
             <Button data-testid="next-button" variant="contained" type="submit">
-              Next
+              {t('newSafe.next')}
             </Button>
           </CardActions>
         </form>
@@ -123,6 +124,7 @@ export function SetUpNestedSafe(): ReactElement {
  * TODO: Refactor the both to share a common implementation.
  */
 function AssetInputs({ name }: { name: SetupNestedSafeFormFields.assets }) {
+  const { t } = useTranslation()
   const { balances } = useVisibleBalances()
 
   const formMethods = useFormContext<SetupNestedSafeForm>()
@@ -190,7 +192,7 @@ function AssetInputs({ name }: { name: SetupNestedSafeFormFields.assets }) {
                           disableUnderline: true,
                           endAdornment: (
                             <Button data-testid="max-button" className={tokenInputCss.max} onClick={onClickMax}>
-                              Max
+                              {t('nestedSafe.maxButton')}
                             </Button>
                           ),
                         }}
@@ -254,7 +256,7 @@ function AssetInputs({ name }: { name: SetupNestedSafeFormFields.assets }) {
         sx={{ my: 3 }}
         disabled={nonSelectedAssets.length === 0}
       >
-        Fund new asset
+        {t('nestedSafe.fundNewAsset')}
       </Button>
     </>
   )

@@ -7,12 +7,14 @@ import Track from '@/components/common/Track'
 import { POSITIONS_EVENTS } from '@/services/analytics/events/positions'
 import { MixPanelEventParams } from '@/services/analytics/mixpanel-events'
 import useIsEarnFeatureEnabled from '@/features/earn/hooks/useIsEarnFeatureEnabled'
+import { useTranslation } from 'react-i18next'
 
 type PositionsEmptyProps = {
   entryPoint?: string
 }
 
 const PositionsEmpty = ({ entryPoint = 'Dashboard' }: PositionsEmptyProps) => {
+  const { t } = useTranslation()
   const router = useRouter()
   const isEarnFeatureEnabled = useIsEarnFeatureEnabled()
 
@@ -21,7 +23,7 @@ const PositionsEmpty = ({ entryPoint = 'Dashboard' }: PositionsEmptyProps) => {
       <DefiIcon />
 
       <Typography data-testid="no-tx-text" variant="body1" color="primary.light">
-        You have no active DeFi positions yet
+        {t('positions.noPositions')}
       </Typography>
 
       {isEarnFeatureEnabled && (
@@ -33,7 +35,7 @@ const PositionsEmpty = ({ entryPoint = 'Dashboard' }: PositionsEmptyProps) => {
         >
           <Link href={{ pathname: AppRoutes.earn, query: { safe: router.query.safe } }} passHref>
             <Button size="small" sx={{ mt: 1 }}>
-              Explore Earn
+              {t('positions.exploreEarn')}
             </Button>
           </Link>
         </Track>

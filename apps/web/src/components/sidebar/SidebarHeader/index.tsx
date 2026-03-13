@@ -1,6 +1,7 @@
 import TokenAmount from '@/components/common/TokenAmount'
 import CounterfactualStatusButton from '@/features/counterfactual/CounterfactualStatusButton'
 import { type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import Skeleton from '@mui/material/Skeleton'
@@ -35,6 +36,7 @@ import { NestedSafesButton } from '@/components/sidebar/NestedSafesButton'
 import { NESTED_SAFE_EVENTS, NESTED_SAFE_LABELS } from '@/services/analytics/events/nested-safes'
 
 const SafeHeader = (): ReactElement => {
+  const { t } = useTranslation()
   const { balances } = useVisibleBalances()
   const safeAddress = useSafeAddress()
   const { safe } = useSafeInfo()
@@ -90,7 +92,7 @@ const SafeHeader = (): ReactElement => {
         <div className={css.iconButtons}>
           <Track {...OVERVIEW_EVENTS.SHOW_QR} label="sidebar">
             <QrCodeButton>
-              <Tooltip title="Open QR code" placement="top">
+              <Tooltip title={t('sidebar.openQrCode')} placement="top">
                 <IconButton className={css.iconButton}>
                   <SvgIcon component={QrIconBold} inheritViewBox color="primary" fontSize="small" />
                 </IconButton>

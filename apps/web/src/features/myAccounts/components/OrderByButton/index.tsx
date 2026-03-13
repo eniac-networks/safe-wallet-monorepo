@@ -5,19 +5,21 @@ import TransactionsIcon from '@/public/images/transactions/transactions.svg'
 import CheckIcon from '@/public/images/common/check.svg'
 import { OrderByOption } from '@/store/orderByPreferenceSlice'
 import { OVERVIEW_EVENTS, trackEvent } from '@/services/analytics'
+import { useTranslation } from 'react-i18next'
 
 type OrderByButtonProps = {
   orderBy: OrderByOption
   onOrderByChange: (orderBy: OrderByOption) => void
 }
 
-const orderByLabels = {
-  [OrderByOption.LAST_VISITED]: 'Most recent',
-  [OrderByOption.NAME]: 'Name',
-}
-
 const OrderByButton = ({ orderBy: orderBy, onOrderByChange: onOrderByChange }: OrderByButtonProps) => {
+  const { t } = useTranslation()
   const [anchorEl, setAnchorEl] = useState<HTMLElement | undefined>()
+
+  const orderByLabels = {
+    [OrderByOption.LAST_VISITED]: t('myAccounts.sortByMostRecent'),
+    [OrderByOption.NAME]: t('myAccounts.sortByName'),
+  }
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
@@ -43,7 +45,7 @@ const OrderByButton = ({ orderBy: orderBy, onOrderByChange: onOrderByChange }: O
         size="small"
       >
         <Typography variant="body2" noWrap>
-          Sort by: {orderByLabels[orderBy]}
+          {t('myAccounts.sortByLabel', { label: orderByLabels[orderBy] })}
         </Typography>
       </Button>
 
@@ -59,7 +61,7 @@ const OrderByButton = ({ orderBy: orderBy, onOrderByChange: onOrderByChange }: O
         }}
       >
         <MenuItem disabled>
-          <ListItemText>Sort by</ListItemText>
+          <ListItemText>{t('myAccounts.sortBy')}</ListItemText>
         </MenuItem>
         <MenuItem
           data-testid="last-visited-option"

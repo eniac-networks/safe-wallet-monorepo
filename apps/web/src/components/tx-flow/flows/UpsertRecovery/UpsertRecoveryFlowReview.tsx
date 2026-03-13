@@ -19,8 +19,10 @@ import { isCustomDelaySelected } from './utils'
 import { TxFlowContext, type TxFlowContextType } from '../../TxFlowProvider'
 import ReviewTransaction, { type ReviewTransactionProps } from '@/components/tx/ReviewTransactionV2'
 import ErrorMessage from '@/components/tx/ErrorMessage'
+import { useTranslation } from 'react-i18next'
 
 export function UpsertRecoveryFlowReview({ children, ...props }: ReviewTransactionProps): ReactElement {
+  const { t } = useTranslation()
   const web3ReadOnly = useWeb3ReadOnly()
   const { safe, safeAddress } = useSafeInfo()
   const { setSafeTx, safeTxError, setSafeTxError } = useContext(SafeTxContext)
@@ -55,7 +57,7 @@ export function UpsertRecoveryFlowReview({ children, ...props }: ReviewTransacti
   const isEdit = !!data?.moduleAddress
 
   if (!data) {
-    return <ErrorMessage>No data provided</ErrorMessage>
+    return <ErrorMessage>{t('recovery.noDataProvided')}</ErrorMessage>
   }
 
   const { recoverer, customDelay, selectedDelay } = data
@@ -64,23 +66,23 @@ export function UpsertRecoveryFlowReview({ children, ...props }: ReviewTransacti
 
   const expiryLabel = periods.expiration.find(({ value }) => value === data?.[UpsertRecoveryFlowFields.expiry])!.label
   const delayLabel = isCustomDelay
-    ? `${customDelay} days`
+    ? `${customDelay} ${t('recovery.days')}`
     : periods.delay.find(({ value }) => value === selectedDelay)?.label
 
   return (
     <ReviewTransaction {...props}>
       <Typography>
-        This transaction will {isEdit ? 'update' : 'enable'} the Account recovery feature once executed.
+        {t('recovery.txWillUpdateRecovery', { action: t(isEdit ? 'recovery.updateRecovery' : 'recovery.enableRecovery') })}
       </Typography>
 
-      <TxDataRow title="Trusted Recoverer">
+      <TxDataRow title={t('recovery.trustedRecoverer')}>
         <EthHashInfo address={recoverer} showName={false} hasExplorer showCopyButton avatarSize={24} />
       </TxDataRow>
 
       <TxDataRow
         title={
           <>
-            Review window
+            {t('recovery.reviewWindow')}
             <Tooltip placement="top" title={TOOLTIP_TITLES.REVIEW_WINDOW}>
               <span>
                 <SvgIcon
@@ -102,7 +104,7 @@ export function UpsertRecoveryFlowReview({ children, ...props }: ReviewTransacti
         <TxDataRow
           title={
             <>
-              Proposal expiry
+              {t('recovery.proposalExpiry')}
               <Tooltip placement="top" title={TOOLTIP_TITLES.PROPOSAL_EXPIRY}>
                 <span>
                   <SvgIcon

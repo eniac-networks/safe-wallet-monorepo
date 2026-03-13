@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import TxLayout from '@/components/tx-flow/common/TxLayout'
 import SignMessage, { type SignMessageProps } from '@/components/tx-flow/flows/SignMessage/SignMessage'
 import { getSwapTitle } from '@/features/swap'
@@ -12,7 +13,6 @@ import { STAKE_TITLE } from '@/features/stake/constants'
 import { getStakeTitle } from '@/features/stake/helpers/utils'
 
 const APP_LOGO_FALLBACK_IMAGE = '/images/apps/apps-icon.svg'
-const APP_NAME_FALLBACK = 'Sign message'
 
 export const AppTitle = ({
   name,
@@ -23,9 +23,10 @@ export const AppTitle = ({
   logoUri?: string | null
   txs?: BaseTransaction[]
 }) => {
+  const { t } = useTranslation()
   const swapParams = useAppSelector(selectSwapParams)
 
-  const appName = name || APP_NAME_FALLBACK
+  const appName = name || t('signMessage.signMessageFallback')
   const appLogo = logoUri || APP_LOGO_FALLBACK_IMAGE
 
   let title = appName
@@ -48,15 +49,16 @@ export const AppTitle = ({
 }
 
 const SignMessageFlow = ({ ...props }: SignMessageProps) => {
+  const { t } = useTranslation()
   return (
     <TxLayout
-      title="Confirm message"
+      title={t('signMessage.confirmMessage')}
       subtitle={<AppTitle name={props.name} logoUri={props.logoUri} />}
       step={0}
       hideNonce
       isMessage
     >
-      <ErrorBoundary fallback={<div>Error signing message</div>}>
+      <ErrorBoundary fallback={<div>{t('signMessage.errorSigningMessage')}</div>}>
         <SignMessage {...props} />
       </ErrorBoundary>
     </TxLayout>

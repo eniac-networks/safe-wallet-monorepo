@@ -6,8 +6,10 @@ import { OVERVIEW_EVENTS, trackEvent } from '@/services/analytics'
 import CheckWallet from '@/components/common/CheckWallet'
 import { TxModalContext } from '@/components/tx-flow'
 import { NewTxFlow } from '@/components/tx-flow/flows'
+import { useTranslation } from 'react-i18next'
 
 const NewTxButton = (): ReactElement => {
+  const { t } = useTranslation()
   const { setTxFlow } = useContext(TxModalContext)
   const isCounterfactualSafe = useIsCounterfactualSafe()
 
@@ -33,7 +35,7 @@ const NewTxButton = (): ReactElement => {
           disableElevation
           sx={{ py: 1.3 }}
         >
-          New transaction
+          {t('sidebar.newTransaction')}
         </Button>
       )}
     </CheckWallet>

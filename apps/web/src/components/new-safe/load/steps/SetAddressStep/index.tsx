@@ -30,6 +30,7 @@ import { LOAD_SAFE_EVENTS, trackEvent } from '@/services/analytics'
 import { AppRoutes } from '@/config/routes'
 import MUILink from '@mui/material/Link'
 import Link from 'next/link'
+import { useTranslation } from 'react-i18next'
 
 enum Field {
   name = 'name',
@@ -42,6 +43,7 @@ type FormData = {
 }
 
 const SetAddressStep = ({ data, onSubmit, onBack }: StepRenderProps<LoadSafeFormData>) => {
+  const { t } = useTranslation()
   const currentChainId = useChainId()
   const addedSafes = useAppSelector((state) => selectAddedSafes(state, currentChainId))
   const formMethods = useForm<FormData>({
@@ -68,13 +70,13 @@ const SetAddressStep = ({ data, onSubmit, onBack }: StepRenderProps<LoadSafeForm
 
   const validateSafeAddress = async (address: string) => {
     if (addedSafes && Object.keys(addedSafes).includes(address)) {
-      return 'Safe Account is already added'
+      return t('newSafe.safeAlreadyAdded')
     }
 
     try {
       await getSafeInfo(currentChainId, address)
     } catch (error) {
-      return 'Address given is not a valid Safe Account address'
+      return t('newSafe.invalidSafeAddress')
     }
   }
 
@@ -112,7 +114,7 @@ const SetAddressStep = ({ data, onSubmit, onBack }: StepRenderProps<LoadSafeForm
             <Grid item xs={12} md>
               <NameInput
                 name={Field.name}
-                label={errors?.[Field.name]?.message || 'Name'}
+                label={errors?.[Field.name]?.message || t('newSafe.nameLabel')}
                 placeholder={fallbackName}
                 InputLabelProps={{ shrink: true }}
                 InputProps={{
@@ -122,7 +124,7 @@ const SetAddressStep = ({ data, onSubmit, onBack }: StepRenderProps<LoadSafeForm
                     </InputAdornment>
                   ) : (
                     <Tooltip
-                      title="This name is stored locally and will never be shared with us or any third parties."
+                      title={t('newSafe.nameTooltip')}
                       arrow
                       placement="top"
                     >
@@ -148,7 +150,7 @@ const SetAddressStep = ({ data, onSubmit, onBack }: StepRenderProps<LoadSafeForm
 
           <AddressInput
             data-testid="address-section"
-            label="Safe Account"
+            label={t('newSafe.safeAccountLabel')}
             validate={validateSafeAddress}
             name={Field.address}
           />
@@ -158,13 +160,13 @@ const SetAddressStep = ({ data, onSubmit, onBack }: StepRenderProps<LoadSafeForm
               mt: 4,
             }}
           >
-            By continuing you consent to the{' '}
+            {t('newSafe.consentTerms')}{' '}
             <Link href={AppRoutes.terms} passHref legacyBehavior>
-              <MUILink>terms of use</MUILink>
+              <MUILink>{t('newSafe.termsOfUse')}</MUILink>
             </Link>{' '}
             and{' '}
             <Link href={AppRoutes.privacy} passHref legacyBehavior>
-              <MUILink>privacy policy</MUILink>
+              <MUILink>{t('newSafe.privacyPolicy')}</MUILink>
             </Link>
             .
           </Typography>
@@ -182,7 +184,7 @@ const SetAddressStep = ({ data, onSubmit, onBack }: StepRenderProps<LoadSafeForm
             }}
           >
             <Button variant="outlined" size="small" onClick={handleBack} startIcon={<ArrowBackIcon fontSize="small" />}>
-              Back
+              {t('newSafe.back')}
             </Button>
             <Button
               data-testid="load-safe-next-btn"
@@ -191,7 +193,7 @@ const SetAddressStep = ({ data, onSubmit, onBack }: StepRenderProps<LoadSafeForm
               size="stretched"
               disabled={!isValid}
             >
-              Next
+              {t('newSafe.next')}
             </Button>
           </Box>
         </Box>

@@ -1,4 +1,5 @@
 import { useContext, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { SvgIcon, Typography, Alert, AlertTitle, Skeleton, Button } from '@mui/material'
 import { ImplementationVersionState } from '@safe-global/safe-gateway-typescript-sdk'
 import { sameAddress } from '@safe-global/utils/utils/addresses'
@@ -16,6 +17,7 @@ import { UnsupportedMastercopyWarning } from '@/features/multichain/components/U
 import { getLatestSafeVersion } from '@safe-global/utils/utils/chains'
 
 export const ContractVersion = () => {
+  const { t } = useTranslation()
   const { setTxFlow } = useContext(TxModalContext)
   const [masterCopies] = useMasterCopies()
   const { safe, safeLoaded } = useSafeInfo()
@@ -35,16 +37,16 @@ export const ContractVersion = () => {
   return (
     <>
       <Typography variant="h4" fontWeight={700} marginBottom={1}>
-        Contract version
+        {t('settings.contractVersion')}
       </Typography>
 
       <Typography variant="body1" fontWeight={400} display="flex" alignItems="center">
         {safeLoaded ? (
           <>
-            {safe.version ?? 'Unsupported contract'}
+            {safe.version ?? t('settings.unsupportedContract')}
             {isLatestVersion && (
               <>
-                <CheckCircleIcon color="primary" sx={{ ml: 1, mr: 0.5 }} /> Latest version
+                <CheckCircleIcon color="primary" sx={{ ml: 1, mr: 0.5 }} /> {t('settings.latestVersion')}
               </>
             )}
           </>
@@ -59,19 +61,16 @@ export const ContractVersion = () => {
           icon={<SvgIcon component={InfoIcon} inheritViewBox color="secondary" />}
         >
           <AlertTitle sx={{ fontWeight: 700 }}>
-            New version is available: {latestSafeVersion} (
-            <ExternalLink href={safeMasterCopy?.deployerRepoUrl}>changelog</ExternalLink>)
+            {t('settings.newVersionAvailable', { version: latestSafeVersion })} (
+            <ExternalLink href={safeMasterCopy?.deployerRepoUrl}>{t('settings.changelog')}</ExternalLink>)
           </AlertTitle>
 
-          <Typography mb={2}>
-            Update now to take advantage of new features and the highest security standards available. You will need to
-            confirm this update just like any other transaction.
-          </Typography>
+          <Typography mb={2}>{t('settings.updateDescription')}</Typography>
 
           <CheckWallet>
             {(isOk) => (
               <Button onClick={() => setTxFlow(<UpdateSafeFlow />)} variant="contained" disabled={!isOk}>
-                Update
+                {t('settings.update')}
               </Button>
             )}
           </CheckWallet>

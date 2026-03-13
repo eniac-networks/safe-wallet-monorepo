@@ -8,6 +8,7 @@ import SettingsIcon from '@/public/images/sidebar/settings.svg'
 import MembersIcon from '@/public/images/sidebar/members.svg'
 import AccountsIcon from '@/public/images/sidebar/wallet.svg'
 import { SvgIcon } from '@mui/material'
+import type { TFunction } from 'react-i18next'
 
 export type DynamicNavItem = {
   label: string
@@ -18,36 +19,36 @@ export type DynamicNavItem = {
   activeMemberOnly?: boolean
 }
 
-export const navItems: DynamicNavItem[] = [
+export const getNavItems = (t: TFunction): DynamicNavItem[] => [
   {
-    label: 'Home',
+    label: t('spaces.navHome'),
     icon: <SvgIcon component={HomeIcon} inheritViewBox />,
     href: AppRoutes.spaces.index,
   },
   {
-    label: 'Safe Accounts',
+    label: t('spaces.navSafeAccounts'),
     icon: <SvgIcon component={AccountsIcon} inheritViewBox />,
     href: AppRoutes.spaces.safeAccounts,
   },
   {
-    label: 'Transactions',
+    label: t('spaces.navTransactions'),
     icon: <SvgIcon component={TransactionIcon} inheritViewBox />,
     href: '', // TODO: Replace with empty page
     disabled: true,
-    tag: <Chip label="Soon" sx={{ backgroundColor: 'background.main', color: 'primary.light' }} />,
+    tag: <Chip label={t('spaces.navSoon')} sx={{ backgroundColor: 'background.main', color: 'primary.light' }} />,
   },
   {
-    label: 'Members',
+    label: t('spaces.navMembers'),
     icon: <SvgIcon component={MembersIcon} inheritViewBox />,
     href: AppRoutes.spaces.members,
   },
   {
-    label: 'Address book',
+    label: t('spaces.navAddressBook'),
     icon: <SvgIcon component={ABIcon} inheritViewBox />,
     href: AppRoutes.spaces.addressBook,
   },
   {
-    label: 'Settings',
+    label: t('spaces.navSettings'),
     icon: <SvgIcon component={SettingsIcon} inheritViewBox />,
     href: AppRoutes.spaces.settings,
     activeMemberOnly: true,

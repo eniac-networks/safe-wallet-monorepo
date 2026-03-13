@@ -12,6 +12,7 @@ import { useDarkMode } from '@/hooks/useDarkMode'
 import OnlyOwner from '@/components/common/OnlyOwner'
 import { trackEvent } from '@/services/analytics'
 import { TX_LIST_EVENTS } from '@/services/analytics/events/txList'
+import { useTranslation } from 'react-i18next'
 
 const getCsvExportFileName = () => {
   const today = new Date().toISOString().slice(0, 10)
@@ -29,6 +30,7 @@ type CsvTxExportProps = {
 }
 
 const CsvTxExportButton = ({ hasActiveFilter }: CsvTxExportProps): ReactElement => {
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const isDarkMode = useDarkMode()
 
@@ -92,8 +94,8 @@ const CsvTxExportButton = ({ hasActiveFilter }: CsvTxExportProps): ReactElement 
         showNotification({
           variant: 'success',
           groupKey: 'export-csv-success',
-          title: 'Export successful',
-          message: 'Transactions successfully exported to CSV.',
+          title: t('transactions.exportSuccessful'),
+          message: t('transactions.exportSuccessMessage'),
         }),
       )
     }
@@ -103,8 +105,8 @@ const CsvTxExportButton = ({ hasActiveFilter }: CsvTxExportProps): ReactElement 
         showNotification({
           variant: 'error',
           groupKey: 'export-csv-error',
-          title: 'Something went wrong',
-          message: 'Please try exporting the CSV again.',
+          title: t('transactions.somethingWentWrong'),
+          message: t('transactions.tryExportingAgain'),
         }),
       )
     }
@@ -136,7 +138,7 @@ const CsvTxExportButton = ({ hasActiveFilter }: CsvTxExportProps): ReactElement 
           <Box mt={1}>
             <Chip sx={{ borderRadius: 1, ...chipStyles }} fontWeight="normal" />
             <Typography mt={1} variant="body2">
-              Export your transaction history for financial reporting.
+              {t('transactions.csvExportDescription')}
             </Typography>
           </Box>
         }
@@ -158,7 +160,7 @@ const CsvTxExportButton = ({ hasActiveFilter }: CsvTxExportProps): ReactElement 
                 }
                 disabled={!isOk || !!exportJobId}
               >
-                {exportJobId ? 'Exporting' : 'Export CSV'}
+                {exportJobId ? t('transactions.exporting') : t('transactions.exportCsv')}
               </Button>
             )}
           </OnlyOwner>

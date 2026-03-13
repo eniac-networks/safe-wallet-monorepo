@@ -2,11 +2,13 @@ import React from 'react'
 import NextLink from 'next/link'
 import { Tab, Tabs, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
+import { useTranslation } from 'react-i18next'
 import type { NavItem } from '@/components/sidebar/SidebarNavigation/config'
 import css from './styles.module.css'
 
 const NavTabs = ({ tabs }: { tabs: NavItem[] }) => {
   const router = useRouter()
+  const { t } = useTranslation()
   const activeTab = Math.max(0, tabs.map((tab) => tab.href).indexOf(router.pathname))
   const query = router.query.safe ? { safe: router.query.safe } : undefined
 
@@ -26,7 +28,7 @@ const NavTabs = ({ tabs }: { tabs: NavItem[] }) => {
               color={activeTab === idx ? 'primary' : 'primary.light'}
               className={css.label}
             >
-              {tab.label}
+              {t(tab.label)}
             </Typography>
           }
         />

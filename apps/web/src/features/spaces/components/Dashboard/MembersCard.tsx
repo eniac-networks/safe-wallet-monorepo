@@ -8,8 +8,10 @@ import AddMemberModal from '../AddMemberModal'
 import { SPACE_LABELS } from '@/services/analytics/events/spaces'
 import Track from '@/components/common/Track'
 import { SPACE_EVENTS } from '@/services/analytics/events/spaces'
+import { useTranslation } from 'react-i18next'
 
 const MembersCard = () => {
+  const { t } = useTranslation()
   const [openAddMembersModal, setOpenAddMembersModal] = useState(false)
   const isAdmin = useIsAdmin()
   const isButtonDisabled = !isAdmin
@@ -25,7 +27,7 @@ const MembersCard = () => {
           <Box className={classnames(css.iconBG, css.iconBGBlue)}>
             <SvgIcon component={MemberIcon} inheritViewBox color="info" />
           </Box>
-          <Tooltip title={isButtonDisabled ? 'You need to be an Admin to add members' : ''} placement="top">
+          <Tooltip title={isButtonDisabled ? t('spaces.adminRequiredToAddMembers') : ''} placement="top">
             <Box component="span" sx={{ position: 'absolute', top: 0, right: 0 }}>
               <Track {...SPACE_EVENTS.ADD_MEMBER_MODAL} label={SPACE_LABELS.space_dashboard_card}>
                 <Button
@@ -36,7 +38,7 @@ const MembersCard = () => {
                   aria-label="Invite team members"
                   disabled={isButtonDisabled}
                 >
-                  Add members
+                  {t('spaces.addMembers')}
                 </Button>
               </Track>
             </Box>
@@ -44,11 +46,10 @@ const MembersCard = () => {
         </Box>
         <Box>
           <Typography variant="body1" color="text.primary" fontWeight={700} mb={1}>
-            Add members
+            {t('spaces.addMembers')}
           </Typography>
           <Typography variant="body2" color="primary.light">
-            Invite team members to help manage your Safe Accounts. You can add both Safe Account signers and external
-            collaborators.
+            {t('spaces.inviteMembersDescription')}
           </Typography>
         </Box>
       </Paper>

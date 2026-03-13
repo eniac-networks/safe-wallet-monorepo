@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { Fragment } from 'react'
 import OrderId from '@/features/swap/components/OrderId'
 import StatusLabel from '@/features/swap/components/StatusLabel'
@@ -44,10 +45,11 @@ type SwapOrderProps = {
 const TWAP_PARTS_STATUS_THRESHOLD = 10
 
 const AmountRow = ({ order }: { order: Order }) => {
+  const { t } = useTranslation()
   const { sellToken, buyToken, sellAmount, buyAmount, kind } = order
   const isSellOrder = kind === 'sell'
   return (
-    <DataRow key="Amount" title="Amount">
+    <DataRow key="Amount" title={t('swap.amount')}>
       <Stack
         sx={{
           flexDirection: isSellOrder ? 'column' : 'column-reverse',
@@ -55,7 +57,7 @@ const AmountRow = ({ order }: { order: Order }) => {
       >
         <div>
           <span className={css.value}>
-            {isSellOrder ? 'Sell' : 'For at most'}{' '}
+            {isSellOrder ? t('swap.sell') : t('swap.forAtMost')}{' '}
             <TokenAmount
               value={sellAmount}
               decimals={sellToken.decimals}
@@ -66,7 +68,7 @@ const AmountRow = ({ order }: { order: Order }) => {
         </div>
         <div>
           <span className={css.value}>
-            {isSellOrder ? 'for at least' : 'Buy'}{' '}
+            {isSellOrder ? t('swap.forAtLeast') : t('swap.buy')}{' '}
             <TokenAmount
               value={buyAmount}
               decimals={buyToken.decimals}
@@ -81,33 +83,35 @@ const AmountRow = ({ order }: { order: Order }) => {
 }
 
 const PriceRow = ({ order }: { order: Order }) => {
+  const { t } = useTranslation()
   const { status, sellToken, buyToken } = order
   const executionPrice = getExecutionPrice(order)
   const limitPrice = getLimitPrice(order)
 
   if (status === 'fulfilled') {
     return (
-      <DataRow key="Execution price" title="Execution price">
+      <DataRow key="Execution price" title={t('swap.executionPrice')}>
         1 {buyToken.symbol} = {formatAmount(executionPrice)} {sellToken.symbol}
       </DataRow>
     )
   }
 
   return (
-    <DataRow key="Limit price" title="Limit price">
+    <DataRow key="Limit price" title={t('swap.limitPrice')}>
       1 {buyToken.symbol} = {formatAmount(limitPrice)} {sellToken.symbol}
     </DataRow>
   )
 }
 
 const ExpiryRow = ({ order }: { order: Order }) => {
+  const { t } = useTranslation()
   const { validUntil, status } = order
   const now = new Date()
   const expires = new Date(validUntil * 1000)
   if (status! == 'fulfilled') {
     if (compareAsc(now, expires) !== 1) {
       return (
-        <DataRow key="Expiry" title="Expiry">
+        <DataRow key="Expiry" title={t('swap.expiry')}>
           <Typography>
             <Typography
               component="span"
@@ -123,7 +127,7 @@ const ExpiryRow = ({ order }: { order: Order }) => {
       )
     } else {
       return (
-        <DataRow key="Expiry" title="Expiry">
+        <DataRow key="Expiry" title={t('swap.expiry')}>
           {formatDateTime(validUntil * 1000)}
         </DataRow>
       )
@@ -134,6 +138,7 @@ const ExpiryRow = ({ order }: { order: Order }) => {
 }
 
 const SurplusRow = ({ order }: { order: Order }) => {
+  const { t } = useTranslation()
   const { status, kind } = order
   const isPartiallyFilled = isOrderPartiallyFilled(order)
   const surplusPrice = isPartiallyFilled ? getPartiallyFilledSurplus(order) : getSurplusPrice(order)
@@ -141,7 +146,7 @@ const SurplusRow = ({ order }: { order: Order }) => {
   const isSellOrder = kind === 'sell'
   if (status === 'fulfilled' || isPartiallyFilled) {
     return (
-      <DataRow key="Surplus" title="Surplus">
+      <DataRow key="Surplus" title={t('swap.surplus')}>
         {formatAmount(surplusPrice)} {isSellOrder ? buyToken.symbol : sellToken.symbol}
       </DataRow>
     )
@@ -151,10 +156,11 @@ const SurplusRow = ({ order }: { order: Order }) => {
 }
 
 const FilledRow = ({ order }: { order: Order }) => {
+  const { t } = useTranslation()
   const orderClass = getOrderClass(order)
   if (['limit', 'twap'].includes(orderClass)) {
     return (
-      <DataRow title="Filled" key="Filled">
+      <DataRow title={t('swap.filled')} key="Filled">
         <SwapProgress order={order} />
       </DataRow>
     )
@@ -164,10 +170,11 @@ const FilledRow = ({ order }: { order: Order }) => {
 }
 
 const OrderUidRow = ({ order }: { order: Order }) => {
+  const { t } = useTranslation()
   if (isSwapOrderTxInfo(order) || isSwapTransferOrderTxInfo(order)) {
     const { uid, explorerUrl } = order
     return (
-      <DataRow key="Order ID" title="Order ID">
+      <DataRow key="Order ID" title={t('swap.orderId')}>
         <OrderId orderId={uid} href={explorerUrl} />
       </DataRow>
     )
@@ -176,22 +183,24 @@ const OrderUidRow = ({ order }: { order: Order }) => {
 }
 
 const StatusRow = ({ order }: { order: Order }) => {
+  const { t } = useTranslation()
   const { status } = order
   const isPartiallyFilled = isOrderPartiallyFilled(order)
   return (
-    <DataRow key="Status" title="Status">
+    <DataRow key="Status" title={t('swap.status')}>
       <StatusLabel status={isPartiallyFilled ? 'partiallyFilled' : status} />
     </DataRow>
   )
 }
 
 const RecipientRow = ({ order }: { order: Order }) => {
+  const { t } = useTranslation()
   const { safeAddress } = useSafeInfo()
   const { receiver } = order
 
   if (receiver && receiver !== safeAddress) {
     return (
-      <DataRow key="Recipient" title="Recipient">
+      <DataRow key="Recipient" title={t('swap.recipient')}>
         <EthHashInfo address={receiver} showAvatar={false} />
       </DataRow>
     )
@@ -201,12 +210,13 @@ const RecipientRow = ({ order }: { order: Order }) => {
 }
 
 export const SellOrder = ({ order }: { order: SwapOrderType }) => {
+  const { t } = useTranslation()
   const { kind } = order
   const orderKindLabel = capitalize(kind)
 
   return (
     <DataTable
-      header={`${orderKindLabel} order`}
+      header={t('swap.orderHeader', { kind: orderKindLabel })}
       rows={[
         <AmountRow order={order} key="amount-row" />,
         <PriceRow order={order} key="price-row" />,
@@ -223,6 +233,7 @@ export const SellOrder = ({ order }: { order: SwapOrderType }) => {
 }
 
 export const TwapOrder = ({ order }: { order: SwapTwapOrder }) => {
+  const { t } = useTranslation()
   const { kind, validUntil, status, numberOfParts } = order
 
   const isPartiallyFilled = isOrderPartiallyFilled(order)
@@ -233,7 +244,7 @@ export const TwapOrder = ({ order }: { order: SwapTwapOrder }) => {
   const isStatusKnown = Number(numberOfParts) <= TWAP_PARTS_STATUS_THRESHOLD
   return (
     <DataTable
-      header={`${orderKindLabel} order`}
+      header={t('swap.orderHeader', { kind: orderKindLabel })}
       rows={[
         <AmountRow order={order} key="amount-row" />,
         <PriceRow order={order} key="price-row" />,
@@ -241,7 +252,7 @@ export const TwapOrder = ({ order }: { order: SwapTwapOrder }) => {
         <RecipientRow order={order} key="recipient-row" />,
         <SurplusFee order={order} key="fee-row" />,
         <EmptyRow key="spacer-0" />,
-        <DataRow title="No of parts" key="n_of_parts">
+        <DataRow title={t('swap.noOfParts')} key="n_of_parts">
           {numberOfParts}
         </DataRow>,
         <PartSellAmount order={order} key="part_sell_amount" />,
@@ -254,7 +265,7 @@ export const TwapOrder = ({ order }: { order: SwapTwapOrder }) => {
         <PartDuration order={order} key="part_duration" />,
         <EmptyRow key="spacer-1" />,
         status !== 'fulfilled' && compareAsc(now, expires) !== 1 ? (
-          <DataRow key="Expiry" title="Expiry">
+          <DataRow key="Expiry" title={t('swap.expiry')}>
             <Typography>
               <Typography
                 component="span"
@@ -268,12 +279,12 @@ export const TwapOrder = ({ order }: { order: SwapTwapOrder }) => {
             </Typography>
           </DataRow>
         ) : (
-          <DataRow key="Expired" title="Expired">
+          <DataRow key="Expired" title={t('swap.expired')}>
             {formatDateTime(validUntil * 1000)}
           </DataRow>
         ),
         isStatusKnown ? (
-          <DataRow key="Status" title="Status">
+          <DataRow key="Status" title={t('swap.status')}>
             <StatusLabel status={isPartiallyFilled ? 'partiallyFilled' : status} />
           </DataRow>
         ) : (

@@ -8,8 +8,10 @@ import { MESSAGE_EVENTS } from '@/services/analytics/events/txList'
 import React from 'react'
 import CopyTooltip from '@/components/common/CopyTooltip'
 import useOrigin from '@/hooks/useOrigin'
+import { useTranslation } from 'react-i18next'
 
 const MsgShareLink = ({ safeMessageHash, button }: { safeMessageHash: string; button?: boolean }): ReactElement => {
+  const { t } = useTranslation()
   const router = useRouter()
   const { safe = '' } = router.query
   const href = `${AppRoutes.transactions.msg}?safe=${safe}&messageHash=${safeMessageHash}`
@@ -17,13 +19,13 @@ const MsgShareLink = ({ safeMessageHash, button }: { safeMessageHash: string; bu
 
   return (
     <Track {...MESSAGE_EVENTS.COPY_DEEPLINK}>
-      <CopyTooltip text={txUrl} initialToolTipText="Copy the message URL">
+      <CopyTooltip text={txUrl} initialToolTipText={t('messages.copyMessageUrl')}>
         {button ? (
-          <Button data-testid="share-btn" aria-label="Share" variant="contained" size="small" onClick={() => {}}>
-            Copy link
+          <Button data-testid="share-btn" aria-label={t('messages.share')} variant="contained" size="small" onClick={() => {}}>
+            {t('messages.copyLink')}
           </Button>
         ) : (
-          <IconButton data-testid="share-btn" component={Link} aria-label="Share">
+          <IconButton data-testid="share-btn" component={Link} aria-label={t('messages.share')}>
             <SvgIcon component={ShareIcon} inheritViewBox fontSize="small" color="border" />
           </IconButton>
         )}

@@ -7,8 +7,10 @@ import { SETTINGS_EVENTS } from '@/services/analytics'
 import { IconButton, SvgIcon, Tooltip } from '@mui/material'
 import type { Delegate } from '@safe-global/safe-gateway-typescript-sdk/dist/types/delegates'
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const EditProposerDialog = ({ proposer }: { proposer: Delegate }) => {
+  const { t } = useTranslation()
   const [open, setOpen] = useState<boolean>(false)
   const wallet = useWallet()
 
@@ -22,9 +24,9 @@ const EditProposerDialog = ({ proposer }: { proposer: Delegate }) => {
             <Tooltip
               title={
                 isOk && canEdit
-                  ? 'Edit proposer'
+                  ? t('settings.editProposer')
                   : isOk && !canEdit
-                    ? 'Only the owner of this proposer can edit them'
+                    ? t('settings.onlyOwnerCanEdit')
                     : undefined
               }
             >

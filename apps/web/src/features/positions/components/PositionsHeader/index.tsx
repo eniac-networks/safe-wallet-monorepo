@@ -4,8 +4,10 @@ import FiatValue from '@/components/common/FiatValue'
 import { formatPercentage } from '@safe-global/utils/utils/formatters'
 import type { Protocol } from '@safe-global/store/gateway/AUTO_GENERATED/positions'
 import { Box } from '@mui/system'
+import { useTranslation } from 'react-i18next'
 
 const PositionsHeader = ({ protocol, fiatTotal }: { protocol: Protocol; fiatTotal?: number }) => {
+  const { t } = useTranslation()
   const shareOfFiatTotal = fiatTotal ? formatPercentage(Number(protocol.fiatTotal) / fiatTotal) : null
 
   return (
@@ -25,7 +27,7 @@ const PositionsHeader = ({ protocol, fiatTotal }: { protocol: Protocol; fiatTota
         </Typography>
 
         {shareOfFiatTotal && (
-          <Tooltip title="Based on total positions value" placement="top" arrow>
+          <Tooltip title={t('positions.basedOnTotal')} placement="top" arrow>
             <Chip
               variant="filled"
               size="tiny"

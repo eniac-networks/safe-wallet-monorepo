@@ -2,6 +2,7 @@ import { type ReactElement } from 'react'
 import { FormControlLabel, Switch } from '@mui/material'
 import { TX_LIST_EVENTS } from '@/services/analytics'
 import Track from '@/components/common/Track'
+import { useTranslation } from 'react-i18next'
 
 const _TrustedToggleButton = ({
   onlyTrusted,
@@ -12,6 +13,7 @@ const _TrustedToggleButton = ({
   setOnlyTrusted: (on: boolean) => void
   hasDefaultTokenlist?: boolean
 }): ReactElement | null => {
+  const { t } = useTranslation()
   const onClick = () => {
     setOnlyTrusted(!onlyTrusted)
   }
@@ -25,7 +27,7 @@ const _TrustedToggleButton = ({
       <FormControlLabel
         data-testid="toggle-untrusted"
         control={<Switch checked={onlyTrusted} onChange={onClick} />}
-        label={<>Hide suspicious</>}
+        label={<>{t('transactions.hideSuspicious')}</>}
       />
     </Track>
   )

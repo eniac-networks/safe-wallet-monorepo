@@ -2,6 +2,7 @@ import type { ReactElement, ComponentType, SyntheticEvent } from 'react'
 import { Box, IconButton, SvgIcon, Tooltip, Typography, type TypographyProps } from '@mui/material'
 import LinkIcon from '@/public/images/common/link.svg'
 import Link from 'next/link'
+import { useTranslation } from 'react-i18next'
 
 export type ExplorerButtonProps = {
   title?: string
@@ -22,6 +23,7 @@ const ExplorerButton = ({
   isCompact = true,
   fontSize = 'small',
 }: ExplorerButtonProps): ReactElement | null => {
+  const { t } = useTranslation()
   if (!href) return null
 
   return isCompact ? (
@@ -50,7 +52,7 @@ const ExplorerButton = ({
     >
       <Box display="flex" alignItems="center">
         <Typography fontWeight={700} fontSize={fontSize} mr="var(--space-1)" noWrap>
-          View on explorer
+          {t('common.viewOnExplorer')}
         </Typography>
 
         <SvgIcon component={icon} inheritViewBox fontSize="small" />

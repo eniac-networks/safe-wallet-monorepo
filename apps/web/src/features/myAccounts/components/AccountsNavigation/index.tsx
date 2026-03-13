@@ -6,8 +6,10 @@ import classNames from 'classnames'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { trackEvent } from '@/services/analytics'
+import { useTranslation } from 'react-i18next'
 
 const AccountsNavigation = () => {
+  const { t } = useTranslation()
   const router = useRouter()
 
   const isActiveNavigation = (pathname: string) => {
@@ -27,7 +29,7 @@ const AccountsNavigation = () => {
           href={AppRoutes.welcome.accounts}
           className={classNames(css.link, { [css.active]: isActiveNavigation(AppRoutes.welcome.accounts) })}
         >
-          Accounts
+          {t('myAccounts.accounts')}
         </Link>
       </Typography>
 
@@ -37,8 +39,8 @@ const AccountsNavigation = () => {
           href={AppRoutes.welcome.spaces}
           className={classNames(css.link, { [css.active]: isActiveNavigation(AppRoutes.welcome.spaces) })}
         >
-          Spaces
-          <Chip label="Beta" size="small" sx={{ ml: 1, fontWeight: 'normal', borderRadius: '4px' }} />
+          {t('myAccounts.spaces')}
+          <Chip label={t('spaces.beta')} size="small" sx={{ ml: 1, fontWeight: 'normal', borderRadius: '4px' }} />
         </Link>
       </Typography>
     </Stack>

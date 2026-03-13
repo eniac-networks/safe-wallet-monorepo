@@ -7,6 +7,7 @@ import { RemoveModuleFlow } from '@/components/tx-flow/flows'
 import DeleteIcon from '@/public/images/common/delete.svg'
 import CheckWallet from '@/components/common/CheckWallet'
 import { useContext } from 'react'
+import { useTranslation } from 'react-i18next'
 import { TxModalContext } from '@/components/tx-flow'
 import { selectDelayModifierByAddress } from '@/features/recovery/services/selectors'
 import { RemoveRecoveryFlow } from '@/components/tx-flow/flows'
@@ -15,14 +16,16 @@ import useRecovery from '@/features/recovery/hooks/useRecovery'
 import css from '../TransactionGuards/styles.module.css'
 
 const NoModules = () => {
+  const { t } = useTranslation()
   return (
     <Typography mt={2} sx={{ color: ({ palette }) => palette.primary.light }}>
-      No modules enabled
+      {t('settings.noModulesEnabled')}
     </Typography>
   )
 }
 
 const ModuleDisplay = ({ moduleAddress, chainId, name }: { moduleAddress: string; chainId: string; name?: string }) => {
+  const { t } = useTranslation()
   const { setTxFlow } = useContext(TxModalContext)
   const [recovery] = useRecovery()
   const delayModifier = recovery && selectDelayModifierByAddress(recovery, moduleAddress)
@@ -53,7 +56,7 @@ const ModuleDisplay = ({ moduleAddress, chainId, name }: { moduleAddress: string
             color="error"
             size="small"
             disabled={!isOk}
-            title="Remove module"
+            title={t('settings.removeModule')}
           >
             <SvgIcon component={DeleteIcon} inheritViewBox color="error" fontSize="small" />
           </IconButton>
@@ -64,6 +67,7 @@ const ModuleDisplay = ({ moduleAddress, chainId, name }: { moduleAddress: string
 }
 
 const SafeModules = () => {
+  const { t } = useTranslation()
   const { safe } = useSafeInfo()
   const safeModules = safe.modules || []
 
@@ -72,16 +76,15 @@ const SafeModules = () => {
       <Grid container direction="row" justifyContent="space-between" spacing={3}>
         <Grid item lg={4} xs={12}>
           <Typography variant="h4" fontWeight={700}>
-            Safe modules
+            {t('settings.safeModules')}
           </Typography>
         </Grid>
 
         <Grid item xs>
           <Box>
             <Typography>
-              Modules allow you to customize the access-control logic of your Safe Account. Modules are potentially
-              risky, so make sure to only use modules from trusted sources. Learn more about modules{' '}
-              <ExternalLink href="https://help.safe.global/en/articles/40827-what-is-a-module">here</ExternalLink>
+              {t('settings.safeModulesDescription')}{' '}
+              <ExternalLink href="https://help.safe.global/en/articles/40827-what-is-a-module">{t('settings.here')}</ExternalLink>
             </Typography>
             {safeModules.length === 0 ? (
               <NoModules />

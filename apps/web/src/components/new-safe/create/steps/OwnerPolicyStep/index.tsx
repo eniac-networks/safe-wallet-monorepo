@@ -16,7 +16,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import layoutCss from '@/components/new-safe/create/styles.module.css'
 import { CREATE_SAFE_EVENTS, trackEvent } from '@/services/analytics'
 import OwnerRow from '@/components/new-safe/OwnerRow'
-import { maybePlural } from '@safe-global/utils/utils/formatters'
+import { useTranslation } from 'react-i18next'
 
 enum OwnerPolicyStepFields {
   owners = 'owners',
@@ -39,6 +39,7 @@ const OwnerPolicyStep = ({
 }: StepRenderProps<NewSafeFormData> & {
   setDynamicHint: (hints: CreateSafeInfoItem | undefined) => void
 }): ReactElement => {
+  const { t } = useTranslation()
   const wallet = useWallet()
   const addressBook = useAddressBook()
   const defaultOwnerAddressBookName = wallet?.address ? addressBook[wallet.address] : undefined
@@ -116,7 +117,7 @@ const OwnerPolicyStep = ({
             startIcon={<SvgIcon component={AddIcon} inheritViewBox fontSize="small" />}
             size="large"
           >
-            Add new signer
+            {t('newSafe.addNewSigner')}
           </Button>
         </Box>
 
@@ -131,9 +132,9 @@ const OwnerPolicyStep = ({
               gap: 1,
             }}
           >
-            Threshold
+            {t('newSafe.threshold')}
             <Tooltip
-              title="The threshold of a Safe Account specifies how many signers need to confirm a Safe Account transaction before it can be executed."
+              title={t('newSafe.thresholdTooltip')}
               arrow
               placement="top"
             >
@@ -148,7 +149,7 @@ const OwnerPolicyStep = ({
               mb: 2,
             }}
           >
-            Any transaction requires the confirmation of:
+            {t('newSafe.anyTransactionRequires')}
           </Typography>
           <Grid
             container
@@ -176,7 +177,7 @@ const OwnerPolicyStep = ({
             </Grid>
             <Grid item>
               <Typography>
-                out of {ownerFields.length} signer{maybePlural(ownerFields)}
+                {t('newSafe.outOfSigners', { count: ownerFields.length, owners: ownerFields.length })}
               </Typography>
             </Grid>
           </Grid>
@@ -198,10 +199,10 @@ const OwnerPolicyStep = ({
               onClick={handleBack}
               startIcon={<ArrowBackIcon fontSize="small" />}
             >
-              Back
+              {t('newSafe.back')}
             </Button>
             <Button data-testid="next-btn" type="submit" variant="contained" size="stretched" disabled={isDisabled}>
-              Next
+              {t('newSafe.next')}
             </Button>
           </Box>
         </Box>

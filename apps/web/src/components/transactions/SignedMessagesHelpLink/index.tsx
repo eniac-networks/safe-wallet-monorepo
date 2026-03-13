@@ -5,8 +5,10 @@ import { useAppSelector } from '@/store'
 import { selectSafeMessages } from '@/store/safeMessagesSlice'
 
 import { HelpCenterArticle } from '@safe-global/utils/config/constants'
+import { useTranslation } from 'react-i18next'
 
 const SignedMessagesHelpLink = () => {
+  const { t } = useTranslation()
   const safeMessages = useAppSelector(selectSafeMessages)
   const safeMessagesCount = safeMessages.data?.results.length ?? 0
 
@@ -19,7 +21,7 @@ const SignedMessagesHelpLink = () => {
       <SvgIcon component={InfoIcon} inheritViewBox color="border" fontSize="small" />
       <ExternalLink noIcon href={HelpCenterArticle.SIGNED_MESSAGES}>
         <Typography variant="body2" fontWeight={700}>
-          What are signed messages?
+          {t('transactions.whatAreSignedMessages')}
         </Typography>
       </ExternalLink>
     </Box>

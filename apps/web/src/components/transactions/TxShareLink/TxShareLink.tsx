@@ -7,6 +7,7 @@ import { TX_LIST_EVENTS } from '@/services/analytics'
 import React from 'react'
 import CopyTooltip from '@/components/common/CopyTooltip'
 import useOrigin from '@/hooks/useOrigin'
+import { useTranslation } from 'react-i18next'
 
 const TxShareLink = ({
   id,
@@ -17,6 +18,7 @@ const TxShareLink = ({
   children: ReactElement
   eventLabel: CopyDeeplinkLabels
 }): ReactElement => {
+  const { t } = useTranslation()
   const router = useRouter()
   const { safe = '' } = router.query
   const href = `${AppRoutes.transactions.tx}?safe=${safe}&id=${id}`
@@ -24,7 +26,7 @@ const TxShareLink = ({
 
   return (
     <Track {...TX_LIST_EVENTS.COPY_DEEPLINK} label={eventLabel}>
-      <CopyTooltip text={txUrl} initialToolTipText="Copy the transaction URL">
+      <CopyTooltip text={txUrl} initialToolTipText={t('transactions.copyTransactionUrl')}>
         {children}
       </CopyTooltip>
     </Track>

@@ -9,6 +9,7 @@ import { OVERVIEW_EVENTS, OVERVIEW_LABELS } from '@/services/analytics'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
+import { useTranslation } from 'react-i18next'
 
 const AllSafes = ({
   allSafes,
@@ -19,6 +20,7 @@ const AllSafes = ({
   onLinkClick?: () => void
   isSidebar: boolean
 }) => {
+  const { t } = useTranslation()
   const wallet = useWallet()
   const router = useRouter()
 
@@ -38,7 +40,7 @@ const AllSafes = ({
       >
         <div className={css.listHeader}>
           <Typography variant="h5" fontWeight={700}>
-            Accounts
+            {t('myAccounts.accounts')}
             {allSafes && allSafes.length > 0 && (
               <Typography component="span" color="text.secondary" fontSize="inherit" fontWeight="normal" mr={1}>
                 {' '}
@@ -66,13 +68,13 @@ const AllSafes = ({
           >
             {!wallet ? (
               <>
-                <Box mb={2}>Connect a wallet to view your Safe Accounts or to create a new one</Box>
+                <Box mb={2}>{t('myAccounts.connectWalletToView')}</Box>
                 <Track {...OVERVIEW_EVENTS.OPEN_ONBOARD} label={trackingLabel}>
-                  <ConnectWalletButton text="Connect a wallet" contained />
+                  <ConnectWalletButton text={t('myAccounts.connectWallet')} contained />
                 </Track>
               </>
             ) : (
-              "You don't have any safes yet"
+              t('myAccounts.noSafesYet')
             )}
           </Typography>
         )}

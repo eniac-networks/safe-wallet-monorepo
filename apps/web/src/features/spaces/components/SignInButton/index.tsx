@@ -1,4 +1,5 @@
 import WalletLogin from '@/components/welcome/WelcomeLogin/WalletLogin'
+import { useTranslation } from 'react-i18next'
 import { OVERVIEW_EVENTS, OVERVIEW_LABELS, trackEvent } from '@/services/analytics'
 import { SPACE_EVENTS, SPACE_LABELS } from '@/services/analytics/events/spaces'
 import { useSiwe } from '@/services/siwe/useSiwe'
@@ -9,6 +10,7 @@ import { logError } from '@/services/exceptions'
 import ErrorCodes from '@safe-global/utils/services/exceptions/ErrorCodes'
 
 const SignInButton = () => {
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const { signIn } = useSiwe()
 
@@ -35,7 +37,7 @@ const SignInButton = () => {
 
       dispatch(
         showNotification({
-          message: `Something went wrong while trying to sign in`,
+          message: t('spaces.signInError'),
           variant: 'error',
           groupKey: 'sign-in-failed',
         }),

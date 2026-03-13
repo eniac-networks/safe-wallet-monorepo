@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic'
 import { OVERVIEW_EVENTS, trackEvent } from '@/services/analytics'
 import { useRouter } from 'next/router'
 import { useContext } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Grid } from '@mui/material'
 import ModalDialog from '@/components/common/ModalDialog'
 import ChoiceButton from '@/components/common/ChoiceButton'
@@ -21,6 +22,7 @@ import HandymanOutlinedIcon from '@mui/icons-material/HandymanOutlined'
 import useIsSwapFeatureEnabled from '../swap/hooks/useIsSwapFeatureEnabled'
 
 const FirstTxFlow = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
+  const { t } = useTranslation()
   const txBuilder = useTxBuilderApp()
   const router = useRouter()
   const { setTxFlow } = useContext(TxModalContext)
@@ -72,7 +74,7 @@ const FirstTxFlow = ({ open, onClose }: { open: boolean; onClose: () => void }) 
   const showRecoveryOption = supportsRecovery && !recovery
 
   return (
-    <ModalDialog open={open} dialogTitle="Create new transaction" hideChainIndicator onClose={onClose}>
+    <ModalDialog open={open} dialogTitle={t('counterfactual.createNewTransaction')} hideChainIndicator onClose={onClose}>
       <Grid
         container
         spacing={2}
@@ -84,8 +86,8 @@ const FirstTxFlow = ({ open, onClose }: { open: boolean; onClose: () => void }) 
       >
         <Grid item>
           <ChoiceButton
-            title="Activate Safe now"
-            description="Pay a one-time network fee to deploy your safe onchain"
+            title={t('counterfactual.activateSafeNow')}
+            description={t('counterfactual.activateSafeDescription')}
             icon={SafeLogo}
             onClick={() => handleClick(onActivateSafe)}
           />
@@ -93,8 +95,8 @@ const FirstTxFlow = ({ open, onClose }: { open: boolean; onClose: () => void }) 
 
         <Grid item>
           <ChoiceButton
-            title="Add another signer"
-            description="Improve the security of your Safe Account"
+            title={t('settings.addSigner')}
+            description={t('counterfactual.addSignerDescription')}
             icon={SaveAddressIcon}
             onClick={() => handleClick(onAddSigner)}
           />
@@ -103,8 +105,8 @@ const FirstTxFlow = ({ open, onClose }: { open: boolean; onClose: () => void }) 
         {showRecoveryOption && (
           <Grid item>
             <ChoiceButton
-              title="Set up recovery"
-              description="Ensure you never lose access to your funds"
+              title={t('counterfactual.setupRecovery')}
+              description={t('counterfactual.setupRecoveryDescription')}
               icon={RecoveryPlus}
               onClick={() => handleClick(onRecovery)}
             />
@@ -113,8 +115,8 @@ const FirstTxFlow = ({ open, onClose }: { open: boolean; onClose: () => void }) 
 
         <Grid item>
           <ChoiceButton
-            title="Swap tokens"
-            description="Explore Safe Apps and trade any token"
+            title={t('counterfactual.swapTokens')}
+            description={t('counterfactual.swapDescription')}
             icon={SwapIcon}
             onClick={() => handleClick(onSwap)}
           />
@@ -123,8 +125,8 @@ const FirstTxFlow = ({ open, onClose }: { open: boolean; onClose: () => void }) 
         {txBuilder && (
           <Grid item>
             <ChoiceButton
-              title="Custom transaction"
-              description="Compose custom contract interactions"
+              title={t('counterfactual.customTransaction')}
+              description={t('counterfactual.customTransactionDescription')}
               icon={HandymanOutlinedIcon}
               onClick={() => handleClick(onCustomTransaction)}
             />
@@ -132,7 +134,7 @@ const FirstTxFlow = ({ open, onClose }: { open: boolean; onClose: () => void }) 
         )}
 
         <Grid item>
-          <ChoiceButton title="Send token" icon={AssetsIcon} onClick={() => handleClick(onSendToken)} />
+          <ChoiceButton title={t('counterfactual.sendToken')} icon={AssetsIcon} onClick={() => handleClick(onSendToken)} />
         </Grid>
       </Grid>
     </ModalDialog>

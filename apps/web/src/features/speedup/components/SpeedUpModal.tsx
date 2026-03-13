@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import useGasPrice from '@/hooks/useGasPrice'
 import ModalDialog from '@/components/common/ModalDialog'
 import DialogContent from '@mui/material/DialogContent'
@@ -50,6 +51,7 @@ export const SpeedUpModal = ({
   signerNonce,
   gasLimit,
 }: Props) => {
+  const { t } = useTranslation()
   const [speedUpFee] = useGasPrice(true)
   const [waitingForConfirmation, setWaitingForConfirmation] = useState(false)
   const isEIP1559 = useHasFeature(FEATURES.EIP1559)
@@ -131,7 +133,7 @@ export const SpeedUpModal = ({
         trackError(ErrorCodes._814, error)
         dispatch(
           showNotification({
-            message: 'Speed up failed',
+            message: t('speedup.speedUpFailed'),
             variant: 'error',
             detailedMessage: error.message,
             groupKey: txHash,
@@ -162,18 +164,18 @@ export const SpeedUpModal = ({
 
   if (safeTxHasSignatures) {
     return (
-      <ModalDialog open={open} onClose={onCancel} dialogTitle="Speed up transaction">
+      <ModalDialog open={open} onClose={onCancel} dialogTitle={t('speedup.speedUpTransaction')}>
         <DialogContent sx={{ p: '24px !important' }}>
           <Box display="flex" justifyContent="center" alignItems="center" mb={2}>
             <SvgIcon inheritViewBox component={RocketSpeedup} sx={{ width: 90, height: 90 }} />
           </Box>
 
           <Typography data-testid="speedup-summary">
-            This will speed up the pending transaction by{' '}
+            {t('speedup.speedUpPrefix')}{' '}
             <Typography component="span" fontWeight={700}>
-              replacing
+              {t('speedup.replacing')}
             </Typography>{' '}
-            the original gas parameters with new ones.
+            {t('speedup.speedUpSuffix')}
           </Typography>
 
           <Box mt={2}>
@@ -198,9 +200,9 @@ export const SpeedUpModal = ({
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={onCancel}>Cancel</Button>
+          <Button onClick={onCancel}>{t('common.cancel')}</Button>
 
-          <Tooltip title="Speed up transaction">
+          <Tooltip title={t('speedup.speedUpTransaction')}>
             <CheckWallet checkNetwork={!isDisabled}>
               {(isOk) => (
                 <Button
@@ -210,7 +212,7 @@ export const SpeedUpModal = ({
                   variant="contained"
                   disableElevation
                 >
-                  {isDisabled ? <CircularProgress size={20} /> : 'Confirm'}
+                  {isDisabled ? <CircularProgress size={20} /> : t('common.confirm')}
                 </Button>
               )}
             </CheckWallet>
@@ -221,15 +223,14 @@ export const SpeedUpModal = ({
   }
 
   return (
-    <ModalDialog open={open} onClose={handleClose} dialogTitle="Speed up transaction">
+    <ModalDialog open={open} onClose={handleClose} dialogTitle={t('speedup.speedUpTransaction')}>
       <DialogContent sx={{ p: '24px !important' }}>
         <Box display="flex" justifyContent="center" alignItems="center" mb={2}>
           <SvgIcon inheritViewBox component={RocketSpeedup} sx={{ width: 90, height: 90 }} />
         </Box>
 
         <Typography data-testid="speedup-summary">
-          Is this transaction taking too long? Speed it up by using the &quot;speed up&quot; option in your connected
-          wallet.
+          {t('speedup.tooLong')}
         </Typography>
       </DialogContent>
     </ModalDialog>

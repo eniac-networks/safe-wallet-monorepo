@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import OrderId from '@/features/swap/components/OrderId'
 import { formatDateTime, formatTimeInWords, getPeriod } from '@safe-global/utils/utils/date'
 import { Fragment, type ReactElement } from 'react'
@@ -28,6 +29,7 @@ type SwapOrderProps = {
 }
 
 export const SwapOrderConfirmation = ({ order, decodedData, settlementContract }: SwapOrderProps): ReactElement => {
+  const { t } = useTranslation()
   const { owner, kind, validUntil, sellToken, buyToken, sellAmount, buyAmount, explorerUrl, receiver } = order
 
   const isTwapOrder = order.type === TransactionInfoType.TWAP_ORDER
@@ -46,29 +48,29 @@ export const SwapOrderConfirmation = ({ order, decodedData, settlementContract }
       {isChangingFallbackHandler && <TwapFallbackHandlerWarning />}
 
       <DataTable
-        header="Order details"
+        header={t('swap.orderDetails')}
         rows={[
           <div key="amount" className={css.amount}>
             <SwapTokens
               first={{
                 value: sellAmount,
-                label: isSellOrder ? 'Sell' : 'For at most',
+                label: isSellOrder ? t('swap.sell') : t('swap.forAtMost'),
                 tokenInfo: sellToken,
               }}
               second={{
                 value: buyAmount,
-                label: isSellOrder ? 'For at least' : 'Buy exactly',
+                label: isSellOrder ? t('swap.forAtLeastTitle') : t('swap.buyExactly'),
                 tokenInfo: buyToken,
               }}
             />
           </div>,
 
-          <DataRow datatestid="limit-price" key="Limit price" title="Limit price">
+          <DataRow datatestid="limit-price" key="Limit price" title={t('swap.limitPrice')}>
             1 {buyToken.symbol} = {formatAmount(limitPrice)} {sellToken.symbol}
           </DataRow>,
 
           compareAsc(now, expires) !== 1 ? (
-            <DataRow datatestid="expiry" key="Expiry" title="Expiry">
+            <DataRow datatestid="expiry" key="Expiry" title={t('swap.expiry')}>
               <Typography>
                 <Typography fontWeight={700} component="span">
                   {formatTimeInWords(validUntil * 1000)}
@@ -77,40 +79,40 @@ export const SwapOrderConfirmation = ({ order, decodedData, settlementContract }
               </Typography>
             </DataRow>
           ) : (
-            <DataRow key="Expiry" title="Expiry">
+            <DataRow key="Expiry" title={t('swap.expiry')}>
               {formatDateTime(validUntil * 1000)}
             </DataRow>
           ),
           orderClass !== 'limit' ? (
-            <DataRow datatestid="slippage" key="Slippage" title="Slippage">
+            <DataRow datatestid="slippage" key="Slippage" title={t('swap.slippage')}>
               {slippage}%
             </DataRow>
           ) : (
             <Fragment key="none" />
           ),
           !isTwapOrder ? (
-            <DataRow datatestid="order-id" key="Order ID" title="Order ID">
+            <DataRow datatestid="order-id" key="Order ID" title={t('swap.orderId')}>
               <OrderId orderId={order.uid} href={explorerUrl} />
             </DataRow>
           ) : (
             <></>
           ),
           <OrderFeeConfirmationView key="SurplusFee" order={order} />,
-          <DataRow datatestid="interact-wth" key="Interact with" title="Interact with">
+          <DataRow datatestid="interact-wth" key="Interact with" title={t('swap.interactWith')}>
             <NamedAddress address={settlementContract} onlyName hasExplorer shortAddress={false} avatarSize={24} />
           </DataRow>,
           receiver && owner !== receiver ? (
             <>
-              <DataRow datatestid="recipient" key="recipient-address" title="Recipient">
+              <DataRow datatestid="recipient" key="recipient-address" title={t('swap.recipient')}>
                 <EthHashInfo address={receiver} hasExplorer={true} avatarSize={24} />
               </DataRow>
               <div key="recipient">
                 <Alert data-testid="recipient-alert" severity="warning" icon={AlertIcon}>
                   <Typography variant="body2">
                     <Typography component="span" sx={{ fontWeight: 'bold' }}>
-                      Order recipient address differs from order owner.
+                      {t('swap.recipientWarning')}
                     </Typography>{' '}
-                    Double check the address to prevent fund loss.
+                    {t('swap.preventFundLoss')}
                   </Typography>
                 </Alert>
               </div>
@@ -127,18 +129,18 @@ export const SwapOrderConfirmation = ({ order, decodedData, settlementContract }
             rows={[
               <Typography key="title" variant="body1" className={css.partsBlockTitle}>
                 <strong>
-                  Order will be split in{' '}
-                  <span className={css.numberOfPartsLabel}>{order.numberOfParts} equal parts</span>
+                  {t('swap.orderWillBeSplit')}{' '}
+                  <span className={css.numberOfPartsLabel}>{t('swap.equalParts', { count: order.numberOfParts })}</span>
                 </strong>
               </Typography>,
-              <PartSellAmount order={order} addonText="per part" key="sell_part" />,
-              <PartBuyAmount order={order} addonText="per part" key="buy_part" />,
-              <DataRow title="Start time" key="Start time">
-                {order.startTime.startType === StartTimeValue.AT_MINING_TIME && 'Now'}
-                {order.startTime.startType === StartTimeValue.AT_EPOCH && `At block number: ${order.startTime.epoch}`}
+              <PartSellAmount order={order} addonText={t('swap.perPart')} key="sell_part" />,
+              <PartBuyAmount order={order} addonText={t('swap.perPart')} key="buy_part" />,
+              <DataRow title={t('swap.startTime')} key="Start time">
+                {order.startTime.startType === StartTimeValue.AT_MINING_TIME && t('swap.now')}
+                {order.startTime.startType === StartTimeValue.AT_EPOCH && t('swap.atBlockNumber', { epoch: order.startTime.epoch })}
               </DataRow>,
               <PartDuration order={order} key="part_duration" />,
-              <DataRow title="Total duration" key="total_duration">
+              <DataRow title={t('swap.totalDuration')} key="total_duration">
                 {getPeriod(+order.timeBetweenParts * +order.numberOfParts)}
               </DataRow>,
             ]}

@@ -17,6 +17,7 @@ import { Button, Checkbox, CircularProgress, Divider, FormControlLabel, Typograp
 import type { WalletKitTypes } from '@reown/walletkit'
 import type { ChangeEvent, ReactElement } from 'react'
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { CompatibilityWarning } from './CompatibilityWarning'
 import ProposalVerification from './ProposalVerification'
 import css from './styles.module.css'
@@ -30,6 +31,7 @@ type ProposalFormProps = {
 }
 
 const WcProposalForm = ({ proposal, onApprove, onReject }: ProposalFormProps): ReactElement => {
+  const { t } = useTranslation()
   const { loading } = useContext(WalletConnectContext)
 
   const { configs } = useChains()
@@ -46,7 +48,7 @@ const WcProposalForm = ({ proposal, onApprove, onReject }: ProposalFormProps): R
   const chainIds = useMemo(() => getSupportedChainIds(configs, proposal.params), [configs, proposal.params])
   const isUnsupportedChain = !chainIds.includes(chainId)
 
-  const name = getPeerName(proposer) || 'Unknown dApp'
+  const name = getPeerName(proposer) || t('walletconnect.unknownDapp')
   const isHighRisk = proposal.verifyContext.verified.validation === 'INVALID' || isWarnedBridge(origin, name)
   const isBlocked = isScam || isBlockedBridge(origin)
   const disabled =
@@ -99,12 +101,12 @@ const WcProposalForm = ({ proposal, onApprove, onReject }: ProposalFormProps): R
 
       {proposer.metadata.icons[0] && (
         <div className={css.icon}>
-          <SafeAppIconCard src={proposer.metadata.icons[0]} width={32} height={32} alt={`${name || 'dApp'} logo`} />
+          <SafeAppIconCard src={proposer.metadata.icons[0]} width={32} height={32} alt={`${name || t('walletconnect.dApp')} logo`} />
         </div>
       )}
 
       <Typography mb={1}>
-        <b>{name}</b> wants to connect
+        <b>{name}</b> {t('walletconnect.wantsToConnect')}
       </Typography>
 
       <Typography className={css.origin} mb={3}>
@@ -121,7 +123,7 @@ const WcProposalForm = ({ proposal, onApprove, onReject }: ProposalFormProps): R
         <FormControlLabel
           className={css.checkbox}
           control={<Checkbox checked={understandsRisk} onChange={onCheckboxClick} />}
-          label="I understand the risks associated with interacting with this dApp and would like to continue."
+          label={t('walletconnect.understandRisk')}
         />
       )}
 
@@ -134,7 +136,7 @@ const WcProposalForm = ({ proposal, onApprove, onReject }: ProposalFormProps): R
       <div className={css.buttons}>
         {!isUnsupportedChain && (
           <Button variant="contained" onClick={onApprove} className={css.button} disabled={disabled}>
-            {loading === WCLoadingState.APPROVE ? <CircularProgress size={20} /> : 'Approve'}
+            {loading === WCLoadingState.APPROVE ? <CircularProgress size={20} /> : t('walletconnect.approve')}
           </Button>
         )}
 
@@ -144,7 +146,7 @@ const WcProposalForm = ({ proposal, onApprove, onReject }: ProposalFormProps): R
           className={css.button}
           disabled={!!loading}
         >
-          {loading === WCLoadingState.REJECT ? <CircularProgress size={20} /> : isUnsupportedChain ? 'Close' : 'Reject'}
+          {loading === WCLoadingState.REJECT ? <CircularProgress size={20} /> : isUnsupportedChain ? t('common.close') : t('common.reject')}
         </Button>
       </div>
     </div>

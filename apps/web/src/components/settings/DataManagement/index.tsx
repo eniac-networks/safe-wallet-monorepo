@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Paper, Grid, Typography, Button, SvgIcon, Box } from '@mui/material'
 
 import FileIcon from '@/public/images/settings/data/file.svg'
@@ -58,6 +59,7 @@ export const exportAppData = () => {
 }
 
 const DataManagement = () => {
+  const { t } = useTranslation()
   const [exportFileName, setExportFileName] = useState('')
   const [importFileName, setImportFileName] = useState<string>()
   const [jsonData, setJsonData] = useState<string>()
@@ -80,12 +82,12 @@ const DataManagement = () => {
         <Grid container spacing={3}>
           <Grid item sm={4} xs={12}>
             <Typography variant="h4" fontWeight={700}>
-              Data export
+              {t('settings.dataExport')}
             </Typography>
           </Grid>
 
           <Grid data-testid="export-file-section" item container xs>
-            <Typography>Download your local data with your added Safe Accounts, address book and settings.</Typography>
+            <Typography>{t('settings.dataExportDescription')}</Typography>
 
             <FileListCard
               avatar={
@@ -116,7 +118,7 @@ const DataManagement = () => {
         <Grid container spacing={3}>
           <Grid item sm={4} xs={12}>
             <Typography variant="h4" fontWeight={700}>
-              Data import
+              {t('settings.dataImport')}
             </Typography>
           </Grid>
 
@@ -139,7 +141,7 @@ const DataManagement = () => {
         <Grid container spacing={3}>
           <Grid item sm={4} xs={12}>
             <Typography variant="h4" fontWeight={700}>
-              Pending transactions
+              {t('settings.pendingTransactionsTitle')}
             </Typography>
           </Grid>
 

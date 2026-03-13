@@ -1,7 +1,10 @@
+import '@/i18n'
+import { I18nextProvider } from 'react-i18next'
+import i18n from '@/i18n'
 import Analytics from '@/services/analytics/Analytics'
 import { SentryErrorBoundary } from '@/services/sentry'
 import type { ReactNode } from 'react'
-import { type ReactElement } from 'react'
+import { useEffect, type ReactElement } from 'react'
 import { type AppProps } from 'next/app'
 import Head from 'next/head'
 import { Provider } from 'react-redux'
@@ -14,7 +17,8 @@ import { CacheProvider, type EmotionCache } from '@emotion/react'
 import SafeThemeProvider from '@/components/theme/SafeThemeProvider'
 import '@/styles/globals.css'
 import { BRAND_NAME } from '@/config/constants'
-import { makeStore, useHydrateStore } from '@/store'
+import { makeStore, useHydrateStore, useAppSelector } from '@/store'
+import { selectLocale } from '@/store/settingsSlice'
 import PageLayout from '@/components/common/PageLayout'
 import useLoadableStores from '@/hooks/useLoadableStores'
 import { useInitOnboard } from '@/hooks/wallets/useOnboard'
@@ -58,6 +62,12 @@ const InitApp = (): null => {
   setGatewayBaseUrl(GATEWAY_URL)
   setNewGatewayBaseUrl(GATEWAY_URL)
   useHydrateStore(reduxStore)
+  const locale = useAppSelector(selectLocale)
+  useEffect(() => {
+    if (locale) {
+      i18n.changeLanguage(locale)
+    }
+  }, [locale])
   useAdjustUrl()
   useDatadog()
   useGtm()
@@ -120,38 +130,40 @@ const SafeWalletApp = ({
   const safeKey = useChangedValue(router.query.safe?.toString())
 
   return (
-    <Provider store={reduxStore}>
-      <Head>
-        <title key="default-title">{BRAND_NAME}</title>
-        <MetaTags prefetchUrl={GATEWAY_URL} />
-      </Head>
+    <I18nextProvider i18n={i18n}>
+      <Provider store={reduxStore}>
+        <Head>
+          <title key="default-title">{BRAND_NAME}</title>
+          <MetaTags prefetchUrl={GATEWAY_URL} />
+        </Head>
 
-      <CacheProvider value={emotionCache}>
-        <AppProviders>
-          <CssBaseline />
+        <CacheProvider value={emotionCache}>
+          <AppProviders>
+            <CssBaseline />
 
-          <InitApp />
+            <InitApp />
 
-          <PageLayout pathname={router.pathname}>
-            <Component {...pageProps} key={safeKey} />
-          </PageLayout>
+            <PageLayout pathname={router.pathname}>
+              <Component {...pageProps} key={safeKey} />
+            </PageLayout>
 
-          <CookieAndTermBanner />
+            <CookieAndTermBanner />
 
-          <OutreachPopup />
+            <OutreachPopup />
 
-          <Notifications />
+            <Notifications />
 
-          <Recovery />
+            <Recovery />
 
-          <CounterfactualHooks />
+            <CounterfactualHooks />
 
-          <Analytics />
+            <Analytics />
 
-          <PkModulePopup />
-        </AppProviders>
-      </CacheProvider>
-    </Provider>
+            <PkModulePopup />
+          </AppProviders>
+        </CacheProvider>
+      </Provider>
+    </I18nextProvider>
   )
 }
 

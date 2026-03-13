@@ -1,19 +1,20 @@
 import { Box, Typography } from '@mui/material'
 import css from '@/features/spaces/components/Dashboard/styles.module.css'
 import SignInButton from '@/features/spaces/components/SignInButton'
+import { useTranslation } from 'react-i18next'
 
 const SignedOutState = () => {
+  const { t } = useTranslation()
   return (
     <Box className={css.content}>
       <Box textAlign="center" className={css.contentWrapper}>
         <Box className={css.contentInner}>
           <Typography fontWeight={700} mb={2}>
-            Sign in to see content
+            {t('spaces.signInToSeeContent')}
           </Typography>
 
           <Typography color="text.secondary" mb={2}>
-            To view and interact with spaces, you need to sign in with the wallet, that is a member of the space. Sign
-            in to continue.
+            {t('spaces.signInDescription')}
           </Typography>
 
           <SignInButton />

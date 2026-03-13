@@ -1,10 +1,11 @@
-import { useEffect, type ReactElement } from 'react'
+import { useEffect, useMemo, type ReactElement } from 'react'
 import classnames from 'classnames'
 import type { CheckboxProps } from '@mui/material'
 import { Grid, Button, Checkbox, FormControlLabel, Typography, Paper, SvgIcon, Box } from '@mui/material'
 import WarningIcon from '@/public/images/notifications/warning.svg'
 import { useForm } from 'react-hook-form'
 import * as metadata from '@/markdown/terms/version'
+import { useTranslation } from 'react-i18next'
 
 import { useAppDispatch, useAppSelector } from '@/store'
 import {
@@ -19,12 +20,6 @@ import css from './styles.module.css'
 import { AppRoutes } from '@/config/routes'
 import ExternalLink from '../ExternalLink'
 
-const COOKIE_AND_TERM_WARNING: Record<CookieAndTermType, string> = {
-  [CookieAndTermType.TERMS]: '',
-  [CookieAndTermType.NECESSARY]: '',
-  [CookieAndTermType.UPDATES]: `You attempted to open the "What's new" section but need to accept the "Beamer" cookies first.`,
-  [CookieAndTermType.ANALYTICS]: '',
-}
 
 const CookieCheckbox = ({
   checkboxProps,
@@ -43,6 +38,18 @@ export const CookieAndTermBanner = ({
   warningKey?: CookieAndTermType
   inverted?: boolean
 }): ReactElement => {
+  const { t } = useTranslation()
+
+  const COOKIE_AND_TERM_WARNING = useMemo<Record<CookieAndTermType, string>>(
+    () => ({
+      [CookieAndTermType.TERMS]: '',
+      [CookieAndTermType.NECESSARY]: '',
+      [CookieAndTermType.UPDATES]: t('cookies.beamerWarning'),
+      [CookieAndTermType.ANALYTICS]: '',
+    }),
+    [t],
+  )
+
   const warning = warningKey ? COOKIE_AND_TERM_WARNING[warningKey] : undefined
   const dispatch = useAppDispatch()
   const cookies = useAppSelector(selectCookies)
@@ -102,11 +109,10 @@ export const CookieAndTermBanner = ({
                 mb: 2,
               }}
             >
-              By browsing this page, you accept our{' '}
-              <ExternalLink href={AppRoutes.terms}>Terms & Conditions</ExternalLink> (last updated{' '}
-              {metadata.lastUpdated}) and the use of necessary cookies. By clicking &quot;Accept all&quot; you
-              additionally agree to the use of Beamer and Analytics cookies as listed below.{' '}
-              <ExternalLink href={AppRoutes.cookie}>Cookie policy</ExternalLink>
+              {t('cookies.consentPre')}{' '}
+              <ExternalLink href={AppRoutes.terms}>{t('cookies.consentTerms')}</ExternalLink>{' '}
+              {t('cookies.consentMid', { date: metadata.lastUpdated })}{' '}
+              <ExternalLink href={AppRoutes.cookie}>{t('cookies.consentPolicy')}</ExternalLink>
             </Typography>
 
             <Grid
@@ -122,9 +128,9 @@ export const CookieAndTermBanner = ({
                     mb: 2,
                   }}
                 >
-                  <CookieCheckbox checkboxProps={{ id: 'necessary', disabled: true }} label="Necessary" checked />
+                  <CookieCheckbox checkboxProps={{ id: 'necessary', disabled: true }} label={t('cookies.necessary')} checked />
                   <br />
-                  <Typography variant="body2">Locally stored data for core functionality</Typography>
+                  <Typography variant="body2">{t('cookies.necessaryDesc')}</Typography>
                 </Box>
 
                 <Box
@@ -134,21 +140,21 @@ export const CookieAndTermBanner = ({
                 >
                   <CookieCheckbox
                     checkboxProps={{ ...register(CookieAndTermType.UPDATES), id: 'beamer' }}
-                    label="Beamer"
+                    label={t('cookies.beamer')}
                     checked={watch(CookieAndTermType.UPDATES)}
                   />
                   <br />
-                  <Typography variant="body2">New features and product announcements</Typography>
+                  <Typography variant="body2">{t('cookies.beamerDesc')}</Typography>
                 </Box>
 
                 <Box>
                   <CookieCheckbox
                     checkboxProps={{ ...register(CookieAndTermType.ANALYTICS), id: 'ga' }}
-                    label="Analytics"
+                    label={t('cookies.analytics')}
                     checked={watch(CookieAndTermType.ANALYTICS)}
                   />
                   <br />
-                  <Typography variant="body2">Analytics tools to understand usage patterns.</Typography>
+                  <Typography variant="body2">{t('cookies.analyticsDesc')}</Typography>
                 </Box>
               </Grid>
             </Grid>
@@ -165,14 +171,14 @@ export const CookieAndTermBanner = ({
               <Grid item>
                 <Typography>
                   <Button onClick={handleAccept} variant="text" size="small" color="inherit" disableElevation>
-                    Save settings
+                    {t('cookies.saveSettings')}
                   </Button>
                 </Typography>
               </Grid>
 
               <Grid item>
                 <Button onClick={handleAcceptAll} variant="contained" color="secondary" size="small" disableElevation>
-                  Accept all
+                  {t('cookies.acceptAll')}
                 </Button>
               </Grid>
             </Grid>

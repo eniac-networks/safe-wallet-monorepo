@@ -12,6 +12,7 @@ import { MixPanelEventParams } from '@/services/analytics/mixpanel-events'
 import { useCurrentChain } from '@/hooks/useChains'
 import css from './styles.module.css'
 import classnames from 'classnames'
+import { useTranslation } from 'react-i18next'
 
 const EarnButton = ({
   tokenInfo,
@@ -22,6 +23,7 @@ const EarnButton = ({
   trackingLabel: EARN_LABELS
   compact?: boolean
 }): ReactElement => {
+  const { t } = useTranslation()
   const spendingLimit = useSpendingLimit(tokenInfo)
   const chain = useCurrentChain()
   const router = useRouter()
@@ -48,7 +50,7 @@ const EarnButton = ({
           <Button
             className={classnames({ [css.button]: compact, [css.buttonDisabled]: !isOk })}
             data-testid="earn-btn"
-            aria-label="Earn"
+            aria-label={t('earn.earn')}
             variant={compact ? 'text' : 'contained'}
             color={compact ? 'info' : 'background.paper'}
             size={compact ? 'small' : 'compact'}
@@ -57,7 +59,7 @@ const EarnButton = ({
             onClick={onEarnClick}
             disabled={!isOk}
           >
-            Earn
+            {t('earn.earn')}
           </Button>
         </Track>
       )}

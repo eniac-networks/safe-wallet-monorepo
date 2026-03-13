@@ -12,6 +12,7 @@ import React, { useCallback, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { SPACE_EVENTS } from '@/services/analytics/events/spaces'
 import { trackEvent } from '@/services/analytics'
+import { useTranslation } from 'react-i18next'
 
 export type AddManuallyFormValues = {
   address: string
@@ -19,6 +20,7 @@ export type AddManuallyFormValues = {
 }
 
 const AddManually = ({ handleAddSafe }: { handleAddSafe: (data: AddManuallyFormValues) => void }) => {
+  const { t } = useTranslation()
   const [addManuallyOpen, setAddManuallyOpen] = useState(false)
   const { configs } = useChains()
 
@@ -50,7 +52,7 @@ const AddManually = ({ handleAddSafe }: { handleAddSafe: (data: AddManuallyFormV
     try {
       await getSafeInfo(chainId, address)
     } catch (error) {
-      return 'Address given is not a valid Safe Account address'
+      return t('newSafe.invalidSafeAddress')
     }
   }
 
@@ -79,11 +81,11 @@ const AddManually = ({ handleAddSafe }: { handleAddSafe: (data: AddManuallyFormV
   return (
     <>
       <Button data-testid="add-manually-button" size="compact" onClick={() => setAddManuallyOpen(true)}>
-        + Add manually
+        {t('spaces.addManually')}
       </Button>
       <ModalDialog
         open={addManuallyOpen}
-        dialogTitle="Add safe account"
+        dialogTitle={t('spaces.addSafeAccountTitle')}
         onClose={onClose}
         hideChainIndicator
         PaperProps={{ sx: { maxWidth: '760px' } }}
@@ -99,7 +101,7 @@ const AddManually = ({ handleAddSafe }: { handleAddSafe: (data: AddManuallyFormV
               <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                 <AddressInput
                   data-testid="add-address-input"
-                  label="Safe Account"
+                  label={t('newSafe.safeAccountLabel')}
                   chain={selectedChain}
                   validate={validateSafeAddress}
                   name="address"
@@ -126,14 +128,14 @@ const AddManually = ({ handleAddSafe }: { handleAddSafe: (data: AddManuallyFormV
               </Stack>
             </DialogContent>
             <DialogActions>
-              <Button onClick={onClose}>Cancel</Button>
+              <Button onClick={onClose}>{t('common.cancel')}</Button>
               <Button
                 data-testid="add-space-account-manually-button"
                 variant="contained"
                 disabled={!formState.isValid}
                 type="submit"
               >
-                Add
+                {t('newSafe.addAccount')}
               </Button>
             </DialogActions>
           </form>

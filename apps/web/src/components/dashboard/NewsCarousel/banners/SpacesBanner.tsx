@@ -8,21 +8,24 @@ import css from './styles.module.css'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import { AppRoutes } from '@/config/routes'
 import Link from 'next/link'
+import { useTranslation } from 'react-i18next'
 
 export const spacesBannerID = 'spacesBanner'
 
 const SpacesBanner = ({ onDismiss }: { onDismiss: () => void }) => {
+  const { t } = useTranslation()
+
   return (
     <Card className={css.banner}>
       <Stack direction={{ xs: 'column', md: 'row' }} alignItems={{ xs: 'flex-start', md: 'center' }} spacing={2}>
-        <Image className={css.bannerImage} src={SpacesIllustration} alt="Spaces illustration" width={95} height={95} />
+        <Image className={css.bannerImage} src={SpacesIllustration} alt={t('dashboard.spacesIllustrationAlt')} width={95} height={95} />
         <Box>
           <Typography variant="h4" fontWeight="bold" color="static.main" className={css.bannerText}>
-            New! Improved Spaces.
+            {t('dashboard.spacesBannerTitle')}
           </Typography>
 
           <Typography variant="body2" color="static.light" className={css.bannerText}>
-            All your Safe Accounts, finally organized. Streamlined for teams and solo users alike
+            {t('dashboard.spacesBannerDescription')}
           </Typography>
 
           <Track {...SPACE_EVENTS.OPEN_SPACE_LIST_PAGE} label={SPACE_LABELS.safe_dashboard_banner}>
@@ -34,7 +37,7 @@ const SpacesBanner = ({ onDismiss }: { onDismiss: () => void }) => {
                 sx={{ mt: 1, p: 0.5 }}
                 color="static"
               >
-                Try now
+                {t('dashboard.tryNow')}
               </Button>
             </Link>
           </Track>
@@ -42,7 +45,7 @@ const SpacesBanner = ({ onDismiss }: { onDismiss: () => void }) => {
       </Stack>
 
       <Track {...SPACE_EVENTS.HIDE_DASHBOARD_WIDGET}>
-        <IconButton className={css.closeButton} aria-label="close" onClick={onDismiss}>
+        <IconButton className={css.closeButton} aria-label={t('common.close')} onClick={onDismiss}>
           <CloseIcon fontSize="small" color="border" />
         </IconButton>
       </Track>

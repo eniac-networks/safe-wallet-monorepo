@@ -8,10 +8,12 @@ import { useDarkMode } from '@/hooks/useDarkMode'
 import type { SafeAppDataWithPermissions } from '@/components/safe-apps/types'
 import type { ChainInfo } from '@safe-global/safe-gateway-typescript-sdk'
 import { FEATURES, hasFeature } from '@safe-global/utils/utils/chains'
+import { useTranslation } from 'react-i18next'
 
 export const BRIDGE_WIDGET_URL = 'https://iframe.jumper.exchange/bridge'
 
 export function BridgeWidget(): ReactElement | null {
+  const { t } = useTranslation()
   const isDarkMode = useDarkMode()
   const chain = useCurrentChain()
 
@@ -19,8 +21,8 @@ export function BridgeWidget(): ReactElement | null {
     if (!chain || !hasFeature(chain, FEATURES.BRIDGE)) {
       return null
     }
-    return _getAppData(isDarkMode, chain)
-  }, [chain, isDarkMode])
+    return _getAppData(isDarkMode, chain, t('bridge.appName'))
+  }, [chain, isDarkMode, t])
 
   if (!appData) {
     return null
@@ -36,7 +38,7 @@ export function BridgeWidget(): ReactElement | null {
   )
 }
 
-export function _getAppData(isDarkMode: boolean, chain: ChainInfo): SafeAppDataWithPermissions {
+export function _getAppData(isDarkMode: boolean, chain: ChainInfo, name = 'Bridge'): SafeAppDataWithPermissions {
   const theme = isDarkMode ? 'dark' : 'light'
   const appUrl = new URL(BRIDGE_WIDGET_URL)
   appUrl.searchParams.set('fromChain', chain.chainId)
@@ -44,7 +46,7 @@ export function _getAppData(isDarkMode: boolean, chain: ChainInfo): SafeAppDataW
 
   return {
     ...getEmptySafeApp(),
-    name: 'Bridge',
+    name,
     iconUrl: isDarkMode ? '/images/common/safe-bridge-dark.svg' : '/images/common/safe-bridge.svg',
     chainIds: [chain.chainId],
     url: appUrl.toString(),

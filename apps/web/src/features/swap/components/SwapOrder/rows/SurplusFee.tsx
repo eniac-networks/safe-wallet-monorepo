@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import type { TwapOrder } from '@safe-global/safe-gateway-typescript-sdk'
 import { getOrderFeeBps } from '@safe-global/utils/features/swap/helpers/utils'
 import { DataRow } from '@/components/common/Table/DataRow'
@@ -9,6 +10,7 @@ export const SurplusFee = ({
 }: {
   order: Pick<TwapOrder, 'fullAppData' | 'executedFee' | 'executedFeeToken'>
 }) => {
+  const { t } = useTranslation()
   const bps = getOrderFeeBps(order)
   const { executedFee, executedFeeToken } = order
 
@@ -20,12 +22,12 @@ export const SurplusFee = ({
     <DataRow
       title={
         <>
-          Total fees
+          {t('swap.totalFees')}
           <HelpIconTooltip
             title={
               <>
-                The amount of fees paid for this order.
-                {bps > 0 && ` This includes a Widget fee of ${bps / 100}% and network fees.`}
+                {t('swap.feesDescription')}
+                {bps > 0 && ` ${t('swap.widgetFeeIncluded', { percentage: bps / 100 })}`}
               </>
             }
           />

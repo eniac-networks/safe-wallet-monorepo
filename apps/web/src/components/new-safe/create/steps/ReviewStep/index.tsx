@@ -44,6 +44,7 @@ import { type ChainInfo } from '@safe-global/safe-gateway-typescript-sdk'
 import classnames from 'classnames'
 import { useRouter } from 'next/router'
 import { useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import ChainIndicator from '@/components/common/ChainIndicator'
 import NetworkWarning from '../../NetworkWarning'
 import useAllSafes from '@/features/myAccounts/hooks/useAllSafes'
@@ -91,10 +92,11 @@ export const SafeSetupOverview = ({
   threshold: number
   networks: ChainInfo[]
 }) => {
+  const { t } = useTranslation()
   return (
     <Grid container spacing={3}>
       <ReviewRow
-        name={networks.length > 1 ? 'Networks' : 'Network'}
+        name={networks.length > 1 ? t('newSafe.networks') : t('newSafe.network')}
         value={
           <Tooltip
             title={
@@ -124,9 +126,9 @@ export const SafeSetupOverview = ({
           </Tooltip>
         }
       />
-      {name && <ReviewRow name="Name" value={<Typography data-testid="review-step-safe-name">{name}</Typography>} />}
+      {name && <ReviewRow name={t('newSafe.nameLabel')} value={<Typography data-testid="review-step-safe-name">{name}</Typography>} />}
       <ReviewRow
-        name="Signers"
+        name={t('settings.signers')}
         value={
           <Box data-testid="review-step-owner-info" className={css.ownersArray}>
             {owners.map((owner, index) => (
@@ -145,10 +147,10 @@ export const SafeSetupOverview = ({
         }
       />
       <ReviewRow
-        name="Threshold"
+        name={t('newSafe.threshold')}
         value={
           <Typography data-testid="review-step-threshold">
-            {threshold} out of {owners.length} {owners.length > 1 ? 'signers' : 'signer'}
+            {threshold} {t('newSafe.outOfSigners', { count: owners.length, owners: owners.length })}
           </Typography>
         }
       />
@@ -207,6 +209,7 @@ const ReviewStep = ({ data, onSubmit, onBack, setStep }: StepRenderProps<NewSafe
   }, [newSafeProps])
 
   // We estimate with a random nonce as we'll just slightly overestimates like this
+  const { t } = useTranslation()
   const { gasLimit } = useEstimateSafeCreationGas(safePropsForGasEstimation, data.safeVersion)
 
   const maxFeePerGas = gasPrice?.maxFeePerGas
@@ -275,7 +278,7 @@ const ReviewStep = ({ data, onSubmit, onBack, setStep }: StepRenderProps<NewSafe
       }
     } catch (err) {
       console.error(err)
-      setSubmitError('Error creating the Safe Account. Please try again later.')
+      setSubmitError(t('newSafe.errorCreatingSafe'))
     } finally {
       setIsCreating(false)
     }
@@ -360,8 +363,8 @@ const ReviewStep = ({ data, onSubmit, onBack, setStep }: StepRenderProps<NewSafe
     } catch (_err) {
       const error = asError(_err)
       const submitError = isWalletRejection(error)
-        ? 'User rejected signing.'
-        : 'Error creating the Safe Account. Please try again later.'
+        ? t('newSafe.userRejectedSigning')
+        : t('newSafe.errorCreatingSafe')
       setSubmitError(submitError)
 
       if (isWalletRejection(error)) {
@@ -419,7 +422,7 @@ const ReviewStep = ({ data, onSubmit, onBack, setStep }: StepRenderProps<NewSafe
 
             {showNetworkWarning && (
               <Box sx={{ '&:not(:empty)': { mt: 3 } }}>
-                <NetworkWarning action="create a Safe Account" />
+                <NetworkWarning action={t('newSafe.createSafeAction')} />
               </Box>
             )}
 
@@ -431,9 +434,9 @@ const ReviewStep = ({ data, onSubmit, onBack, setStep }: StepRenderProps<NewSafe
                     mt: 2,
                   }}
                 >
-                  You will have to confirm a transaction and pay an estimated fee of{' '}
-                  <NetworkFee totalFee={totalFee} isWaived={willRelay} chain={chain} inline /> with your connected
-                  wallet
+                  {t('newSafe.confirmWithFeePrefix')}{' '}
+                  <NetworkFee totalFee={totalFee} isWaived={willRelay} chain={chain} inline />{' '}
+                  {t('newSafe.confirmWithFeeSuffix')}
                 </Typography>
               </Grid>
             )}
@@ -454,7 +457,7 @@ const ReviewStep = ({ data, onSubmit, onBack, setStep }: StepRenderProps<NewSafe
             {canRelay && (
               <Grid container spacing={3}>
                 <ReviewRow
-                  name="Execution method"
+                  name={t('newSafe.executionMethod')}
                   value={
                     <ExecutionMethodSelector
                       executionMethod={executionMethod}
@@ -468,7 +471,7 @@ const ReviewStep = ({ data, onSubmit, onBack, setStep }: StepRenderProps<NewSafe
 
             <Grid data-testid="network-fee-section" container spacing={3}>
               <ReviewRow
-                name="Est. network fee"
+                name={t('newSafe.estNetworkFee')}
                 value={
                   <>
                     <NetworkFee totalFee={totalFee} isWaived={willRelay} chain={chain} />
@@ -481,7 +484,7 @@ const ReviewStep = ({ data, onSubmit, onBack, setStep }: StepRenderProps<NewSafe
                           mt: 1,
                         }}
                       >
-                        You will have to confirm a transaction with your connected wallet.
+                        {t('newSafe.confirmTransaction')}
                       </Typography>
                     )}
                   </>
@@ -489,11 +492,11 @@ const ReviewStep = ({ data, onSubmit, onBack, setStep }: StepRenderProps<NewSafe
               />
             </Grid>
 
-            {showNetworkWarning && <NetworkWarning action="create a Safe Account" />}
+            {showNetworkWarning && <NetworkWarning action={t('newSafe.createSafeAction')} />}
 
             {!walletCanPay && !willRelay && (
               <ErrorMessage>
-                Your connected wallet doesn&apos;t have enough funds to execute this transaction
+                {t('newSafe.insufficientFunds')}
               </ErrorMessage>
             )}
           </Box>
@@ -517,7 +520,7 @@ const ReviewStep = ({ data, onSubmit, onBack, setStep }: StepRenderProps<NewSafe
             onClick={handleBack}
             startIcon={<ArrowBackIcon fontSize="small" />}
           >
-            Back
+            {t('newSafe.back')}
           </Button>
           <Button
             data-testid="review-step-next-btn"
@@ -526,7 +529,7 @@ const ReviewStep = ({ data, onSubmit, onBack, setStep }: StepRenderProps<NewSafe
             size="stretched"
             disabled={isDisabled}
           >
-            {isCreating ? <CircularProgress size={18} /> : 'Create account'}
+            {isCreating ? <CircularProgress size={18} /> : t('newSafe.createAccount')}
           </Button>
         </Box>
       </Box>

@@ -1,4 +1,5 @@
 import { useCallback, useContext } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Button, Tooltip } from '@mui/material'
 import { BatchExecuteHoverContext } from '@/components/transactions/BatchExecuteButton/BatchExecuteHoverProvider'
 import { useAppSelector } from '@/store'

@@ -24,52 +24,52 @@ export type NavItem = {
 
 export const navItems: NavItem[] = [
   {
-    label: 'Home',
+    label: 'nav.home',
     icon: <SvgIcon component={HomeIcon} inheritViewBox />,
     href: AppRoutes.home,
   },
   {
-    label: 'Assets',
+    label: 'nav.assets',
     icon: <SvgIcon component={AssetsIcon} inheritViewBox />,
     href: AppRoutes.balances.index,
   },
   {
-    label: 'Transactions',
+    label: 'nav.transactions',
     icon: <SvgIcon component={TransactionIcon} inheritViewBox />,
     href: AppRoutes.transactions.history,
   },
   {
-    label: 'Address book',
+    label: 'nav.addressBook',
     icon: <SvgIcon component={ABIcon} inheritViewBox />,
     href: AppRoutes.addressBook,
   },
   {
-    label: 'Apps',
+    label: 'nav.apps',
     icon: <SvgIcon component={AppsIcon} inheritViewBox />,
     href: AppRoutes.apps.index,
   },
   {
-    label: 'Settings',
+    label: 'nav.settings',
     icon: <SvgIcon data-testid="settings-nav-icon" component={SettingsIcon} inheritViewBox />,
     href: AppRoutes.settings.setup,
   },
   {
-    label: 'Swap',
+    label: 'nav.swap',
     icon: <SvgIcon component={SwapIcon} inheritViewBox />,
     href: AppRoutes.swap,
   },
   {
-    label: 'Bridge',
+    label: 'nav.bridge',
     icon: <SvgIcon component={BridgeIcon} inheritViewBox />,
     href: AppRoutes.bridge,
   },
   {
-    label: 'Stake',
+    label: 'nav.stake',
     icon: <SvgIcon component={StakeIcon} inheritViewBox />,
     href: AppRoutes.stake,
   },
   {
-    label: 'Earn',
+    label: 'nav.earn',
     icon: <SvgIcon component={EarnIcon} inheritViewBox />,
     href: AppRoutes.earn,
     tag: <Chip label="New" sx={{ backgroundColor: 'secondary.light', color: 'static.main' }} />,
@@ -78,103 +78,103 @@ export const navItems: NavItem[] = [
 
 export const transactionNavItems = [
   {
-    label: 'Queue',
+    label: 'nav.queue',
     href: AppRoutes.transactions.queue,
   },
   {
-    label: 'History',
+    label: 'nav.history',
     href: AppRoutes.transactions.history,
   },
   {
-    label: 'Messages',
+    label: 'nav.messages',
     href: AppRoutes.transactions.messages,
   },
 ]
 
 export const balancesNavItems = [
   {
-    label: 'Tokens',
+    label: 'nav.tokens',
     href: AppRoutes.balances.index,
   },
   {
-    label: 'Positions',
+    label: 'nav.positions',
     href: AppRoutes.balances.positions,
   },
   {
-    label: 'NFTs',
+    label: 'nav.nfts',
     href: AppRoutes.balances.nfts,
   },
 ]
 
 export const settingsNavItems = [
   {
-    label: 'Setup',
+    label: 'nav.setup',
     href: AppRoutes.settings.setup,
   },
   {
-    label: 'Appearance',
+    label: 'nav.appearance',
     href: AppRoutes.settings.appearance,
   },
   {
-    label: 'Security',
+    label: 'nav.security',
     href: AppRoutes.settings.security,
   },
   {
-    label: 'Notifications',
+    label: 'nav.notifications',
     href: AppRoutes.settings.notifications,
   },
   {
-    label: 'Modules',
+    label: 'nav.modules',
     href: AppRoutes.settings.modules,
   },
   {
-    label: 'Safe Apps',
+    label: 'nav.safeApps',
     href: AppRoutes.settings.safeApps.index,
   },
   {
-    label: 'Data',
+    label: 'nav.data',
     href: AppRoutes.settings.data,
   },
   {
-    label: 'Environment variables',
+    label: 'nav.environmentVariables',
     href: AppRoutes.settings.environmentVariables,
   },
 ]
 
 export const generalSettingsNavItems = [
   {
-    label: 'Cookies',
+    label: 'nav.cookies',
     href: AppRoutes.settings.cookies,
   },
   {
-    label: 'Appearance',
+    label: 'nav.appearance',
     href: AppRoutes.settings.appearance,
   },
   {
-    label: 'Notifications',
+    label: 'nav.notifications',
     href: AppRoutes.settings.notifications,
   },
   {
-    label: 'Security',
+    label: 'nav.security',
     href: AppRoutes.settings.security,
   },
   {
-    label: 'Data',
+    label: 'nav.data',
     href: AppRoutes.settings.data,
   },
   {
-    label: 'Environment variables',
+    label: 'nav.environmentVariables',
     href: AppRoutes.settings.environmentVariables,
   },
 ]
 
 export const safeAppsNavItems = [
   {
-    label: 'All apps',
+    label: 'nav.allApps',
     href: AppRoutes.apps.index,
   },
   {
-    label: 'My custom apps',
+    label: 'nav.myCustomApps',
     href: AppRoutes.apps.custom,
   },
 ]

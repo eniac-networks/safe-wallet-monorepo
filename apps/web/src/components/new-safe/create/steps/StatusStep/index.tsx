@@ -16,6 +16,7 @@ import { Alert, AlertTitle, Box, Button, Paper, Stack, SvgIcon, Typography } fro
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { isPredictedSafeProps } from '@/features/counterfactual/utils'
 import { getLatestSafeVersion } from '@safe-global/utils/utils/chains'
 
@@ -27,6 +28,7 @@ export const CreateSafeStatus = ({
   setStep,
   setStepData,
 }: StepRenderProps<NewSafeFormData>) => {
+  const { t } = useTranslation()
   const [status, setStatus] = useState<SafeCreationEvent>(SafeCreationEvent.PROCESSING)
   const [safeAddress, pendingSafe] = useUndeployedSafe()
   const router = useRouter()
@@ -118,7 +120,7 @@ export const CreateSafeStatus = ({
                   fontWeight: 'bold',
                 }}
               >
-                Transaction is taking too long
+                {t('newSafe.slowTransaction')}
               </Typography>
             </AlertTitle>
             <Typography
@@ -127,7 +129,7 @@ export const CreateSafeStatus = ({
                 textAlign: 'left',
               }}
             >
-              Try to speed it up with better gas parameters in your wallet.
+              {t('newSafe.speedUpGas')}
             </Typography>
           </Alert>
         )}
@@ -142,11 +144,11 @@ export const CreateSafeStatus = ({
           >
             <Link href={AppRoutes.welcome.index} passHref>
               <Button variant="outlined" onClick={onCancel}>
-                Go to homepage
+                {t('newSafe.goToHomepage')}
               </Button>
             </Link>
             <Button variant="contained" onClick={tryAgain}>
-              Try again
+              {t('newSafe.tryAgain')}
             </Button>
           </Stack>
         )}

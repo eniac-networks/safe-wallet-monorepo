@@ -10,6 +10,7 @@ import ExternalLink from '../ExternalLink'
 import MUILink from '@mui/material/Link'
 import { useIsOfficialHost } from '@/hooks/useIsOfficialHost'
 import { HELP_CENTER_URL } from '@safe-global/utils/config/constants'
+import { useTranslation } from 'react-i18next'
 
 const footerPages = [
   AppRoutes.welcome.index,
@@ -34,6 +35,7 @@ const FooterLink = ({ children, href }: { children: ReactNode; href: string }): 
 const Footer = (): ReactElement | null => {
   const router = useRouter()
   const isOfficialHost = useIsOfficialHost()
+  const { t } = useTranslation()
 
   if (!footerPages.some((path) => router.pathname.startsWith(path))) {
     return null
@@ -49,34 +51,34 @@ const Footer = (): ReactElement | null => {
         {isOfficialHost ? (
           <>
             <li>
-              <Typography variant="caption">&copy;2022–{new Date().getFullYear()} Core Contributors GmbH</Typography>
+              <Typography variant="caption">{t('footer.copyright', { year: new Date().getFullYear() })}</Typography>
             </li>
             <li>
-              <FooterLink href={getHref(AppRoutes.terms)}>Terms</FooterLink>
+              <FooterLink href={getHref(AppRoutes.terms)}>{t('footer.terms')}</FooterLink>
             </li>
             <li>
-              <FooterLink href={getHref(AppRoutes.privacy)}>Privacy</FooterLink>
+              <FooterLink href={getHref(AppRoutes.privacy)}>{t('footer.privacy')}</FooterLink>
             </li>
             <li>
-              <FooterLink href={getHref(AppRoutes.licenses)}>Licenses</FooterLink>
+              <FooterLink href={getHref(AppRoutes.licenses)}>{t('footer.licenses')}</FooterLink>
             </li>
             <li>
-              <FooterLink href={getHref(AppRoutes.imprint)}>Imprint</FooterLink>
+              <FooterLink href={getHref(AppRoutes.imprint)}>{t('footer.imprint')}</FooterLink>
             </li>
             <li>
-              <FooterLink href={getHref(AppRoutes.cookie)}>Cookie policy</FooterLink>
+              <FooterLink href={getHref(AppRoutes.cookie)}>{t('footer.cookiePolicy')}</FooterLink>
             </li>
             <li>
-              <FooterLink href={getHref(AppRoutes.settings.index)}>Preferences</FooterLink>
+              <FooterLink href={getHref(AppRoutes.settings.index)}>{t('footer.preferences')}</FooterLink>
             </li>
             <li>
               <ExternalLink href={HELP_CENTER_URL} noIcon sx={{ span: { textDecoration: 'underline' } }}>
-                Help
+                {t('footer.help')}
               </ExternalLink>
             </li>
           </>
         ) : (
-          <li>This is an unofficial distribution of the app</li>
+          <li>{t('footer.unofficialDistribution')}</li>
         )}
 
         <li>

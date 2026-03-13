@@ -3,6 +3,7 @@ import { safeCreationPendingStatuses } from '@/features/counterfactual/hooks/use
 import { SafeCreationEvent, safeCreationSubscribe } from '@/features/counterfactual/services/safeCreationEvents'
 import { useChain, useCurrentChain } from '@/hooks/useChains'
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Box, Button, Dialog, DialogContent, Typography } from '@mui/material'
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded'
 import type { ChainInfo } from '@safe-global/safe-gateway-typescript-sdk'
@@ -10,6 +11,7 @@ import NetworkLogosList from '../multichain/components/NetworkLogosList'
 import useAllAddressBooks from '@/hooks/useAllAddressBooks'
 
 const CounterfactualSuccessScreen = () => {
+  const { t } = useTranslation()
   const [open, setOpen] = useState<boolean>(false)
   const [safeAddress, setSafeAddress] = useState<string>()
   const [chainId, setChainId] = useState<string>()
@@ -93,19 +95,19 @@ const CounterfactualSuccessScreen = () => {
               mb: 1,
             }}
           >
-            {isCFCreation ? 'Your account is almost set!' : 'Your account is all set!'}
+            {isCFCreation ? t('counterfactual.accountAlmostSet') : t('counterfactual.accountAllSet')}
           </Typography>
           <Typography variant="body2">
             {isCFCreation
-              ? `Activate the account ${isMultiChain ? 'per network' : ''} to unlock all features of your smart wallet.`
-              : 'Start your journey to the smart account security now.'}
+              ? (isMultiChain ? t('counterfactual.activateToUnlockMultichain') : t('counterfactual.activateToUnlock'))
+              : t('counterfactual.startJourney')}
           </Typography>
           <Typography variant="body2">
             {isCFCreation && isMultiChain
-              ? `You can use the address below to receive funds on the selected ${
-                  isMultiChain ? 'networks' : 'network'
-                }.`
-              : `Use your address to receive funds ${chainName ? `on ${chainName}` : ''}`}
+              ? t('counterfactual.useAddressNetworks')
+              : chainName
+                ? t('counterfactual.useAddressChain', { chainName })
+                : t('counterfactual.useAddress')}
           </Typography>
         </Box>
 
@@ -140,7 +142,7 @@ const CounterfactualSuccessScreen = () => {
         )}
 
         <Button variant="contained" onClick={onClose} data-testid="cf-creation-lets-go-btn">
-          Let&apos;s go
+          {t('counterfactual.letsGo')}
         </Button>
       </DialogContent>
     </Dialog>

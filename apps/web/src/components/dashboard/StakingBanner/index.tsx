@@ -10,12 +10,14 @@ import useLocalStorage from '@/services/local-storage/useLocalStorage'
 import ExternalLink from '@/components/common/ExternalLink'
 import { AppRoutes } from '@/config/routes'
 import useIsStakingBannerVisible from '@/components/dashboard/StakingBanner/useIsStakingBannerVisible'
+import { useTranslation } from 'react-i18next'
 
 const LEARN_MORE_LINK = 'https://help.safe.global/en/articles/222615-safe-staking'
 
 const StakingBanner = ({
   hideLocalStorageKey = 'hideStakingBanner',
 }: { large?: boolean; hideLocalStorageKey?: string } = {}) => {
+  const { t } = useTranslation()
   const isDarkMode = useDarkMode()
   const router = useRouter()
   const isStakingBannerVisible = useIsStakingBannerVisible()
@@ -62,21 +64,20 @@ const StakingBanner = ({
             <SvgIcon component={StakeIcon} sx={{ width: '16px', height: '16px' }} inheritViewBox />
 
             <Typography variant="body2">
-              <strong>Stake ETH and earn rewards up to 5% APY.</strong> Lock 32 ETH to become a validator via the Kiln
-              widget. You can also{' '}
+              <strong>{t('staking.bannerBold')}</strong> {t('staking.bannerText')}{' '}
               <NextLink
                 href={{ pathname: AppRoutes.apps.index, query: { ...router.query, categories: ['Staking'] } }}
                 passHref
                 type="link"
               >
-                <Link>explore Safe Apps</Link>
+                <Link>{t('staking.exploreSafeApps')}</Link>
               </NextLink>{' '}
-              and home staking for other options. Staking involves risks like slashing.
+              {t('staking.bannerText2')}
               {LEARN_MORE_LINK && (
                 <>
                   {' '}
                   <ExternalLink onClick={onLearnMore} href={LEARN_MORE_LINK}>
-                    Learn more
+                    {t('staking.learnMore')}
                   </ExternalLink>
                 </>
               )}
@@ -92,7 +93,7 @@ const StakingBanner = ({
           >
             <Box>
               <Button variant="text" onClick={onHide} size="small" sx={{ whiteSpace: 'nowrap' }}>
-                Don&apos;t show again
+                {t('staking.dontShowAgain')}
               </Button>
             </Box>
             <NextLink
@@ -103,7 +104,7 @@ const StakingBanner = ({
               className={classNames(css.stakeButton)}
             >
               <Button fullWidth size="small" variant="contained">
-                Stake
+                {t('staking.stake')}
               </Button>
             </NextLink>
           </Stack>

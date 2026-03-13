@@ -1,9 +1,11 @@
+import { useTranslation } from 'react-i18next'
 import { getFilledAmount, getFilledPercentage } from '@/features/swap/helpers/utils'
 import { formatAmount } from '@safe-global/utils/utils/formatNumber'
 import { LinearProgress, Stack, Typography } from '@mui/material'
 import type { Order } from '@safe-global/safe-gateway-typescript-sdk'
 
 const SwapProgress = ({ order }: { order: Order }) => {
+  const { t } = useTranslation()
   const filledPercentage = getFilledPercentage(order)
   const filledAmount = formatAmount(getFilledAmount(order))
 
@@ -27,7 +29,7 @@ const SwapProgress = ({ order }: { order: Order }) => {
         <Typography component="span" fontWeight="bold">
           {filledAmount} {tokenSymbol}
         </Typography>{' '}
-        sold
+        {t('swap.sold')}
       </Typography>
     </Stack>
   )

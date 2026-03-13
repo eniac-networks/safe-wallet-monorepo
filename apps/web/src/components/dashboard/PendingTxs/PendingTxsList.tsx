@@ -1,5 +1,6 @@
 import React, { type ReactElement } from 'react'
 import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 import { getLatestTransactions } from '@/utils/tx-list'
@@ -22,21 +23,25 @@ const PendingRecoveryListItem = dynamic(() => import('./PendingRecoveryListItem'
 
 const MAX_TXS = 4
 
-const PendingTxsSkeleton = () => (
-  <Card sx={{ px: 1.5, py: 2.5, height: 1 }} component="section">
-    <Stack direction="row" sx={{ px: 1.5, mb: 1 }}>
-      <Typography fontWeight={700}>Pending transactions</Typography>
-    </Stack>
+const PendingTxsSkeleton = () => {
+  const { t } = useTranslation()
+  return (
+    <Card sx={{ px: 1.5, py: 2.5, height: 1 }} component="section">
+      <Stack direction="row" sx={{ px: 1.5, mb: 1 }}>
+        <Typography fontWeight={700}>{t('dashboard.pendingTransactions')}</Typography>
+      </Stack>
 
-    <Skeleton height={66} variant="rounded" />
-  </Card>
-)
+      <Skeleton height={66} variant="rounded" />
+    </Card>
+  )
+}
 
 const EmptyState = () => {
+  const { t } = useTranslation()
   return (
     <Paper elevation={0} sx={{ p: 5, textAlign: 'center' }}>
       <Typography mb={0.5} mt={3}>
-        No transactions to sign
+        {t('dashboard.noTransactionsToSign')}
       </Typography>
     </Paper>
   )
@@ -75,6 +80,7 @@ export function _getTransactionsToDisplay({
 }
 
 const PendingTxsList = (): ReactElement | null => {
+  const { t } = useTranslation()
   const router = useRouter()
   const { page, loading } = useTxQueue()
   const { safe, safeLoaded, safeLoading } = useSafeInfo()
@@ -115,7 +121,7 @@ const PendingTxsList = (): ReactElement | null => {
     >
       <Stack direction="row" justifyContent="space-between" sx={{ px: 1.5, mb: 1 }}>
         <Typography fontWeight={700} className={css.pendingTxHeader}>
-          Pending transactions <SidebarListItemCounter count={queueSize} />
+          {t('dashboard.pendingTransactions')} <SidebarListItemCounter count={queueSize} />
         </Typography>
         {totalTxs > 0 && <ViewAllLink url={queueUrl} />}
       </Stack>

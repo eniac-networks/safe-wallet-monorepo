@@ -2,6 +2,7 @@ import { InputAdornment, SvgIcon, TextField } from '@mui/material'
 import SearchIcon from '@/public/images/common/search.svg'
 import { useCallback } from 'react'
 import { debounce } from 'lodash'
+import { useTranslation } from 'react-i18next'
 
 interface SearchInputProps {
   placeholder?: string
@@ -10,13 +11,14 @@ interface SearchInputProps {
 }
 
 const SearchInput = ({ onSearch, debounceTime = 300 }: SearchInputProps) => {
+  const { t } = useTranslation()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleSearch = useCallback(debounce(onSearch, debounceTime), [onSearch, debounceTime])
 
   return (
     <TextField
-      aria-label="Search"
-      placeholder="Search"
+      aria-label={t('spaces.search')}
+      placeholder={t('spaces.search')}
       variant="filled"
       hiddenLabel
       onChange={(e) => {

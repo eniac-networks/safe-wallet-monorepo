@@ -3,10 +3,12 @@ import { InputAdornment, Stack, TextField, Typography, SvgIcon, Box } from '@mui
 import { MODALS_EVENTS, trackEvent } from '@/services/analytics'
 import { useForm } from 'react-hook-form'
 import InfoOutlinedIcon from '@/public/images/notifications/info.svg'
+import { useTranslation } from 'react-i18next'
 
 const MAX_NOTE_LENGTH = 60
 
 export const TxNoteInput = ({ onChange }: { onChange: (note: string) => void }) => {
+  const { t } = useTranslation()
   const {
     register,
     watch,
@@ -39,12 +41,12 @@ export const TxNoteInput = ({ onChange }: { onChange: (note: string) => void }) 
   return (
     <>
       <Stack direction="row" alignItems="flex-end" gap={1}>
-        <Typography variant="h5">Add transaction note</Typography>
+        <Typography variant="h5">{t('txNotes.addNoteHeading')}</Typography>
       </Stack>
 
       <TextField
         data-testid="tx-note-textfield"
-        label="Note (optional)"
+        label={t('txNotes.noteLabel')}
         fullWidth
         slotProps={{
           htmlInput: { maxLength: MAX_NOTE_LENGTH },
@@ -68,9 +70,9 @@ export const TxNoteInput = ({ onChange }: { onChange: (note: string) => void }) 
         <SvgIcon component={InfoOutlinedIcon} sx={{ width: '20px', height: '20px', rotate: '180deg' }} inheritViewBox />
         <Box>
           <Typography variant="body2" fontWeight="700">
-            Notes are publicly visible.
+            {t('txNotes.notesPublic')}
           </Typography>
-          <Typography variant="body2">Do not share any private or sensitive details.</Typography>
+          <Typography variant="body2">{t('txNotes.notesPrivacy')}</Typography>
         </Box>
       </Stack>
     </>

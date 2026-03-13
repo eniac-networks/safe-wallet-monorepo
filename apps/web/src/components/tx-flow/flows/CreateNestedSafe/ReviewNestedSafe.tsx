@@ -1,6 +1,7 @@
 import { skipToken } from '@reduxjs/toolkit/query'
 import { useCallback, useContext, useEffect, useMemo } from 'react'
 import type { PropsWithChildren, ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import type { MetaTransactionData, SafeTransaction } from '@safe-global/types-kit'
 
 import { SafeTxContext } from '@/components/tx-flow/SafeTxProvider'
@@ -106,8 +107,10 @@ export function ReviewNestedSafe({
     onSubmit(predictedSafeAddress)
   }, [onSubmit, predictedSafeAddress])
 
+  const { t } = useTranslation()
+
   return (
-    <ReviewTransaction onSubmit={handleSubmit} title="Confirm Nested Safe">
+    <ReviewTransaction onSubmit={handleSubmit} title={t('nestedSafe.confirmTitle')}>
       {children}
     </ReviewTransaction>
   )

@@ -1,4 +1,5 @@
 import { useCallback, useContext, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import { Button, CardActions, FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material'
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded'
@@ -27,6 +28,7 @@ export const _validateSpendingLimit = (val: string, decimals?: number | null) =>
 }
 
 export const CreateSpendingLimit = () => {
+  const { t } = useTranslation()
   const chainId = useChainId()
   const { balances } = useVisibleBalances()
   const { onNext, data } = useContext<TxFlowContextType<NewSpendingLimitFlowProps>>(TxFlowContext)
@@ -64,20 +66,20 @@ export const CreateSpendingLimit = () => {
             <AddressBookInput
               data-testid="beneficiary-section"
               name={SpendingLimitFields.beneficiary}
-              label="Beneficiary"
+              label={t('settings.beneficiary')}
             />
           </FormControl>
 
           <TokenAmountInput balances={balances.items} selectedToken={selectedToken} validate={validateSpendingLimit} />
 
           <Typography variant="h4" fontWeight={700} mt={3}>
-            Reset Timer
+            {t('spendingLimit.resetTimer')}
           </Typography>
           <Typography>
-            Set a reset time so the allowance automatically refills after the defined time period.
+            {t('spendingLimit.resetTimerDescription')}
           </Typography>
           <FormControl fullWidth className={css.select}>
-            <InputLabel shrink={false}>Time Period</InputLabel>
+            <InputLabel shrink={false}>{t('spendingLimit.timePeriod')}</InputLabel>
             <Controller
               rules={{ required: true }}
               control={control}
@@ -106,7 +108,7 @@ export const CreateSpendingLimit = () => {
 
           <CardActions>
             <Button data-testid="next-btn" variant="contained" type="submit">
-              Next
+              {t('newSafe.next')}
             </Button>
           </CardActions>
         </form>

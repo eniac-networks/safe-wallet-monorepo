@@ -16,8 +16,10 @@ import SafeThemeProvider from '@/components/theme/SafeThemeProvider'
 import useChainId from '@/hooks/useChainId'
 import useSafeAddress from '@/hooks/useSafeAddress'
 import useWallet from '@/hooks/wallets/useWallet'
+import { useTranslation } from 'react-i18next'
 
 const OutreachPopup = (): ReactElement | null => {
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const outreachPopup = useAppSelector(selectOutreachBanner)
   const [isClosed, setIsClosed] = useLocalStorage<boolean>(`${OUTREACH_LS_KEY}_v${ACTIVE_OUTREACH.id}`)
@@ -87,44 +89,43 @@ const OutreachPopup = (): ReactElement | null => {
               <Stack gap={2}>
                 <Box display="flex" alignItems="center">
                   <Avatar
-                    alt="Product marketing lead avatar"
+                    alt={t('outreach.avatarAlt')}
                     src="/images/common/outreach-popup-avatar.png"
                     className={css.avatar}
                   />
                   <Box ml={1}>
                     <Typography variant="body2">Danilo Pereira</Typography>
                     <Typography variant="body2" color="primary.light">
-                      Product Marketing Lead
+                      {t('outreach.authorTitle')}
                     </Typography>
                   </Box>
                 </Box>
                 <Typography variant="h4" fontWeight={700}>
-                  Your voice matters!
+                  {t('outreach.headingLine1')}
                   <br />
-                  Help us improve {'Safe{Wallet}'}.
+                  {t('outreach.headingLine2')}
                 </Typography>
                 <Typography>
-                  In 1 minute, tell us why you use {'Safe{Wallet}'}. Your input will help us create a better, smarter
-                  wallet experience for you!
+                  {t('outreach.body')}
                 </Typography>
                 <Track {...OUTREACH_EVENTS.OPEN_SURVEY}>
                   <Link rel="noreferrer noopener" target="_blank" href={outreachUrl}>
                     <Button fullWidth variant="contained" onClick={handleOpenSurvey}>
-                      Get Involved
+                      {t('outreach.getInvolved')}
                     </Button>
                   </Link>
                 </Track>
                 <Track {...OUTREACH_EVENTS.ASK_AGAIN_LATER}>
                   <Button fullWidth variant="text" onClick={handleAskAgainLater}>
-                    Ask me later
+                    {t('outreach.askLater')}
                   </Button>
                 </Track>
                 <Typography variant="body2" color="primary.light" mx="auto">
-                  It&apos;ll only take 1 minute.
+                  {t('outreach.timeNote')}
                 </Typography>
               </Stack>
               <Track {...OUTREACH_EVENTS.CLOSE_POPUP}>
-                <IconButton className={css.close} aria-label="close outreach popup" onClick={handleClose}>
+                <IconButton className={css.close} aria-label={t('outreach.closeAriaLabel')} onClick={handleClose}>
                   <Close />
                 </IconButton>
               </Track>

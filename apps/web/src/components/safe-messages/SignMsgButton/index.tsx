@@ -10,8 +10,10 @@ import useIsSafeMessageSignableBy from '@/hooks/messages/useIsSafeMessageSignabl
 import { TxModalContext } from '@/components/tx-flow'
 import { SignMessageFlow } from '@/components/tx-flow/flows'
 import CheckWallet from '@/components/common/CheckWallet'
+import { useTranslation } from 'react-i18next'
 
 const SignMsgButton = ({ msg, compact = false }: { msg: MessageItem; compact?: boolean }): ReactElement => {
+  const { t } = useTranslation()
   const wallet = useWallet()
   const isSignable = useIsSafeMessageSignableBy(msg, wallet?.address || '')
   const { setTxFlow } = useContext(TxModalContext)
@@ -24,7 +26,7 @@ const SignMsgButton = ({ msg, compact = false }: { msg: MessageItem; compact?: b
   return (
     <CheckWallet>
       {(isOk) => (
-        <Tooltip title={isOk && !isSignable ? "You've already signed this message" : ''}>
+        <Tooltip title={isOk && !isSignable ? t('messages.alreadySigned') : ''}>
           <span>
             <Track {...MESSAGE_EVENTS.SIGN}>
               <Button
@@ -34,7 +36,7 @@ const SignMsgButton = ({ msg, compact = false }: { msg: MessageItem; compact?: b
                 size={compact ? 'small' : 'stretched'}
                 sx={compact ? { py: 0.8 } : undefined}
               >
-                Sign
+                {t('messages.sign')}
               </Button>
             </Track>
           </span>

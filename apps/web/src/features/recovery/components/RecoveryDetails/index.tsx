@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { Link } from '@mui/material'
 import { useState } from 'react'
 import { Operation } from '@safe-global/safe-gateway-typescript-sdk'
@@ -12,6 +13,7 @@ import type { RecoveryQueueItem } from '@/features/recovery/services/recovery-st
 import txDetailsCss from '@/components/transactions/TxDetails/styles.module.css'
 
 export function RecoveryDetails({ item }: { item: RecoveryQueueItem }): ReactElement {
+  const { t } = useTranslation()
   const { transactionHash, timestamp, validFrom, expiresAt, args, address } = item
 
   const [expanded, setExpanded] = useState(false)
@@ -28,24 +30,24 @@ export function RecoveryDetails({ item }: { item: RecoveryQueueItem }): ReactEle
         </div>
 
         <div className={txDetailsCss.txSummary}>
-          <TxDataRow title="Transaction hash">{generateDataRowValue(transactionHash, 'hash', true)}</TxDataRow>
-          <TxDataRow title="Created:">{dateString(Number(timestamp))}</TxDataRow>
-          <TxDataRow title="Executable:">{dateString(Number(validFrom))}</TxDataRow>
+          <TxDataRow title={t('recovery.txHash')}>{generateDataRowValue(transactionHash, 'hash', true)}</TxDataRow>
+          <TxDataRow title={t('recovery.createdAt')}>{dateString(Number(timestamp))}</TxDataRow>
+          <TxDataRow title={t('recovery.executable')}>{dateString(Number(validFrom))}</TxDataRow>
 
-          {expiresAt !== null && <TxDataRow title="Expires:">{dateString(Number(expiresAt))}</TxDataRow>}
+          {expiresAt !== null && <TxDataRow title={t('recovery.expires')}>{dateString(Number(expiresAt))}</TxDataRow>}
 
           <Link onClick={toggleExpanded} component="button" variant="body1">
-            Advanced details
+            {t('recovery.advancedDetails')}
           </Link>
 
           {expanded && (
             <>
-              <TxDataRow title="Module:">{generateDataRowValue(address, 'address', true)}</TxDataRow>
-              <TxDataRow title="Value:">{args.value.toString()}</TxDataRow>
-              <TxDataRow title="Operation:">{`${Number(args.operation)} (${Operation[
+              <TxDataRow title={t('recovery.module')}>{generateDataRowValue(address, 'address', true)}</TxDataRow>
+              <TxDataRow title={t('recovery.value')}>{args.value.toString()}</TxDataRow>
+              <TxDataRow title={t('recovery.operation')}>{`${Number(args.operation)} (${Operation[
                 Number(args.operation)
               ].toLowerCase()})`}</TxDataRow>
-              <TxDataRow title="Raw data:">{generateDataRowValue(args.data, 'rawData')}</TxDataRow>
+              <TxDataRow title={t('recovery.rawData')}>{generateDataRowValue(args.data, 'rawData')}</TxDataRow>
             </>
           )}
         </div>

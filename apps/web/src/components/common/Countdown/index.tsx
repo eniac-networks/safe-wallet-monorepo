@@ -1,5 +1,6 @@
 import { Typography, Box } from '@mui/material'
 import type { ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 
 export function _getCountdown(seconds: number): { days: number; hours: number; minutes: number } {
   const MINUTE_IN_SECONDS = 60
@@ -16,6 +17,8 @@ export function _getCountdown(seconds: number): { days: number; hours: number; m
 }
 
 export function Countdown({ seconds }: { seconds: number }): ReactElement | null {
+  const { t } = useTranslation()
+
   if (seconds <= 0) {
     return null
   }
@@ -23,7 +26,7 @@ export function Countdown({ seconds }: { seconds: number }): ReactElement | null
   if (seconds <= 60) {
     return (
       <Typography fontWeight={700} component="span">
-        {'< 1 min'}
+        {t('common.lessThanOneMin')}
       </Typography>
     )
   }
@@ -32,9 +35,9 @@ export function Countdown({ seconds }: { seconds: number }): ReactElement | null
 
   return (
     <Box display="flex" gap={1}>
-      <TimeLeft value={days} unit="day" />
-      <TimeLeft value={hours} unit="hr" />
-      <TimeLeft value={minutes} unit="min" />
+      <TimeLeft value={days} unit={t('common.day', { count: days })} />
+      <TimeLeft value={hours} unit={t('common.hr', { count: hours })} />
+      <TimeLeft value={minutes} unit={t('common.min', { count: minutes })} />
     </Box>
   )
 }
@@ -50,7 +53,7 @@ function TimeLeft({ value, unit }: { value: number; unit: string }): ReactElemen
         {value}
       </Typography>{' '}
       <Typography color="primary.light" component="span">
-        {value === 1 ? unit : `${unit}s`}
+        {unit}
       </Typography>
     </div>
   )

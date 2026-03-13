@@ -4,6 +4,7 @@ import { Button, Dialog, DialogActions, DialogContent, Divider, Typography } fro
 
 import { ModalDialogTitle } from '@/components/common/ModalDialog'
 import { getSafePermissionDisplayValues } from '@/hooks/safe-apps/permissions'
+import { useTranslation } from 'react-i18next'
 
 interface PermissionsPromptProps {
   origin: string
@@ -22,17 +23,18 @@ const PermissionsPrompt = ({
   onReject,
   onAccept,
 }: PermissionsPromptProps): ReactElement => {
+  const { t } = useTranslation()
   return (
     <Dialog open={isOpen}>
       <ModalDialogTitle onClose={() => onReject()}>
         <Typography variant="body1" fontWeight={700}>
-          Permissions Request
+          {t('safeApps.permissionsRequest')}
         </Typography>
       </ModalDialogTitle>
       <Divider />
       <DialogContent>
         <Typography>
-          <b>{origin}</b> is requesting permissions for:
+          <b>{origin}</b> {t('safeApps.requestingPermissionsFor')}
         </Typography>
         <ul>
           {permissions.map((permission, index) => (
@@ -50,10 +52,10 @@ const PermissionsPrompt = ({
           onClick={() => onReject(requestId)}
           sx={{ minWidth: '130px' }}
         >
-          Reject
+          {t('transactions.reject')}
         </Button>
         <Button variant="contained" size="small" onClick={() => onAccept(origin, requestId)} sx={{ minWidth: '130px' }}>
-          Accept
+          {t('spaces.accept')}
         </Button>
       </DialogActions>
     </Dialog>

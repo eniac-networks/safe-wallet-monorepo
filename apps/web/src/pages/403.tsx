@@ -2,20 +2,24 @@ import { AppRoutes } from '@/config/routes'
 import type { NextPage } from 'next'
 import Link from 'next/link'
 import MUILink from '@mui/material/Link'
+import { useTranslation } from 'react-i18next'
 
 const Custom403: NextPage = () => {
+  const { t } = useTranslation()
+
+  const termsLink = (
+    <Link href={AppRoutes.terms} passHref legacyBehavior>
+      <MUILink target="_blank" rel="noreferrer">
+        {t('errors.terms')}
+      </MUILink>
+    </Link>
+  )
+
   return (
     <main>
-      <h1>403 - Access Restricted</h1>
+      <h1>{t('errors.accessRestricted')}</h1>
       <p>
-        We regret to inform you that access to this service is currently unavailable in your region. For further
-        information, you may refer to our{' '}
-        <Link href={AppRoutes.terms} passHref legacyBehavior>
-          <MUILink target="_blank" rel="noreferrer">
-            terms
-          </MUILink>
-        </Link>
-        . We apologize for any inconvenience this may cause. Thank you for your understanding.
+        {t('errors.accessRestrictedDescription', { terms: termsLink })}
       </p>
     </main>
   )

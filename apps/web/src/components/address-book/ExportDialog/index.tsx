@@ -13,6 +13,7 @@ import { trackEvent, ADDRESS_BOOK_EVENTS } from '@/services/analytics'
 import ExternalLink from '@/components/common/ExternalLink'
 import madProps from '@/utils/mad-props'
 import { HelpCenterArticle } from '@safe-global/utils/config/constants'
+import { useTranslation } from 'react-i18next'
 
 const COL_1 = 'address'
 const COL_2 = 'name'
@@ -43,6 +44,7 @@ function ExportDialog({
   allAddressBooks: AddressBookState
   handleClose: () => void
 }): ReactElement {
+  const { t } = useTranslation()
   const length = Object.values(allAddressBooks).reduce<number>((acc, entries) => acc + Object.keys(entries).length, 0)
   const { CSVDownloader } = useCSVDownloader()
   // safe-address-book-1970-01-01
@@ -61,31 +63,27 @@ function ExportDialog({
   }
 
   return (
-    <ModalDialog open onClose={handleClose} dialogTitle="Export address book" hideChainIndicator>
+    <ModalDialog open onClose={handleClose} dialogTitle={t('addressBook.exportTitle')} hideChainIndicator>
       <DialogContent sx={{ p: '24px !important' }}>
         <Typography data-testid="export-summary">
-          You&apos;re about to export a CSV file with{' '}
-          <b>
-            {length} address book {length === 1 ? 'entry' : 'entries'}
-          </b>
-          .
+          {t('addressBook.exportSummary', { count: length })}
         </Typography>
 
         <Typography mt={1}>
           <ExternalLink
             href={HelpCenterArticle.ADDRESS_BOOK_DATA}
-            title="Learn about the address book import and export"
+            title={t('addressBook.learnAboutImportExport')}
           >
-            Learn about the address book import and export
+            {t('addressBook.learnAboutImportExport')}
           </ExternalLink>
         </Typography>
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
+        <Button onClick={handleClose}>{t('common.cancel')}</Button>
         <CSVDownloader filename={filename} bom config={{ delimiter: ',' }} data={csvData} style={{ order: 2 }}>
           <Button data-testid="export-modal-btn" variant="contained" disableElevation onClick={onSubmit}>
-            Export
+            {t('addressBook.export')}
           </Button>
         </CSVDownloader>
       </DialogActions>

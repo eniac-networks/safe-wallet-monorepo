@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import type { SwapOrderConfirmationView, TwapOrderConfirmationView } from '@safe-global/safe-gateway-typescript-sdk'
 import { getOrderFeeBps } from '@safe-global/utils/features/swap/helpers/utils'
 import { DataRow } from '@/components/common/Table/DataRow'
@@ -11,6 +12,7 @@ export const OrderFeeConfirmationView = ({
 }: {
   order: Pick<SwapOrderConfirmationView | TwapOrderConfirmationView, 'fullAppData'>
 }) => {
+  const { t } = useTranslation()
   const bps = getOrderFeeBps(order)
 
   if (Number(bps) === 0) {
@@ -19,16 +21,13 @@ export const OrderFeeConfirmationView = ({
 
   const title = (
     <>
-      Widget fee{' '}
+      {t('swap.widgetFee')}{' '}
       <HelpIconTooltip
         title={
           <>
-            The tiered widget fee incurred here is charged by CoW Protocol for the operation of this widget. The fee is
-            automatically calculated into this quote. Part of the fee will contribute to a license fee that supports the
-            Safe Community. Neither the Safe Ecosystem Foundation nor {`${BRAND_NAME}`} operate the CoW Swap Widget
-            and/or CoW Swap.
+            {t('swap.widgetFeeTooltip', { brandName: BRAND_NAME })}
             <MUILink href={HelpCenterArticle.SWAP_WIDGET_FEES} target="_blank" rel="noopener noreferrer">
-              Learn more
+              {t('swap.learnMore')}
             </MUILink>
           </>
         }

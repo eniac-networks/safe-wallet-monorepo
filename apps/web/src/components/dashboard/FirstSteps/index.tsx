@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import CheckWallet from '@/components/common/CheckWallet'
 import EthHashInfo from '@/components/common/EthHashInfo'
 import ExternalLink from '@/components/common/ExternalLink'
@@ -79,6 +80,7 @@ const StatusCard = ({
 }
 
 const ActivationStatusWidget = ({ explorerLink }: { explorerLink?: string }) => {
+  const { t } = useTranslation()
   return (
     <StatusCard
       badge={
@@ -86,16 +88,16 @@ const ActivationStatusWidget = ({ explorerLink }: { explorerLink?: string }) => 
           variant="body2"
           sx={{ backgroundColor: 'border.light', borderRadius: '0 0 4px 4px', padding: '4px 8px' }}
         >
-          Just submitted
+          {t('dashboard.justSubmitted')}
         </Typography>
       }
-      title="Transaction pending"
-      content="Depending on network usage, it can take some time until the transaction is successfully processed and executed."
+      title={t('dashboard.transactionPending')}
+      content={t('dashboard.dependingOnNetwork')}
       completed={false}
     >
       {explorerLink && (
         <ExternalLink href={explorerLink} sx={{ mt: 2 }}>
-          View Explorer
+          {t('dashboard.viewExplorer')}
         </ExternalLink>
       )}
     </StatusCard>
@@ -103,22 +105,24 @@ const ActivationStatusWidget = ({ explorerLink }: { explorerLink?: string }) => 
 }
 
 const UsefulHintsWidget = () => {
+  const { t } = useTranslation()
   return (
     <StatusCard
       badge={
         <Typography variant="body2" className={classnames(css.badgeText, css.badgeTextInfo)}>
           <LightbulbOutlinedIcon fontSize="small" sx={{ mr: 0.5 }} />
-          Did you know
+          {t('dashboard.didYouKnow')}
         </Typography>
       }
-      title="Explore over 70+ dApps"
-      content="In our Safe App section you can connect your Safe to over 70 dApps directly or via Wallet Connect to interact with any application."
+      title={t('dashboard.exploreOver70DApps')}
+      content={t('dashboard.inOurSafeApp')}
       completed={false}
     />
   )
 }
 
 const AddFundsWidget = ({ completed }: { completed: boolean }) => {
+  const { t } = useTranslation()
   const [open, setOpen] = useState<boolean>(false)
   const { safeAddress } = useSafeInfo()
   const chain = useCurrentChain()
@@ -127,8 +131,8 @@ const AddFundsWidget = ({ completed }: { completed: boolean }) => {
   const qrPrefix = settings.shortName.qr ? `${chain?.shortName}:` : ''
   const qrCode = `${qrPrefix}${safeAddress}`
 
-  const title = 'Add native assets'
-  const content = `Receive ${chain?.nativeCurrency.name} to start interacting with your account.`
+  const title = t('dashboard.addNativeAssets')
+  const content = t('dashboard.receiveDescription', { currency: chain?.nativeCurrency.name })
 
   const toggleDialog = () => {
     setOpen((prev) => !prev)
@@ -138,7 +142,7 @@ const AddFundsWidget = ({ completed }: { completed: boolean }) => {
     <StatusCard
       badge={
         <Typography variant="body2" className={css.badgeText}>
-          First interaction
+          {t('dashboard.firstInteraction')}
         </Typography>
       }
       title={title}
@@ -160,14 +164,14 @@ const AddFundsWidget = ({ completed }: { completed: boolean }) => {
                 size="small"
                 sx={{ minHeight: '40px' }}
               >
-                Add funds
+                {t('dashboard.addFunds')}
               </Button>
             </Track>
           </Box>
           <ModalDialog
             open={open}
             onClose={toggleDialog}
-            dialogTitle="Add funds to your Safe Account"
+            dialogTitle={t('dashboard.addFundsToSafeAccount')}
             hideChainIndicator
           >
             <Box
@@ -213,11 +217,7 @@ const AddFundsWidget = ({ completed }: { completed: boolean }) => {
                           onChange={(e) => dispatch(setQrShortName(e.target.checked))}
                         />
                       }
-                      label={
-                        <>
-                          QR code with chain prefix (<b>{chain?.shortName}:</b>)
-                        </>
-                      }
+                      label={t('dashboard.qrChainPrefix', { prefix: `${chain?.shortName}:` })}
                     />
                   </Box>
                 </Grid>
@@ -227,7 +227,7 @@ const AddFundsWidget = ({ completed }: { completed: boolean }) => {
                       mb: 2,
                     }}
                   >
-                    Copy your address to send tokens from a different account.
+                    {t('dashboard.copyAddressInstruction')}
                   </Typography>
 
                   <Box
@@ -260,17 +260,18 @@ const AddFundsWidget = ({ completed }: { completed: boolean }) => {
 }
 
 const FirstTransactionWidget = ({ completed }: { completed: boolean }) => {
+  const { t } = useTranslation()
   const [open, setOpen] = useState<boolean>(false)
 
-  const title = 'Create your first transaction'
-  const content = 'Simply send funds, add a new signer or swap tokens through a safe app.'
+  const title = t('dashboard.createYourFirstTransaction')
+  const content = t('dashboard.simplySend')
 
   return (
     <>
       <StatusCard
         badge={
           <Typography variant="body2" className={css.badgeText}>
-            First interaction
+            {t('dashboard.firstInteraction')}
           </Typography>
         }
         title={title}
@@ -289,7 +290,7 @@ const FirstTransactionWidget = ({ completed }: { completed: boolean }) => {
                   sx={{ mt: 2, minHeight: '40px' }}
                   disabled={!isOk}
                 >
-                  Create transaction
+                  {t('dashboard.createTransaction')}
                 </Button>
               </Track>
             )}
@@ -302,17 +303,18 @@ const FirstTransactionWidget = ({ completed }: { completed: boolean }) => {
 }
 
 const ActivateSafeWidget = ({ chain }: { chain: ChainInfo | undefined }) => {
+  const { t } = useTranslation()
   const [open, setOpen] = useState<boolean>(false)
 
-  const title = `Activate account ${chain ? 'on ' + chain.chainName : ''}`
-  const content = 'Activate your account to start using all benefits of Safe'
+  const title = chain ? t('dashboard.activateAccountOnChain', { chain: chain.chainName }) : t('dashboard.activateYourSafeAccount')
+  const content = t('dashboard.activateDescription')
 
   return (
     <>
       <StatusCard
         badge={
           <Typography variant="body2" className={css.badgeText}>
-            First interaction
+            {t('dashboard.firstInteraction')}
           </Typography>
         }
         title={title}
@@ -333,6 +335,7 @@ const ActivateSafeWidget = ({ chain }: { chain: ChainInfo | undefined }) => {
 }
 
 const AccountReadyWidget = () => {
+  const { t } = useTranslation()
   return (
     <Card className={classnames(css.card, css.accountReady)}>
       <div className={classnames(css.checkIcon)}>
@@ -346,14 +349,15 @@ const AccountReadyWidget = () => {
           mt: 2,
         }}
       >
-        Safe Account is ready!
+        {t('dashboard.safeAccountIsReady')}
       </Typography>
-      <Typography>Continue to improve your account security and unlock more features</Typography>
+      <Typography>{t('dashboard.continueToImprove')}</Typography>
     </Card>
   )
 }
 
 const FirstSteps = () => {
+  const { t } = useTranslation()
   const { balances } = useBalances()
   const { safe, safeAddress } = useSafeInfo()
   const outgoingTransactions = useAppSelector(selectOutgoingTransactions)
@@ -427,19 +431,19 @@ const FirstSteps = () => {
                 mb: 1,
               }}
             >
-              {isActivating ? 'Account is being activated...' : 'Activate your Safe Account'}
+              {isActivating ? t('dashboard.accountIsBeingActivated') : t('dashboard.activateYourSafeAccount')}
             </Typography>
 
             {isActivating ? (
               <Typography variant="body2">
-                <strong>This may take a few minutes.</strong> Once activated, your account will be up and running.
+                <strong>{t('dashboard.thisMayTakeMinutes')}</strong>
               </Typography>
             ) : (
               <Typography variant="body2">
                 <strong>
-                  {stepsCompleted} of {completedItems.length} steps completed.
+                  {t('dashboard.stepsCompleted', { completed: stepsCompleted, total: completedItems.length })}
                 </strong>{' '}
-                Finish the next steps to start using all Safe Account features:
+                {t('dashboard.finishNextSteps')}
               </Typography>
             )}
           </Grid>

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { CowSwapWidget } from '@cowprotocol/widget-react'
 import { type CowSwapWidgetParams, TradeType } from '@cowprotocol/widget-lib'
 import type { OnTradeParamsPayload } from '@cowprotocol/events'
@@ -77,6 +78,7 @@ export const getSwapTitle = (tradeType: SwapState['tradeType'], txs: BaseTransac
 }
 
 const SwapWidget = ({ sell }: Params) => {
+  const { t } = useTranslation()
   const { palette } = useTheme()
   const darkMode = useDarkMode()
   const chainId = useChainId()
@@ -295,16 +297,16 @@ const SwapWidget = ({ sell }: Params) => {
   useCustomAppCommunicator(iframeRef, appData, chain)
 
   if (blockedAddress) {
-    return <BlockedAddress address={blockedAddress} featureTitle="embedded swaps feature with CoW Swap" />
+    return <BlockedAddress address={blockedAddress} featureTitle={t('swap.featureTitle')} />
   }
 
   if (!isConsentAccepted) {
     return (
       <Disclaimer
-        title="Note"
-        content={<WidgetDisclaimer widgetName="CoW Swap Widget" />}
+        title={t('swap.note')}
+        content={<WidgetDisclaimer widgetName={t('swap.widgetName')} />}
         onAccept={onAccept}
-        buttonText="Continue"
+        buttonText={t('common.continue')}
       />
     )
   }

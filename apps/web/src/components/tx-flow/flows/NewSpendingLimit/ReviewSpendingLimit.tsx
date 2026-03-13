@@ -1,6 +1,7 @@
 import { useCurrentChain } from '@/hooks/useChains'
 import useSafeInfo from '@/hooks/useSafeInfo'
 import { useEffect, useMemo, useContext } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { Typography, Alert, Box } from '@mui/material'
 
@@ -21,6 +22,7 @@ import { TxFlowContext, type TxFlowContextType } from '../../TxFlowProvider'
 import TxDetailsRow from '@/components/tx/ConfirmTxDetails/TxDetailsRow'
 
 export const ReviewSpendingLimit = ({ onSubmit, children }: ReviewTransactionProps) => {
+  const { t } = useTranslation()
   const { data } = useContext<TxFlowContextType<NewSpendingLimitFlowProps>>(TxFlowContext)
   const spendingLimits = useSelector(selectSpendingLimits)
   const { safe } = useSafeInfo()
@@ -74,9 +76,9 @@ export const ReviewSpendingLimit = ({ onSubmit, children }: ReviewTransactionPro
   const isOneTime = data?.resetTime === '0'
   const resetTime = useMemo(() => {
     return isOneTime
-      ? 'One-time spending limit'
+      ? t('transactions.oneTimeSpendingLimit')
       : getResetTimeOptions(chainId).find((time) => time.value === data?.resetTime)?.label
-  }, [isOneTime, data?.resetTime, chainId])
+  }, [isOneTime, data?.resetTime, chainId, t])
 
   const onFormSubmit = () => {
     trackEvent({
@@ -98,7 +100,7 @@ export const ReviewSpendingLimit = ({ onSubmit, children }: ReviewTransactionPro
   return (
     <ReviewTransaction onSubmit={onFormSubmit} withDecodedData={false}>
       {token && (
-        <SendAmountBlock amountInWei={amountInWei} tokenInfo={token.tokenInfo} title="Amount">
+        <SendAmountBlock amountInWei={amountInWei} tokenInfo={token.tokenInfo} title={t('transactions.amountLabel')}>
           {existingAmount && existingAmount !== data?.amount && (
             <>
               <Typography
@@ -115,7 +117,7 @@ export const ReviewSpendingLimit = ({ onSubmit, children }: ReviewTransactionPro
         </SendAmountBlock>
       )}
 
-      <TxDetailsRow label="Beneficiary" grid>
+      <TxDetailsRow label={t('settings.beneficiary')} grid>
         <Box data-testid="beneficiary-address">
           <EthHashInfo
             address={data?.beneficiary || ''}
@@ -127,7 +129,7 @@ export const ReviewSpendingLimit = ({ onSubmit, children }: ReviewTransactionPro
         </Box>
       </TxDetailsRow>
 
-      <TxDetailsRow label="Reset time" grid>
+      <TxDetailsRow label={t('settings.resetTime')} grid>
         {existingSpendingLimit ? (
           <>
             <SpendingLimitLabel
@@ -157,7 +159,7 @@ export const ReviewSpendingLimit = ({ onSubmit, children }: ReviewTransactionPro
         ) : (
           <SpendingLimitLabel
             data-testid="spending-limit-label"
-            label={resetTime || 'One-time spending limit'}
+            label={resetTime || t('transactions.oneTimeSpendingLimit')}
             isOneTime={!!resetTime && isOneTime}
           />
         )}
@@ -166,7 +168,7 @@ export const ReviewSpendingLimit = ({ onSubmit, children }: ReviewTransactionPro
       {existingSpendingLimit && (
         <Alert severity="warning" sx={{ border: 'unset' }}>
           <Typography data-testid="limit-replacement-warning" fontWeight={700}>
-            You are about to replace an existing spending limit
+            {t('spendingLimit.replaceExistingLimit')}
           </Typography>
         </Alert>
       )}

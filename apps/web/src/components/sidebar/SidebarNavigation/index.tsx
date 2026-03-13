@@ -1,4 +1,5 @@
 import React, { useContext, useMemo, type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useRouter } from 'next/router'
 import { Divider, ListItemButton } from '@mui/material'
 import { ImplementationVersionState } from '@safe-global/safe-gateway-typescript-sdk'
@@ -39,6 +40,7 @@ const customSidebarEvents: { [key: string]: { event: any; label: string } } = {
 }
 
 const Navigation = (): ReactElement => {
+  const { t } = useTranslation()
   const chain = useCurrentChain()
   const router = useRouter()
   const { safe } = useSafeInfo()
@@ -106,7 +108,7 @@ const Navigation = (): ReactElement => {
 
         return (
           <Tooltip
-            title={isDisabled ? 'You need to activate your Safe first.' : ''}
+            title={isDisabled ? t('nav.activateSafeFirst') : ''}
             placement="right"
             key={item.href}
             arrow
@@ -133,7 +135,7 @@ const Navigation = (): ReactElement => {
                   {item.icon && <SidebarListItemIcon badge={getBadge(item)}>{item.icon}</SidebarListItemIcon>}
 
                   <SidebarListItemText data-testid="sidebar-list-item" bold>
-                    {item.label}
+                    {t(item.label)}
 
                     {ItemTag}
                   </SidebarListItemText>

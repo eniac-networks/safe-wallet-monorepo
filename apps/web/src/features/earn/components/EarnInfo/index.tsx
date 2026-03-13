@@ -25,15 +25,17 @@ import { AppRoutes } from '@/config/routes'
 import { trackEvent } from '@/services/analytics'
 import { EARN_EVENTS, EARN_LABELS } from '@/services/analytics/events/earn'
 import ExternalLink from '@/components/common/ExternalLink'
-import { APYDisclaimer, EARN_HELP_ARTICLE, ApproximateAPY } from '@/features/earn/constants'
+import { EARN_HELP_ARTICLE, ApproximateAPY } from '@/features/earn/constants'
+import { useTranslation } from 'react-i18next'
 
 export const EarnPoweredBy = () => {
+  const { t } = useTranslation()
   const isDarkMode = useDarkMode()
 
   return (
     <Stack spacing={1} direction="row">
       <Typography variant="overline" color="text.secondary" fontWeight="bold">
-        Powered by
+        {t('earn.poweredBy')}
       </Typography>
       <SvgIcon
         component={Morpho}
@@ -59,22 +61,23 @@ export const EarnPoweredBy = () => {
 }
 
 export const EarnBannerCopy = () => {
+  const { t } = useTranslation()
   const isDarkMode = useDarkMode()
 
   return (
     <>
       <Typography variant="h2" className={classNames(css.header, { [css.gradientText]: isDarkMode })}>
-        Earn up to{' '}
+        {t('earn.earnUpTo')}{' '}
         <Typography className={classNames({ [css.gradientText]: isDarkMode })} variant="h2" component="span">
-          {formatPercentage(ApproximateAPY)} APY*
+          {formatPercentage(ApproximateAPY)} {t('earn.apyStar')}
         </Typography>{' '}
-        and get MORPHO rewards
+        {t('earn.getMorphoRewards')}
       </Typography>
 
       <Typography variant="body1" className={css.content} mt={2}>
-        Deposit stablecoins, wstETH, ETH, and WBTC straight from your account and let your assets compound in minutes.{' '}
+        {t('earn.depositDescription')}{' '}
         <Track {...EARN_EVENTS.OPEN_EARN_LEARN_MORE} label={EARN_LABELS.safe_dashboard_banner}>
-          <ExternalLink href={EARN_HELP_ARTICLE}>Learn more</ExternalLink>
+          <ExternalLink href={EARN_HELP_ARTICLE}>{t('earn.learnMore')}</ExternalLink>
         </Track>
       </Typography>
     </>
@@ -82,6 +85,7 @@ export const EarnBannerCopy = () => {
 }
 
 const EarnInfo = ({ onGetStarted }: { onGetStarted: () => void }) => {
+  const { t } = useTranslation()
   const { balances } = useBalances()
   const chainId = useChainId()
   const router = useRouter()
@@ -105,7 +109,7 @@ const EarnInfo = ({ onGetStarted }: { onGetStarted: () => void }) => {
               <Grid size={{ xs: 12, md: 'auto' }}>
                 <Track {...EARN_EVENTS.GET_STARTED_WITH_EARN}>
                   <Button fullWidth variant="contained" onClick={onGetStarted}>
-                    Get started
+                    {t('earn.getStarted')}
                   </Button>
                 </Track>
               </Grid>
@@ -118,7 +122,7 @@ const EarnInfo = ({ onGetStarted }: { onGetStarted: () => void }) => {
             position="relative"
             sx={{ backgroundColor: 'background.main', alignItems: 'center', justifyContent: 'center' }}
           >
-            <Image src={EarnIllustrationLight} alt="Earn illustration" width={239} height={239} />
+            <Image src={EarnIllustrationLight} alt={t('earn.earnIllustration')} width={239} height={239} />
           </Grid>
         </Grid>
       </Card>
@@ -126,7 +130,7 @@ const EarnInfo = ({ onGetStarted }: { onGetStarted: () => void }) => {
       <Grid container spacing={3}>
         <Grid size={{ xs: 12, md: 'grow' }}>
           <Typography variant="h3" mt={3} mb={2} fontWeight="bold">
-            Your benefits
+            {t('earn.yourBenefits')}
           </Typography>
           <Card sx={{ p: 4 }}>
             <Stack spacing={2}>
@@ -136,9 +140,9 @@ const EarnInfo = ({ onGetStarted }: { onGetStarted: () => void }) => {
                 </Box>
                 <Box>
                   <Typography fontWeight="bold" mb={0.5}>
-                    Never leave the app
+                    {t('earn.benefit1Title')}
                   </Typography>
-                  <Typography>Interact with your assets right in Safe Wallet UI.</Typography>
+                  <Typography>{t('earn.benefit1Description')}</Typography>
                 </Box>
               </Stack>
 
@@ -148,9 +152,9 @@ const EarnInfo = ({ onGetStarted }: { onGetStarted: () => void }) => {
                 </Box>
                 <Box>
                   <Typography fontWeight="bold" mb={0.5}>
-                    Collect earnings every day
+                    {t('earn.benefit2Title')}
                   </Typography>
-                  <Typography>Your balance keeps working for you.</Typography>
+                  <Typography>{t('earn.benefit2Description')}</Typography>
                 </Box>
               </Stack>
 
@@ -160,9 +164,9 @@ const EarnInfo = ({ onGetStarted }: { onGetStarted: () => void }) => {
                 </Box>
                 <Box>
                   <Typography fontWeight="bold" mb={0.5}>
-                    Understand every transaction
+                    {t('earn.benefit3Title')}
                   </Typography>
-                  <Typography>User-friendly transactions that are easy to understand for all signers.</Typography>
+                  <Typography>{t('earn.benefit3Description')}</Typography>
                 </Box>
               </Stack>
 
@@ -172,9 +176,9 @@ const EarnInfo = ({ onGetStarted }: { onGetStarted: () => void }) => {
                 </Box>
                 <Box>
                   <Typography fontWeight="bold" mb={0.5}>
-                    Cash out whenever you want
+                    {t('earn.benefit4Title')}
                   </Typography>
-                  <Typography>Zero lock-ups, zero penalties.</Typography>
+                  <Typography>{t('earn.benefit4Description')}</Typography>
                 </Box>
               </Stack>
             </Stack>
@@ -184,7 +188,7 @@ const EarnInfo = ({ onGetStarted }: { onGetStarted: () => void }) => {
         {eligibleAssets.length > 0 && (
           <Grid size={{ xs: 12, md: 'grow' }}>
             <Typography variant="h3" mt={3} mb={2} fontWeight="bold">
-              Eligible assets
+              {t('earn.eligibleAssets')}
             </Typography>
 
             <Stack spacing={2}>
@@ -225,14 +229,14 @@ const EarnInfo = ({ onGetStarted }: { onGetStarted: () => void }) => {
                         </Box>
                       </Stack>
                       <Stack direction="row" spacing={2} alignItems="center">
-                        <Tooltip title="as of 03.06.2025">
+                        <Tooltip title={t('earn.apyAsOf')}>
                           <Typography variant="caption" className={css.apy}>
-                            Up to {vaultAPY}*
+                            {t('earn.upTo')} {vaultAPY}*
                           </Typography>
                         </Tooltip>
 
                         <Button variant="outlined" size="small" onClick={onEarnClick}>
-                          Earn
+                          {t('earn.earn')}
                         </Button>
                       </Stack>
                     </Stack>
@@ -245,7 +249,7 @@ const EarnInfo = ({ onGetStarted }: { onGetStarted: () => void }) => {
       </Grid>
 
       <Typography component="div" variant="caption" zIndex={2} mt={2}>
-        {APYDisclaimer}
+        {t('earn.apyDisclaimer')}
       </Typography>
     </Box>
   )

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { useMemo } from 'react'
 import type { ReactElement } from 'react'
 
@@ -42,6 +43,7 @@ function InternalRecoveryList({ recoveryQueue }: { recoveryQueue: Array<Recovery
 }
 
 function LazyRecoveryList(): ReactElement | null {
+  const { t } = useTranslation()
   const recoveryQueue = useRecoveryQueue()
 
   if (recoveryQueue.length === 0) {
@@ -50,7 +52,7 @@ function LazyRecoveryList(): ReactElement | null {
 
   return (
     <>
-      <div className={labelCss.container}>Pending recovery</div>
+      <div className={labelCss.container}>{t('recovery.pendingRecovery')}</div>
 
       <TxListGrid>
         <InternalRecoveryList recoveryQueue={recoveryQueue} />

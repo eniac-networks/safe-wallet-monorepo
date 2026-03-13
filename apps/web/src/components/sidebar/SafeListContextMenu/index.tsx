@@ -1,5 +1,6 @@
 import type { MouseEvent } from 'react'
 import { useState, type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import IconButton from '@mui/material/IconButton'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
@@ -58,6 +59,7 @@ const SafeListContextMenu = ({
   undeployedSafe: boolean
   onClose?: () => void
 }): ReactElement => {
+  const { t } = useTranslation()
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
   const isNestedSafesEnabled = useHasFeature(FEATURES.NESTED_SAFES)
   const { data: nestedSafes } = useGetOwnedSafesQuery(
@@ -107,7 +109,7 @@ const SafeListContextMenu = ({
             <ListItemIcon>
               <SvgIcon component={NestedSafesIcon} inheritViewBox fontSize="small" color="success" />
             </ListItemIcon>
-            <ListItemText data-testid="nested-safes-btn">Nested Safes</ListItemText>
+            <ListItemText data-testid="nested-safes-btn">{t('sidebar.nestedSafes')}</ListItemText>
           </MenuItem>
         )}
 
@@ -116,7 +118,7 @@ const SafeListContextMenu = ({
             <ListItemIcon>
               <SvgIcon component={EditIcon} inheritViewBox fontSize="small" color="success" />
             </ListItemIcon>
-            <ListItemText data-testid="rename-btn">{hasName ? 'Rename' : 'Give name'}</ListItemText>
+            <ListItemText data-testid="rename-btn">{hasName ? t('sidebar.rename') : t('sidebar.giveName')}</ListItemText>
           </MenuItem>
         )}
 
@@ -125,7 +127,7 @@ const SafeListContextMenu = ({
             <ListItemIcon>
               <SvgIcon component={DeleteIcon} inheritViewBox fontSize="small" color="error" />
             </ListItemIcon>
-            <ListItemText data-testid="remove-btn">Remove</ListItemText>
+            <ListItemText data-testid="remove-btn">{t('sidebar.remove')}</ListItemText>
           </MenuItem>
         )}
 
@@ -134,7 +136,7 @@ const SafeListContextMenu = ({
             <ListItemIcon>
               <SvgIcon component={PlusIcon} inheritViewBox fontSize="small" color="primary" />
             </ListItemIcon>
-            <ListItemText data-testid="add-chain-btn">Add another network</ListItemText>
+            <ListItemText data-testid="add-chain-btn">{t('sidebar.addAnotherNetwork')}</ListItemText>
           </MenuItem>
         )}
       </ContextMenu>

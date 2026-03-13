@@ -9,12 +9,14 @@ import { Box, Button, DialogActions, DialogContent, IconButton, Tooltip, SvgIcon
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { upsertAddressBookEntries } from '@/store/addressBookSlice'
+import { useTranslation } from 'react-i18next'
 
 type EditOwnerValues = {
   name: string
 }
 
 export const EditOwnerDialog = ({ chainId, address, name }: { chainId: string; address: string; name?: string }) => {
+  const { t } = useTranslation()
   const [open, setOpen] = useState(false)
 
   const dispatch = useAppDispatch()
@@ -50,7 +52,7 @@ export const EditOwnerDialog = ({ chainId, address, name }: { chainId: string; a
   return (
     <>
       <Track {...SETTINGS_EVENTS.SETUP.EDIT_OWNER}>
-        <Tooltip title="Edit signer">
+        <Tooltip title={t('settings.editSigner')}>
           <span>
             <IconButton onClick={() => setOpen(true)} size="small">
               <SvgIcon component={EditIcon} inheritViewBox color="border" fontSize="small" />
@@ -59,12 +61,12 @@ export const EditOwnerDialog = ({ chainId, address, name }: { chainId: string; a
         </Tooltip>
       </Track>
 
-      <ModalDialog open={open} onClose={handleClose} dialogTitle="Edit signer name">
+      <ModalDialog open={open} onClose={handleClose} dialogTitle={t('settings.editSignerName')}>
         <FormProvider {...formMethods}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <DialogContent>
               <Box py={2}>
-                <NameInput label="Signer name" name="name" required />
+                <NameInput label={t('settings.signerName')} name="name" required />
               </Box>
 
               <Box py={2}>
@@ -73,9 +75,9 @@ export const EditOwnerDialog = ({ chainId, address, name }: { chainId: string; a
             </DialogContent>
 
             <DialogActions>
-              <Button onClick={handleClose}>Cancel</Button>
+              <Button onClick={handleClose}>{t('common.cancel')}</Button>
               <Button type="submit" variant="contained" disabled={buttonDisabled}>
-                Save
+                {t('common.save')}
               </Button>
             </DialogActions>
           </form>

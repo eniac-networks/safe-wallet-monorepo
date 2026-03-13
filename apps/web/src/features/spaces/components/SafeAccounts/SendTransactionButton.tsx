@@ -13,6 +13,7 @@ import type { AddressEx } from '@safe-global/safe-gateway-typescript-sdk'
 import { SPACE_EVENTS } from '@/services/analytics/events/spaces'
 import { trackEvent } from '@/services/analytics'
 import { gtmSetSafeAddress } from '@/services/analytics/gtm'
+import { useTranslation } from 'react-i18next'
 
 type Chains = Record<string, string>
 
@@ -22,6 +23,7 @@ const chains = networks.reduce<Chains>((result, { shortName, chainId }) => {
 }, {})
 
 const SendTransactionButton = ({ safe }: { safe: SafeOverview }) => {
+  const { t } = useTranslation()
   const router = useRouter()
   const wallet = useWallet()
   const canSend = isOwner(safe.owners as AddressEx[], wallet?.address)
@@ -62,7 +64,7 @@ const SendTransactionButton = ({ safe }: { safe: SafeOverview }) => {
   }
 
   return (
-    <Tooltip placement="top" title={canSend ? 'Send tokens' : 'You are not a signer of this Safe Account'}>
+    <Tooltip placement="top" title={canSend ? t('spaces.sendTokens') : t('spaces.notASigner')}>
       <span>
         <IconButton className={css.sendButton} size="medium" onClick={onNewTxClick} disabled={!canSend}>
           <ArrowOutwardIcon />

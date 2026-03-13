@@ -18,6 +18,7 @@ import { isOptimizedForBatchTransactions } from '@/components/safe-apps/utils'
 import { AppRoutes } from '@/config/routes'
 import BatchIcon from '@/public/images/apps/batch-icon.svg'
 import css from './styles.module.css'
+import { useTranslation } from 'react-i18next'
 
 type SafeAppCardProps = {
   safeApp: SafeAppData
@@ -81,6 +82,8 @@ const SafeAppCardGridView = ({
   openPreviewDrawer,
   compact,
 }: SafeAppCardViewProps) => {
+  const { t } = useTranslation()
+
   return (
     <SafeAppCardContainer
       className={compact ? css.compactContainer : undefined}
@@ -96,11 +99,11 @@ const SafeAppCardGridView = ({
           <div className={css.safeAppIconContainer}>
             {/* Batch transactions Icon */}
             {isOptimizedForBatchTransactions(safeApp) && (
-              <BatchIcon className={css.safeAppBatchIcon} alt="batch transactions icon" />
+              <BatchIcon className={css.safeAppBatchIcon} alt={t('safeApps.batchTransactionsIconAlt')} />
             )}
 
             {/* Safe App Icon */}
-            <SafeAppIconCard src={safeApp.iconUrl} alt={`${safeApp.name} logo`} />
+            <SafeAppIconCard src={safeApp.iconUrl} alt={t('safeApps.appLogoAlt', { name: safeApp.name })} />
           </div>
         }
         action={

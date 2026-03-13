@@ -1,6 +1,7 @@
 import type { ChangeEvent, Dispatch, SetStateAction } from 'react'
 import classnames from 'classnames'
 import { useCurrentChain } from '@/hooks/useChains'
+import { useTranslation } from 'react-i18next'
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded'
 import {
   FormControl,
@@ -30,6 +31,7 @@ const PayNowPayLater = ({
   payMethod: PayMethod
   setPayMethod: Dispatch<SetStateAction<PayMethod>>
 }) => {
+  const { t } = useTranslation()
   const chain = useCurrentChain()
 
   const onChoosePayMethod = (_: ChangeEvent<HTMLInputElement>, newPayMethod: string) => {
@@ -39,12 +41,11 @@ const PayNowPayLater = ({
   return (
     <>
       <Typography variant="h4" fontWeight="bold">
-        Before we continue...
+        {t('counterfactual.beforeWeContinue')}
       </Typography>
       {isMultiChain && (
         <ErrorMessage level="info">
-          You will need to <b>activate your account</b> separately on each network. Make sure you have funds on your
-          wallet to pay the network fee.
+          {t('counterfactual.activateSeparately')}
         </ErrorMessage>
       )}
       <List>
@@ -54,7 +55,7 @@ const PayNowPayLater = ({
               <CheckRoundedIcon fontSize="small" color="inherit" />
             </ListItemIcon>
             <Typography variant="body2">
-              Start exploring the accounts now, and activate them later to start making transactions
+              {t('counterfactual.startExploring')}
             </Typography>
           </ListItem>
         )}
@@ -62,7 +63,7 @@ const PayNowPayLater = ({
           <ListItemIcon className={css.listItem}>
             <CheckRoundedIcon fontSize="small" color="inherit" />
           </ListItemIcon>
-          <Typography variant="body2">There will be a one-time activation fee</Typography>
+          <Typography variant="body2">{t('counterfactual.oneTimeActivationFeeNote')}</Typography>
         </ListItem>
         {!isMultiChain && (
           <ListItem disableGutters>
@@ -70,7 +71,7 @@ const PayNowPayLater = ({
               <CheckRoundedIcon fontSize="small" color="inherit" />
             </ListItemIcon>
             <Typography variant="body2">
-              If you choose to pay later, the fee will be included with the first transaction you make.
+              {t('counterfactual.payLaterNote')}
             </Typography>
           </ListItem>
         )}
@@ -78,7 +79,7 @@ const PayNowPayLater = ({
           <ListItemIcon className={css.listItem}>
             <CheckRoundedIcon fontSize="small" color="inherit" />
           </ListItemIcon>
-          <Typography variant="body2">Safe doesn&apos;t profit from the fees.</Typography>
+          <Typography variant="body2">{t('counterfactual.safeNoProfit')}</Typography>
         </ListItem>
       </List>
       {!isMultiChain && (
@@ -91,10 +92,10 @@ const PayNowPayLater = ({
               className={classnames(css.radioContainer, { [css.active]: payMethod === PayMethod.PayNow })}
               label={
                 <>
-                  <Typography className={css.radioTitle}>Pay now</Typography>
+                  <Typography className={css.radioTitle}>{t('counterfactual.payNow')}</Typography>
                   <Typography className={css.radioSubtitle} variant="body2" color="text.secondary">
                     {canRelay ? (
-                      'Sponsored free transaction'
+                      t('counterfactual.sponsoredFree')
                     ) : (
                       <>
                         &asymp; {totalFee} {chain?.nativeCurrency.symbol}
@@ -113,9 +114,9 @@ const PayNowPayLater = ({
               className={classnames(css.radioContainer, { [css.active]: payMethod === PayMethod.PayLater })}
               label={
                 <>
-                  <Typography className={css.radioTitle}>Pay later</Typography>
+                  <Typography className={css.radioTitle}>{t('counterfactual.payLater')}</Typography>
                   <Typography className={css.radioSubtitle} variant="body2" color="text.secondary">
-                    with the first transaction
+                    {t('counterfactual.withFirstTransaction')}
                   </Typography>
                 </>
               }

@@ -3,6 +3,7 @@ import Track from '@/components/common/Track'
 import { ASSETS_EVENTS } from '@/services/analytics'
 import { VisibilityOffOutlined } from '@mui/icons-material'
 import { Box, Typography, Button } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 
 import css from './styles.module.css'
 
@@ -19,6 +20,8 @@ const TokenMenu = ({
   selectedAssetCount: number
   showHiddenAssets: boolean
 }) => {
+  const { t } = useTranslation()
+
   if (selectedAssetCount === 0 && !showHiddenAssets) {
     return null
   }
@@ -28,23 +31,23 @@ const TokenMenu = ({
         <Box className={css.hideTokensHeader}>
           <VisibilityOffOutlined />
           <Typography variant="body2" lineHeight="inherit">
-            {selectedAssetCount} {selectedAssetCount === 1 ? 'token' : 'tokens'} selected
+            {t('balances.tokensSelected', { count: selectedAssetCount })}
           </Typography>
         </Box>
         <Box display="flex" flexDirection="row" gap={1}>
           <Track {...ASSETS_EVENTS.CANCEL_HIDE_DIALOG}>
             <Button onClick={cancel} className={css.cancelButton} size="small" variant="outlined">
-              Cancel
+              {t('common.cancel')}
             </Button>
           </Track>
           <Track {...ASSETS_EVENTS.DESELECT_ALL_HIDE_DIALOG}>
             <Button onClick={deselectAll} className={css.cancelButton} size="small" variant="outlined">
-              Deselect all
+              {t('balances.deselectAll')}
             </Button>
           </Track>
           <Track {...ASSETS_EVENTS.SAVE_HIDE_DIALOG}>
             <Button onClick={saveChanges} className={css.applyButton} size="small" variant="contained">
-              Save
+              {t('common.save')}
             </Button>
           </Track>
         </Box>

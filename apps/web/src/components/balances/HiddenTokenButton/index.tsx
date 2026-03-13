@@ -5,9 +5,9 @@ import useHiddenTokens from '@/hooks/useHiddenTokens'
 import useBalances from '@/hooks/useBalances'
 import VisibilityOutlined from '@mui/icons-material/VisibilityOutlined'
 import Track from '@/components/common/Track'
+import { useTranslation } from 'react-i18next'
 
 import css from './styles.module.css'
-import { maybePlural } from '@safe-global/utils/utils/formatters'
 
 const HiddenTokenButton = ({
   toggleShowHiddenAssets,
@@ -16,6 +16,7 @@ const HiddenTokenButton = ({
   toggleShowHiddenAssets?: () => void
   showHiddenAssets?: boolean
 }): ReactElement | null => {
+  const { t } = useTranslation()
   const { balances } = useBalances()
   const currentHiddenAssets = useHiddenTokens()
 
@@ -41,8 +42,8 @@ const HiddenTokenButton = ({
             <VisibilityOutlined fontSize="small" />
             <Typography fontSize="medium">
               {hiddenAssetCount === 0
-                ? 'Hide tokens'
-                : `${hiddenAssetCount} hidden token${maybePlural(hiddenAssetCount)}`}{' '}
+                ? t('balances.hideTokens')
+                : t('balances.hiddenTokens', { count: hiddenAssetCount })}{' '}
             </Typography>
           </>
         </Button>

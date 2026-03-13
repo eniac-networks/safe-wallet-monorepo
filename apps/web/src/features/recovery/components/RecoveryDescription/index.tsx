@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { Typography } from '@mui/material'
 import { useMemo } from 'react'
 import type { ReactElement } from 'react'
@@ -12,6 +13,7 @@ import { getRecoveredSafeInfo } from '@/features/recovery/services/transaction-l
 import type { RecoveryQueueItem } from '@/features/recovery/services/recovery-state'
 
 export function RecoveryDescription({ item }: { item: RecoveryQueueItem }): ReactElement {
+  const { t } = useTranslation()
   const { args, isMalicious } = item
   const { safe } = useSafeInfo()
   const isRecoverer = useIsRecoverer()
@@ -32,7 +34,7 @@ export function RecoveryDescription({ item }: { item: RecoveryQueueItem }): Reac
 
   if (isMalicious) {
     return (
-      <ErrorMessage>This transaction potentially calls malicious actions. We recommend cancelling it.</ErrorMessage>
+      <ErrorMessage>{t('recovery.maliciousActions')}</ErrorMessage>
     )
   }
 
@@ -40,24 +42,23 @@ export function RecoveryDescription({ item }: { item: RecoveryQueueItem }): Reac
   if (!newSetup || newSetup.owners.length === 0) {
     return (
       <ErrorMessage>
-        This recovery proposal will fail as the owner structure has since been modified. We recommend cancelling it
-        {isRecoverer ? ' and trying again' : ''}.
+        {isRecoverer ? t('recovery.proposalWillFailRecoverer') : t('recovery.proposalWillFail')}
       </ErrorMessage>
     )
   }
 
   return (
-    <InfoDetails title="Add signer(s):">
+    <InfoDetails title={t('recovery.addSigners')}>
       {newSetup.owners.map((owner) => (
         <EthHashInfo key={owner.value} address={owner.value} shortAddress={false} showCopyButton hasExplorer />
       ))}
 
       <div>
         <Typography fontWeight={700} gutterBottom>
-          Required confirmations for new transactions:
+          {t('recovery.requiredConfirmations')}
         </Typography>
         <Typography>
-          {newSetup.threshold} out of {newSetup.owners.length} owner(s)
+          {t('recovery.outOfOwners', { threshold: newSetup.threshold, count: newSetup.owners.length })}
         </Typography>
       </div>
     </InfoDetails>

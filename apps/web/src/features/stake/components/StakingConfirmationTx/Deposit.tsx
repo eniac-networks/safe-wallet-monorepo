@@ -1,9 +1,10 @@
+import { useTranslation } from 'react-i18next'
 import { Box, Stack, Typography } from '@mui/material'
 import FieldsGrid from '@/components/tx/FieldsGrid'
 import type { StakingTxDepositInfo } from '@safe-global/safe-gateway-typescript-sdk'
 import { type NativeStakingDepositConfirmationView } from '@safe-global/safe-gateway-typescript-sdk'
 import ConfirmationOrderHeader from '@/components/tx/ConfirmationOrder/ConfirmationOrderHeader'
-import { formatDurationFromMilliseconds, formatVisualAmount, maybePlural } from '@safe-global/utils/utils/formatters'
+import { formatDurationFromMilliseconds, formatVisualAmount } from '@safe-global/utils/utils/formatters'
 import { formatCurrency } from '@safe-global/utils/utils/formatNumber'
 import StakingStatus from '@/features/stake/components/StakingStatus'
 import { InfoTooltip } from '@/features/stake/components/InfoTooltip'
@@ -17,6 +18,7 @@ type StakingOrderConfirmationViewProps = {
 const CURRENCY = 'USD'
 
 const StakingConfirmationTxDeposit = ({ order, isTxDetails }: StakingOrderConfirmationViewProps) => {
+  const { t } = useTranslation()
   const isOrder = !isTxDetails
 
   // the fee is returned in decimal format, so we multiply by 100 to get the percentage
@@ -33,21 +35,21 @@ const StakingConfirmationTxDeposit = ({ order, isTxDetails }: StakingOrderConfir
             {
               value: order.value,
               tokenInfo: order.tokenInfo,
-              label: 'Deposit',
+              label: t('stake.deposit'),
             },
             {
               value: order.annualNrr.toFixed(3) + '%',
-              label: 'Rewards rate (after fees)',
+              label: t('stake.rewardsRate'),
             },
           ]}
         />
       )}
-      <FieldsGrid title="Net annual rewards">
+      <FieldsGrid title={t('stake.netAnnualRewards')}>
         {formatVisualAmount(order.expectedAnnualReward, order.tokenInfo.decimals)} {order.tokenInfo.symbol}
         {' ('}
         {formatCurrency(order.expectedFiatAnnualReward, CURRENCY)})
       </FieldsGrid>
-      <FieldsGrid title="Net monthly rewards">
+      <FieldsGrid title={t('stake.netMonthlyRewards')}>
         {formatVisualAmount(order.expectedMonthlyReward, order.tokenInfo.decimals)} {order.tokenInfo.symbol}
         {' ('}
         {formatCurrency(order.expectedFiatMonthlyReward, CURRENCY)})
@@ -55,10 +57,8 @@ const StakingConfirmationTxDeposit = ({ order, isTxDetails }: StakingOrderConfir
       <FieldsGrid
         title={
           <>
-            Fee
-            <InfoTooltip
-              title={`The widget fee incurred here is charged by Kiln for the operation of this widget. The fee is calculated automatically. Part of the fee will contribute to a license fee that supports the Safe Community. Neither the Safe Ecosystem Foundation nor ${BRAND_NAME} operates the Kiln Widget and/or Kiln.`}
-            />
+            {t('stake.fee')}
+            <InfoTooltip title={t('stake.feeTooltip', { brandName: BRAND_NAME })} />
           </>
         }
       >
@@ -79,7 +79,7 @@ const StakingConfirmationTxDeposit = ({ order, isTxDetails }: StakingOrderConfir
               mb: 2,
             }}
           >
-            You will own{' '}
+            {t('stake.youWillOwn')}{' '}
             <Box
               component="span"
               sx={{
@@ -89,19 +89,19 @@ const StakingConfirmationTxDeposit = ({ order, isTxDetails }: StakingOrderConfir
                 borderRadius: 1,
               }}
             >
-              {order.numValidators} Ethereum validator{maybePlural(order.numValidators)}
+              {t('stake.validator', { count: order.numValidators })}
             </Box>
           </Typography>
         ) : (
-          <FieldsGrid title="Validators">{order.numValidators}</FieldsGrid>
+          <FieldsGrid title={t('stake.validators')}>{order.numValidators}</FieldsGrid>
         )}
 
-        <FieldsGrid title="Activation time">{formatDurationFromMilliseconds(order.estimatedEntryTime)}</FieldsGrid>
+        <FieldsGrid title={t('stake.activationTime')}>{formatDurationFromMilliseconds(order.estimatedEntryTime)}</FieldsGrid>
 
-        <FieldsGrid title="Rewards">Approx. every 5 days after activation</FieldsGrid>
+        <FieldsGrid title={t('stake.rewards')}>{t('stake.approxRewards')}</FieldsGrid>
 
         {!isOrder && (
-          <FieldsGrid title="Validator status">
+          <FieldsGrid title={t('stake.validatorStatus')}>
             <StakingStatus status={order.status} />
           </FieldsGrid>
         )}
@@ -114,8 +114,7 @@ const StakingConfirmationTxDeposit = ({ order, isTxDetails }: StakingOrderConfir
               mt: 2,
             }}
           >
-            Earn ETH rewards with dedicated validators. Rewards must be withdrawn manually, and you can request a
-            withdrawal at any time.
+            {t('stake.earnEthRewards')}
           </Typography>
         )}
       </Stack>

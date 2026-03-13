@@ -5,9 +5,11 @@ import SafeAppIconCard from '@/components/safe-apps/SafeAppIconCard'
 import SafeLogo from '@/public/images/logo-no-text.svg'
 import ConnectionDots from '@/public/images/common/connection-dots.svg'
 import css from './styles.module.css'
+import { useTranslation } from 'react-i18next'
 
 const WcConnectionState = ({ metadata, isDelete }: { metadata?: CoreTypes.Metadata; isDelete: boolean }) => {
-  const name = metadata?.name || 'dApp'
+  const { t } = useTranslation()
+  const name = metadata?.name || t('walletconnect.dApp')
   const icon = metadata?.icons[0] || ''
 
   return (
@@ -27,7 +29,7 @@ const WcConnectionState = ({ metadata, isDelete }: { metadata?: CoreTypes.Metada
       </div>
 
       <Typography variant="h5" mt={3}>
-        {isDelete ? `${name} disconnected` : `${name} successfully connected!`}
+        {isDelete ? t('walletconnect.disconnected', { name }) : t('walletconnect.connected', { name })}
       </Typography>
     </div>
   )

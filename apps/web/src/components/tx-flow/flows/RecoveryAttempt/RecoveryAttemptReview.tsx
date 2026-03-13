@@ -1,4 +1,5 @@
 import { type SyntheticEvent, useContext, useCallback, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { CircularProgress, CardActions, Button, Typography, Stack, Divider } from '@mui/material'
 import CheckWallet from '@/components/common/CheckWallet'
 import { Errors, trackError } from '@/services/exceptions'
@@ -25,6 +26,7 @@ type RecoveryAttemptReviewProps = {
 }
 
 const RecoveryAttemptReview = ({ item }: RecoveryAttemptReviewProps) => {
+  const { t } = useTranslation()
   const { asyncCallback, isLoading, error } = useAsyncCallback(dispatchRecoveryExecution)
   const wallet = useWallet()
   const { safe } = useSafeInfo()
@@ -77,9 +79,9 @@ const RecoveryAttemptReview = ({ item }: RecoveryAttemptReviewProps) => {
             mb: 2,
           }}
         >
-          <Typography>Execute this transaction to finalize the recovery.</Typography>
+          <Typography>{t('recovery.executeFinalizeRecovery')}</Typography>
 
-          <FieldsGrid title="Initiator">
+          <FieldsGrid title={t('recovery.initiator')}>
             <EthHashInfo address={item.executor} showName showCopyButton hasExplorer />
           </FieldsGrid>
 
@@ -91,7 +93,7 @@ const RecoveryAttemptReview = ({ item }: RecoveryAttemptReviewProps) => {
 
           <RecoveryValidationErrors item={item} />
 
-          {error && <ErrorMessage error={error}>Error submitting the transaction.</ErrorMessage>}
+          {error && <ErrorMessage error={error}>{t('recovery.errorSubmitting')}</ErrorMessage>}
         </Stack>
 
         <Divider sx={{ mx: -3, my: 3.5 }} />
@@ -107,7 +109,7 @@ const RecoveryAttemptReview = ({ item }: RecoveryAttemptReviewProps) => {
                 disabled={!isOk || isLoading}
                 sx={{ minWidth: '112px' }}
               >
-                {isLoading ? <CircularProgress size={20} /> : 'Execute'}
+                {isLoading ? <CircularProgress size={20} /> : t('transactions.execute')}
               </Button>
             )}
           </CheckWallet>

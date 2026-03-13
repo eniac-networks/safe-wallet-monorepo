@@ -1,4 +1,5 @@
 import { useContext } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Paper, Grid, Typography, Box, Button } from '@mui/material'
 import { NoSpendingLimits } from '@/components/settings/SpendingLimits/NoSpendingLimits'
 import { SpendingLimitsTable } from '@/components/settings/SpendingLimits/SpendingLimitsTable'
@@ -13,6 +14,7 @@ import { TxModalContext } from '@/components/tx-flow'
 import { FEATURES } from '@safe-global/utils/utils/chains'
 
 const SpendingLimits = () => {
+  const { t } = useTranslation()
   const { setTxFlow } = useContext(TxModalContext)
   const spendingLimits = useSelector(selectSpendingLimits)
   const spendingLimitsLoading = useSelector(selectSpendingLimitsLoading)
@@ -35,7 +37,7 @@ const SpendingLimits = () => {
               fontWeight: 700,
             }}
           >
-            Spending limits
+            {t('settings.spendingLimits')}
           </Typography>
         </Grid>
 
@@ -43,8 +45,7 @@ const SpendingLimits = () => {
           {isEnabled ? (
             <Box>
               <Typography>
-                You can set rules for specific beneficiaries to access funds from this Safe Account without having to
-                collect all signatures.
+                {t('settings.spendingLimitsDescription')}
               </Typography>
 
               <CheckWallet>
@@ -58,7 +59,7 @@ const SpendingLimits = () => {
                       disabled={!isOk}
                       size="small"
                     >
-                      New spending limit
+                      {t('settings.newSpendingLimit')}
                     </Button>
                   </Track>
                 )}
@@ -70,7 +71,7 @@ const SpendingLimits = () => {
               )}
             </Box>
           ) : (
-            <Typography>The spending limit feature is not yet available on this chain.</Typography>
+            <Typography>{t('settings.spendingLimitNotAvailable')}</Typography>
           )}
         </Grid>
       </Grid>

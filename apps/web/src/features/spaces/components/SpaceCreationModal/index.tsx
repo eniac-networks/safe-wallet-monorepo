@@ -12,8 +12,10 @@ import { SPACE_EVENTS } from '@/services/analytics/events/spaces'
 import { showNotification } from '@/store/notificationsSlice'
 import { useAppDispatch } from '@/store'
 import ExternalLink from '@/components/common/ExternalLink'
+import { useTranslation } from 'react-i18next'
 
 function SpaceCreationModal({ onClose }: { onClose: () => void }): ReactElement {
+  const { t } = useTranslation()
   const [error, setError] = useState<string>()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const router = useRouter()
@@ -37,7 +39,7 @@ function SpaceCreationModal({ onClose }: { onClose: () => void }): ReactElement 
 
         dispatch(
           showNotification({
-            message: `Created space with name ${data.name}.`,
+            message: t('spaces.createdSpaceSuccess', { name: data.name }),
             variant: 'success',
             groupKey: 'create-space-success',
           }),
@@ -49,7 +51,7 @@ function SpaceCreationModal({ onClose }: { onClose: () => void }): ReactElement 
       }
     } catch (error) {
       // @ts-ignore
-      const errorMessage = error?.data?.message || 'Failed creating the space. Please try again.'
+      const errorMessage = error?.data?.message || t('spaces.createSpaceError')
       setError(errorMessage)
     } finally {
       setIsSubmitting(false)
@@ -63,7 +65,7 @@ function SpaceCreationModal({ onClose }: { onClose: () => void }): ReactElement 
       dialogTitle={
         <>
           <SvgIcon component={SpaceIcon} inheritViewBox sx={{ fill: 'none', mr: 1 }} />
-          Create space
+          {t('spaces.createSpace')}
         </>
       }
       hideChainIndicator
@@ -72,10 +74,10 @@ function SpaceCreationModal({ onClose }: { onClose: () => void }): ReactElement 
         <form onSubmit={onSubmit}>
           <DialogContent sx={{ py: 2 }}>
             <Box mb={2}>
-              <NameInput data-testid="space-name-input" label="Name" autoFocus name="name" required />
+              <NameInput data-testid="space-name-input" label={t('newSafe.nameLabel')} autoFocus name="name" required />
             </Box>
             <Typography variant="body2" color="text.secondary">
-              How is my data processed? Read our <ExternalLink href={AppRoutes.privacy}>privacy policy</ExternalLink>
+              {t('spaces.dataPrivacyPrefix')}<ExternalLink href={AppRoutes.privacy}>{t('newSafe.privacyPolicy')}</ExternalLink>
             </Typography>
 
             {error && (
@@ -87,7 +89,7 @@ function SpaceCreationModal({ onClose }: { onClose: () => void }): ReactElement 
 
           <DialogActions>
             <Button data-testid="cancel-btn" onClick={onClose}>
-              Cancel
+              {t('common.cancel')}
             </Button>
             <Button
               data-testid="create-space-modal-button"
@@ -97,7 +99,7 @@ function SpaceCreationModal({ onClose }: { onClose: () => void }): ReactElement 
               disableElevation
               sx={{ minWidth: '200px' }}
             >
-              {isSubmitting ? <CircularProgress size={20} /> : 'Create space'}
+              {isSubmitting ? <CircularProgress size={20} /> : t('spaces.createSpace')}
             </Button>
           </DialogActions>
         </form>

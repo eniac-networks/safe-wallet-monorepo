@@ -8,6 +8,7 @@ import { gtmSetChainId } from '@/services/analytics/gtm'
 import { showNotification } from '@/store/notificationsSlice'
 import { Box, Button, CircularProgress, DialogActions, DialogContent, Stack, Typography } from '@mui/material'
 import { FormProvider, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useSafeCreationData } from '../../hooks/useSafeCreationData'
 import { replayCounterfactualSafeDeployment } from '@/features/counterfactual/utils'
 
@@ -53,6 +54,7 @@ const ReplaySafeDialog = ({
   replayableChains,
   isUnsupportedSafeCreationVersion,
 }: ReplaySafeDialogProps) => {
+  const { t } = useTranslation()
   const formMethods = useForm<CreateSafeOnNewChainForm>({
     mode: 'all',
     defaultValues: {
@@ -142,7 +144,7 @@ const ReplaySafeDialog = ({
         showNotification({
           variant: 'success',
           groupKey: 'replay-safe-success',
-          message: `Successfully added your account on ${selectedChain.chainName}`,
+          message: t('multichain.addedToChain', { chainName: selectedChain.chainName }),
         }),
       )
     } catch (err) {
@@ -166,12 +168,12 @@ const ReplaySafeDialog = ({
     !chain && safeCreationData && replayableChains && replayableChains.filter((chain) => chain.available).length === 0
 
   return (
-    <ModalDialog open={open} onClose={onClose} dialogTitle="Add another network" hideChainIndicator>
+    <ModalDialog open={open} onClose={onClose} dialogTitle={t('multichain.addAnotherNetwork')} hideChainIndicator>
       <form onSubmit={onFormSubmit} id="recreate-safe">
         <DialogContent data-testid="add-chain-dialog">
           <FormProvider {...formMethods}>
             <Stack spacing={2}>
-              <Typography>Add this Safe to another network with the same address.</Typography>
+              <Typography>{t('multichain.addToNewChain')}</Typography>
 
               {chain && (
                 <Box
@@ -187,8 +189,7 @@ const ReplaySafeDialog = ({
               )}
 
               <ErrorMessage level="info">
-                The Safe will use the initial setup of the copied Safe. Any changes to owners, threshold, modules or the
-                Safe&apos;s version will not be reflected in the copy.
+                {t('multichain.initialSetupInfo')}
               </ErrorMessage>
 
               {safeCreationDataLoading ? (
@@ -200,18 +201,18 @@ const ReplaySafeDialog = ({
                   }}
                 >
                   <CircularProgress />
-                  <Typography variant="body2">Loading Safe data</Typography>
+                  <Typography variant="body2">{t('multichain.loadingSafeData')}</Typography>
                 </Stack>
               ) : safeCreationDataError ? (
                 <ErrorMessage error={safeCreationDataError} level="error">
-                  Could not determine the Safe creation parameters.
+                  {t('multichain.cannotDetermineParams')}
                 </ErrorMessage>
               ) : isUnsupportedSafeCreationVersion ? (
                 <ErrorMessage>
-                  This account was created from an outdated mastercopy. Adding another network is not possible.
+                  {t('multichain.outdatedMastercopy')}
                 </ErrorMessage>
               ) : noChainsAvailable ? (
-                <ErrorMessage level="error">This Safe cannot be replayed on any chains.</ErrorMessage>
+                <ErrorMessage level="error">{t('multichain.cannotReplayOnAnyChain')}</ErrorMessage>
               ) : (
                 <>
                   {!chain && (
@@ -226,7 +227,7 @@ const ReplaySafeDialog = ({
 
               {creationError && (
                 <ErrorMessage error={creationError} level="error">
-                  The Safe could not be created with the same address.
+                  {t('multichain.cannotCreateSameAddress')}
                 </ErrorMessage>
               )}
             </Stack>
@@ -243,17 +244,17 @@ const ReplaySafeDialog = ({
               }}
             >
               <ExternalLink sx={{ flexGrow: 1 }} href={MULTICHAIN_HELP_ARTICLE}>
-                Read more
+                {t('settings.readMore')}
               </ExternalLink>
               <Button variant="contained" onClick={onClose}>
-                Got it
+                {t('multichain.gotIt')}
               </Button>
             </Box>
           ) : (
             <>
-              <Button onClick={onCancel}>Cancel</Button>
+              <Button onClick={onCancel}>{t('common.cancel')}</Button>
               <Button data-testid="modal-add-network-btn" type="submit" variant="contained" disabled={submitDisabled}>
-                {isSubmitting ? <CircularProgress size={20} /> : 'Add network'}
+                {isSubmitting ? <CircularProgress size={20} /> : t('multichain.addNetwork')}
               </Button>
             </>
           )}

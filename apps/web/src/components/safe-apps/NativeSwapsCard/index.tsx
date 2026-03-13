@@ -11,10 +11,12 @@ import { AppRoutes } from '@/config/routes'
 import { useRouter } from 'next/router'
 import useLocalStorage from '@/services/local-storage/useLocalStorage'
 import useIsSwapFeatureEnabled from '@/features/swap/hooks/useIsSwapFeatureEnabled'
+import { useTranslation } from 'react-i18next'
 
 const SWAPS_APP_CARD_STORAGE_KEY = 'showSwapsAppCard'
 
 const NativeSwapsCard = () => {
+  const { t } = useTranslation()
   const router = useRouter()
   const isSwapFeatureEnabled = useIsSwapFeatureEnabled()
   const [isSwapsCardVisible = true, setIsSwapsCardVisible] = useLocalStorage<boolean>(SWAPS_APP_CARD_STORAGE_KEY)
@@ -32,7 +34,7 @@ const NativeSwapsCard = () => {
       />
       <CardContent className={css.content}>
         <Typography className={css.title} variant="h5">
-          Native swaps are here!
+          {t('safeApps.nativeSwapsTitle')}
         </Typography>
 
         <Typography
@@ -42,7 +44,7 @@ const NativeSwapsCard = () => {
             color: 'text.secondary',
           }}
         >
-          Experience seamless trading with better decoding and security in native swaps.
+          {t('safeApps.nativeSwapsDesc')}
         </Typography>
 
         <Stack
@@ -55,12 +57,12 @@ const NativeSwapsCard = () => {
           <Track {...SWAP_EVENTS.OPEN_SWAPS} label={SWAP_LABELS.safeAppsPromoWidget}>
             <Link href={{ pathname: AppRoutes.swap, query: { safe: router.query.safe } }} passHref legacyBehavior>
               <Button variant="contained" size="small">
-                Try now
+                {t('safeApps.tryNow')}
               </Button>
             </Link>
           </Track>
           <Button onClick={() => setIsSwapsCardVisible(false)} size="small" variant="text" sx={{ px: '16px' }}>
-            Don&apos;t show
+            {t('safeApps.dontShow')}
           </Button>
         </Stack>
       </CardContent>

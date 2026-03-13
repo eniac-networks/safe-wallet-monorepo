@@ -4,32 +4,35 @@ import { Box, Typography } from '@mui/material'
 import LoadingSpinner, { SpinnerStatus } from '@/components/new-safe/create/steps/StatusStep/LoadingSpinner'
 import { PendingStatus } from '@/store/pendingTxsSlice'
 import css from './styles.module.css'
-
-const getStep = (status: PendingStatus, error?: Error) => {
-  switch (status) {
-    case PendingStatus.PROCESSING:
-    case PendingStatus.RELAYING:
-      return {
-        description: 'Transaction is now processing',
-        instruction: 'The transaction was confirmed and is now being processed.',
-        classNames: '',
-      }
-    case PendingStatus.INDEXING:
-      return {
-        description: 'Transaction was processed',
-        instruction: 'It is now being indexed.',
-        classNames: classNames(css.instructions, error ? css.errorBg : css.infoBg),
-      }
-    default:
-      return {
-        description: error ? 'Transaction failed' : 'Transaction was successful',
-        instruction: error ? (isTimeoutError(error) ? 'Transaction timed out' : error.message) : '',
-        classNames: classNames(css.instructions, error ? css.errorBg : css.infoBg),
-      }
-  }
-}
+import { useTranslation } from 'react-i18next'
 
 const StatusMessage = ({ status, error }: { status: PendingStatus; error?: Error }) => {
+  const { t } = useTranslation()
+
+  const getStep = (status: PendingStatus, error?: Error) => {
+    switch (status) {
+      case PendingStatus.PROCESSING:
+      case PendingStatus.RELAYING:
+        return {
+          description: t('txFlow.txProcessing'),
+          instruction: t('txFlow.txProcessingDesc'),
+          classNames: '',
+        }
+      case PendingStatus.INDEXING:
+        return {
+          description: t('txFlow.txProcessed'),
+          instruction: t('txFlow.txIndexingDesc'),
+          classNames: classNames(css.instructions, error ? css.errorBg : css.infoBg),
+        }
+      default:
+        return {
+          description: error ? t('txFlow.txFailed') : t('txFlow.txSuccessful'),
+          instruction: error ? (isTimeoutError(error) ? t('txFlow.txTimedOut') : error.message) : '',
+          classNames: classNames(css.instructions, error ? css.errorBg : css.infoBg),
+        }
+    }
+  }
+
   const stepInfo = getStep(status, error)
 
   const isSuccess = status === undefined

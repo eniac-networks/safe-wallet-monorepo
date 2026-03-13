@@ -12,6 +12,7 @@ import { shortenAddress } from '@safe-global/utils/utils/formatters'
 import { isEthSignWallet } from '@/utils/wallets'
 import type { Delegate } from '@safe-global/safe-gateway-typescript-sdk/dist/types/delegates'
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   Dialog,
   DialogTitle,
@@ -41,6 +42,7 @@ type DeleteProposerProps = {
 }
 
 const InternalDeleteProposer = ({ wallet, safeAddress, chainId, proposer }: DeleteProposerProps) => {
+  const { t } = useTranslation()
   const [open, setOpen] = useState<boolean>(false)
   const [error, setError] = useState<Error>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -53,7 +55,7 @@ const InternalDeleteProposer = ({ wallet, safeAddress, chainId, proposer }: Dele
 
     if (!wallet?.provider || !safeAddress || !chainId) {
       setIsLoading(false)
-      setError(new Error('Please connect your wallet first'))
+      setError(new Error(t('proposers.connectWalletFirst')))
       return
     }
 
@@ -79,8 +81,8 @@ const InternalDeleteProposer = ({ wallet, safeAddress, chainId, proposer }: Dele
         showNotification({
           variant: 'success',
           groupKey: 'delete-proposer-success',
-          title: 'Proposer deleted successfully!',
-          message: `${shortenAddress(proposer.delegate)} can not suggest transactions anymore.`,
+          title: t('settings.proposerDeletedTitle'),
+          message: t('settings.proposerDeletedMessage', { address: shortenAddress(proposer.delegate) }),
         }),
       )
     } catch (error) {
@@ -110,9 +112,9 @@ const InternalDeleteProposer = ({ wallet, safeAddress, chainId, proposer }: Dele
             <Tooltip
               title={
                 isOk && canDelete
-                  ? 'Delete proposer'
+                  ? t('settings.deleteProposer')
                   : isOk && !canDelete
-                    ? 'Only the owner of this proposer or the proposer itself can delete them'
+                    ? t('settings.onlyOwnerOrProposerCanDelete')
                     : undefined
               }
             >
@@ -136,7 +138,7 @@ const InternalDeleteProposer = ({ wallet, safeAddress, chainId, proposer }: Dele
         <DialogTitle>
           <Box display="flex" alignItems="center">
             <Typography variant="h6" fontWeight={700} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              Delete this proposer?
+              {t('settings.deleteProposerConfirm')}
             </Typography>
 
             <Box flexGrow={1} />
@@ -152,28 +154,24 @@ const InternalDeleteProposer = ({ wallet, safeAddress, chainId, proposer }: Dele
         <DialogContent>
           <Box mb={2}>
             <Typography>
-              Deleting this proposer will permanently remove the address, and it won&apos;t be able to suggest
-              transactions anymore.
-              <br />
-              <br />
-              To complete this action, confirm it with your connected wallet signature.
+              {t('settings.deleteProposerDescription')}
             </Typography>
           </Box>
 
           {error && (
             <Box mt={2}>
-              <ErrorMessage error={error}>Error deleting proposer</ErrorMessage>
+              <ErrorMessage error={error}>{t('settings.errorDeletingProposer')}</ErrorMessage>
             </Box>
           )}
 
-          <NetworkWarning action="sign" />
+          <NetworkWarning action={t('safeMessages.sign')} />
         </DialogContent>
 
         <Divider />
 
         <DialogActions sx={{ padding: 3, justifyContent: 'space-between' }}>
           <Button data-testid="reject-delete-proposer-btn" size="small" variant="text" onClick={onCancel}>
-            No, keep it
+            {t('settings.noKeepIt')}
           </Button>
 
           <CheckWallet checkNetwork={!isLoading}>
@@ -189,7 +187,7 @@ const InternalDeleteProposer = ({ wallet, safeAddress, chainId, proposer }: Dele
                   minHeight: '36px',
                 }}
               >
-                {isLoading ? <CircularProgress size={20} /> : 'Yes, delete'}
+                {isLoading ? <CircularProgress size={20} /> : t('settings.yesDelete')}
               </Button>
             )}
           </CheckWallet>

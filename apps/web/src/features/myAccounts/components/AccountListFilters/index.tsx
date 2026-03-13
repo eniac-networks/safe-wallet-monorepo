@@ -6,8 +6,10 @@ import OrderByButton from '@/features/myAccounts/components/OrderByButton'
 import css from '@/features/myAccounts/styles.module.css'
 import SearchIcon from '@/public/images/common/search.svg'
 import { Box, InputAdornment, Paper, SvgIcon, TextField } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 
 const AccountListFilters = ({ setSearchQuery }: { setSearchQuery: Dispatch<SetStateAction<string>> }) => {
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const { orderBy } = useAppSelector(selectOrderByPreference)
 
@@ -23,8 +25,8 @@ const AccountListFilters = ({ setSearchQuery }: { setSearchQuery: Dispatch<SetSt
       <Box display="flex" justifyContent="space-between" width="100%" gap={1}>
         <TextField
           id="search-by-name"
-          placeholder="Search by name, ENS, address, or chain"
-          aria-label="Search Safe list by name"
+          placeholder={t('myAccounts.searchPlaceholder')}
+          aria-label={t('myAccounts.searchAriaLabel')}
           variant="filled"
           hiddenLabel
           onChange={(e) => {

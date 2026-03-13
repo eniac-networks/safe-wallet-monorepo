@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { selectUndeployedSafes } from '@/features/counterfactual/store/undeployedSafesSlice'
 import NetworkLogosList from '@/features/multichain/components/NetworkLogosList'
 import type { SafeListProps } from '@/features/myAccounts/components/SafesList'
@@ -54,12 +55,13 @@ import { useTheme } from '@mui/material/styles'
 import { ContactSource } from '@/hooks/useAllAddressBooks'
 
 export const MultichainIndicator = ({ safes }: { safes: SafeItem[] }) => {
+  const { t } = useTranslation()
   return (
     <Box className={css.multiChains}>
       <Tooltip
         title={
           <Box data-testid="multichain-tooltip">
-            <Typography fontSize="14px">Multichain account on:</Typography>
+            <Typography fontSize="14px">{t('myAccounts.multichainAccount')}</Typography>
             {safes.map((safeItem) => (
               <Box key={safeItem.chainId} sx={{ p: '4px 0px' }}>
                 <ChainIndicator chainId={safeItem.chainId} />
@@ -150,6 +152,7 @@ function usePinActions(
   safes: SafeItem[],
   safeOverviews: SafeOverview[] | undefined,
 ) {
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const allAddedSafes = useAppSelector(selectAllAddedSafes)
 
@@ -188,7 +191,7 @@ function usePinActions(
 
     dispatch(
       showNotification({
-        title: 'Pinned multi-chain Safe',
+        title: t('myAccounts.pinnedMultichain'),
         message: name ?? shortenAddress(address),
         groupKey: `pin-safe-success-${address}`,
         variant: 'success',
@@ -205,7 +208,7 @@ function usePinActions(
 
     dispatch(
       showNotification({
-        title: 'Unpinned multi-chain Safe',
+        title: t('myAccounts.unpinnedMultichain'),
         message: name ?? shortenAddress(address),
         groupKey: `unpin-safe-success-${address}`,
         variant: 'success',

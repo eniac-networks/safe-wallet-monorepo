@@ -17,6 +17,7 @@ import type { CreateSafeInfoItem } from '@/components/new-safe/create/CreateSafe
 import CreateSafeInfos from '@/components/new-safe/create/CreateSafeInfos'
 import { type ReactElement, useMemo, useState } from 'react'
 import ExternalLink from '@/components/common/ExternalLink'
+import { useTranslation } from 'react-i18next'
 import { type SafeVersion } from '@safe-global/types-kit'
 import { useCurrentChain } from '@/hooks/useChains'
 import type { ChainInfo } from '@safe-global/safe-gateway-typescript-sdk'
@@ -35,76 +36,80 @@ export type NewSafeFormData = {
   paymentReceiver?: string
 }
 
-const staticHints: Record<
-  number,
-  { title: string; variant: AlertColor; steps: { title: string; text: string | ReactElement }[] }
-> = {
-  1: {
-    title: 'Safe Account creation',
-    variant: 'info',
-    steps: [
-      {
-        title: 'Network fee',
-        text: 'Deploying your Safe Account requires the payment of the associated network fee with your connected wallet. An estimation will be provided in the last step.',
-      },
-      {
-        title: 'Address book privacy',
-        text: 'The name of your Safe Account will be stored in a local address book on your device and can be changed at a later stage. It will not be shared with us or any third party.',
-      },
-    ],
-  },
-  2: {
-    title: 'Safe Account creation',
-    variant: 'info',
-    steps: [
-      {
-        title: 'Flat hierarchy',
-        text: 'Every signer has the same rights within the Safe Account and can propose, sign and execute transactions that have the required confirmations.',
-      },
-      {
-        title: 'Managing Signers',
-        text: 'You can always change the number of signers and required confirmations in your Safe Account after creation.',
-      },
-      {
-        title: 'Safe Account setup',
-        text: (
-          <>
-            Not sure how many signers and confirmations you need for your Safe Account?
-            <br />
-            <ExternalLink href={HelpCenterArticle.SAFE_SETUP} fontWeight="bold">
-              Learn more about setting up your Safe Account.
-            </ExternalLink>
-          </>
-        ),
-      },
-    ],
-  },
-  3: {
-    title: 'Safe Account creation',
-    variant: 'info',
-    steps: [
-      {
-        title: 'Wait for the creation',
-        text: 'Depending on network usage, it can take some time until the transaction is successfully added to the blockchain and picked up by our services.',
-      },
-    ],
-  },
-  4: {
-    title: 'Safe Account usage',
-    variant: 'success',
-    steps: [
-      {
-        title: 'Connect your Safe Account',
-        text: 'In our Safe Apps section you can connect your Safe Account to over 70 dApps directly or via Wallet Connect to interact with any application.',
-      },
-    ],
-  },
-}
-
 const CreateSafe = () => {
+  const { t } = useTranslation()
   const router = useRouter()
   const wallet = useWallet()
   const chain = useCurrentChain()
+
+  const staticHints: Record<
+    number,
+    { title: string; variant: AlertColor; steps: { title: string; text: string | ReactElement }[] }
+  > = useMemo(
+    () => ({
+      1: {
+        title: t('newSafe.hintCreationTitle'),
+        variant: 'info',
+        steps: [
+          {
+            title: t('newSafe.hintNetworkFeeTitle'),
+            text: t('newSafe.hintNetworkFeeText'),
+          },
+          {
+            title: t('newSafe.hintAddressBookTitle'),
+            text: t('newSafe.hintAddressBookText'),
+          },
+        ],
+      },
+      2: {
+        title: t('newSafe.hintCreationTitle'),
+        variant: 'info',
+        steps: [
+          {
+            title: t('newSafe.hintFlatHierarchyTitle'),
+            text: t('newSafe.hintFlatHierarchyText'),
+          },
+          {
+            title: t('newSafe.hintManageSignersTitle'),
+            text: t('newSafe.hintManageSignersText'),
+          },
+          {
+            title: t('newSafe.hintSafeSetupTitle'),
+            text: (
+              <>
+                {t('newSafe.hintSafeSetupText')}
+                <br />
+                <ExternalLink href={HelpCenterArticle.SAFE_SETUP} fontWeight="bold">
+                  {t('newSafe.hintSafeSetupLink')}
+                </ExternalLink>
+              </>
+            ),
+          },
+        ],
+      },
+      3: {
+        title: t('newSafe.hintCreationTitle'),
+        variant: 'info',
+        steps: [
+          {
+            title: t('newSafe.hintWaitTitle'),
+            text: t('newSafe.hintWaitText'),
+          },
+        ],
+      },
+      4: {
+        title: t('newSafe.hintUsageTitle'),
+        variant: 'success',
+        steps: [
+          {
+            title: t('newSafe.hintConnectTitle'),
+            text: t('newSafe.hintConnectText'),
+          },
+        ],
+      },
+    }),
+    [t],
+  )
 
   const [safeName, setSafeName] = useState('')
   const [overviewNetworks, setOverviewNetworks] = useState<ChainInfo[]>()
@@ -114,8 +119,8 @@ const CreateSafe = () => {
 
   const CreateSafeSteps: TxStepperProps<NewSafeFormData>['steps'] = [
     {
-      title: 'Set up the basics',
-      subtitle: 'Give a name to your account and select which networks to deploy it on.',
+      title: t('newSafe.step1Title'),
+      subtitle: t('newSafe.step1Subtitle'),
       render: (data, onSubmit, onBack, setStep) => (
         <SetNameStep
           setOverviewNetworks={setOverviewNetworks}
@@ -129,9 +134,8 @@ const CreateSafe = () => {
       ),
     },
     {
-      title: 'Signers and confirmations',
-      subtitle:
-        'Set the signer wallets of your Safe Account and how many need to confirm to execute a valid transaction.',
+      title: t('newSafe.step2Title'),
+      subtitle: t('newSafe.step2Subtitle'),
       render: (data, onSubmit, onBack, setStep) => (
         <OwnerPolicyStep
           setDynamicHint={setDynamicHint}
@@ -143,9 +147,8 @@ const CreateSafe = () => {
       ),
     },
     {
-      title: 'Review',
-      subtitle:
-        "You're about to create a new Safe Account and will have to confirm the transaction with your connected wallet.",
+      title: t('newSafe.step3Title'),
+      subtitle: t('newSafe.step3Subtitle'),
       render: (data, onSubmit, onBack, setStep) => (
         <ReviewStep data={data} onSubmit={onSubmit} onBack={onBack} setStep={setStep} />
       ),
@@ -198,7 +201,7 @@ const CreateSafe = () => {
               pb: 2,
             }}
           >
-            Create new Safe Account
+            {t('newSafe.createTitle')}
           </Typography>
         </Grid>
         <Grid

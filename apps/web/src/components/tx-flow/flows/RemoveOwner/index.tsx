@@ -3,6 +3,7 @@ import { ReviewRemoveOwner } from './ReviewRemoveOwner'
 import SaveAddressIcon from '@/public/images/common/save-address.svg'
 import { SetThreshold } from './SetThreshold'
 import { useContext } from 'react'
+import { useTranslation } from 'react-i18next'
 import { TxFlowType } from '@/services/analytics'
 import { TxFlowContext } from '../../TxFlowProvider'
 import { TxFlow } from '../../TxFlow'
@@ -30,6 +31,7 @@ const ReviewOwnerStep = (props: ReviewTransactionProps) => {
 }
 
 const RemoveOwnerFlow = (props: Owner) => {
+  const { t } = useTranslation()
   const { safe } = useSafeInfo()
 
   const defaultValues: RemoveOwnerFlowProps = {
@@ -42,10 +44,10 @@ const RemoveOwnerFlow = (props: Owner) => {
       initialData={defaultValues}
       eventCategory={TxFlowType.REMOVE_OWNER}
       icon={SaveAddressIcon}
-      subtitle="Remove signer"
+      subtitle={t('settings.removeSigner')}
       ReviewTransactionComponent={ReviewOwnerStep}
     >
-      <TxFlowStep title="New transaction">
+      <TxFlowStep title={t('sidebar.newTransaction')}>
         <SetThresholdStep />
       </TxFlowStep>
     </TxFlow>

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { getSafeInfo, type SafeInfo } from '@safe-global/safe-gateway-typescript-sdk'
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form'
 import { Box, Button, Divider } from '@mui/material'
@@ -23,6 +24,7 @@ type FormData = {
 }
 
 const SafeOwnerStep = ({ data, onSubmit, onBack }: StepRenderProps<LoadSafeFormData>) => {
+  const { t } = useTranslation()
   const chainId = useChainId()
   const formMethods = useForm<FormData>({
     defaultValues: data,
@@ -76,10 +78,10 @@ const SafeOwnerStep = ({ data, onSubmit, onBack }: StepRenderProps<LoadSafeFormD
         <Box className={layoutCss.row}>
           <Box display="flex" flexDirection="row" justifyContent="space-between" gap={3}>
             <Button variant="outlined" size="small" onClick={handleBack} startIcon={<ArrowBackIcon fontSize="small" />}>
-              Back
+              {t('newSafe.back')}
             </Button>
             <Button type="submit" variant="contained" size="stretched" disabled={!isValid}>
-              Next
+              {t('newSafe.next')}
             </Button>
           </Box>
         </Box>

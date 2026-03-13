@@ -3,6 +3,7 @@ import { ReviewOwner } from '@/components/tx-flow/flows/AddOwner/ReviewOwner'
 import SaveAddressIcon from '@/public/images/common/save-address.svg'
 import useSafeInfo from '@/hooks/useSafeInfo'
 import { useContext } from 'react'
+import { useTranslation } from 'react-i18next'
 import { TxFlowType } from '@/services/analytics'
 import { TxFlow } from '../../TxFlow'
 import { TxFlowStep } from '../../TxFlowStep'
@@ -33,6 +34,7 @@ const ReviewOwnerStep = (props: ReviewTransactionProps) => {
 }
 
 const AddOwnerFlow = ({ address }: { address?: string }) => {
+  const { t } = useTranslation()
   const {
     safe: { threshold },
     safeLoaded,
@@ -53,10 +55,10 @@ const AddOwnerFlow = ({ address }: { address?: string }) => {
       initialData={defaultValues}
       eventCategory={TxFlowType.ADD_OWNER}
       icon={SaveAddressIcon}
-      subtitle="Add signer"
+      subtitle={t('settings.addSigner')}
       ReviewTransactionComponent={ReviewOwnerStep}
     >
-      <TxFlowStep title="New transaction">
+      <TxFlowStep title={t('sidebar.newTransaction')}>
         <ChooseOwnerStep />
       </TxFlowStep>
     </TxFlow>

@@ -9,6 +9,7 @@ import Link from 'next/link'
 import { AppRoutes } from '@/config/routes'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import { useRouter } from 'next/router'
+import { useTranslation } from 'react-i18next'
 
 export const earnBannerID = 'earnBanner'
 
@@ -17,18 +18,19 @@ export const earnBannerDisclaimer =
 
 const EarnBanner = ({ onDismiss }: { onDismiss: () => void }) => {
   const router = useRouter()
+  const { t } = useTranslation()
 
   return (
     <Card className={css.banner}>
       <Stack direction={{ xs: 'column', md: 'row' }} alignItems={{ xs: 'flex-start', md: 'center' }} spacing={2}>
-        <Image className={css.bannerImage} src={EarnIllustrationLight} alt="Earn illustration" width={95} height={95} />
+        <Image className={css.bannerImage} src={EarnIllustrationLight} alt={t('dashboard.earnIllustrationAlt')} width={95} height={95} />
         <Box>
           <Typography variant="h4" fontWeight="bold" color="static.main" className={css.bannerText}>
-            Try enterprise-grade yields with up to 8.10% APY*
+            {t('dashboard.earnBannerTitle')}
           </Typography>
 
           <Typography variant="body2" color="static.light" className={css.bannerText}>
-            Deposit stablecoins, wstETH, ETH, and WBTC and let your assets compound in minutes.
+            {t('dashboard.earnBannerDescription')}
           </Typography>
 
           <Track {...EARN_EVENTS.OPEN_EARN_PAGE} label={EARN_LABELS.safe_dashboard_banner}>
@@ -40,7 +42,7 @@ const EarnBanner = ({ onDismiss }: { onDismiss: () => void }) => {
                 sx={{ mt: 1, p: 0.5 }}
                 color="static"
               >
-                Try now
+                {t('dashboard.tryNow')}
               </Button>
             </Link>
           </Track>
@@ -48,7 +50,7 @@ const EarnBanner = ({ onDismiss }: { onDismiss: () => void }) => {
       </Stack>
 
       <Track {...EARN_EVENTS.HIDE_EARN_BANNER}>
-        <IconButton className={css.closeButton} aria-label="close" onClick={onDismiss}>
+        <IconButton className={css.closeButton} aria-label={t('common.close')} onClick={onDismiss}>
           <CloseIcon fontSize="small" color="border" />
         </IconButton>
       </Track>

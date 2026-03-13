@@ -4,8 +4,10 @@ import WalletConnect from '@/public/images/common/walletconnect.svg'
 import Alert from '@/public/images/notifications/alert.svg'
 import css from './styles.module.css'
 import { BRAND_NAME } from '@/config/constants'
+import { useTranslation } from 'react-i18next'
 
 const WcLogoHeader = ({ errorMessage }: { errorMessage?: string }): ReactElement => {
+  const { t } = useTranslation()
   return (
     <>
       <div>
@@ -22,7 +24,7 @@ const WcLogoHeader = ({ errorMessage }: { errorMessage?: string }): ReactElement
       </div>
 
       <Typography data-testid="wc-title" variant="h5" mt={2} mb={0.5} className={css.title}>
-        {errorMessage || `Connect dApps to ${BRAND_NAME}`}
+        {errorMessage || t('walletconnect.connectDapps', { brandName: BRAND_NAME })}
       </Typography>
     </>
   )

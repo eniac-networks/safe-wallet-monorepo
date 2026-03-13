@@ -24,8 +24,10 @@ import React from 'react'
 import PositionsUnavailable from './components/PositionsUnavailable'
 import TotalAssetValue from '@/components/balances/TotalAssetValue'
 import PositionsSkeleton from '@/features/positions/components/PositionsSkeleton'
+import { useTranslation } from 'react-i18next'
 
 export const Positions = () => {
+  const { t } = useTranslation()
   const positionsFiatTotal = usePositionsFiatTotal()
   const { data: protocols, error, isLoading } = usePositions()
 
@@ -43,15 +45,15 @@ export const Positions = () => {
     <Stack gap={2}>
       <Box>
         <Box mb={2}>
-          <TotalAssetValue fiatTotal={positionsFiatTotal} title="Total positions value" />
+          <TotalAssetValue fiatTotal={positionsFiatTotal} title={t('positions.totalPositionsValue')} />
         </Box>
 
         <Stack direction="row" alignItems="center" gap={1}>
           <Typography variant="h4" fontWeight={700}>
-            Positions
+            {t('positions.positions')}
           </Typography>
           <Tooltip
-            title="Experimental. Data may be missing or outdated."
+            title={t('positions.experimental')}
             placement="top"
             arrow
             slotProps={{
@@ -62,7 +64,7 @@ export const Positions = () => {
               },
             }}
           >
-            <Chip label="Beta" size="small" sx={{ backgroundColor: 'background.lightGrey', letterSpacing: '0.4px' }} />
+            <Chip label={t('spaces.beta')} size="small" sx={{ backgroundColor: 'background.lightGrey', letterSpacing: '0.4px' }} />
           </Tooltip>
         </Stack>
 
@@ -74,7 +76,7 @@ export const Positions = () => {
               letterSpacing: '1px',
             }}
           >
-            Position balances are not included in the total asset value.
+            {t('positions.positionBalancesDisclaimer')}
           </Typography>
         </Box>
       </Box>
@@ -153,8 +155,8 @@ export const Positions = () => {
                       width: '25%',
                       disableSort: true,
                     },
-                    { id: 'balance', label: 'Balance', width: '35%', align: 'right', disableSort: true },
-                    { id: 'value', label: 'Value', width: '40%', align: 'right', disableSort: true },
+                    { id: 'balance', label: t('positions.balance'), width: '35%', align: 'right', disableSort: true },
+                    { id: 'value', label: t('positions.value'), width: '40%', align: 'right', disableSort: true },
                   ]
 
                   return (

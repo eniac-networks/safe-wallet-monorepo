@@ -5,8 +5,10 @@ import { useCurrentChain } from '@/hooks/useChains'
 import useSafeAddress from '@/hooks/useSafeAddress'
 import { useAppDispatch, useAppSelector } from '@/store'
 import { selectSettings, setQrShortName } from '@/store/settingsSlice'
+import { useTranslation } from 'react-i18next'
 
 const AddFundsCTA = () => {
+  const { t } = useTranslation()
   const safeAddress = useSafeAddress()
   const chain = useCurrentChain()
   const dispatch = useAppDispatch()
@@ -44,7 +46,7 @@ const AddFundsCTA = () => {
             control={
               <Switch checked={settings.shortName.qr} onChange={(e) => dispatch(setQrShortName(e.target.checked))} />
             }
-            label={<>QR code with chain prefix</>}
+            label={<>{t('dashboard.qrChainPrefix', { prefix: chain?.shortName })}</>}
           />
         </Grid>
 
@@ -64,10 +66,10 @@ const AddFundsCTA = () => {
               fontWeight: 'bold',
             }}
           >
-            Add funds to get started
+            {t('dashboard.addFundsBannerTitle')}
           </Typography>
 
-          <Typography>Copy your address to send tokens from a different account.</Typography>
+          <Typography>{t('dashboard.copyAddressInstruction')}</Typography>
 
           <Box
             sx={{

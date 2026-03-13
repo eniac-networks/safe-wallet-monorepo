@@ -16,6 +16,7 @@ import NoWalletConnectedWarning from '../../NoWalletConnectedWarning'
 import { type SafeVersion } from '@safe-global/types-kit'
 import { useCurrentChain } from '@/hooks/useChains'
 import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import type { ChainInfo } from '@safe-global/safe-gateway-typescript-sdk'
 import { useSafeSetupHints } from '../OwnerPolicyStep/useSafeSetupHints'
 import type { CreateSafeInfoItem } from '../../CreateSafeInfos'
@@ -52,6 +53,7 @@ function SetNameStep({
   setDynamicHint: (hints: CreateSafeInfoItem | undefined) => void
   isAdvancedFlow?: boolean
 }) {
+  const { t } = useTranslation()
   const router = useRouter()
   const currentChain = useCurrentChain()
   const wallet = useWallet()
@@ -110,13 +112,13 @@ function SetNameStep({
             <Grid item xs={12} md={12}>
               <NameInput
                 name={SetNameStepFields.name}
-                label={errors?.[SetNameStepFields.name]?.message || 'Name'}
+                label={errors?.[SetNameStepFields.name]?.message || t('newSafe.nameLabel')}
                 placeholder={fallbackName}
                 InputLabelProps={{ shrink: true }}
                 InputProps={{
                   endAdornment: (
                     <Tooltip
-                      title="This name is stored locally and will never be shared with us or any third parties."
+                      title={t('newSafe.nameTooltip')}
                       arrow
                       placement="top"
                     >
@@ -131,22 +133,22 @@ function SetNameStep({
 
             <Grid xs={12} item>
               <Typography variant="h5" fontWeight={700} display="inline-flex" alignItems="center" gap={1} mt={2}>
-                Select Networks
+                {t('newSafe.selectNetworks')}
               </Typography>
               <Typography variant="body2" mb={2}>
-                Choose which networks you want your account to be active on. You can add more networks later.{' '}
+                {t('newSafe.selectNetworksDescription')}{' '}
               </Typography>
               <SafeCreationNetworkInput isAdvancedFlow={isAdvancedFlow} name={SetNameStepFields.networks} />
             </Grid>
           </Grid>
           <Typography variant="body2" mt={2}>
-            By continuing, you agree to our{' '}
+            {t('newSafe.termsAgreement')}{' '}
             <Link href={AppRoutes.terms} passHref legacyBehavior>
-              <MUILink>terms of use</MUILink>
+              <MUILink>{t('newSafe.termsOfUse')}</MUILink>
             </Link>{' '}
             and{' '}
             <Link href={AppRoutes.privacy} passHref legacyBehavior>
-              <MUILink>privacy policy</MUILink>
+              <MUILink>{t('newSafe.privacyPolicy')}</MUILink>
             </Link>
             .
           </Typography>
@@ -157,10 +159,10 @@ function SetNameStep({
         <Box className={layoutCss.row}>
           <Box display="flex" flexDirection="row" justifyContent="space-between" gap={3}>
             <Button data-testid="cancel-btn" variant="outlined" onClick={onCancel} size="small">
-              Cancel
+              {t('common.cancel')}
             </Button>
             <Button data-testid="next-btn" type="submit" variant="contained" size="stretched" disabled={isDisabled}>
-              Next
+              {t('newSafe.next')}
             </Button>
           </Box>
         </Box>

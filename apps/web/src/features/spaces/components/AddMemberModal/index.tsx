@@ -28,6 +28,7 @@ import { showNotification } from '@/store/notificationsSlice'
 import MemberInfoForm from '@/features/spaces/components/AddMemberModal/MemberInfoForm'
 import AddressBookInput from '@/components/common/AddressBookInput'
 import useAddressBook from '@/hooks/useAddressBook'
+import { useTranslation } from 'react-i18next'
 
 type MemberField = {
   name: string
@@ -44,6 +45,7 @@ export const RoleMenuItem = ({
   hasDescription?: boolean
   selected?: boolean
 }): ReactElement => {
+  const { t } = useTranslation()
   const isAdmin = role === MemberRole.ADMIN
 
   return (
@@ -52,13 +54,13 @@ export const RoleMenuItem = ({
         <SvgIcon mr={1} component={isAdmin ? adminIcon : memberIcon} inheritViewBox fontSize="small" />
       </Box>
       <Typography gridArea="title" fontWeight={hasDescription ? 'bold' : undefined}>
-        {isAdmin ? 'Admin' : 'Member'}
+        {isAdmin ? t('spaces.roleAdmin') : t('spaces.roleMember')}
       </Typography>
       {hasDescription && (
         <>
           <Box gridArea="description">
             <Typography variant="body2" sx={{ maxWidth: '300px', whiteSpace: 'normal', wordWrap: 'break-word' }}>
-              {isAdmin ? 'Admins can create and delete spaces, invite members, and more.' : 'Can view the space data.'}
+              {isAdmin ? t('spaces.adminDescription') : t('spaces.memberDescription')}
             </Typography>
           </Box>
           <Box gridArea="checkIcon" sx={{ visibility: selected ? 'visible' : 'hidden', mx: 1 }}>
@@ -71,6 +73,7 @@ export const RoleMenuItem = ({
 }
 
 const AddMemberModal = ({ onClose }: { onClose: () => void }): ReactElement => {
+  const { t } = useTranslation()
   const spaceId = useCurrentSpaceId()
   const router = useRouter()
   const dispatch = useAppDispatch()
@@ -103,7 +106,7 @@ const AddMemberModal = ({ onClose }: { onClose: () => void }): ReactElement => {
     setError(undefined)
 
     if (!spaceId) {
-      setError('Something went wrong. Please try again.')
+      setError(t('spaces.somethingWentWrong'))
       return
     }
 
@@ -122,7 +125,7 @@ const AddMemberModal = ({ onClose }: { onClose: () => void }): ReactElement => {
 
         dispatch(
           showNotification({
-            message: `Invited ${data.name} to space`,
+            message: t('spaces.invitedToSpace', { name: data.name }),
             variant: 'success',
             groupKey: 'invite-member-success',
           }),
@@ -132,24 +135,24 @@ const AddMemberModal = ({ onClose }: { onClose: () => void }): ReactElement => {
       }
       if (response.error) {
         // @ts-ignore
-        const errorMessage = response.error?.data?.message || 'Invite failed. Please try again.'
+        const errorMessage = response.error?.data?.message || t('spaces.inviteFailed')
         setError(errorMessage)
       }
     } catch (e) {
       console.error(e)
-      setError('Something went wrong. Please try again.')
+      setError(t('spaces.somethingWentWrong'))
     } finally {
       setIsSubmitting(false)
     }
   })
 
   return (
-    <ModalDialog open onClose={onClose} dialogTitle="Add member" hideChainIndicator>
+    <ModalDialog open onClose={onClose} dialogTitle={t('spaces.addMember')} hideChainIndicator>
       <FormProvider {...methods}>
         <form onSubmit={onSubmit}>
           <DialogContent sx={{ py: 2 }}>
             <Typography mb={2}>
-              Invite a signer of the Safe Accounts, or any other wallet address. Anyone in the space can see their name.
+              {t('spaces.inviteDescription')}
             </Typography>
 
             <Stack spacing={3}>
@@ -158,7 +161,7 @@ const AddMemberModal = ({ onClose }: { onClose: () => void }): ReactElement => {
               <AddressBookInput
                 data-testid="member-address-input"
                 name="address"
-                label="Address"
+                label={t('addressBook.address')}
                 required
                 showPrefix={false}
               />
@@ -173,7 +176,7 @@ const AddMemberModal = ({ onClose }: { onClose: () => void }): ReactElement => {
 
           <DialogActions>
             <Button data-testid="cancel-btn" onClick={onClose}>
-              Cancel
+              {t('common.cancel')}
             </Button>
             <Button
               data-testid="add-member-modal-button"
@@ -182,7 +185,7 @@ const AddMemberModal = ({ onClose }: { onClose: () => void }): ReactElement => {
               disabled={!formState.isValid || isSubmitting}
               disableElevation
             >
-              {isSubmitting ? <CircularProgress size={20} /> : 'Add member'}
+              {isSubmitting ? <CircularProgress size={20} /> : t('spaces.addMember')}
             </Button>
           </DialogActions>
         </form>

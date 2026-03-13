@@ -1,6 +1,7 @@
 import { OVERVIEW_EVENTS, trackEvent } from '@/services/analytics'
 import dynamic from 'next/dynamic'
 import React, { useContext } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Button, CircularProgress, Tooltip, Typography } from '@mui/material'
 import { TxModalContext } from '@/components/tx-flow'
 import { selectUndeployedSafe } from '@/features/counterfactual/store/undeployedSafesSlice'
@@ -12,6 +13,7 @@ import { PendingSafeStatus } from '@safe-global/utils/features/counterfactual/st
 const ActivateAccountFlow = dynamic(() => import('./ActivateAccountFlow'))
 
 const ActivateAccountButton = () => {
+  const { t } = useTranslation()
   const { safe, safeAddress } = useSafeInfo()
   const undeployedSafe = useAppSelector((state) => selectUndeployedSafe(state, safe.chainId, safeAddress))
   const { setTxFlow } = useContext(TxModalContext)
@@ -24,7 +26,7 @@ const ActivateAccountButton = () => {
   }
 
   return (
-    <Tooltip title={isProcessing ? 'The safe activation is already in process' : undefined}>
+    <Tooltip title={isProcessing ? t('counterfactual.activationInProcess') : undefined}>
       <span>
         <CheckWallet allowNonOwner allowUndeployedSafe>
           {(isOk) => (
@@ -40,12 +42,12 @@ const ActivateAccountButton = () => {
               {isProcessing ? (
                 <>
                   <Typography variant="body2" component="span" mr={1}>
-                    Processing
+                    {t('counterfactual.processing')}
                   </Typography>
                   <CircularProgress size={16} />
                 </>
               ) : (
-                'Activate now'
+                t('counterfactual.activateNow')
               )}
             </Button>
           )}

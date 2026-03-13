@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { NativeStakingStatus } from '@safe-global/safe-gateway-typescript-sdk'
 import { SvgIcon } from '@mui/material'
 import CheckIcon from '@/public/images/common/circle-check.svg'
@@ -18,42 +19,42 @@ const ColorIcons: Record<
   [NativeStakingStatus.NOT_STAKED]: {
     color: 'warning',
     icon: SignatureIcon,
-    text: 'Inactive',
+    text: 'stake.statusInactive',
   },
   [NativeStakingStatus.ACTIVATING]: {
     color: 'info',
     icon: ClockIcon,
-    text: 'Activating',
+    text: 'stake.statusActivating',
   },
   [NativeStakingStatus.DEPOSIT_IN_PROGRESS]: {
     color: 'info',
     icon: ClockIcon,
-    text: 'Awaiting entry',
+    text: 'stake.statusAwaitingEntry',
   },
   [NativeStakingStatus.ACTIVE]: {
     color: 'success',
     icon: CheckIcon,
-    text: 'Validating',
+    text: 'stake.statusValidating',
   },
   [NativeStakingStatus.EXIT_REQUESTED]: {
     color: 'info',
     icon: ClockIcon,
-    text: 'Requested exit',
+    text: 'stake.statusRequestedExit',
   },
   [NativeStakingStatus.EXITING]: {
     color: 'info',
     icon: ClockIcon,
-    text: 'Request pending',
+    text: 'stake.statusRequestPending',
   },
   [NativeStakingStatus.EXITED]: {
     color: 'success',
     icon: CheckIcon,
-    text: 'Withdrawn',
+    text: 'stake.statusWithdrawn',
   },
   [NativeStakingStatus.SLASHED]: {
     color: 'warning',
     icon: SlashShield,
-    text: 'Slashed',
+    text: 'stake.statusSlashed',
   },
 }
 
@@ -64,12 +65,13 @@ const capitalizedStatus = (status: string) =>
     .replace(/^\w/g, (l) => l.toUpperCase())
 
 const StakingStatus = ({ status }: { status: NativeStakingStatus }) => {
+  const { t } = useTranslation()
   const config = ColorIcons[status]
 
   return (
     <TxStatusChip color={config?.color}>
       {config?.icon && <SvgIcon component={config.icon} fontSize="small" inheritViewBox />}
-      {config?.text || capitalizedStatus(status)}
+      {config?.text ? t(config.text) : capitalizedStatus(status)}
     </TxStatusChip>
   )
 }

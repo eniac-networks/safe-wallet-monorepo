@@ -1,5 +1,6 @@
 import type { MouseEvent } from 'react'
 import { useState, type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import IconButton from '@mui/material/IconButton'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
@@ -34,6 +35,7 @@ const MultiAccountContextMenu = ({
   chainIds: string[]
   addNetwork: boolean
 }): ReactElement => {
+  const { t } = useTranslation()
   const [anchorEl, setAnchorEl] = useState<HTMLElement | undefined>()
   const [open, setOpen] = useState<typeof defaultOpen>(defaultOpen)
 
@@ -72,14 +74,14 @@ const MultiAccountContextMenu = ({
           <ListItemIcon>
             <SvgIcon component={EditIcon} inheritViewBox fontSize="small" color="success" />
           </ListItemIcon>
-          <ListItemText data-testid="rename-btn">Rename</ListItemText>
+          <ListItemText data-testid="rename-btn">{t('sidebar.rename')}</ListItemText>
         </MenuItem>
         {addNetwork && (
           <MenuItem onClick={handleOpenModal(ModalType.ADD_CHAIN, OVERVIEW_EVENTS.ADD_NEW_NETWORK)}>
             <ListItemIcon>
               <SvgIcon component={PlusIcon} inheritViewBox fontSize="small" color="primary" />
             </ListItemIcon>
-            <ListItemText data-testid="add-chain-btn">Add another network</ListItemText>
+            <ListItemText data-testid="add-chain-btn">{t('sidebar.addAnotherNetwork')}</ListItemText>
           </MenuItem>
         )}
       </ContextMenu>

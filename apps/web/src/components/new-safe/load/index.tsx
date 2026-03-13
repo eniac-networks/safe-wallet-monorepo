@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useRouter } from 'next/router'
+import { useTranslation } from 'react-i18next'
 
 import { LOAD_SAFE_CATEGORY } from '@/services/analytics'
 import { Container, Grid, Typography } from '@mui/material'
@@ -16,34 +17,38 @@ export type LoadSafeFormData = NamedAddress & {
   owners: NamedAddress[]
 }
 
-export const LoadSafeSteps: TxStepperProps<LoadSafeFormData>['steps'] = [
-  {
-    title: 'Choose address, network and a name',
-    subtitle: 'Paste the address of the Safe Account you want to add, select the network and choose a name.',
-    render: (data, onSubmit, onBack, setStep) => (
-      <SetAddressStep onSubmit={onSubmit} onBack={onBack} data={data} setStep={setStep} />
-    ),
-  },
-  {
-    title: 'Signers and confirmations',
-    subtitle: 'Optional: Provide a name for each signer.',
-    render: (data, onSubmit, onBack, setStep) => (
-      <SafeOwnerStep onSubmit={onSubmit} onBack={onBack} data={data} setStep={setStep} />
-    ),
-  },
-  {
-    title: 'Review',
-    subtitle: 'Confirm adding Safe Account to your Watchlist',
-    render: (data, onSubmit, onBack, setStep) => (
-      <SafeReviewStep onSubmit={onSubmit} onBack={onBack} data={data} setStep={setStep} />
-    ),
-  },
-]
-
 export const loadSafeDefaultData = { threshold: -1, owners: [], address: '', name: '' }
 
 const LoadSafe = ({ initialData }: { initialData?: TxStepperProps<LoadSafeFormData>['initialData'] }) => {
+  const { t } = useTranslation()
   const router = useRouter()
+
+  const LoadSafeSteps: TxStepperProps<LoadSafeFormData>['steps'] = useMemo(
+    () => [
+      {
+        title: t('newSafe.loadStep1Title'),
+        subtitle: t('newSafe.loadStep1Subtitle'),
+        render: (data, onSubmit, onBack, setStep) => (
+          <SetAddressStep onSubmit={onSubmit} onBack={onBack} data={data} setStep={setStep} />
+        ),
+      },
+      {
+        title: t('newSafe.loadStep2Title'),
+        subtitle: t('newSafe.loadStep2Subtitle'),
+        render: (data, onSubmit, onBack, setStep) => (
+          <SafeOwnerStep onSubmit={onSubmit} onBack={onBack} data={data} setStep={setStep} />
+        ),
+      },
+      {
+        title: t('newSafe.loadStep3Title'),
+        subtitle: t('newSafe.loadStep3Subtitle'),
+        render: (data, onSubmit, onBack, setStep) => (
+          <SafeReviewStep onSubmit={onSubmit} onBack={onBack} data={data} setStep={setStep} />
+        ),
+      },
+    ],
+    [t],
+  )
 
   const onClose = () => {
     router.push(AppRoutes.welcome.index)
@@ -68,7 +73,7 @@ const LoadSafe = ({ initialData }: { initialData?: TxStepperProps<LoadSafeFormDa
               pb: 2,
             }}
           >
-            Add existing Safe Account
+            {t('newSafe.addTitle')}
           </Typography>
         </Grid>
         <Grid

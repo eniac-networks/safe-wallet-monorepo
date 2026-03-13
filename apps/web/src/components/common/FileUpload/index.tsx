@@ -4,6 +4,7 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff'
 import FileIcon from '@/public/images/settings/data/file.svg'
 import type { MouseEventHandler, ReactElement } from 'react'
 import type { DropzoneInputProps, DropzoneRootProps } from 'react-dropzone'
+import { useTranslation } from 'react-i18next'
 
 export type FileInfo = {
   name: string
@@ -130,6 +131,8 @@ const FileUpload = ({
   fileInfo?: FileInfo
   onRemove: (() => void) | MouseEventHandler
 }) => {
+  const { t } = useTranslation()
+
   if (fileInfo) {
     return <UploadSummary fileInfo={fileInfo} onRemove={onRemove} />
   }
@@ -162,7 +165,7 @@ const FileUpload = ({
           sx={{ fill: 'none', color: ({ palette }) => palette.primary.light }}
         />
         <Typography>
-          Drag and drop a {fileType} file or <Link color="secondary">choose a file</Link>
+          {t('common.dragAndDropFile', { fileType })} <Link color="secondary">{t('common.chooseFile')}</Link>
         </Typography>
       </Box>
     </Box>

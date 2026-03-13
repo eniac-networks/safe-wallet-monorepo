@@ -8,6 +8,7 @@ import { asError } from '@safe-global/utils/services/exceptions/utils'
 import { getClipboard, isClipboardSupported } from '@/utils/clipboard'
 import { Button, CircularProgress, InputAdornment, TextField } from '@mui/material'
 import { useCallback, useContext, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const PROPOSAL_TIMEOUT = 30_000
 
@@ -23,6 +24,7 @@ const useTrackErrors = (error?: Error) => {
 }
 
 const WcInput = ({ uri }: { uri: string }) => {
+  const { t } = useTranslation()
   const { walletConnect, loading, setLoading, setError } = useContext(WalletConnectContext)
   const [value, setValue] = useState('')
   const [inputError, setInputError] = useState<Error>()
@@ -35,7 +37,7 @@ const WcInput = ({ uri }: { uri: string }) => {
       setValue(val)
 
       if (val && !isPairingUri(val)) {
-        setInputError(new Error('Invalid pairing code'))
+        setInputError(new Error(t('walletconnect.invalidPairingCode')))
         return
       }
 
@@ -54,7 +56,7 @@ const WcInput = ({ uri }: { uri: string }) => {
       setTimeout(() => {
         if (loading && loading !== WCLoadingState.APPROVE) {
           setLoading(null)
-          setError(new Error('Connection timed out'))
+          setError(new Error(t('walletconnect.connectionTimedOut')))
         }
       }, PROPOSAL_TIMEOUT)
     },
@@ -87,7 +89,7 @@ const WcInput = ({ uri }: { uri: string }) => {
       autoFocus
       disabled={!!loading}
       error={!!inputError}
-      label={inputError ? inputError.message : 'Pairing code'}
+      label={inputError ? inputError.message : t('walletconnect.pairingCode')}
       placeholder="wc:"
       spellCheck={false}
       InputProps={{
@@ -99,7 +101,7 @@ const WcInput = ({ uri }: { uri: string }) => {
                 {loading === WCLoadingState.CONNECT || loading === WCLoadingState.APPROVE ? (
                   <CircularProgress size={20} />
                 ) : (
-                  'Paste'
+                  t('walletconnect.paste')
                 )}
               </Button>
             </Track>

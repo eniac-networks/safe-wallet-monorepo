@@ -6,6 +6,7 @@ import AutorenewRoundedIcon from '@mui/icons-material/AutorenewRounded'
 import { IconButton, Tooltip, type SvgIconProps } from '@mui/material'
 import classnames from 'classnames'
 import css from './styles.module.css'
+import { useTranslation } from 'react-i18next'
 
 export const LoopIcon = (props: SvgIconProps) => {
   return (
@@ -28,6 +29,7 @@ export const LoopIcon = (props: SvgIconProps) => {
 }
 
 const CounterfactualStatusButton = () => {
+  const { t } = useTranslation()
   const { safe, safeAddress } = useSafeInfo()
   const undeployedSafe = useAppSelector((state) => selectUndeployedSafe(state, safe.chainId, safeAddress))
 
@@ -38,7 +40,7 @@ const CounterfactualStatusButton = () => {
   return (
     <Tooltip
       placement="right"
-      title={isActivating ? 'Safe Account is being activated' : 'Safe Account is not activated'}
+      title={isActivating ? t('counterfactual.safeBeingActivated') : t('counterfactual.safeNotActivatedStatus')}
       arrow
     >
       <IconButton

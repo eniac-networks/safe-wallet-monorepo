@@ -6,6 +6,7 @@ import { useCompatibilityWarning } from './useCompatibilityWarning'
 import useSafeInfo from '@/hooks/useSafeInfo'
 
 import css from './styles.module.css'
+import { useTranslation } from 'react-i18next'
 
 export const CompatibilityWarning = ({
   proposal,
@@ -14,6 +15,7 @@ export const CompatibilityWarning = ({
   proposal: WalletKitTypes.SessionProposal
   chainIds: Array<string>
 }) => {
+  const { t } = useTranslation()
   const { safe } = useSafeInfo()
   const isUnsupportedChain = !chainIds.includes(safe.chainId)
   const { severity, message } = useCompatibilityWarning(proposal, isUnsupportedChain)
@@ -27,7 +29,7 @@ export const CompatibilityWarning = ({
       {isUnsupportedChain && (
         <>
           <Typography mt={3} mb={1} variant="h5">
-            Supported networks
+            {t('walletconnect.supportedNetworks')}
           </Typography>
 
           <Stack direction="row" className={css.chainContainer}>

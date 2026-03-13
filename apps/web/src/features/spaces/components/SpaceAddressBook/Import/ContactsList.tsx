@@ -10,6 +10,7 @@ import type { ImportContactsFormValues } from '@/features/spaces/components/Spac
 import { getSelectedAddresses, getContactId } from '@/features/spaces/components/SpaceAddressBook/utils'
 import { sameAddress } from '@safe-global/utils/utils/addresses'
 import useGetSpaceAddressBook from '@/features/spaces/hooks/useGetSpaceAddressBook'
+import { useTranslation } from 'react-i18next'
 
 export type ContactItem = {
   chainId: string
@@ -18,6 +19,7 @@ export type ContactItem = {
 }
 
 const ContactsList = ({ contactItems }: { contactItems: ContactItem[] }) => {
+  const { t } = useTranslation()
   const { control } = useFormContext<ImportContactsFormValues>()
   const selectedContacts = useWatch({ control, name: 'contacts' })
   const selectedAddresses = getSelectedAddresses(selectedContacts)
@@ -59,7 +61,7 @@ const ContactsList = ({ contactItems }: { contactItems: ContactItem[] }) => {
               return (
                 <Tooltip
                   title={
-                    isSameAddressSelected || alreadyAdded ? 'You already added a contact with this address.' : undefined
+                    isSameAddressSelected || alreadyAdded ? t('spaces.contactAlreadyAdded') : undefined
                   }
                   arrow
                 >

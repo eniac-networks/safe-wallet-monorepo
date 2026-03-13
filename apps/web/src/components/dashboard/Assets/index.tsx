@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Box, Skeleton, Typography, Paper, Card, Stack } from '@mui/material'
 import useBalances from '@/hooks/useBalances'
 import TokenAmount from '@/components/common/TokenAmount'
@@ -28,27 +29,33 @@ import NoAssetsIcon from '@/public/images/common/no-assets.svg'
 
 const MAX_ASSETS = 4
 
-const NoAssets = () => (
-  <Paper elevation={0} sx={{ p: 5, textAlign: 'center' }}>
-    <NoAssetsIcon />
+const NoAssets = () => {
+  const { t } = useTranslation()
+  return (
+    <Paper elevation={0} sx={{ p: 5, textAlign: 'center' }}>
+      <NoAssetsIcon />
 
-    <Typography mb={0.5} mt={3}>
-      No assets yet
-    </Typography>
+      <Typography mb={0.5} mt={3}>
+        {t('dashboard.noAssetsYet')}
+      </Typography>
 
-    <Typography color="primary.light">Deposit from another wallet to get started.</Typography>
-  </Paper>
-)
+      <Typography color="primary.light">{t('dashboard.depositToGetStarted')}</Typography>
+    </Paper>
+  )
+}
 
-const AssetsSkeleton = () => (
-  <Card sx={{ px: 1.5, py: 2.5 }} component="section">
-    <Stack direction="row" sx={{ px: 1.5, mb: 1 }}>
-      <Typography fontWeight={700}>Top assets</Typography>
-    </Stack>
+const AssetsSkeleton = () => {
+  const { t } = useTranslation()
+  return (
+    <Card sx={{ px: 1.5, py: 2.5 }} component="section">
+      <Stack direction="row" sx={{ px: 1.5, mb: 1 }}>
+        <Typography fontWeight={700}>{t('dashboard.topAssets')}</Typography>
+      </Stack>
 
-    <Skeleton height={66} variant="rounded" />
-  </Card>
-)
+      <Skeleton height={66} variant="rounded" />
+    </Card>
+  )
+}
 
 const AssetRow = ({
   item,
@@ -124,6 +131,7 @@ const AssetList = ({ items }: { items: Balances['items'] }) => {
 export const isNonZeroBalance = (item: Balances['items'][number]) => item.balance !== '0'
 
 const AssetsWidget = () => {
+  const { t } = useTranslation()
   const router = useRouter()
   const { safe } = router.query
   const { loading, balances } = useBalances()
@@ -148,9 +156,9 @@ const AssetsWidget = () => {
   return (
     <Card data-testid="assets-widget" sx={{ border: 0, px: 1.5, pt: 2.5, pb: 1.5 }}>
       <Stack direction="row" justifyContent="space-between" sx={{ px: 1.5, mb: 1 }}>
-        <Typography fontWeight={700}>Top assets</Typography>
+        <Typography fontWeight={700}>{t('dashboard.topAssets')}</Typography>
 
-        {items.length > 0 && <ViewAllLink url={viewAllUrl} text="View all" />}
+        {items.length > 0 && <ViewAllLink url={viewAllUrl} text={t('common.viewAll')} />}
       </Stack>
 
       <Box>{items.length > 0 ? <AssetList items={items} /> : <NoAssets />}</Box>

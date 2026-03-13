@@ -3,11 +3,13 @@ import { Box } from '@mui/material'
 import FieldsGrid from '@/components/tx/FieldsGrid'
 import TokenAmount from '@/components/common/TokenAmount'
 import VaultRedeemConfirmation from '@/features/earn/components/VaultRedeemConfirmation'
+import { useTranslation } from 'react-i18next'
 
 const VaultRedeemTxDetails = ({ info }: { info: VaultRedeemTransactionInfo }) => {
+  const { t } = useTranslation()
   return (
     <Box pl={1} pr={5} display="flex" flexDirection="column" gap={1}>
-      <FieldsGrid title="Withdraw">
+      <FieldsGrid title={t('earn.withdraw')}>
         <TokenAmount
           tokenSymbol={info.tokenInfo.symbol}
           value={info.value}

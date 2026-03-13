@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { ChevronRight } from '@mui/icons-material'
 import { List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Typography } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 
 import Track from '@/components/common/Track'
 import { NESTED_SAFE_EVENTS, NESTED_SAFE_LABELS } from '@/services/analytics/events/nested-safes'
@@ -21,6 +22,7 @@ export function NestedSafesList({
   onClose: () => void
   nestedSafes: Array<string>
 }): ReactElement {
+  const { t } = useTranslation()
   const [showAll, setShowAll] = useState(false)
   const nestedSafesToShow = showAll ? nestedSafes : nestedSafes.slice(0, MAX_NESTED_SAFES)
 
@@ -43,7 +45,7 @@ export function NestedSafesList({
             sx={{ cursor: 'pointer' }}
             onClick={onShowAll}
           >
-            Show all Nested Safes
+            {t('sidebar.showAllNestedSafes')}
             <ChevronRight color="border" sx={{ transform: 'rotate(90deg)', ml: 1 }} fontSize="inherit" />
           </Typography>
         </Track>

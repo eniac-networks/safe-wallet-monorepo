@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { Typography } from '@mui/material'
 import { formatVisualAmount } from '@safe-global/utils/utils/formatters'
 import { type TwapOrder } from '@safe-global/safe-gateway-typescript-sdk'
@@ -11,9 +12,10 @@ export const PartBuyAmount = ({
   order: Pick<TwapOrder, 'minPartLimit' | 'buyToken'>
   addonText?: string
 }) => {
+  const { t } = useTranslation()
   const { minPartLimit, buyToken } = order
   return (
-    <DataRow title="Buy amount" key="buy_amount_part">
+    <DataRow title={t('swap.buyAmount')} key="buy_amount_part">
       <Box>
         <Typography component="span" fontWeight="bold">
           {formatVisualAmount(minPartLimit, buyToken.decimals)} {buyToken.symbol}

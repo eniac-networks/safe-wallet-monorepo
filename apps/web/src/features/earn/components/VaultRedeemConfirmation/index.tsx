@@ -2,14 +2,16 @@ import type { VaultRedeemTransactionInfo } from '@safe-global/store/gateway/AUTO
 import { Box, Stack, Typography } from '@mui/material'
 import TokenIcon from '@/components/common/TokenIcon'
 import TokenAmount from '@/components/common/TokenAmount'
-import { vaultTypeToLabel } from '@/features/earn/utils'
 import { formatPercentage } from '@safe-global/utils/utils/formatters'
 import { DataTable } from '@/components/common/Table/DataTable'
 import { DataRow } from '@/components/common/Table/DataRow'
 import IframeIcon from '@/components/common/IframeIcon'
+import { useTranslation } from 'react-i18next'
 
 // TODO: Check if additional rewards can actually appear for a withdraw/redeem
 const AdditionalRewards = ({ txInfo }: { txInfo: VaultRedeemTransactionInfo }) => {
+  const { t } = useTranslation()
+
   if (!txInfo.additionalRewards[0]) return null
 
   const additionalRewardsClaimable = Number(txInfo.additionalRewards[0].claimable) > 0
@@ -19,16 +21,16 @@ const AdditionalRewards = ({ txInfo }: { txInfo: VaultRedeemTransactionInfo }) =
   return (
     <Stack sx={{ border: '1px solid #ddd', borderRadius: '6px', padding: '12px', mt: 1 }}>
       <DataTable
-        header="Additional reward"
+        header={t('earn.additionalReward')}
         rows={[
-          <DataRow key="Token" title="Token">
+          <DataRow key="Token" title={t('earn.token')}>
             {txInfo.additionalRewards[0].tokenInfo.name}{' '}
             <Typography component="span" color="primary.light">
               {txInfo.additionalRewards[0].tokenInfo.symbol}
             </Typography>
           </DataRow>,
 
-          <DataRow key="Earn" title="Earn">
+          <DataRow key="Earn" title={t('earn.earn')}>
             {formatPercentage(txInfo.additionalRewardsNrr / 100)}
           </DataRow>,
 
@@ -41,7 +43,7 @@ const AdditionalRewards = ({ txInfo }: { txInfo: VaultRedeemTransactionInfo }) =
             gap={0.5}
             mt={1}
           >
-            Powered by <IframeIcon src={txInfo.vaultInfo.logoUri} alt="Morpho logo" width={16} height={16} /> Morpho
+            {t('earn.poweredBy')} <IframeIcon src={txInfo.vaultInfo.logoUri} alt={t('earn.morphoLogo')} width={16} height={16} /> Morpho
           </Typography>,
         ]}
       />
@@ -50,6 +52,7 @@ const AdditionalRewards = ({ txInfo }: { txInfo: VaultRedeemTransactionInfo }) =
 }
 
 const ConfirmationHeader = ({ txInfo }: { txInfo: VaultRedeemTransactionInfo }) => {
+  const { t } = useTranslation()
   return (
     <Stack key="amount" direction="row" gap={1} mb={1}>
       <Stack
@@ -73,7 +76,7 @@ const ConfirmationHeader = ({ txInfo }: { txInfo: VaultRedeemTransactionInfo }) 
 
         <Box flex={1}>
           <Typography variant="body2" color="primary.light">
-            {vaultTypeToLabel[txInfo.type]}
+            {t('earn.withdraw')}
           </Typography>
 
           <Typography variant="h4" fontWeight="bold" component="div">
@@ -105,7 +108,7 @@ const ConfirmationHeader = ({ txInfo }: { txInfo: VaultRedeemTransactionInfo }) 
       >
         <Box flex={1}>
           <Typography variant="body2" color="primary.light">
-            Current reward
+            {t('earn.currentReward')}
           </Typography>
 
           <Typography variant="h4" fontWeight="bold" component="div">
@@ -128,6 +131,8 @@ const VaultRedeemConfirmation = ({
   txInfo: VaultRedeemTransactionInfo
   isTxDetails?: boolean
 }) => {
+  const { t } = useTranslation()
+
   return (
     <>
       <DataTable
@@ -136,7 +141,7 @@ const VaultRedeemConfirmation = ({
 
           <>
             {isTxDetails && (
-              <DataRow key="Current reward" title="Current reward">
+              <DataRow key="Current reward" title={t('earn.currentReward')}>
                 <TokenAmount
                   value={txInfo.currentReward}
                   tokenSymbol={txInfo.tokenInfo.symbol}
@@ -147,9 +152,9 @@ const VaultRedeemConfirmation = ({
             )}
           </>,
 
-          <DataRow key="Withdraw from" title="Withdraw from">
+          <DataRow key="Withdraw from" title={t('earn.withdrawFrom')}>
             <Stack direction="row" alignItems="center">
-              <IframeIcon src={txInfo.vaultInfo.logoUri} alt="Morpho logo" width={24} height={24} />
+              <IframeIcon src={txInfo.vaultInfo.logoUri} alt={t('earn.morphoLogo')} width={24} height={24} />
               <Typography component="span" ml={1} fontWeight="bold">
                 {txInfo.vaultInfo.name}
               </Typography>

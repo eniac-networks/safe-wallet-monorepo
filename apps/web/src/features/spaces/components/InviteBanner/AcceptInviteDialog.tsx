@@ -16,8 +16,10 @@ import { SPACE_EVENTS } from '@/services/analytics/events/spaces'
 import { trackEvent } from '@/services/analytics'
 import { showNotification } from '@/store/notificationsSlice'
 import ExternalLink from '@/components/common/ExternalLink'
+import { useTranslation } from 'react-i18next'
 
 function AcceptInviteDialog({ space, onClose }: { space: GetSpaceResponse; onClose: () => void }): ReactElement {
+  const { t } = useTranslation()
   const [error, setError] = useState<string>()
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -51,28 +53,28 @@ function AcceptInviteDialog({ space, onClose }: { space: GetSpaceResponse; onClo
 
       dispatch(
         showNotification({
-          message: `Accepted invite to ${space.name}`,
+          message: t('spaces.acceptedInviteSuccess', { name: space.name }),
           variant: 'success',
           groupKey: 'accept-invite-success',
         }),
       )
     } catch (e) {
-      setError('Failed accepting the invite. Please try again.')
+      setError(t('spaces.acceptInviteError'))
     } finally {
       setIsSubmitting(false)
     }
   })
 
   return (
-    <ModalDialog open onClose={onClose} dialogTitle="Accept invite" hideChainIndicator>
+    <ModalDialog open onClose={onClose} dialogTitle={t('spaces.acceptInvite')} hideChainIndicator>
       <FormProvider {...methods}>
         <form onSubmit={onSubmit}>
           <DialogContent sx={{ py: 2 }}>
             <Box mb={2}>
-              <NameInput data-testid="invite-name-input" label="Name" autoFocus name="name" required />
+              <NameInput data-testid="invite-name-input" label={t('newSafe.nameLabel')} autoFocus name="name" required />
             </Box>
             <Typography variant="body2" color="text.secondary">
-              How is my data processed? Read our <ExternalLink href={AppRoutes.privacy}>privacy policy</ExternalLink>
+              {t('spaces.dataPrivacyPrefix')}<ExternalLink href={AppRoutes.privacy}>{t('newSafe.privacyPolicy')}</ExternalLink>
             </Typography>
 
             {error && (
@@ -84,7 +86,7 @@ function AcceptInviteDialog({ space, onClose }: { space: GetSpaceResponse; onClo
 
           <DialogActions>
             <Button data-testid="cancel-btn" onClick={onClose}>
-              Cancel
+              {t('common.cancel')}
             </Button>
             <Button
               data-testid="confirm-accept-invite-button"
@@ -93,7 +95,7 @@ function AcceptInviteDialog({ space, onClose }: { space: GetSpaceResponse; onClo
               disabled={!formState.isValid}
               disableElevation
             >
-              {isSubmitting ? <CircularProgress size={20} /> : 'Accept invite'}
+              {isSubmitting ? <CircularProgress size={20} /> : t('spaces.acceptInvite')}
             </Button>
           </DialogActions>
         </form>

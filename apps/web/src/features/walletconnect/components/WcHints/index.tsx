@@ -18,6 +18,7 @@ import Question from '@/public/images/common/question.svg'
 import css from './styles.module.css'
 import { trackEvent } from '@/services/analytics'
 import { WALLETCONNECT_EVENTS } from '@/services/analytics/events/walletconnect'
+import { useTranslation } from 'react-i18next'
 
 const HintAccordion = ({
   title,
@@ -55,25 +56,8 @@ const HintAccordion = ({
   )
 }
 
-const ConnectionTitle = 'How do I connect to a dApp?'
-const ConnectionSteps = [
-  'Open a WalletConnect supported dApp',
-  'Connect a wallet',
-  'Select WalletConnect as the wallet',
-  'Copy the pairing code and paste it into the input field above',
-  'Approve the session',
-  'dApp is now connected to the Safe',
-]
-
-const InteractionTitle = 'How do I interact with a dApp?'
-const InteractionSteps = [
-  'Connect a dApp by following the above steps',
-  'Ensure the dApp is connected to the same chain as your Safe Account',
-  'Initiate a transaction/signature request via the dApp',
-  'Transact/sign as normal via the Safe',
-]
-
 const WcHints = (): ReactElement => {
+  const { t } = useTranslation()
   const [expandedAccordion, setExpandedAccordion] = useState<'connection' | 'interaction' | null>(null)
 
   const onExpand = (accordion: 'connection' | 'interaction') => {
@@ -87,14 +71,26 @@ const WcHints = (): ReactElement => {
   return (
     <Box display="flex" flexDirection="column" gap={1}>
       <HintAccordion
-        title={ConnectionTitle}
-        items={ConnectionSteps}
+        title={t('walletconnect.connectionTitle')}
+        items={[
+          t('walletconnect.connectionStep1'),
+          t('walletconnect.connectionStep2'),
+          t('walletconnect.connectionStep3'),
+          t('walletconnect.connectionStep4'),
+          t('walletconnect.connectionStep5'),
+          t('walletconnect.connectionStep6'),
+        ]}
         onExpand={() => onExpand('connection')}
         expanded={expandedAccordion === 'connection'}
       />
       <HintAccordion
-        title={InteractionTitle}
-        items={InteractionSteps}
+        title={t('walletconnect.interactionTitle')}
+        items={[
+          t('walletconnect.interactionStep1'),
+          t('walletconnect.interactionStep2'),
+          t('walletconnect.interactionStep3'),
+          t('walletconnect.interactionStep4'),
+        ]}
         onExpand={() => onExpand('interaction')}
         expanded={expandedAccordion === 'interaction'}
       />

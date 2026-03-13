@@ -5,8 +5,10 @@ import { selectOnChainSigning, setOnChainSigning } from '@/store/settingsSlice'
 import { FormControlLabel, Checkbox, Paper, Typography, FormGroup, Grid } from '@mui/material'
 import { BRAND_NAME } from '@/config/constants'
 import { HelpCenterArticle } from '@safe-global/utils/config/constants'
+import { useTranslation } from 'react-i18next'
 
 export const SafeAppsSigningMethod = () => {
+  const { t } = useTranslation()
   const onChainSigning = useAppSelector(selectOnChainSigning)
 
   const dispatch = useAppDispatch()
@@ -21,15 +23,14 @@ export const SafeAppsSigningMethod = () => {
       <Grid container spacing={3}>
         <Grid item lg={4} xs={12}>
           <Typography variant="h4" fontWeight="bold" mb={1}>
-            Signing method
+            {t('settings.signingMethod')}
           </Typography>
         </Grid>
 
         <Grid item xs>
           <Typography mb={2}>
-            This setting determines how the {BRAND_NAME} will sign message requests from Safe Apps. Gasless, off-chain
-            signing is used by default. Learn more about message signing{' '}
-            <ExternalLink href={HelpCenterArticle.SIGNED_MESSAGES}>here</ExternalLink>.
+            {t('settings.signingMethodDescription', { brandName: BRAND_NAME })}{' '}
+            <ExternalLink href={HelpCenterArticle.SIGNED_MESSAGES}>{t('settings.here')}</ExternalLink>.
           </Typography>
           <FormGroup>
             <FormControlLabel
@@ -40,7 +41,7 @@ export const SafeAppsSigningMethod = () => {
                 },
               })}
               control={<Checkbox checked={onChainSigning} onChange={onChange} name="use-on-chain-signing" />}
-              label="Always use on-chain signatures"
+              label={t('settings.alwaysUseOnChainSignatures')}
             />
           </FormGroup>
         </Grid>

@@ -17,9 +17,10 @@ import { LOAD_SAFE_EVENTS, OPEN_SAFE_LABELS, OVERVIEW_EVENTS, trackEvent } from 
 import { AppRoutes } from '@/config/routes'
 import ReviewRow from '@/components/new-safe/ReviewRow'
 import { upsertAddressBookEntries } from '@/store/addressBookSlice'
-import { maybePlural } from '@safe-global/utils/utils/formatters'
+import { useTranslation } from 'react-i18next'
 
 const SafeReviewStep = ({ data, onBack }: StepRenderProps<LoadSafeFormData>) => {
+  const { t } = useTranslation()
   const chain = useCurrentChain()
   const dispatch = useAppDispatch()
   const router = useRouter()
@@ -94,10 +95,10 @@ const SafeReviewStep = ({ data, onBack }: StepRenderProps<LoadSafeFormData>) => 
     <>
       <Box className={layoutCss.row}>
         <Grid container spacing={3}>
-          <ReviewRow name="Network" value={<ChainIndicator chainId={chain?.chainId} inline />} />
-          <ReviewRow name="Name" value={<Typography>{data.name}</Typography>} />
+          <ReviewRow name={t('newSafe.network')} value={<ChainIndicator chainId={chain?.chainId} inline />} />
+          <ReviewRow name={t('newSafe.nameLabel')} value={<Typography>{data.name}</Typography>} />
           <ReviewRow
-            name="Signers"
+            name={t('settings.signers')}
             value={
               <Box className={css.ownersArray}>
                 {data.owners.map((owner, index) => (
@@ -116,10 +117,10 @@ const SafeReviewStep = ({ data, onBack }: StepRenderProps<LoadSafeFormData>) => 
             }
           />
           <ReviewRow
-            name="Threshold"
+            name={t('newSafe.threshold')}
             value={
               <Typography>
-                {data.threshold} out of {data.owners.length} signer{maybePlural(data.owners)}
+                {data.threshold} {t('newSafe.outOfSigners', { count: data.owners.length, owners: data.owners.length })}
               </Typography>
             }
           />
@@ -129,10 +130,10 @@ const SafeReviewStep = ({ data, onBack }: StepRenderProps<LoadSafeFormData>) => 
       <Box className={layoutCss.row}>
         <Box display="flex" flexDirection="row" justifyContent="space-between" gap={3}>
           <Button variant="outlined" size="small" onClick={handleBack} startIcon={<ArrowBackIcon fontSize="small" />}>
-            Back
+            {t('newSafe.back')}
           </Button>
           <Button onClick={addSafe} variant="contained" size="stretched">
-            Add
+            {t('newSafe.addAccount')}
           </Button>
         </Box>
       </Box>

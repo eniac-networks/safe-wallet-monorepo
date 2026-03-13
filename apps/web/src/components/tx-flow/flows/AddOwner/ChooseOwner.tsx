@@ -27,7 +27,7 @@ import InfoIcon from '@/public/images/notifications/info.svg'
 import commonCss from '@/components/tx-flow/common/styles.module.css'
 import { TOOLTIP_TITLES } from '@/components/tx-flow/common/constants'
 import EthHashInfo from '@/components/common/EthHashInfo'
-import { maybePlural } from '@safe-global/utils/utils/formatters'
+import { useTranslation } from 'react-i18next'
 
 type FormData = Pick<AddOwnerFlowProps | ReplaceOwnerFlowProps, 'newOwner' | 'threshold'>
 
@@ -45,6 +45,7 @@ export const ChooseOwner = ({
   onSubmit: (data: FormData) => void
   mode: ChooseOwnerMode
 }) => {
+  const { t } = useTranslation()
   const { safe, safeAddress } = useSafeInfo()
 
   const formMethods = useForm<FormData>({
@@ -91,7 +92,7 @@ export const ChooseOwner = ({
                 }}
               >
                 {params.removedOwner &&
-                  'Review the signer you want to replace in the active Safe Account, then specify the new signer you want to replace it with:'}
+                  t('settings.reviewSignerToReplace')}
               </Typography>
               <Box
                 sx={{
@@ -105,7 +106,7 @@ export const ChooseOwner = ({
                     mb: 1,
                   }}
                 >
-                  Current signer
+                  {t('settings.currentSigner')}
                 </Typography>
                 <EthHashInfo address={params.removedOwner.address} showCopyButton shortAddress={false} hasExplorer />
               </Box>
@@ -114,9 +115,9 @@ export const ChooseOwner = ({
 
           <FormControl fullWidth>
             <NameInput
-              label="New signer"
+              label={t('settings.newSignerLabel')}
               name="newOwner.name"
-              placeholder={fallbackName || 'Signer name'}
+              placeholder={fallbackName || t('newSafe.signerNameLabel')}
               InputLabelProps={{ shrink: true }}
               InputProps={{
                 endAdornment: resolving && (
@@ -131,7 +132,7 @@ export const ChooseOwner = ({
           <FormControl fullWidth>
             <AddressBookInput
               name="newOwner.address"
-              label="Signer address or ENS"
+              label={t('settings.signerAddressOrEns')}
               validate={combinedValidate}
               required
             />
@@ -148,7 +149,7 @@ export const ChooseOwner = ({
                   mt: 3,
                 }}
               >
-                Threshold
+                {t('newSafe.threshold')}
                 <Tooltip title={TOOLTIP_TITLES.THRESHOLD} arrow placement="top">
                   <span>
                     <SvgIcon
@@ -171,7 +172,7 @@ export const ChooseOwner = ({
                   mb: 1,
                 }}
               >
-                Any transaction requires the confirmation of:
+                {t('newSafe.anyTransactionRequires')}
               </Typography>
 
               <Grid
@@ -205,7 +206,7 @@ export const ChooseOwner = ({
                 </Grid>
                 <Grid item>
                   <Typography>
-                    out of {newNumberOfOwners} signer{maybePlural(newNumberOfOwners)}
+                    {t('newSafe.outOfSigners', { count: newNumberOfOwners, owners: newNumberOfOwners })}
                   </Typography>
                 </Grid>
               </Grid>
@@ -216,7 +217,7 @@ export const ChooseOwner = ({
 
           <CardActions>
             <Button data-testid="add-owner-next-btn" variant="contained" type="submit" disabled={!isValid || resolving}>
-              Next
+              {t('newSafe.next')}
             </Button>
           </CardActions>
         </form>

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { Stack } from '@mui/material'
 import FieldsGrid from '@/components/tx/FieldsGrid'
 import {
@@ -11,13 +12,14 @@ type StakingOrderConfirmationViewProps = {
 }
 
 const StakingConfirmationTxWithdraw = ({ order }: StakingOrderConfirmationViewProps) => {
+  const { t } = useTranslation()
   return (
     <Stack
       sx={{
         gap: 2,
       }}
     >
-      <FieldsGrid title="Receive">
+      <FieldsGrid title={t('stake.receive')}>
         {' '}
         <TokenAmount
           value={order.value}

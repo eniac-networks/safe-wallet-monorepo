@@ -21,6 +21,7 @@ import { showNotification } from '@/store/notificationsSlice'
 import { useAppDispatch } from '@/store'
 import { SPACE_EVENTS } from '@/services/analytics/events/spaces'
 import { trackEvent } from '@/services/analytics'
+import { useTranslation } from 'react-i18next'
 
 const ListIcon = ({ variant }: { variant: 'success' | 'danger' }) => {
   const Icon = variant === 'success' ? CheckIcon : CloseIcon
@@ -33,6 +34,7 @@ const ListIcon = ({ variant }: { variant: 'success' | 'danger' }) => {
 }
 
 const DeleteSpaceDialog = ({ space, onClose }: { space: GetSpaceResponse | undefined; onClose: () => void }) => {
+  const { t } = useTranslation()
   const [error, setError] = useState<string>()
   const router = useRouter()
   const dispatch = useAppDispatch()
@@ -51,7 +53,7 @@ const DeleteSpaceDialog = ({ space, onClose }: { space: GetSpaceResponse | undef
       trackEvent({ ...SPACE_EVENTS.DELETE_SPACE })
       dispatch(
         showNotification({
-          message: `Deleted space ${space.name}.`,
+          message: t('spaces.deletedSpaceSuccess', { name: space.name }),
           variant: 'success',
           groupKey: 'delete-space-success',
         }),
@@ -60,29 +62,29 @@ const DeleteSpaceDialog = ({ space, onClose }: { space: GetSpaceResponse | undef
       router.push({ pathname: AppRoutes.welcome.spaces })
     } catch (e) {
       console.error(e)
-      setError('Error deleting the space. Please try again.')
+      setError(t('spaces.deleteSpaceError'))
     }
   }
 
   return (
-    <ModalDialog dialogTitle="Delete space" hideChainIndicator open onClose={onClose}>
+    <ModalDialog dialogTitle={t('spaces.deleteSpace')} hideChainIndicator open onClose={onClose}>
       <DialogContent sx={{ mt: 2 }}>
         <Typography mb={2}>
-          Are you sure you want to delete <b>{space?.name}</b>? Deleting this space:
+          {t('spaces.confirmDeleteSpace', { name: space?.name })}
         </Typography>
 
         <List sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <ListItem disablePadding>
             <ListIcon variant="danger" />
-            Will permanently revoke access to space data for you and its members
+            {t('spaces.deleteRevokeAccess')}
           </ListItem>
           <ListItem disablePadding>
             <ListIcon variant="danger" />
-            Will remove members and Safe Accounts names from our database
+            {t('spaces.deleteRemoveMembers')}
           </ListItem>
           <ListItem disablePadding>
             <ListIcon variant="success" />
-            Will keep access to the Safe Accounts added to this space. They will not be deleted.
+            {t('spaces.deleteKeepSafeAccounts')}
           </ListItem>
         </List>
 
@@ -94,9 +96,9 @@ const DeleteSpaceDialog = ({ space, onClose }: { space: GetSpaceResponse | undef
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={onClose}>No, keep it</Button>
+        <Button onClick={onClose}>{t('settings.noKeepIt')}</Button>
         <Button data-testid="space-confirm-delete-button" variant="danger" onClick={onDelete}>
-          Permanently delete it
+          {t('spaces.permanentlyDeleteIt')}
         </Button>
       </DialogActions>
     </ModalDialog>

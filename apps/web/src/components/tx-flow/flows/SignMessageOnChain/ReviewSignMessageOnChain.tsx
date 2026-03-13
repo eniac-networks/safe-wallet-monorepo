@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react'
 import { useContext, useEffect, useState } from 'react'
 import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { hashMessage, TypedDataEncoder } from 'ethers'
 import { Box } from '@mui/system'
 import { Typography, SvgIcon } from '@mui/material'
@@ -35,6 +36,7 @@ export type SignMessageOnChainProps = {
 } & ReviewTransactionProps
 
 const ReviewSignMessageOnChain = ({ message, method, children, ...props }: SignMessageOnChainProps): ReactElement => {
+  const { t } = useTranslation()
   const { safe } = useSafeInfo()
   const { safeTx, setSafeTx, setSafeTxError } = useContext(SafeTxContext)
   useHighlightHiddenTab()
@@ -108,35 +110,35 @@ const ReviewSignMessageOnChain = ({ message, method, children, ...props }: SignM
     <ReviewTransaction {...props}>
       <SendFromBlock />
 
-      <InfoDetails title="Interact with SignMessageLib">
+      <InfoDetails title={t('signMessage.interactWithSignLib')}>
         <EthHashInfo address={signMessageAddress} shortAddress={false} showCopyButton hasExplorer />
       </InfoDetails>
 
       {isEIP712TypedData(decodedMessage) && (
-        <ErrorBoundary fallback={<div>Error parsing data</div>}>
+        <ErrorBoundary fallback={<div>{t('signMessage.errorParsingData')}</div>}>
           <ApprovalEditor safeMessage={decodedMessage} />
         </ErrorBoundary>
       )}
 
       {safeTx && (
         <Box pb={1}>
-          <HexEncodedData title="Data:" hexData={safeTx.data.data} />
+          <HexEncodedData title={t('signMessage.dataLabel')} hexData={safeTx.data.data} />
         </Box>
       )}
 
       <Typography my={1}>
-        <b>Signing method:</b> <code>{method}</code>
+        <b>{t('signMessage.signingMethod')}</b> <code>{method}</code>
       </Typography>
 
       <Typography my={2}>
-        <b>Signing message:</b> {readableMessage && <CopyButton text={readableMessage} />}
+        <b>{t('signMessage.signingMessage')}</b> {readableMessage && <CopyButton text={readableMessage} />}
       </Typography>
       <DecodedMsg message={decodedMessage} isInModal />
 
       <Box display="flex" alignItems="center" my={2}>
         <SvgIcon component={WarningIcon} inheritViewBox color="warning" />
         <Typography ml={1}>
-          Signing a message with your Safe Account requires a transaction on the blockchain
+          {t('signMessage.requiresTransaction')}
         </Typography>
       </Box>
 

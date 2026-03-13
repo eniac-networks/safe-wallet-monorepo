@@ -5,9 +5,11 @@ import { FEATURES } from '@/utils/featureToggled'
 import { ErrorBoundary } from '@sentry/react'
 import { BlockaidWarning } from '@/components/tx/security/blockaid'
 import { TxSecurityContext } from '@/components/tx/security/shared/TxSecurityContext'
+import { useTranslation } from 'react-i18next'
 
 const BlockaidSlot = withSlot({
   Component: () => {
+    const { t } = useTranslation()
     const { setIsSubmitDisabled } = useContext(TxFlowContext)
     const { needsRiskConfirmation, isRiskConfirmed } = useContext(TxSecurityContext)
 
@@ -16,7 +18,7 @@ const BlockaidSlot = withSlot({
     }, [needsRiskConfirmation, isRiskConfirmed, setIsSubmitDisabled])
 
     return (
-      <ErrorBoundary fallback={<div>Error showing scan result</div>}>
+      <ErrorBoundary fallback={<div>{t('txFlow.errorShowingScanResult')}</div>}>
         <BlockaidWarning />
       </ErrorBoundary>
     )

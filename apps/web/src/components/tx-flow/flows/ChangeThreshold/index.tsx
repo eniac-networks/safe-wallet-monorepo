@@ -6,6 +6,7 @@ import { TxFlow } from '../../TxFlow'
 import { TxFlowStep } from '../../TxFlowStep'
 import { type ReviewTransactionProps } from '@/components/tx/ReviewTransactionV2'
 import { useContext } from 'react'
+import { useTranslation } from 'react-i18next'
 import { TxFlowContext } from '../../TxFlowProvider'
 import ReviewChangeThreshold from './ReviewChangeThreshold'
 
@@ -24,6 +25,7 @@ const ReviewThresholdStep = (props: ReviewTransactionProps) => {
 }
 
 const ChangeThresholdFlow = () => {
+  const { t } = useTranslation()
   const {
     safe: { threshold },
   } = useSafeInfo()
@@ -32,11 +34,11 @@ const ChangeThresholdFlow = () => {
     <TxFlow
       initialData={{ threshold }}
       icon={SaveAddressIcon}
-      subtitle="Change threshold"
+      subtitle={t('settings.changeThreshold')}
       eventCategory={TxFlowType.CHANGE_THRESHOLD}
       ReviewTransactionComponent={ReviewThresholdStep}
     >
-      <TxFlowStep title="New transaction">
+      <TxFlowStep title={t('sidebar.newTransaction')}>
         <ChooseThreshold />
       </TxFlowStep>
     </TxFlow>

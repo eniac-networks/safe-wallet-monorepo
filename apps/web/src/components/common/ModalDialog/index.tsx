@@ -12,6 +12,7 @@ import ChainIndicator from '@/components/common/ChainIndicator'
 import CloseIcon from '@mui/icons-material/Close'
 
 import css from './styles.module.css'
+import { useTranslation } from 'react-i18next'
 
 interface ModalDialogProps extends DialogProps {
   dialogTitle?: React.ReactNode
@@ -35,6 +36,7 @@ export const ModalDialogTitle = ({
   sx = {},
   ...other
 }: DialogTitleProps) => {
+  const { t } = useTranslation()
   return (
     <DialogTitle
       data-testid="modal-title"
@@ -47,7 +49,7 @@ export const ModalDialogTitle = ({
       {onClose ? (
         <IconButton
           data-testid="modal-dialog-close-btn"
-          aria-label="close"
+          aria-label={t('common.close')}
           onClick={(e) => {
             onClose(e, 'backdropClick')
           }}

@@ -13,6 +13,7 @@ import { AppRoutes } from '@/config/routes'
 import { Button, Card, Box, Stack } from '@mui/material'
 import { useRouter } from 'next/router'
 import { type ReactElement, useContext, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { SWAP_EVENTS, SWAP_LABELS } from '@/services/analytics/events/swaps'
 import useIsSwapFeatureEnabled from '@/features/swap/hooks/useIsSwapFeatureEnabled'
 import TotalAssetValue from '@/components/balances/TotalAssetValue'
@@ -20,6 +21,7 @@ import CheckWallet from '@/components/common/CheckWallet'
 import OverviewSkeleton from './OverviewSkeleton'
 
 const Overview = (): ReactElement => {
+  const { t } = useTranslation()
   const { safe, safeLoading, safeLoaded } = useSafeInfo()
   const { balances, loaded: balancesLoaded, loading: balancesLoading } = useVisibleBalances()
   const { setTxFlow } = useContext(TxModalContext)
@@ -75,7 +77,7 @@ const Overview = (): ReactElement => {
                         fullWidth
                         disabled={!isOk}
                       >
-                        Send
+                        {t('transactions.send')}
                       </Button>
                     )}
                   </CheckWallet>
@@ -98,7 +100,7 @@ const Overview = (): ReactElement => {
                           fullWidth
                           disabled={!isOk}
                         >
-                          Swap
+                          {t('nav.swap')}
                         </Button>
                       )
 
@@ -130,7 +132,7 @@ const Overview = (): ReactElement => {
                       sx={{ height: '42px' }}
                       fullWidth
                     >
-                      Receive
+                      {t('dashboard.receive')}
                     </Button>
                   </QrCodeButton>
                 </Track>

@@ -5,6 +5,7 @@ import { Box, IconButton, Skeleton, SvgIcon, Typography } from '@mui/material'
 import { relativeTime } from '@safe-global/utils/utils/date'
 import EthHashInfo from '@/components/common/EthHashInfo'
 import { useContext, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import type { SpendingLimitState } from '@/store/spendingLimitsSlice'
 import { RemoveSpendingLimitFlow } from '@/components/tx-flow/flows'
 import { TxModalContext } from '@/components/tx-flow'
@@ -63,16 +64,17 @@ export const SpendingLimitsTable = ({
   spendingLimits: SpendingLimitState[]
   isLoading: boolean
 }) => {
+  const { t } = useTranslation()
   const { setTxFlow } = useContext(TxModalContext)
 
   const headCells = useMemo(
     () => [
-      { id: 'beneficiary', label: 'Beneficiary' },
-      { id: 'spent', label: 'Spent' },
-      { id: 'resetTime', label: 'Reset time' },
-      { id: 'actions', label: 'Actions', sticky: true },
+      { id: 'beneficiary', label: t('settings.beneficiary') },
+      { id: 'spent', label: t('settings.spent') },
+      { id: 'resetTime', label: t('settings.resetTime') },
+      { id: 'actions', label: t('settings.actions'), sticky: true },
     ],
-    [],
+    [t],
   )
 
   const rows = useMemo(

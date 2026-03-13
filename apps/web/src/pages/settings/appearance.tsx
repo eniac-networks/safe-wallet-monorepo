@@ -2,6 +2,7 @@ import { Checkbox, FormControlLabel, FormGroup, Grid, Paper, Typography, Switch 
 import type { ChangeEvent } from 'react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import { useTranslation } from 'react-i18next'
 
 import { useAppDispatch, useAppSelector } from '@/store'
 import { selectSettings, setCopyShortName, setDarkMode } from '@/store/settingsSlice'
@@ -10,11 +11,13 @@ import { trackEvent, SETTINGS_EVENTS } from '@/services/analytics'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import ExternalLink from '@/components/common/ExternalLink'
 import { BRAND_NAME } from '@/config/constants'
+import LanguageSwitcher from '@/components/common/LanguageSwitcher'
 
 const Appearance: NextPage = () => {
   const dispatch = useAppDispatch()
   const settings = useAppSelector(selectSettings)
   const isDarkMode = useDarkMode()
+  const { t } = useTranslation()
 
   const handleToggle = (
     action: typeof setCopyShortName | typeof setDarkMode,
@@ -47,7 +50,7 @@ const Appearance: NextPage = () => {
                   mb: 1,
                 }}
               >
-                Chain-specific addresses
+                {t('settings.chainSpecificAddresses')}
               </Typography>
             </Grid>
 
@@ -57,9 +60,7 @@ const Appearance: NextPage = () => {
                   mb: 2,
                 }}
               >
-                Choose whether to copy{' '}
-                <ExternalLink href="https://eips.ethereum.org/EIPS/eip-3770">EIP-3770</ExternalLink> prefixes when
-                copying Ethereum addresses.
+                {t('settings.copyAddressDescription')}
               </Typography>
               <FormGroup>
                 <FormControlLabel
@@ -69,7 +70,7 @@ const Appearance: NextPage = () => {
                       onChange={handleToggle(setCopyShortName, SETTINGS_EVENTS.APPEARANCE.COPY_PREFIXES)}
                     />
                   }
-                  label="Copy addresses with chain prefix"
+                  label={t('settings.copyAddressesWithChainPrefix')}
                 />
               </FormGroup>
             </Grid>
@@ -90,7 +91,7 @@ const Appearance: NextPage = () => {
                   fontWeight: 'bold',
                 }}
               >
-                Theme
+                {t('settings.theme')}
               </Typography>
             </Grid>
 
@@ -102,8 +103,32 @@ const Appearance: NextPage = () => {
                     onChange={handleToggle(setDarkMode, SETTINGS_EVENTS.APPEARANCE.DARK_MODE)}
                   />
                 }
-                label="Dark mode"
+                label={t('settings.darkMode')}
               />
+            </Grid>
+          </Grid>
+
+          <Grid
+            container
+            spacing={3}
+            sx={{
+              alignItems: 'center',
+              marginTop: 2,
+            }}
+          >
+            <Grid item lg={4} xs={12}>
+              <Typography
+                variant="h4"
+                sx={{
+                  fontWeight: 'bold',
+                }}
+              >
+                {t('settings.language')}
+              </Typography>
+            </Grid>
+
+            <Grid item xs>
+              <LanguageSwitcher />
             </Grid>
           </Grid>
         </Paper>

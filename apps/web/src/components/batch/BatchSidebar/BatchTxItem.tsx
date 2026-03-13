@@ -13,6 +13,7 @@ import {
   type InternalTransaction,
 } from '@safe-global/safe-gateway-typescript-sdk'
 import { type TokenInfo } from '@safe-global/store/gateway/AUTO_GENERATED/transactions'
+import { useTranslation } from 'react-i18next'
 
 type BatchTxItemProps = DraftBatchItem & {
   id: string
@@ -32,6 +33,7 @@ const BatchTxItem = ({
   addressInfoIndex,
   tokenInfoIndex,
 }: BatchTxItemProps) => {
+  const { t } = useTranslation()
   const transactionDetails: TransactionData = useMemo(
     () => ({
       operation: Operation.CALL,
@@ -49,7 +51,7 @@ const BatchTxItem = ({
   const handleDelete = useCallback(
     (e: SyntheticEvent) => {
       e.stopPropagation()
-      if (confirm('Are you sure you want to delete this transaction?')) {
+      if (confirm(t('batch.deleteConfirm'))) {
         onDelete?.(id)
         trackEvent(BATCH_EVENTS.BATCH_DELETE_TX)
       }
@@ -68,7 +70,7 @@ const BatchTxItem = ({
             txData={transactionDetails}
             actions={
               onDelete ? (
-                <ButtonBase onClick={handleDelete} title="Delete transaction" sx={{ p: 0.5 }}>
+                <ButtonBase onClick={handleDelete} title={t('batch.deleteTitle')} sx={{ p: 0.5 }}>
                   <SvgIcon component={DeleteIcon} inheritViewBox fontSize="small" />
                 </ButtonBase>
               ) : undefined

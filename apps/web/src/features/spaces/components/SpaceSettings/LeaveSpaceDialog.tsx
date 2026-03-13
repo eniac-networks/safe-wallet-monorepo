@@ -1,5 +1,6 @@
 import { Alert, Button, DialogActions, DialogContent, Typography } from '@mui/material'
 import ModalDialog from '@/components/common/ModalDialog'
+import { useTranslation } from 'react-i18next'
 import { type GetSpaceResponse, useMembersSelfRemoveV1Mutation } from '@safe-global/store/gateway/AUTO_GENERATED/spaces'
 import { AppRoutes } from '@/config/routes'
 import { useRouter } from 'next/router'
@@ -10,6 +11,7 @@ import { SPACE_EVENTS } from '@/services/analytics/events/spaces'
 import { trackEvent } from '@/services/analytics'
 
 const LeaveSpaceDialog = ({ space, onClose }: { space: GetSpaceResponse | undefined; onClose: () => void }) => {
+  const { t } = useTranslation()
   const [error, setError] = useState<string>()
   const router = useRouter()
   const dispatch = useAppDispatch()
@@ -32,7 +34,7 @@ const LeaveSpaceDialog = ({ space, onClose }: { space: GetSpaceResponse | undefi
       trackEvent({ ...SPACE_EVENTS.LEAVE_SPACE })
       dispatch(
         showNotification({
-          message: `Left space ${space.name}.`,
+          message: t('spaces.leftSpaceSuccess', { name: space.name }),
           variant: 'success',
           groupKey: 'leave-space-success',
         }),
@@ -41,15 +43,15 @@ const LeaveSpaceDialog = ({ space, onClose }: { space: GetSpaceResponse | undefi
       router.push({ pathname: AppRoutes.welcome.spaces })
     } catch (e) {
       console.error(e)
-      setError('Error leaving the space. Please try again.')
+      setError(t('spaces.leaveSpaceError'))
     }
   }
 
   return (
-    <ModalDialog dialogTitle="Leave space" hideChainIndicator open onClose={onClose}>
+    <ModalDialog dialogTitle={t(‘spaces.leaveSpace’)} hideChainIndicator open onClose={onClose}>
       <DialogContent sx={{ mt: 2 }}>
         <Typography mb={2}>
-          Are you sure you want to leave this space? You won’t be able to access its data anymore.
+          {t(‘spaces.confirmLeaveSpace’)}
         </Typography>
 
         {error && (

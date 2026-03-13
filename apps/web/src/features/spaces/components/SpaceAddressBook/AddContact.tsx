@@ -14,6 +14,7 @@ import { useAddressBooksUpsertAddressBookItemsV1Mutation } from '@safe-global/st
 import { useCurrentSpaceId } from '@/features/spaces/hooks/useCurrentSpaceId'
 import { showNotification } from '@/store/notificationsSlice'
 import { useAppDispatch } from '@/store'
+import { useTranslation } from 'react-i18next'
 
 export type ContactField = {
   name: string
@@ -22,6 +23,7 @@ export type ContactField = {
 }
 
 const AddContact = () => {
+  const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const [error, setError] = useState<string>()
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -76,13 +78,13 @@ const AddContact = () => {
       })
 
       if (result.error) {
-        setError('Something went wrong. Please try again.')
+        setError(t('spaces.somethingWentWrong'))
         return
       }
 
       dispatch(
         showNotification({
-          message: `Added contact`,
+          message: t('spaces.addedContact'),
           variant: 'success',
           groupKey: 'add-contact-success',
         }),
@@ -90,7 +92,7 @@ const AddContact = () => {
 
       handleClose()
     } catch (error) {
-      setError('Something went wrong. Please try again.')
+      setError(t('spaces.somethingWentWrong'))
     } finally {
       setIsSubmitting(false)
     }
@@ -99,23 +101,23 @@ const AddContact = () => {
   return (
     <>
       <Button variant="contained" size="small" startIcon={<PlusIcon />} onClick={handleOpen} sx={{ height: '40px' }}>
-        Add contact
+        {t('spaces.addContact')}
       </Button>
-      <ModalDialog open={open} onClose={handleClose} dialogTitle="Add contact" hideChainIndicator>
+      <ModalDialog open={open} onClose={handleClose} dialogTitle={t('spaces.addContact')} hideChainIndicator>
         <FormProvider {...methods}>
           <form onSubmit={onSubmit}>
             <DialogContent sx={{ py: 2 }}>
               <Stack spacing={3}>
-                <NameInput name="name" label="Name" required />
+                <NameInput name="name" label={t('addressBook.name')} required />
 
-                <AddressInput name="address" label="Address" required showPrefix={false} />
+                <AddressInput name="address" label={t('addressBook.address')} required showPrefix={false} />
 
                 <Box>
                   <Typography variant="h5" fontWeight={700} display="inline-flex" alignItems="center" gap={1} mb={1}>
-                    Select networks
+                    {t('spaces.selectNetworks')}
                   </Typography>
                   <Typography variant="body2" mb={2}>
-                    Add contact on all networks or only on specific ones of your choice.{' '}
+                    {t('spaces.networksDescription')}{' '}
                   </Typography>
                   <Controller
                     name="networks"
@@ -126,7 +128,7 @@ const AddContact = () => {
                         showSelectAll
                         value={field.value || []}
                         error={!!errors.networks}
-                        helperText={errors.networks ? 'Select at least one network' : ''}
+                        helperText={errors.networks ? t('spaces.selectAtLeastOneNetwork') : ''}
                       />
                     )}
                     rules={{ required: true }}
@@ -143,10 +145,10 @@ const AddContact = () => {
 
             <DialogActions>
               <Button data-testid="cancel-btn" onClick={handleClose}>
-                Cancel
+                {t('common.cancel')}
               </Button>
               <Button type="submit" variant="contained" disabled={!formState.isValid || isSubmitting} disableElevation>
-                {isSubmitting ? <CircularProgress size={20} /> : 'Add contact'}
+                {isSubmitting ? <CircularProgress size={20} /> : t('spaces.addContact')}
               </Button>
             </DialogActions>
           </form>

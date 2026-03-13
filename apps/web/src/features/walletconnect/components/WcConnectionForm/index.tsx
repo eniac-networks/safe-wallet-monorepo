@@ -13,10 +13,12 @@ import useSafeInfo from '@/hooks/useSafeInfo'
 import Track from '@/components/common/Track'
 import { WALLETCONNECT_EVENTS } from '@/services/analytics/events/walletconnect'
 import { BRAND_NAME } from '@/config/constants'
+import { useTranslation } from 'react-i18next'
 
 const WC_HINTS_KEY = 'wcHints'
 
 export const WcConnectionForm = ({ sessions, uri }: { sessions: SessionTypes.Struct[]; uri: string }): ReactElement => {
+  const { t } = useTranslation()
   const [showHints = true, setShowHints] = useLocalStorage<boolean>(WC_HINTS_KEY)
   const { safeLoaded } = useSafeInfo()
 
@@ -38,7 +40,7 @@ export const WcConnectionForm = ({ sessions, uri }: { sessions: SessionTypes.Str
         }}
       >
         <Tooltip
-          title={showHints ? 'Hide how WalletConnect works' : 'How does WalletConnect work?'}
+          title={showHints ? t('walletconnect.hideHints') : t('walletconnect.showHints')}
           placement="top"
           arrow
           className={css.infoIcon}
@@ -61,8 +63,8 @@ export const WcConnectionForm = ({ sessions, uri }: { sessions: SessionTypes.Str
           }}
         >
           {safeLoaded
-            ? `Paste the pairing code below to connect to your ${BRAND_NAME} via WalletConnect`
-            : `Please open one of your Safe Accounts to connect to via WalletConnect`}
+            ? t('walletconnect.pastePairingCode', { brandName: BRAND_NAME })
+            : t('walletconnect.openSafeAccount')}
         </Typography>
 
         {safeLoaded ? (

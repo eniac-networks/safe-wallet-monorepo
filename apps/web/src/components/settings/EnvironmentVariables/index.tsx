@@ -1,4 +1,5 @@
 import { useForm, FormProvider } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { Paper, Grid, Typography, TextField, Button, Tooltip, IconButton, SvgIcon } from '@mui/material'
 import InputAdornment from '@mui/material/InputAdornment'
 import RotateLeftIcon from '@mui/icons-material/RotateLeft'
@@ -24,6 +25,7 @@ export type EnvVariablesFormData = {
 }
 
 const EnvironmentVariables = () => {
+  const { t } = useTranslation()
   const chainId = useChainId()
   const chain = useCurrentChain()
   const settings = useAppSelector(selectSettings)
@@ -86,7 +88,7 @@ const EnvironmentVariables = () => {
               fontWeight: 700,
             }}
           >
-            Environment variables
+            {t('settings.environmentVariablesTitle')}
           </Typography>
         </Grid>
 
@@ -96,7 +98,7 @@ const EnvironmentVariables = () => {
               mb: 3,
             }}
           >
-            You can override some of our default APIs here in case you need to. Proceed at your own risk.
+            {t('settings.envVariablesDescription')}
           </Typography>
 
           <FormProvider {...formMethods}>
@@ -108,11 +110,11 @@ const EnvironmentVariables = () => {
                   mt: 3,
                 }}
               >
-                RPC provider
+                {t('settings.rpcProvider')}
                 <Tooltip
                   placement="top"
                   arrow
-                  title="Any provider that implements the Ethereum JSON-RPC standard can be used."
+                  title={t('settings.rpcProviderTooltip')}
                 >
                   <span>
                     <SvgIcon
@@ -134,7 +136,7 @@ const EnvironmentVariables = () => {
                 InputProps={{
                   endAdornment: rpc ? (
                     <InputAdornment position="end">
-                      <Tooltip title="Reset to default value">
+                      <Tooltip title={t('settings.resetToDefaultValue')}>
                         <IconButton onClick={() => onReset(EnvVariablesField.rpc)} size="small" color="primary">
                           <RotateLeftIcon />
                         </IconButton>
@@ -158,12 +160,12 @@ const EnvironmentVariables = () => {
                   arrow
                   title={
                     <>
-                      You can use your own Tenderly project to keep track of all your transaction simulations.{' '}
+                      {t('settings.tenderlyTooltip')}{' '}
                       <ExternalLink
                         color="secondary"
                         href="https://docs.tenderly.co/simulations-and-forks/simulation-api/configuration-of-api-access"
                       >
-                        Read more
+                        {t('settings.readMore')}
                       </ExternalLink>
                     </>
                   }
@@ -186,7 +188,7 @@ const EnvironmentVariables = () => {
                     {...register(EnvVariablesField.tenderlyURL)}
                     type="url"
                     variant="outlined"
-                    label="Tenderly API URL"
+                    label={t('settings.tenderlyApiUrl')}
                     placeholder={TENDERLY_SIMULATE_ENDPOINT_URL}
                     InputLabelProps={{
                       shrink: true,
@@ -194,7 +196,7 @@ const EnvironmentVariables = () => {
                     InputProps={{
                       endAdornment: tenderlyURL ? (
                         <InputAdornment position="end">
-                          <Tooltip title="Reset to default value">
+                          <Tooltip title={t('settings.resetToDefaultValue')}>
                             <IconButton
                               onClick={() => onReset(EnvVariablesField.tenderlyURL)}
                               size="small"
@@ -214,14 +216,14 @@ const EnvironmentVariables = () => {
                   <TextField
                     {...register(EnvVariablesField.tenderlyToken)}
                     variant="outlined"
-                    label="Tenderly access token"
+                    label={t('settings.tenderlyAccessToken')}
                     InputLabelProps={{
                       shrink: true,
                     }}
                     InputProps={{
                       endAdornment: tenderlyToken ? (
                         <InputAdornment position="end">
-                          <Tooltip title="Reset to default value">
+                          <Tooltip title={t('settings.resetToDefaultValue')}>
                             <IconButton
                               onClick={() => onReset(EnvVariablesField.tenderlyToken)}
                               size="small"
@@ -239,7 +241,7 @@ const EnvironmentVariables = () => {
               </Grid>
 
               <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
-                Save
+                {t('common.save')}
               </Button>
             </form>
           </FormProvider>

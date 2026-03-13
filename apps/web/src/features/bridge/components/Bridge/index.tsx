@@ -5,6 +5,7 @@ import { FeatureWrapper } from '@/components/wrappers/FeatureWrapper'
 import { SanctionWrapper } from '@/components/wrappers/SanctionWrapper'
 import { DisclaimerWrapper } from '@/components/wrappers/DisclaimerWrapper'
 import { FEATURES } from '@safe-global/utils/utils/chains'
+import { useTranslation } from 'react-i18next'
 
 const LOCAL_STORAGE_CONSENT_KEY = 'bridgeConsent'
 
@@ -16,10 +17,11 @@ const BridgeWidget = dynamic(
 )
 
 export function Bridge() {
+  const { t } = useTranslation()
   return (
     <FeatureWrapper feature={FEATURES.BRIDGE} fallbackRoute={AppRoutes.home}>
-      <SanctionWrapper featureTitle="bridge feature with LI.FI">
-        <DisclaimerWrapper localStorageKey={LOCAL_STORAGE_CONSENT_KEY} widgetName="Bridging Widget by LI.FI">
+      <SanctionWrapper featureTitle={t('bridge.featureTitle')}>
+        <DisclaimerWrapper localStorageKey={LOCAL_STORAGE_CONSENT_KEY} widgetName={t('bridge.widgetName')}>
           <BridgeWidget />
         </DisclaimerWrapper>
       </SanctionWrapper>

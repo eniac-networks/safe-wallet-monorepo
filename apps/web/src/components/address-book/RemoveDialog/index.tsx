@@ -9,8 +9,10 @@ import { useAppDispatch } from '@/store'
 import { removeAddressBookEntry } from '@/store/addressBookSlice'
 import useChainId from '@/hooks/useChainId'
 import useAddressBook from '@/hooks/useAddressBook'
+import { useTranslation } from 'react-i18next'
 
 const RemoveDialog = ({ handleClose, address }: { handleClose: () => void; address: string }): ReactElement => {
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const chainId = useChainId()
   const addressBook = useAddressBook()
@@ -23,17 +25,17 @@ const RemoveDialog = ({ handleClose, address }: { handleClose: () => void; addre
   }
 
   return (
-    <ModalDialog open onClose={handleClose} dialogTitle="Delete entry">
+    <ModalDialog open onClose={handleClose} dialogTitle={t('addressBook.deleteTitle')}>
       <DialogContent sx={{ p: '24px !important' }}>
         <Typography>
-          Are you sure you want to permanently delete <b>{name}</b> from your address book?
+          {t('addressBook.deleteConfirm', { name })}
         </Typography>
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
+        <Button onClick={handleClose}>{t('common.cancel')}</Button>
         <Button onClick={handleConfirm} variant="danger" disableElevation>
-          Delete
+          {t('addressBook.delete')}
         </Button>
       </DialogActions>
     </ModalDialog>

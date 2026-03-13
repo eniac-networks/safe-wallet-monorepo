@@ -1,4 +1,5 @@
 import { useCallback, useContext, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import NestedSafeIcon from '@/public/images/sidebar/nested-safes-icon.svg'
 import { ReviewNestedSafe } from '@/components/tx-flow/flows/CreateNestedSafe/ReviewNestedSafe'
 import { SetUpNestedSafe } from '@/components/tx-flow/flows/CreateNestedSafe/SetupNestedSafe'
@@ -12,6 +13,7 @@ import type ReviewTransaction from '@/components/tx/ReviewTransactionV2'
 import { TxFlowContext, type TxFlowContextType } from '../../TxFlowProvider'
 
 const CreateNestedSafe = () => {
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const { safe } = useSafeInfo()
   const [predictedSafeAddress, setPredictedSafeAddress] = useState<string | undefined>()
@@ -54,11 +56,11 @@ const CreateNestedSafe = () => {
     <TxFlow<SetupNestedSafeForm>
       initialData={{ name: '', assets: [] }}
       icon={NestedSafeIcon}
-      subtitle="Create a Nested Safe"
+      subtitle={t('nestedSafe.createSubtitle')}
       ReviewTransactionComponent={ReviewNestedSafeCreationComponent}
       onSubmit={handleSubmit}
     >
-      <TxFlowStep title="Set up Nested Safe">
+      <TxFlowStep title={t('nestedSafe.setupTitle')}>
         <SetUpNestedSafe />
       </TxFlowStep>
     </TxFlow>

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { trackEvent } from '@/services/analytics'
 import { RECOVERY_EVENTS } from '@/services/analytics/events/recovery'
 import { Typography } from '@mui/material'
@@ -15,6 +16,7 @@ export function RemoveRecoveryFlowReview({
   onSubmit,
   children,
 }: PropsWithChildren<RecoveryFlowProps & { onSubmit: () => void }>): ReactElement {
+  const { t } = useTranslation()
   const { setSafeTx, setSafeTxError } = useContext(SafeTxContext)
 
   useEffect(() => {
@@ -29,12 +31,11 @@ export function RemoveRecoveryFlowReview({
   return (
     <ReviewTransaction onSubmit={onFormSubmit}>
       <Typography>
-        This transaction will remove the recovery module from your Safe Account. You will no longer be able to recover
-        your Safe Account once this transaction is executed.
+        {t('recovery.removeRecoveryDescription')}
       </Typography>
 
       <OwnerList
-        title="Removing Recoverer"
+        title={t('recovery.removingRecoverer')}
         owners={delayModifier.recoverers.map((recoverer) => ({ value: recoverer }))}
         sx={{ bgcolor: ({ palette }) => `${palette.warning.background} !important` }}
       />

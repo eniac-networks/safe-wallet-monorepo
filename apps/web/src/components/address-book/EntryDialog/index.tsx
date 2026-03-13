@@ -9,6 +9,7 @@ import useChainId from '@/hooks/useChainId'
 import { useAppDispatch } from '@/store'
 import { upsertAddressBookEntries } from '@/store/addressBookSlice'
 import { useChain } from '@/hooks/useChains'
+import { useTranslation } from 'react-i18next'
 
 export type AddressEntry = {
   name: string
@@ -31,6 +32,7 @@ function EntryDialog({
   chainIds?: string[]
   currentChainId?: string
 }): ReactElement {
+  const { t } = useTranslation()
   const chainId = useChainId()
   const actualChainId = currentChainId ?? chainId
   const currentChain = useChain(actualChainId)
@@ -58,7 +60,7 @@ function EntryDialog({
       data-testid="entry-dialog"
       open
       onClose={handleClose}
-      dialogTitle={defaultValues.name ? 'Edit entry' : 'Create entry'}
+      dialogTitle={defaultValues.name ? t('addressBook.editEntryTitle') : t('addressBook.createEntryTitle')}
       hideChainIndicator={chainIds && chainIds.length > 1}
       chainId={chainIds?.[0]}
     >
@@ -66,13 +68,13 @@ function EntryDialog({
         <form onSubmit={onSubmit}>
           <DialogContent>
             <Box mb={2}>
-              <NameInput data-testid="name-input" label="Name" autoFocus name="name" required />
+              <NameInput data-testid="name-input" label={t('addressBook.nameLabel')} autoFocus name="name" required />
             </Box>
 
             <Box>
               <AddressInput
                 name="address"
-                label="Address"
+                label={t('addressBook.addressLabel')}
                 variant="outlined"
                 fullWidth
                 required
@@ -85,7 +87,7 @@ function EntryDialog({
 
           <DialogActions>
             <Button data-testid="cancel-btn" onClick={handleClose}>
-              Cancel
+              {t('common.cancel')}
             </Button>
             <Button
               data-testid="save-btn"
@@ -94,7 +96,7 @@ function EntryDialog({
               disabled={!formState.isValid}
               disableElevation
             >
-              Save
+              {t('common.save')}
             </Button>
           </DialogActions>
         </form>

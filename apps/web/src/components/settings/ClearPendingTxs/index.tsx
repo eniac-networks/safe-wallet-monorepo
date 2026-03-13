@@ -3,10 +3,11 @@ import { SETTINGS_EVENTS, trackEvent } from '@/services/analytics'
 import { useAppDispatch } from '@/store'
 import { clearPendingTx } from '@/store/pendingTxsSlice'
 import { Stack, Typography, Box, Button, Alert } from '@mui/material'
-import { maybePlural } from '@safe-global/utils/utils/formatters'
 import { useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 
 export const ClearPendingTxs = () => {
+  const { t } = useTranslation()
   const pendingTxIds = usePendingTxIds()
   const pendingTxCount = pendingTxIds.length
   const dispatch = useAppDispatch()
@@ -19,12 +20,9 @@ export const ClearPendingTxs = () => {
   }, [dispatch, pendingTxCount, pendingTxIds])
   return (
     <Stack spacing={2}>
-      <Typography>Clear this Safe Account&apos;s pending transactions.</Typography>
+      <Typography>{t('settings.clearPendingTxDescription')}</Typography>
       <Alert severity="warning">
-        <Typography>
-          This action does not delete any transactions but only resets their local state. It does not stop any pending
-          transactions from executing. If you want to cancel an execution, you have to do so in your connected wallet.
-        </Typography>
+        <Typography>{t('settings.clearPendingTxWarning')}</Typography>
       </Alert>
       <Box>
         {pendingTxCount > 0 ? (
@@ -34,10 +32,10 @@ export const ClearPendingTxs = () => {
             onClick={clearPendingTxs}
             sx={{ backgroundColor: ({ palette }) => palette.error.background }}
           >
-            Clear {pendingTxCount} transaction{maybePlural(pendingTxCount)}
+            {t('settings.clearTransactions', { count: pendingTxCount })}
           </Button>
         ) : (
-          <Typography variant="body2">No pending transactions</Typography>
+          <Typography variant="body2">{t('settings.noPendingTransactions')}</Typography>
         )}
       </Box>
     </Stack>

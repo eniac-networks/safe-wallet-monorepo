@@ -8,6 +8,7 @@ import { asError } from '@safe-global/utils/services/exceptions/utils'
 import { Button, CircularProgress, List, ListItem, ListItemAvatar, ListItemIcon, ListItemText } from '@mui/material'
 import type { SessionTypes } from '@walletconnect/types'
 import { useCallback, useContext } from 'react'
+import { useTranslation } from 'react-i18next'
 import css from './styles.module.css'
 import WcNoSessions from './WcNoSessions'
 
@@ -16,11 +17,12 @@ type WcSesstionListProps = {
 }
 
 const WcSessionListItem = ({ session }: { session: SessionTypes.Struct }) => {
+  const { t } = useTranslation()
   const { walletConnect, setError, loading, setLoading } = useContext(WalletConnectContext)
 
   const MAX_NAME_LENGTH = 23
   const { safeLoaded } = useSafeInfo()
-  let name = getPeerName(session.peer) || 'Unknown dApp'
+  let name = getPeerName(session.peer) || t('walletconnect.unknownDapp')
 
   if (name.length > MAX_NAME_LENGTH + 1) {
     name = `${name.slice(0, MAX_NAME_LENGTH)}…`
@@ -56,7 +58,7 @@ const WcSessionListItem = ({ session }: { session: SessionTypes.Struct }) => {
 
       <ListItemIcon className={css.sessionListSecondaryAction}>
         <Button variant="danger" onClick={onDisconnect} className={css.button} disabled={!!loading}>
-          {loading === WCLoadingState.DISCONNECT ? <CircularProgress size={20} /> : 'Disconnect'}
+          {loading === WCLoadingState.DISCONNECT ? <CircularProgress size={20} /> : t('common.disconnect')}
         </Button>
       </ListItemIcon>
     </ListItem>

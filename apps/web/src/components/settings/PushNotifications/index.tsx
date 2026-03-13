@@ -15,6 +15,7 @@ import {
 import Link from 'next/link'
 import { useState } from 'react'
 import type { ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import useSafeInfo from '@/hooks/useSafeInfo'
 import EthHashInfo from '@/components/common/EthHashInfo'
@@ -38,6 +39,7 @@ import NotificationRenewal from '@/components/notification-center/NotificationRe
 import { HelpCenterArticle } from '@safe-global/utils/config/constants'
 
 export const PushNotifications = (): ReactElement => {
+  const { t } = useTranslation()
   const { safe, safeLoaded } = useSafeInfo()
   const isOwner = useIsSafeOwner()
   const isMac = useIsMac()
@@ -99,7 +101,7 @@ export const PushNotifications = (): ReactElement => {
                 fontWeight: 700,
               }}
             >
-              Push notifications
+              {t('settings.pushNotifications')}
             </Typography>
           </Grid>
 
@@ -114,9 +116,10 @@ export const PushNotifications = (): ReactElement => {
               <NotificationRenewal />
 
               <Typography>
-                Enable push notifications for {safeLoaded ? 'this Safe Account' : 'your Safe Accounts'} in your browser
-                with your signature. You will need to enable them again if you clear your browser cache. Learn more
-                about push notifications <ExternalLink href={HelpCenterArticle.PUSH_NOTIFICATIONS}>here</ExternalLink>
+                {t('settings.pushNotificationsDescription', {
+                  safeContext: t(safeLoaded ? 'settings.thisSafeAccount' : 'settings.yourSafeAccounts'),
+                })}{' '}
+                <ExternalLink href={HelpCenterArticle.PUSH_NOTIFICATIONS}>{t('common.here')}</ExternalLink>
               </Typography>
 
               {shouldShowMacHelper && (
@@ -128,19 +131,16 @@ export const PushNotifications = (): ReactElement => {
                       mb: 1,
                     }}
                   >
-                    For macOS users
+                    {t('settings.forMacOSUsers')}
                   </Typography>
-                  <Typography variant="body2">
-                    Double-check that you have enabled your browser notifications under <b>System Settings</b> &gt;{' '}
-                    <b>Notifications</b> &gt; <b>Application Notifications</b> (path may vary depending on OS version).
-                  </Typography>
+                  <Typography variant="body2">{t('settings.macOSNotificationsHelper')}</Typography>
                 </Alert>
               )}
 
               {safeLoaded ? (
                 <>
                   <Divider />
-                  <NetworkWarning action="change your notification settings" />
+                  <NetworkWarning action={t('settings.changeNotificationSettings')} />
 
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <EthHashInfo
@@ -158,7 +158,7 @@ export const PushNotifications = (): ReactElement => {
                         <FormControlLabel
                           data-testid="notifications-switch"
                           control={<Switch checked={!!preferences} onChange={handleOnChange} />}
-                          label={preferences ? 'On' : 'Off'}
+                          label={preferences ? t('settings.notificationOn') : t('settings.notificationOff')}
                           disabled={!isOk || isRegistering || !safe.deployed}
                         />
                       )}
@@ -167,9 +167,9 @@ export const PushNotifications = (): ReactElement => {
 
                   <Paper className={css.globalInfo} variant="outlined">
                     <Typography variant="body2">
-                      Want to setup notifications for different or all Safe Accounts? You can do so in your{' '}
+                      {t('settings.wantToSetupNotifications')}{' '}
                       <Link href={AppRoutes.settings.notifications} passHref legacyBehavior>
-                        <MuiLink>global preferences</MuiLink>
+                        <MuiLink>{t('settings.globalPreferences')}</MuiLink>
                       </Link>
                       .
                     </Typography>
@@ -192,7 +192,7 @@ export const PushNotifications = (): ReactElement => {
                   fontWeight: 700,
                 }}
               >
-                Notification
+                {t('settings.notificationTitle')}
               </Typography>
             </Grid>
 
@@ -214,7 +214,7 @@ export const PushNotifications = (): ReactElement => {
                       }}
                     />
                   }
-                  label="Incoming transactions"
+                  label={t('settings.incomingTransactions')}
                 />
 
                 <FormControlLabel
@@ -236,7 +236,7 @@ export const PushNotifications = (): ReactElement => {
                       }}
                     />
                   }
-                  label="Outgoing transactions"
+                  label={t('settings.outgoingTransactions')}
                 />
 
                 <FormControlLabel
@@ -272,7 +272,7 @@ export const PushNotifications = (): ReactElement => {
                   }
                   label={
                     <>
-                      <Typography>Confirmation requests</Typography>
+                      <Typography>{t('settings.confirmationRequests')}</Typography>
                       {!preferences[WebhookType.CONFIRMATION_REQUEST] && (
                         <Typography
                           variant="body2"
@@ -280,7 +280,7 @@ export const PushNotifications = (): ReactElement => {
                             color: 'text.secondary',
                           }}
                         >
-                          {isOwner ? 'Requires your signature' : 'Only signers'}
+                          {isOwner ? t('settings.requiresYourSignature') : t('settings.onlySigners')}
                         </Typography>
                       )}
                     </>

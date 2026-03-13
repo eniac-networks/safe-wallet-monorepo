@@ -1,4 +1,5 @@
 import type { ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import NavTabs from '@/components/common/NavTabs'
 import PageHeader from '@/components/common/PageHeader'
@@ -16,13 +17,14 @@ export const SettingsHeader = ({
   safeAddress: ReturnType<typeof useSafeAddress>
   chain: ReturnType<typeof useCurrentChain>
 }): ReactElement => {
+  const { t } = useTranslation()
   const navItems = safeAddress
     ? settingsNavItems.filter((route) => isRouteEnabled(route.href, chain))
     : generalSettingsNavItems
 
   return (
     <PageHeader
-      title={safeAddress ? 'Settings' : 'Preferences'}
+      title={safeAddress ? t('settingsHeader.settings') : t('settingsHeader.preferences')}
       action={
         <div className={css.navWrapper}>
           <NavTabs tabs={navItems} />

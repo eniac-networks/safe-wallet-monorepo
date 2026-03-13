@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import CheckWallet from '@/components/common/CheckWallet'
 import Track from '@/components/common/Track'
 import { AppRoutes } from '@/config/routes'
@@ -21,6 +22,7 @@ const SwapButton = ({
   trackingLabel: SWAP_LABELS
   light?: boolean
 }): ReactElement => {
+  const { t } = useTranslation()
   const spendingLimit = useSpendingLimit(tokenInfo)
   const router = useRouter()
 
@@ -47,7 +49,7 @@ const SwapButton = ({
             }}
             disabled={!isOk}
           >
-            Swap
+            {t('swap.swap')}
           </Button>
         </Track>
       )}

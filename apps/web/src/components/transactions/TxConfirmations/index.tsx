@@ -3,6 +3,7 @@ import type { ReactElement } from 'react'
 import CheckIcon from '@mui/icons-material/Check'
 import OwnersIcon from '@/public/images/common/owners.svg'
 import TxStatusChip from '../TxStatusChip'
+import { useTranslation } from 'react-i18next'
 
 const TxConfirmations = ({
   requiredConfirmations,
@@ -11,6 +12,7 @@ const TxConfirmations = ({
   requiredConfirmations: number
   submittedConfirmations: number
 }): ReactElement => {
+  const { t } = useTranslation()
   const isConfirmed = submittedConfirmations >= requiredConfirmations
   const color = isConfirmed ? 'success' : 'warning'
 
@@ -19,7 +21,7 @@ const TxConfirmations = ({
       <SvgIcon component={isConfirmed ? CheckIcon : OwnersIcon} inheritViewBox fontSize="small" />
 
       <Typography variant="caption" fontWeight="bold">
-        {submittedConfirmations} out of {requiredConfirmations}
+        {t('transactions.confirmationsOutOf', { submitted: submittedConfirmations, required: requiredConfirmations })}
       </Typography>
     </TxStatusChip>
   )

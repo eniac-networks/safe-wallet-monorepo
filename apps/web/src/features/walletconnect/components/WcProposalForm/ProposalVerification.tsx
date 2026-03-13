@@ -4,8 +4,10 @@ import AlertIcon from '@/public/images/notifications/alert.svg'
 import type { ReactElement } from 'react'
 import { getPeerName } from '@/features/walletconnect/services/utils'
 import css from './styles.module.css'
+import { useTranslation } from 'react-i18next'
 
 const ProposalVerification = ({ proposal }: { proposal: WalletKitTypes.SessionProposal }): ReactElement | null => {
+  const { t } = useTranslation()
   const { isScam, validation } = proposal.verifyContext.verified
 
   if (validation === 'UNKNOWN' || validation === 'VALID') {
@@ -33,10 +35,8 @@ const ProposalVerification = ({ proposal }: { proposal: WalletKitTypes.SessionPr
       }
     >
       {isScam
-        ? `We prevent connecting to ${appName || 'this dApp'} as they are a known scam.`
-        : `${
-            appName || 'This dApp'
-          } has a domain that does not match the sender of this request. Approving it may result in a loss of funds.`}
+        ? t('walletconnect.scamWarning', { name: appName || t('walletconnect.thisDapp') })
+        : t('walletconnect.domainMismatch', { name: appName || t('walletconnect.thisDappTitle') })}
     </Alert>
   )
 }

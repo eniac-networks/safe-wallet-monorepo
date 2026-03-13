@@ -2,6 +2,8 @@ import { Box, Card, CardContent, CardHeader, List, ListItem, ListItemIcon, ListI
 import type { ListItemTextProps } from '@mui/material'
 import type { CardHeaderProps } from '@mui/material'
 import type { ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
+import type { TFunction } from 'react-i18next'
 import FileIcon from '@/public/images/settings/data/file.svg'
 
 import useChains from '@/hooks/useChains'
@@ -19,8 +21,8 @@ import type { UndeployedSafesState } from '@safe-global/utils/features/counterfa
 const getItemSecondaryText = (
   chains: ChainInfo[],
   data: AddedSafesState | AddressBookState = {},
-  singular: string,
-  plural: string,
+  countKey: string,
+  t: TFunction,
 ): ReactElement => {
   return (
     <List sx={{ p: 0 }}>
@@ -40,7 +42,7 @@ const getItemSecondaryText = (
               sx={{ backgroundColor: chain?.theme.backgroundColor ?? '#D9D9D9' }}
               component="span"
             />
-            {chain?.chainName}: {count} {count === 1 ? singular : plural}
+            {chain?.chainName}: {count} {t(countKey, { count })}
           </ListItem>
         )
       })}
@@ -62,7 +64,7 @@ type ListProps = Data & {
   showPreview?: boolean
 }
 
-type ItemProps = ListProps & { chains: ChainInfo[] }
+type ItemProps = ListProps & { chains: ChainInfo[]; t: TFunction }
 
 const getItems = ({
   addedSafes,
@@ -74,6 +76,7 @@ const getItems = ({
   error,
   chains,
   showPreview = false,
+  t,
 }: ItemProps): Array<ListItemTextProps> => {
   if (error) {
     return [{ primary: <>{error}</> }]
@@ -87,12 +90,8 @@ const getItems = ({
 
   if (addedSafeChainAmount > 0) {
     const addedSafesPreview: ListItemTextProps = {
-      primary: (
-        <>
-          <b>Added Safe Accounts</b> on {addedSafeChainAmount} {addedSafeChainAmount === 1 ? 'chain' : 'chains'}
-        </>
-      ),
-      secondary: showPreview ? getItemSecondaryText(chains, addedSafes, 'Safe', 'Safes') : undefined,
+      primary: <>{t('settings.addedSafeAccountsOn', { count: addedSafeChainAmount })}</>,
+      secondary: showPreview ? getItemSecondaryText(chains, addedSafes, 'settings.safeCount', t) : undefined,
     }
 
     items.push(addedSafesPreview)
@@ -100,12 +99,8 @@ const getItems = ({
 
   if (addressBookChainAmount > 0) {
     const addressBookPreview: ListItemTextProps = {
-      primary: (
-        <>
-          <b>Address book</b> for {addressBookChainAmount} {addressBookChainAmount === 1 ? 'chain' : 'chains'}
-        </>
-      ),
-      secondary: showPreview ? getItemSecondaryText(chains, addressBook, 'contact', 'contacts') : undefined,
+      primary: <>{t('settings.addressBookFor', { count: addressBookChainAmount })}</>,
+      secondary: showPreview ? getItemSecondaryText(chains, addressBook, 'settings.contactCount', t) : undefined,
     }
 
     items.push(addressBookPreview)
@@ -113,11 +108,7 @@ const getItems = ({
 
   if (settings) {
     const settingsPreview: ListItemTextProps = {
-      primary: (
-        <>
-          <b>Settings</b> (appearance, currency, hidden tokens and custom environment variables)
-        </>
-      ),
+      primary: <>{t('settings.settingsExportLabel')}</>,
     }
 
     items.push(settingsPreview)
@@ -125,11 +116,7 @@ const getItems = ({
 
   if (visitedSafes) {
     const visitedSafesPreview: ListItemTextProps = {
-      primary: (
-        <>
-          <b>Visited Safe Accounts history</b>
-        </>
-      ),
+      primary: <>{t('settings.visitedSafesHistory')}</>,
     }
 
     items.push(visitedSafesPreview)
@@ -138,11 +125,7 @@ const getItems = ({
   const hasBookmarkedSafeApps = Object.values(safeApps || {}).some((chainId) => chainId.pinned?.length > 0)
   if (hasBookmarkedSafeApps) {
     const safeAppsPreview: ListItemTextProps = {
-      primary: (
-        <>
-          Bookmarked <b>Safe Apps</b>
-        </>
-      ),
+      primary: <>{t('settings.bookmarkedSafeApps')}</>,
     }
 
     items.push(safeAppsPreview)
@@ -152,7 +135,7 @@ const getItems = ({
     const undeployedSafesPreview: ListItemTextProps = {
       primary: (
         <>
-          <b>Not activated Safe Accounts</b> {undeployedSafesCount}
+          {t('settings.notActivatedSafes')} {undeployedSafesCount}
         </>
       ),
     }
@@ -180,6 +163,7 @@ export const FileListCard = ({
   showPreview = false,
   ...cardHeaderProps
 }: Props): ReactElement => {
+  const { t } = useTranslation()
   const chains = useChains()
   const items = getItems({
     addedSafes,
@@ -191,6 +175,7 @@ export const FileListCard = ({
     error,
     chains: chains.configs,
     showPreview,
+    t,
   })
 
   return (

@@ -12,6 +12,7 @@ import DialogContent from '@mui/material/DialogContent'
 import Typography from '@mui/material/Typography'
 import { useSpaceSafesDeleteV1Mutation } from '@safe-global/store/gateway/AUTO_GENERATED/spaces'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { showNotification } from '@/store/notificationsSlice'
 import { useAppDispatch } from '@/store'
 
@@ -30,6 +31,7 @@ const RemoveSafeDialog = ({
   safeItem: SafeItem | MultiChainSafeItem
   handleClose: () => void
 }) => {
+  const { t } = useTranslation()
   const { address } = safeItem
   const spaceId = useCurrentSpaceId()
   const dispatch = useAppDispatch()
@@ -52,21 +54,21 @@ const RemoveSafeDialog = ({
 
       dispatch(
         showNotification({
-          message: `Removed safe account from space`,
+          message: t('spaces.removeSafeSuccess'),
           variant: 'success',
           groupKey: 'remove-safe-account-success',
         }),
       )
     } catch (e) {
-      setError('Error removing safe account.')
+      setError(t('spaces.removeSafeError'))
     }
   }
 
   return (
-    <ModalDialog open onClose={handleClose} dialogTitle="Remove Safe Account" hideChainIndicator>
+    <ModalDialog open onClose={handleClose} dialogTitle={t('spaces.removeSafeAccount')} hideChainIndicator>
       <DialogContent sx={{ p: '24px !important' }}>
         <Typography>
-          Are you sure you want to remove <b>{address}</b> from this space?
+          {t('spaces.confirmRemoveSafe', { address })}
         </Typography>
         {error && (
           <Alert severity="error" sx={{ mt: 2 }}>
@@ -77,10 +79,10 @@ const RemoveSafeDialog = ({
 
       <DialogActions>
         <Button data-testid="cancel-btn" onClick={handleClose}>
-          Cancel
+          {t('common.cancel')}
         </Button>
         <Button data-testid="delete-btn" onClick={handleConfirm} variant="danger" disableElevation>
-          Remove
+          {t('spaces.remove')}
         </Button>
       </DialogActions>
     </ModalDialog>

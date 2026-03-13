@@ -3,12 +3,14 @@ import { Button } from '@mui/material'
 import type { GetSpaceResponse } from '@safe-global/store/gateway/AUTO_GENERATED/spaces'
 import DeclineInviteDialog from './DeclineInviteDialog'
 import css from './styles.module.css'
+import { useTranslation } from 'react-i18next'
 
 type DeclineButtonProps = {
   space: GetSpaceResponse
 }
 
 const DeclineButton = ({ space }: DeclineButtonProps) => {
+  const { t } = useTranslation()
   const [declineOpen, setDeclineOpen] = useState(false)
 
   const handleDeclineInvite = (e: React.MouseEvent) => {
@@ -27,9 +29,9 @@ const DeclineButton = ({ space }: DeclineButtonProps) => {
         className={css.inviteButton}
         variant="outlined"
         onClick={handleDeclineInvite}
-        aria-label="Decline invitation"
+        aria-label={t('spaces.decline')}
       >
-        Decline
+        {t('spaces.decline')}
       </Button>
       {declineOpen && <DeclineInviteDialog space={space} onClose={handleCloseDeclineDialog} />}
     </>

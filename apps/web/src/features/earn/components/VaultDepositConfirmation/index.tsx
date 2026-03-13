@@ -2,34 +2,36 @@ import type { VaultDepositTransactionInfo } from '@safe-global/store/gateway/AUT
 import { Box, Stack, Typography } from '@mui/material'
 import TokenIcon from '@/components/common/TokenIcon'
 import TokenAmount from '@/components/common/TokenAmount'
-import { vaultTypeToLabel } from '@/features/earn/utils'
 import { formatPercentage } from '@safe-global/utils/utils/formatters'
 import { DataTable } from '@/components/common/Table/DataTable'
 import { DataRow } from '@/components/common/Table/DataRow'
 import IframeIcon from '@/components/common/IframeIcon'
 import { InfoTooltip } from '@/features/stake/components/InfoTooltip'
 import { BRAND_NAME } from '@/config/constants'
+import { useTranslation } from 'react-i18next'
 
 const AdditionalRewards = ({ txInfo }: { txInfo: VaultDepositTransactionInfo }) => {
+  const { t } = useTranslation()
+
   if (!txInfo.additionalRewards[0]) return null
 
   return (
     <Stack sx={{ border: '1px solid #ddd', borderRadius: '6px', padding: '12px', mt: 1 }}>
       <DataTable
-        header="Additional reward"
+        header={t('earn.additionalReward')}
         rows={[
-          <DataRow key="Token" title="Token">
+          <DataRow key="Token" title={t('earn.token')}>
             {txInfo.additionalRewards[0].tokenInfo.name}{' '}
             <Typography component="span" color="primary.light">
               {txInfo.additionalRewards[0].tokenInfo.symbol}
             </Typography>
           </DataRow>,
 
-          <DataRow key="Earn" title="Earn">
+          <DataRow key="Earn" title={t('earn.earn')}>
             {formatPercentage(txInfo.additionalRewardsNrr / 100)}
           </DataRow>,
 
-          <DataRow key="Fee" title="Fee">
+          <DataRow key="Fee" title={t('earn.fee')}>
             0%
           </DataRow>,
 
@@ -42,7 +44,7 @@ const AdditionalRewards = ({ txInfo }: { txInfo: VaultDepositTransactionInfo }) 
             gap={0.5}
             mt={1}
           >
-            Powered by <IframeIcon src={txInfo.vaultInfo.logoUri} alt="Morpho logo" width={16} height={16} /> Morpho
+            {t('earn.poweredBy')} <IframeIcon src={txInfo.vaultInfo.logoUri} alt={t('earn.morphoLogo')} width={16} height={16} /> Morpho
           </Typography>,
         ]}
       />
@@ -51,6 +53,7 @@ const AdditionalRewards = ({ txInfo }: { txInfo: VaultDepositTransactionInfo }) 
 }
 
 const ConfirmationHeader = ({ txInfo }: { txInfo: VaultDepositTransactionInfo }) => {
+  const { t } = useTranslation()
   const totalNrr = (txInfo.baseNrr + txInfo.additionalRewardsNrr) / 100
 
   return (
@@ -76,7 +79,7 @@ const ConfirmationHeader = ({ txInfo }: { txInfo: VaultDepositTransactionInfo })
 
         <Box flex={1}>
           <Typography variant="body2" color="primary.light">
-            {vaultTypeToLabel[txInfo.type]}
+            {t('earn.deposit')}
           </Typography>
 
           <Typography variant="h4" fontWeight="bold" component="div">
@@ -108,7 +111,7 @@ const ConfirmationHeader = ({ txInfo }: { txInfo: VaultDepositTransactionInfo })
       >
         <Box flex={1}>
           <Typography variant="body2" color="primary.light">
-            Earn (after fees)
+            {t('earn.earnAfterFees')}
           </Typography>
 
           <Typography variant="h4" fontWeight="bold" component="div">
@@ -127,6 +130,8 @@ const VaultDepositConfirmation = ({
   txInfo: VaultDepositTransactionInfo
   isTxDetails?: boolean
 }) => {
+  const { t } = useTranslation()
+
   if (!txInfo.vaultInfo) return null
 
   const annualReward = Number(txInfo.expectedAnnualReward).toFixed(0)
@@ -138,16 +143,16 @@ const VaultDepositConfirmation = ({
         rows={[
           <>{!isTxDetails && <ConfirmationHeader txInfo={txInfo} />}</>,
 
-          <DataRow key="Deposit via" title="Deposit via">
+          <DataRow key="Deposit via" title={t('earn.depositVia')}>
             <Stack direction="row" alignItems="center">
-              <IframeIcon src={txInfo.vaultInfo.logoUri} alt="Morpho logo" width={24} height={24} />
+              <IframeIcon src={txInfo.vaultInfo.logoUri} alt={t('earn.morphoLogo')} width={24} height={24} />
               <Typography component="span" ml={1} fontWeight="bold">
                 {txInfo.vaultInfo.name}
               </Typography>
             </Stack>
           </DataRow>,
 
-          <DataRow key="Expected annual reward" title="Exp. annual reward">
+          <DataRow key="Expected annual reward" title={t('earn.expAnnualReward')}>
             <TokenAmount
               tokenSymbol={txInfo.tokenInfo.symbol}
               value={annualReward}
@@ -155,7 +160,7 @@ const VaultDepositConfirmation = ({
             />
           </DataRow>,
 
-          <DataRow key="Expected monthly reward" title="Exp. monthly reward">
+          <DataRow key="Expected monthly reward" title={t('earn.expMonthlyReward')}>
             <TokenAmount
               tokenSymbol={txInfo.tokenInfo.symbol}
               value={monthlyReward}
@@ -167,9 +172,9 @@ const VaultDepositConfirmation = ({
             key="Performance fee"
             title={
               <>
-                Performance fee
+                {t('earn.performanceFee')}
                 <InfoTooltip
-                  title={`The performance fee incurred here is charged by Kiln for the operation of this widget. The fee is calculated automatically. Part of the fee will contribute to a license fee that supports the Safe Community. Neither the Safe Ecosystem Foundation nor ${BRAND_NAME} operates the Kiln Widget and/or Kiln.`}
+                  title={t('earn.performanceFeeTooltip', { brandName: BRAND_NAME })}
                 />
               </>
             }

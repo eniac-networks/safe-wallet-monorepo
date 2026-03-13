@@ -13,8 +13,10 @@ import DeclineButton from './DeclineButton'
 import EthHashInfo from '@/components/common/EthHashInfo'
 import { useUsersGetWithWalletsV1Query } from '@safe-global/store/gateway/AUTO_GENERATED/users'
 import { useDarkMode } from '@/hooks/useDarkMode'
+import { useTranslation } from 'react-i18next'
 
 const PreviewInvite = () => {
+  const { t } = useTranslation()
   const isDarkMode = useDarkMode()
   const isUserSignedIn = useAppSelector(isAuthenticated)
   const spaceId = useCurrentSpaceId()
@@ -29,11 +31,11 @@ const PreviewInvite = () => {
       <Box className={css.previewInviteContent}>
         <InitialsAvatar name={space.name} size="medium" />
         <Typography variant="body1" color="text.primary" flexGrow={1}>
-          You were invited to join <strong>{space.name}</strong>
+          {t('spaces.youWereInvitedToJoin')} <strong>{space.name}</strong>
           {invitedBy && (
             <>
               {' '}
-              by
+              {t('spaces.by')}
               <Typography
                 component="span"
                 variant="body1"

@@ -8,6 +8,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { showNotification } from '@/store/notificationsSlice'
 import { useAppDispatch } from '@/store'
 import MemberInfoForm from '@/features/spaces/components/AddMemberModal/MemberInfoForm'
+import { useTranslation } from 'react-i18next'
 
 type MemberField = {
   name: string
@@ -15,6 +16,7 @@ type MemberField = {
 }
 
 const EditMemberDialog = ({ member, handleClose }: { member: Member; handleClose: () => void }) => {
+  const { t } = useTranslation()
   const spaceId = useCurrentSpaceId()
   const dispatch = useAppDispatch()
   const [editMember] = useMembersUpdateRoleV1Mutation()
@@ -34,7 +36,7 @@ const EditMemberDialog = ({ member, handleClose }: { member: Member; handleClose
     setError(undefined)
 
     if (!spaceId) {
-      setError('Something went wrong. Please try again.')
+      setError(t('spaces.somethingWentWrong'))
       return
     }
 
@@ -53,7 +55,7 @@ const EditMemberDialog = ({ member, handleClose }: { member: Member; handleClose
 
       dispatch(
         showNotification({
-          message: `Updated role of ${data.name} to ${data.role}`,
+          message: t('spaces.updatedRole', { name: data.name, role: data.role }),
           variant: 'success',
           groupKey: 'update-member-success',
         }),
@@ -61,17 +63,17 @@ const EditMemberDialog = ({ member, handleClose }: { member: Member; handleClose
 
       handleClose()
     } catch (e) {
-      setError('An unexpected error occurred while editing the member.')
+      setError(t('spaces.unexpectedError'))
     }
   })
 
   return (
-    <ModalDialog open onClose={handleClose} dialogTitle="Edit member" hideChainIndicator>
+    <ModalDialog open onClose={handleClose} dialogTitle={t('spaces.editMember')} hideChainIndicator>
       <FormProvider {...methods}>
         <form onSubmit={onSubmit}>
           <DialogContent sx={{ p: '24px !important' }}>
             <Typography mb={2}>
-              Edit the role of <b>{`${member.name}`}</b> in this space.
+              {t('spaces.editMemberDescPrefix')} <b>{member.name}</b> {t('spaces.editMemberDescSuffix')}
             </Typography>
 
             <MemberInfoForm isEdit />
@@ -80,7 +82,7 @@ const EditMemberDialog = ({ member, handleClose }: { member: Member; handleClose
 
           <DialogActions>
             <Button data-testid="cancel-btn" onClick={handleClose}>
-              Cancel
+              {t('common.cancel')}
             </Button>
             <Button
               type="submit"
@@ -89,7 +91,7 @@ const EditMemberDialog = ({ member, handleClose }: { member: Member; handleClose
               disableElevation
               disabled={!formState.isDirty}
             >
-              Update
+              {t('settings.update')}
             </Button>
           </DialogActions>
         </form>

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import CheckWallet from '@/components/common/CheckWallet'
 import Track from '@/components/common/Track'
 import { AppRoutes } from '@/config/routes'
@@ -24,6 +25,7 @@ const StakeButton = ({
   trackingLabel: STAKE_LABELS
   compact?: boolean
 }): ReactElement => {
+  const { t } = useTranslation()
   const spendingLimit = useSpendingLimit(tokenInfo)
   const chain = useCurrentChain()
   const router = useRouter()
@@ -40,7 +42,7 @@ const StakeButton = ({
           <Button
             className={classnames({ [css.button]: compact, [css.buttonDisabled]: !isOk })}
             data-testid="stake-btn"
-            aria-label="Stake"
+            aria-label={t('stake.stake')}
             variant={compact ? 'text' : 'contained'}
             color={compact ? 'info' : 'background.paper'}
             size={compact ? 'small' : 'compact'}
@@ -59,7 +61,7 @@ const StakeButton = ({
             }}
             disabled={!isOk}
           >
-            Stake
+            {t('stake.stake')}
           </Button>
         </Track>
       )}

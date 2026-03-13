@@ -3,21 +3,23 @@ import FiatValue from '@/components/common/FiatValue'
 import TokenAmount from '@/components/common/TokenAmount'
 import useSafeInfo from '@/hooks/useSafeInfo'
 import { useVisibleBalances } from '@/hooks/useVisibleBalances'
+import { useTranslation } from 'react-i18next'
 
 const TotalAssetValue = ({
   fiatTotal,
-  title = 'Total asset value',
+  title,
 }: {
   fiatTotal: string | number | undefined
   title?: string
 }) => {
+  const { t } = useTranslation()
   const { safe } = useSafeInfo()
   const { balances } = useVisibleBalances()
 
   return (
     <Box>
       <Typography fontWeight="700" mb={0.5}>
-        {title}
+        {title ?? t('balances.totalAssetValue')}
       </Typography>
       <Typography component="div" variant="h1" fontSize="44px" lineHeight="1.2" letterSpacing="-0.5px">
         {safe.deployed ? (

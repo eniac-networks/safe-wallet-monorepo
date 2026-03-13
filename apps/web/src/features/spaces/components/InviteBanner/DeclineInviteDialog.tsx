@@ -9,6 +9,7 @@ import { SPACE_EVENTS } from '@/services/analytics/events/spaces'
 import { trackEvent } from '@/services/analytics'
 import { showNotification } from '@/store/notificationsSlice'
 import { useAppDispatch } from '@/store'
+import { useTranslation } from 'react-i18next'
 
 type DeclineInviteDialogProps = {
   space: GetSpaceResponse
@@ -16,6 +17,7 @@ type DeclineInviteDialogProps = {
 }
 
 const DeclineInviteDialog = ({ space, onClose }: DeclineInviteDialogProps) => {
+  const { t } = useTranslation()
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [declineInvite] = useMembersDeclineInviteV1Mutation()
   const dispatch = useAppDispatch()
@@ -34,31 +36,31 @@ const DeclineInviteDialog = ({ space, onClose }: DeclineInviteDialogProps) => {
 
       dispatch(
         showNotification({
-          message: `Declined invite to ${space.name}`,
+          message: t('spaces.declinedInviteSuccess', { name: space.name }),
           variant: 'success',
           groupKey: 'decline-invite-success',
         }),
       )
     } catch (e) {
-      setErrorMessage('An unexpected error occurred while declining the invitation.')
+      setErrorMessage(t('spaces.declineInviteError'))
     }
   }
 
   return (
-    <ModalDialog open onClose={onClose} dialogTitle="Decline invitation" hideChainIndicator>
+    <ModalDialog open onClose={onClose} dialogTitle={t('spaces.declineInvitation')} hideChainIndicator>
       <DialogContent sx={{ p: '24px !important' }}>
         <Typography>
-          Are you sure you want to decline the invitation to <b>{space.name}</b>?
+          {t('spaces.confirmDeclineInvite', { name: space.name })}
         </Typography>
         {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
       </DialogContent>
 
       <DialogActions>
         <Button data-testid="cancel-btn" onClick={onClose}>
-          Cancel
+          {t('common.cancel')}
         </Button>
         <Button data-testid="decline-btn" onClick={handleConfirm} variant="danger" disableElevation>
-          Decline
+          {t('spaces.decline')}
         </Button>
       </DialogActions>
     </ModalDialog>

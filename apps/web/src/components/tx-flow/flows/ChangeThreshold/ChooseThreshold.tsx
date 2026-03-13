@@ -19,12 +19,13 @@ import type { ChangeThresholdFlowProps } from '@/components/tx-flow/flows/Change
 import InfoIcon from '@/public/images/notifications/info.svg'
 import { TOOLTIP_TITLES } from '@/components/tx-flow/common/constants'
 import commonCss from '@/components/tx-flow/common/styles.module.css'
-import { maybePlural } from '@safe-global/utils/utils/formatters'
+import { useTranslation } from 'react-i18next'
 import { SafeTxContext } from '@/components/tx-flow/SafeTxProvider'
 import { createUpdateThresholdTx } from '@/services/tx/tx-sender'
 import { TxFlowContext } from '@/components/tx-flow/TxFlowProvider'
 
 export const ChooseThreshold = () => {
+  const { t } = useTranslation()
   const { onNext, data } = useContext(TxFlowContext)
   const { setSafeTx, setSafeTxError } = useContext(SafeTxContext)
   const { safe } = useSafeInfo()
@@ -49,7 +50,7 @@ export const ChooseThreshold = () => {
             fontWeight: 700,
           }}
         >
-          Threshold
+          {t('newSafe.threshold')}
           <Tooltip title={TOOLTIP_TITLES.THRESHOLD} arrow placement="top">
             <span>
               <SvgIcon
@@ -66,7 +67,7 @@ export const ChooseThreshold = () => {
           </Tooltip>
         </Typography>
 
-        <Typography>Any transaction will require the confirmation of:</Typography>
+        <Typography>{t('settings.anyTransactionWillRequire')}</Typography>
       </div>
       <form onSubmit={formMethods.handleSubmit(onNext)}>
         <Box
@@ -79,7 +80,7 @@ export const ChooseThreshold = () => {
             rules={{
               validate: (value) => {
                 if (value === safe.threshold) {
-                  return `Current policy is already set to ${safe.threshold}.`
+                  return t('settings.currentPolicyAlreadySet', { threshold: safe.threshold })
                 }
               },
             }}
@@ -107,7 +108,7 @@ export const ChooseThreshold = () => {
                   </Grid>
                   <Grid item>
                     <Typography>
-                      out of {safe.owners.length} signer{maybePlural(safe.owners)}
+                      {t('newSafe.outOfSigners', { count: safe.owners.length, owners: safe.owners.length })}
                     </Typography>
                   </Grid>
                   <Grid item xs={12}>
@@ -126,7 +127,7 @@ export const ChooseThreshold = () => {
                           mb: 2,
                         }}
                       >
-                        {fieldState.isDirty ? 'Previous policy was ' : 'Current policy is '}
+                        {fieldState.isDirty ? t('settings.previousPolicyWas') + ' ' : t('settings.currentPolicyIs') + ' '}
                         <b>
                           {safe.threshold} out of {safe.owners.length}
                         </b>
@@ -153,7 +154,7 @@ export const ChooseThreshold = () => {
               newThreshold === safe.threshold
             }
           >
-            Next
+            {t('newSafe.next')}
           </Button>
         </CardActions>
       </form>

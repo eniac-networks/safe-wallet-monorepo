@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { Box, List, ListItem, ListItemIcon, ListItemText, SvgIcon, Typography } from '@mui/material'
 import type { ReactElement } from 'react'
 
@@ -14,27 +15,27 @@ import type { RecoveryQueueItem } from '@/features/recovery/services/recovery-st
 import txSignersCss from '@/components/transactions/TxSigners/styles.module.css'
 
 export function RecoverySigners({ item }: { item: RecoveryQueueItem }): ReactElement {
+  const { t } = useTranslation()
   const { isExecutable, isExpired, isNext, remainingSeconds } = useRecoveryTxState(item)
 
   const desc = isExecutable ? (
     item.expiresAt !== null ? (
       <>
-        The recovery proposal can be executed{' '}
         <Typography
           sx={{
             color: 'primary.main',
           }}
         >
-          until {formatDateTime(Number(item.expiresAt))}.
+          {t('recovery.canBeExecutedUntil', { date: formatDateTime(Number(item.expiresAt)) })}
         </Typography>
       </>
     ) : (
-      'The recovery proposal can be executed now.'
+      t('recovery.canBeExecutedNow')
     )
   ) : isExpired ? (
-    'The recovery proposal has expired and needs to be cancelled before a new one can be created.'
+    t('recovery.hasExpired')
   ) : (
-    'The recovery proposal can be executed after the review window has passed:'
+    t('recovery.afterReviewWindow')
   )
 
   return (
@@ -51,7 +52,7 @@ export function RecoverySigners({ item }: { item: RecoveryQueueItem }): ReactEle
               }}
             />
           </ListItemIcon>
-          <ListItemText primaryTypographyProps={{ fontWeight: 700 }}>Created</ListItemText>
+          <ListItemText primaryTypographyProps={{ fontWeight: 700 }}>{t('recovery.created')}</ListItemText>
         </ListItem>
         <ListItem sx={{ py: 0, pb: 1, ml: 4 }}>
           <EthHashInfo address={item.executor} hasExplorer showCopyButton />
@@ -65,7 +66,7 @@ export function RecoverySigners({ item }: { item: RecoveryQueueItem }): ReactEle
               sx={{ color: ({ palette }) => palette.border.main }}
             />
           </ListItemIcon>
-          <ListItemText primaryTypographyProps={{ fontWeight: 700 }}>Can be executed</ListItemText>
+          <ListItemText primaryTypographyProps={{ fontWeight: 700 }}>{t('recovery.canBeExecuted')}</ListItemText>
         </ListItem>
       </List>
       <Box className={txSignersCss.listFooter}>

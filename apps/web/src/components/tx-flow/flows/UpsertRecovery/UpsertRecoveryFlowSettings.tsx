@@ -41,6 +41,7 @@ import NumberField from '@/components/common/NumberField'
 import { getDelay, isCustomDelaySelected } from './utils'
 import { HelpCenterArticle, HelperCenterArticleTitles } from '@safe-global/utils/config/constants'
 import { TxFlowContext, type TxFlowContextType } from '../../TxFlowProvider'
+import { useTranslation } from 'react-i18next'
 import { isSmartContractWallet } from '@/utils/wallets'
 import { getSafeInfo } from '@safe-global/safe-gateway-typescript-sdk'
 import useChainId from '@/hooks/useChainId'
@@ -62,6 +63,7 @@ const getAddressType = async (address: string, chainId: string) => {
 }
 
 export function UpsertRecoveryFlowSettings({ delayModifier }: { delayModifier?: RecoveryStateItem }): ReactElement {
+  const { t } = useTranslation()
   const chainId = useChainId()
   const { safeAddress } = useSafeInfo()
   const { data, onNext } = useContext<TxFlowContextType<UpsertRecoveryFlowProps>>(TxFlowContext)
@@ -93,14 +95,14 @@ export function UpsertRecoveryFlowSettings({ delayModifier }: { delayModifier?: 
 
   const validateRecoverer = (recoverer: string) => {
     if (sameAddress(recoverer, safeAddress)) {
-      return 'The Safe Account cannot be a Recoverer of itself'
+      return t('recovery.cannotRecoverItself')
     }
   }
 
   const validateCustomDelay = (delay: string) => {
     if (!delay) return ''
     if (delay === '0' || !Number.isInteger(Number(delay))) {
-      return 'Invalid number'
+      return t('recovery.invalidNumber')
     }
   }
 
@@ -130,26 +132,25 @@ export function UpsertRecoveryFlowSettings({ delayModifier }: { delayModifier?: 
         <form onSubmit={formMethods.handleSubmit(handleSubmit)} className={commonCss.form}>
           <TxCard>
             <Alert severity="warning" sx={{ border: 'unset' }}>
-              Your Recoverer will be able to reset your Account setup. Only select an address that you trust.{' '}
+              {t('recovery.recovererWarning')}{' '}
               <Track {...RECOVERY_EVENTS.LEARN_MORE} label="recover-setup-flow">
                 <ExternalLink href={HelpCenterArticle.RECOVERY} title={HelperCenterArticleTitles.RECOVERY}>
-                  Learn more
+                  {t('transactions.learnMore')}
                 </ExternalLink>
               </Track>
             </Alert>
             <div>
               <Typography variant="h5" gutterBottom>
-                Trusted Recoverer
+                {t('recovery.trustedRecoverer')}
               </Typography>
 
               <Typography variant="body2">
-                Choose a Recoverer, such as a hardware wallet or a Safe Account controlled by family or friends, that
-                can initiate the recovery process in the future.
+                {t('recovery.chooseRecoverer')}
               </Typography>
             </div>
             <div>
               <AddressBookInput
-                label="Recoverer address or ENS"
+                label={t('recovery.recovererAddressOrEns')}
                 name={UpsertRecoveryFlowFields.recoverer}
                 required
                 fullWidth
@@ -159,7 +160,7 @@ export function UpsertRecoveryFlowSettings({ delayModifier }: { delayModifier?: 
             </div>
             <div>
               <Typography variant="h5" gutterBottom>
-                Review window
+                {t('recovery.reviewWindow')}
                 <Tooltip placement="top" arrow title={TOOLTIP_TITLES.REVIEW_WINDOW}>
                   <span>
                     <SvgIcon
@@ -174,8 +175,7 @@ export function UpsertRecoveryFlowSettings({ delayModifier }: { delayModifier?: 
               </Typography>
 
               <Typography variant="body2">
-                The recovery proposal will be available for execution after this period of time. You can cancel any
-                recovery proposal when it is not needed or wanted during this period.
+                {t('recovery.reviewWindowDescription')}
               </Typography>
             </div>
             <Box
@@ -235,7 +235,7 @@ export function UpsertRecoveryFlowSettings({ delayModifier }: { delayModifier?: 
                         my: 'auto',
                       }}
                     >
-                      days.
+                      {t('recovery.days')}
                     </Typography>
                   </>
                 )}
@@ -248,12 +248,12 @@ export function UpsertRecoveryFlowSettings({ delayModifier }: { delayModifier?: 
               role="button"
               className={css.advanced}
             >
-              Advanced {showAdvanced ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+              {t('recovery.advanced')} {showAdvanced ? <ExpandLessIcon /> : <ExpandMoreIcon />}
             </Typography>
             <Collapse in={showAdvanced}>
               <div>
                 <Typography variant="h5" gutterBottom>
-                  Proposal expiry
+                  {t('recovery.proposalExpiry')}
                   <Tooltip placement="top" arrow title={TOOLTIP_TITLES.PROPOSAL_EXPIRY}>
                     <span>
                       <SvgIcon
@@ -273,7 +273,7 @@ export function UpsertRecoveryFlowSettings({ delayModifier }: { delayModifier?: 
                     mb: 2,
                   }}
                 >
-                  Set a period of time after which the recovery proposal will expire and can no longer be executed.
+                  {t('recovery.proposalExpiryDescription')}
                 </Typography>
               </div>
 
@@ -305,7 +305,7 @@ export function UpsertRecoveryFlowSettings({ delayModifier }: { delayModifier?: 
           <TxCard>
             <FormControlLabel
               data-testid="warning-section"
-              label={`I understand that the Recoverer will be able to initiate recovery of this Safe Account and that I will only be informed within the ${BRAND_NAME}.`}
+              label={t('recovery.understandsRisk', { brandName: BRAND_NAME })}
               control={<Checkbox checked={understandsRisk} onChange={(_, checked) => setUnderstandsRisk(checked)} />}
               sx={{ pl: 2 }}
             />
@@ -314,7 +314,7 @@ export function UpsertRecoveryFlowSettings({ delayModifier }: { delayModifier?: 
 
             <CardActions sx={{ mt: '0 !important' }}>
               <Button data-testid="next-btn" variant="contained" type="submit" disabled={isDisabled}>
-                Next
+                {t('newSafe.next')}
               </Button>
             </CardActions>
           </TxCard>

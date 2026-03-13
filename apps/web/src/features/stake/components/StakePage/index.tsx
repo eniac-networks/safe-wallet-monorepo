@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { Stack } from '@mui/material'
 import Disclaimer from '@/components/common/Disclaimer'
 import WidgetDisclaimer from '@/components/common/WidgetDisclaimer'
@@ -9,6 +10,7 @@ import useConsent from '@/hooks/useConsent'
 import { STAKE_CONSENT_STORAGE_KEY } from '@/features/stake/constants'
 
 const StakePage = () => {
+  const { t } = useTranslation()
   const { isConsentAccepted, onAccept } = useConsent(STAKE_CONSENT_STORAGE_KEY)
   const router = useRouter()
   const { asset } = router.query
@@ -25,7 +27,7 @@ const StakePage = () => {
           flex: 1,
         }}
       >
-        <BlockedAddress address={blockedAddress} featureTitle="stake feature with Kiln" />
+        <BlockedAddress address={blockedAddress} featureTitle={t('stake.featureTitle')} />
       </Stack>
     )
   }
@@ -44,10 +46,10 @@ const StakePage = () => {
           }}
         >
           <Disclaimer
-            title="Note"
-            content={<WidgetDisclaimer widgetName="Stake Widget by Kiln" />}
+            title={t('stake.note')}
+            content={<WidgetDisclaimer widgetName={t('stake.widgetName')} />}
             onAccept={onAccept}
-            buttonText="Continue"
+            buttonText={t('common.continue')}
           />
         </Stack>
       )}

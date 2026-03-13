@@ -14,6 +14,7 @@ import DeleteSpaceDialog from '@/features/spaces/components/SpaceSettings/Delete
 import UpdateSpaceDialog from '@/features/spaces/components/SpaceSettings/UpdateSpaceDialog'
 import Track from '@/components/common/Track'
 import { SPACE_EVENTS, SPACE_LABELS } from '@/services/analytics/events/spaces'
+import { useTranslation } from 'react-i18next'
 
 enum ModalType {
   RENAME = 'rename',
@@ -23,6 +24,7 @@ enum ModalType {
 const defaultOpen = { [ModalType.RENAME]: false, [ModalType.REMOVE]: false }
 
 const SpaceContextMenu = ({ space }: { space: GetSpaceResponse }) => {
+  const { t } = useTranslation()
   const [anchorEl, setAnchorEl] = useState<HTMLElement | undefined>()
   const [open, setOpen] = useState<typeof defaultOpen>(defaultOpen)
 
@@ -56,7 +58,7 @@ const SpaceContextMenu = ({ space }: { space: GetSpaceResponse }) => {
           <ListItemIcon>
             <SvgIcon component={EditIcon} inheritViewBox fontSize="small" color="success" />
           </ListItemIcon>
-          <ListItemText>Rename</ListItemText>
+          <ListItemText>{t('spaces.rename')}</ListItemText>
         </MenuItem>
 
         <Track {...SPACE_EVENTS.DELETE_SPACE_MODAL} label={SPACE_LABELS.space_context_menu}>
@@ -64,7 +66,7 @@ const SpaceContextMenu = ({ space }: { space: GetSpaceResponse }) => {
             <ListItemIcon>
               <SvgIcon component={DeleteIcon} inheritViewBox fontSize="small" color="error" />
             </ListItemIcon>
-            <ListItemText>Remove</ListItemText>
+            <ListItemText>{t('spaces.remove')}</ListItemText>
           </MenuItem>
         </Track>
       </ContextMenu>

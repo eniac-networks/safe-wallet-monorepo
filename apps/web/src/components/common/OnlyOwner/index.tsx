@@ -3,31 +3,28 @@ import useIsSafeOwner from '@/hooks/useIsSafeOwner'
 import useWallet from '@/hooks/wallets/useWallet'
 import useConnectWallet from '../ConnectWallet/useConnectWallet'
 import { Tooltip, type TooltipProps } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 
 type CheckWalletProps = {
   children: (ok: boolean) => ReactElement
   placement?: TooltipProps['placement']
 }
 
-enum Message {
-  WalletNotConnected = 'Please connect your wallet',
-  NotSafeOwner = 'Your connected wallet is not a signer of this Safe Account',
-}
-
 const OnlyOwner = ({ children, placement = 'bottom' }: CheckWalletProps): ReactElement => {
+  const { t } = useTranslation()
   const wallet = useWallet()
   const isSafeOwner = useIsSafeOwner()
   const connectWallet = useConnectWallet()
 
   const message = useMemo(() => {
     if (!wallet) {
-      return Message.WalletNotConnected
+      return t('common.connectYourWallet')
     }
 
     if (!isSafeOwner) {
-      return Message.NotSafeOwner
+      return t('common.notSafeOwner')
     }
-  }, [isSafeOwner, wallet])
+  }, [isSafeOwner, wallet, t])
 
   if (!message) return children(true)
 

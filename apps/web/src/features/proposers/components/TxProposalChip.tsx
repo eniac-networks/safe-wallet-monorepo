@@ -1,9 +1,11 @@
 import { Chip, SvgIcon, Tooltip, Typography } from '@mui/material'
 import InfoIcon from '@/public/images/notifications/info.svg'
+import { useTranslation } from 'react-i18next'
 
 const TxProposalChip = () => {
+  const { t } = useTranslation()
   return (
-    <Tooltip title="This transaction was created by a Proposer. Reject or confirm it to proceed.">
+    <Tooltip title={t('proposers.proposalChipTooltip')}>
       <span>
         <Chip
           sx={{ backgroundColor: 'background.main', color: 'primary.light' }}
@@ -19,7 +21,7 @@ const TxProposalChip = () => {
             >
               <SvgIcon component={InfoIcon} inheritViewBox fontSize="small" />
               <Typography data-testid="proposal-status" variant="caption" fontWeight="bold">
-                Proposal
+                {t('proposers.proposal')}
               </Typography>
             </Typography>
           }

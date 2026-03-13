@@ -8,12 +8,14 @@ import css from '@/components/common/ErrorBoundary/styles.module.css'
 import CircularIcon from '../icons/CircularIcon'
 import ExternalLink from '../ExternalLink'
 import { HELP_CENTER_URL } from '@safe-global/utils/config/constants'
+import { useTranslation } from 'react-i18next'
 interface ErrorBoundaryProps {
   error: Error
   componentStack: string
 }
 
 const ErrorBoundary = ({ error, componentStack }: ErrorBoundaryProps) => {
+  const { t } = useTranslation()
   return (
     <div className={css.container}>
       <div className={css.wrapper}>
@@ -23,9 +25,7 @@ const ErrorBoundary = ({ error, componentStack }: ErrorBoundaryProps) => {
             color: 'text.primary',
           }}
         >
-          Something went wrong,
-          <br />
-          please try again.
+          {t('common.errorBoundaryTitle')}
         </Typography>
 
         <CircularIcon icon={WarningIcon} badgeColor="warning" />
@@ -36,8 +36,8 @@ const ErrorBoundary = ({ error, componentStack }: ErrorBoundaryProps) => {
               color: 'text.primary',
             }}
           >
-            In case the problem persists, please reach out to us via our{' '}
-            <ExternalLink href={HELP_CENTER_URL}>Help Center</ExternalLink>
+            {t('common.errorPersistsMessage')}{' '}
+            <ExternalLink href={HELP_CENTER_URL}>{t('common.helpCenter')}</ExternalLink>
           </Typography>
         ) : (
           <>
@@ -53,7 +53,7 @@ const ErrorBoundary = ({ error, componentStack }: ErrorBoundaryProps) => {
             mt: 2,
           }}
         >
-          Go home
+          {t('common.goHome')}
         </Link>
       </div>
     </div>

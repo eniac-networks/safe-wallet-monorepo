@@ -3,6 +3,7 @@ import useSafeInfo from '@/hooks/useSafeInfo'
 import useLocalStorage from '@/services/local-storage/useLocalStorage'
 import { Typography } from '@mui/material'
 import { useCallback, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const SAMPLE_DAPPS = [
   { name: 'Zerion', icon: '/images/common/nft-zerion.svg', url: 'https://app.zerion.io/connect-wallet' },
@@ -40,6 +41,7 @@ const WcSampleDapps = ({ onUnload }: { onUnload: () => void }) => {
 }
 
 const WcNoSessions = () => {
+  const { t } = useTranslation()
   const { safeLoaded } = useSafeInfo()
   const [showDapps = true, setShowDapps] = useLocalStorage<boolean>(LS_KEY)
 
@@ -52,7 +54,7 @@ const WcNoSessions = () => {
   return (
     <>
       <Typography variant="body2" textAlign="center" color="text.secondary">
-        No dApps are connected yet.{sampleDapps ? ' Try one of these:' : ''}
+        {t('walletconnect.noDappsConnected')}{sampleDapps ? t('walletconnect.trySampleDapps') : ''}
       </Typography>
 
       {sampleDapps}

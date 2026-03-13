@@ -23,6 +23,7 @@ import { useAppSelector } from '@/store'
 import { hasRemainingRelays } from '@/utils/relaying'
 import { Box, Button, CircularProgress, Divider, Grid, Typography } from '@mui/material'
 import React, { useContext, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { sameAddress } from '@safe-global/utils/utils/addresses'
 import { useEstimateSafeCreationGas } from '@/components/new-safe/create/useEstimateSafeCreationGas'
 import useIsWrongChain from '@/hooks/useIsWrongChain'
@@ -63,6 +64,7 @@ const useActivateAccount = (undeployedSafe: UndeployedSafe | undefined) => {
 }
 
 const ActivateAccountFlow = () => {
+  const { t } = useTranslation()
   const [isSubmittable, setIsSubmittable] = useState<boolean>(true)
   const [submitError, setSubmitError] = useState<Error | undefined>()
   const [executionMethod, setExecutionMethod] = useState(ExecutionMethod.RELAY)
@@ -145,11 +147,10 @@ const ActivateAccountFlow = () => {
   const submitDisabled = !isSubmittable || isWrongChain
 
   return (
-    <TxLayout title="Activate account" hideNonce>
+    <TxLayout title={t('counterfactual.activateAccount')} hideNonce>
       <TxCard>
         <Typography>
-          You&apos;re about to deploy this Safe Account and will have to confirm the transaction with your connected
-          wallet.
+          {t('counterfactual.aboutToDeployDescription')}
         </Typography>
 
         <Divider sx={{ mx: -3, my: 2 }} />
@@ -165,7 +166,7 @@ const ActivateAccountFlow = () => {
           {canRelay && (
             <Grid container spacing={3}>
               <ReviewRow
-                name="Execution method"
+                name={t('newSafe.executionMethod')}
                 value={
                   <ExecutionMethodSelector
                     executionMethod={executionMethod}
@@ -179,7 +180,7 @@ const ActivateAccountFlow = () => {
 
           <Grid data-testid="network-fee-section" container spacing={3}>
             <ReviewRow
-              name="Est. network fee"
+              name={t('newSafe.estNetworkFee')}
               value={
                 <>
                   <NetworkFee totalFee={totalFee} isWaived={willRelay || isWrongChain} chain={chain} />
@@ -187,8 +188,8 @@ const ActivateAccountFlow = () => {
                   {!willRelay && (
                     <Typography variant="body2" color="text.secondary" mt={1}>
                       {isWrongChain
-                        ? `Switch your connected wallet to ${chain?.chainName} to see the correct estimated network fee`
-                        : 'You will have to confirm a transaction with your connected wallet.'}
+                        ? t('counterfactual.switchChainForFee', { chainName: chain?.chainName })
+                        : t('newSafe.confirmTransaction')}
                     </Typography>
                   )}
                 </>
@@ -198,13 +199,13 @@ const ActivateAccountFlow = () => {
 
           {submitError && (
             <Box mt={1}>
-              <ErrorMessage error={submitError}>Error submitting the transaction. Please try again.</ErrorMessage>
+              <ErrorMessage error={submitError}>{t('counterfactual.errorSubmitting')}</ErrorMessage>
             </Box>
           )}
           {isWrongChain && <NetworkWarning />}
           {!walletCanPay && !willRelay && (
             <ErrorMessage>
-              Your connected wallet doesn&apos;t have enough funds to execute this transaction
+              {t('newSafe.insufficientFunds')}
             </ErrorMessage>
           )}
         </Box>
@@ -221,7 +222,7 @@ const ActivateAccountFlow = () => {
                 size="stretched"
                 disabled={!isOk || submitDisabled}
               >
-                {!isSubmittable ? <CircularProgress size={20} /> : 'Activate'}
+                {!isSubmittable ? <CircularProgress size={20} /> : t('counterfactual.activate')}
               </Button>
             )}
           </CheckWallet>

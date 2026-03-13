@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { CircularProgress, FormControl, Grid, IconButton, SvgIcon, Typography } from '@mui/material'
 import NameInput from '@/components/common/NameInput'
 import InputAdornment from '@mui/material/InputAdornment'
@@ -27,6 +28,7 @@ export const OwnerRow = ({
   remove?: (index: number) => void
   readOnly?: boolean
 }) => {
+  const { t } = useTranslation()
   const { safeAddress } = useSafeInfo()
   const wallet = useWallet()
   const fieldName = `${groupName}.${index}`
@@ -47,11 +49,11 @@ export const OwnerRow = ({
   const validateOwnerAddress = useCallback(
     async (address: string) => {
       if (sameAddress(address, safeAddress)) {
-        return 'The Safe Account cannot own itself'
+        return t('newSafe.cannotOwnItself')
       }
       const owners = getValues('owners')
       if (owners.filter((owner: NamedAddress) => sameAddress(owner.address, address)).length > 1) {
-        return 'Signer is already added'
+        return t('newSafe.signerAlreadyAdded')
       }
     },
     [getValues, safeAddress],
@@ -89,10 +91,10 @@ export const OwnerRow = ({
           <NameInput
             data-testid="owner-name"
             name={`${fieldName}.name`}
-            label="Signer name"
+            label={t('newSafe.signerNameLabel')}
             InputLabelProps={{ shrink: true }}
-            placeholder={ens || `Signer ${index + 1}`}
-            helperText={walletIsOwner && 'Your connected wallet'}
+            placeholder={ens || t('newSafe.signerIndex', { index: index + 1 })}
+            helperText={walletIsOwner && t('newSafe.yourConnectedWallet')}
             InputProps={{
               endAdornment: resolving ? (
                 <InputAdornment position="end">
@@ -112,7 +114,7 @@ export const OwnerRow = ({
           <FormControl fullWidth>
             <AddressBookInput
               name={`${fieldName}.address`}
-              label="Signer"
+              label={t('newSafe.signerLabel')}
               validate={validateOwnerAddress}
               deps={deps}
               onReset={() => setValue(`${fieldName}.name`, '')}
@@ -134,7 +136,7 @@ export const OwnerRow = ({
         >
           {removable && (
             <>
-              <IconButton data-testid="remove-owner-btn" onClick={() => remove?.(index)} aria-label="Remove signer">
+              <IconButton data-testid="remove-owner-btn" onClick={() => remove?.(index)} aria-label={t('settings.removeSigner')}>
                 <SvgIcon component={DeleteIcon} inheritViewBox />
               </IconButton>
             </>

@@ -3,6 +3,7 @@ import { Typography, Box, Grid, Paper, Link } from '@mui/material'
 import semverSatisfies from 'semver/functions/satisfies'
 import type { ReactElement } from 'react'
 import classnames from 'classnames'
+import { useTranslation } from 'react-i18next'
 
 import EthHashInfo from '@/components/common/EthHashInfo'
 import useSafeInfo from '@/hooks/useSafeInfo'
@@ -19,20 +20,22 @@ const FALLBACK_HANDLER_VERSION = '>=1.1.1'
 
 export const FallbackHandlerWarning = ({
   message,
-  txBuilderLinkPrefix = 'It can be altered via the',
+  txBuilderLinkPrefix,
 }: {
   message: ReactElement | string
   txBuilderLinkPrefix?: string
 }) => {
+  const { t } = useTranslation()
+  const prefix = txBuilderLinkPrefix ?? t('settings.canBeAlteredVia')
   const txBuilder = useTxBuilderApp()
   return (
     <>
       {message}
-      {!!txBuilder && !!txBuilderLinkPrefix && (
+      {!!txBuilder && !!prefix && (
         <>
-          {` ${txBuilderLinkPrefix} `}
+          {` ${prefix} `}
           <NextLink href={txBuilder.link} passHref legacyBehavior>
-            <Link>Transaction Builder</Link>
+            <Link>{t('settings.transactionBuilder')}</Link>
           </NextLink>
           .
         </>
@@ -42,6 +45,7 @@ export const FallbackHandlerWarning = ({
 }
 
 export const FallbackHandler = (): ReactElement | null => {
+  const { t } = useTranslation()
   const { safe } = useSafeInfo()
   const fallbackHandlerDeployments = useCompatibilityFallbackHandlerDeployments()
   const isTWAPFallbackHandler = useIsTWAPFallbackHandler()
@@ -57,19 +61,13 @@ export const FallbackHandler = (): ReactElement | null => {
 
   const warning = !hasFallbackHandler ? (
     <FallbackHandlerWarning
-      message={`The ${BRAND_NAME} may not work correctly as no fallback handler is currently set.`}
-      txBuilderLinkPrefix="It can be set via the"
+      message={t('settings.noFallbackHandlerSet', { brandName: BRAND_NAME })}
+      txBuilderLinkPrefix={t('settings.canBeSetVia')}
     />
   ) : isTWAPFallbackHandler ? (
-    <>This is CoW&apos;s fallback handler. It is needed for this Safe to be able to use the TWAP feature for Swaps.</>
+    <>{t('settings.twapFallbackHandler')}</>
   ) : isUntrusted ? (
-    <FallbackHandlerWarning
-      message={
-        <>
-          An <b>unofficial</b> fallback handler is currently set.
-        </>
-      }
-    />
+    <FallbackHandlerWarning message={t('settings.unofficialFallbackHandler')} />
   ) : undefined
 
   return (
@@ -89,16 +87,15 @@ export const FallbackHandler = (): ReactElement | null => {
               fontWeight: 700,
             }}
           >
-            Fallback handler
+            {t('settings.fallbackHandler')}
           </Typography>
         </Grid>
 
         <Grid item xs>
           <Box>
             <Typography>
-              The fallback handler adds fallback logic for funtionality that may not be present in the Safe Account
-              contract. Learn more about the fallback handler{' '}
-              <ExternalLink href={HelpCenterArticle.FALLBACK_HANDLER}>here</ExternalLink>
+              {t('settings.fallbackHandlerDescription')}{' '}
+              <ExternalLink href={HelpCenterArticle.FALLBACK_HANDLER}>{t('settings.here')}</ExternalLink>
             </Typography>
 
             <Box

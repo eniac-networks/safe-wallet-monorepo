@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { Box, Link } from '@mui/material'
 import type { StakingTxExitInfo } from '@safe-global/safe-gateway-typescript-sdk'
 import { NativeStakingStatus } from '@safe-global/safe-gateway-typescript-sdk'
@@ -8,6 +9,7 @@ import { BEACON_CHAIN_EXPLORERS } from '@/features/stake/constants'
 import useChainId from '@/hooks/useChainId'
 
 const StakingTxExitDetails = ({ info }: { info: StakingTxExitInfo }) => {
+  const { t } = useTranslation()
   const withdrawIn = formatDurationFromMilliseconds(info.estimatedExitTime + info.estimatedWithdrawalTime, [
     'days',
     'hours',
@@ -15,19 +17,19 @@ const StakingTxExitDetails = ({ info }: { info: StakingTxExitInfo }) => {
 
   return (
     <Box pr={5} display="flex" flexDirection="column" gap={1}>
-      <FieldsGrid title="Exit">
+      <FieldsGrid title={t('stake.exit')}>
         {info.validators.map((validator: string, index: number) => {
           return (
             <>
-              <BeaconChainLink name={`Validator ${index + 1}`} validator={validator} key={index} />
+              <BeaconChainLink name={t('stake.validatorN', { number: index + 1 })} validator={validator} key={index} />
               {index < info.validators.length - 1 && ' | '}
             </>
           )
         })}
       </FieldsGrid>
-      {info.status !== NativeStakingStatus.EXITED && <FieldsGrid title="Est. exit time">Up to {withdrawIn}</FieldsGrid>}
+      {info.status !== NativeStakingStatus.EXITED && <FieldsGrid title={t('stake.estExitTime')}>{t('stake.upTo', { duration: withdrawIn })}</FieldsGrid>}
 
-      <FieldsGrid title="Validator status">
+      <FieldsGrid title={t('stake.validatorStatus')}>
         <StakingStatus status={info.status} />
       </FieldsGrid>
     </Box>

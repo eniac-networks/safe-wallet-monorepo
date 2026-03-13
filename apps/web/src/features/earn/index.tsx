@@ -6,8 +6,10 @@ import useBlockedAddress from '@/hooks/useBlockedAddress'
 import useConsent from '@/hooks/useConsent'
 import { EARN_CONSENT_STORAGE_KEY } from '@/features/earn/constants'
 import EarnView from '@/features/earn/components/EarnView'
+import { useTranslation } from 'react-i18next'
 
 const EarnPage = () => {
+  const { t } = useTranslation()
   const { isConsentAccepted, onAccept } = useConsent(EARN_CONSENT_STORAGE_KEY)
   const blockedAddress = useBlockedAddress()
 
@@ -21,7 +23,7 @@ const EarnPage = () => {
           flex: 1,
         }}
       >
-        <BlockedAddress address={blockedAddress} featureTitle="Earn feature with Kiln" />
+        <BlockedAddress address={blockedAddress} featureTitle={t('earn.featureTitle')} />
       </Stack>
     )
   }
@@ -42,10 +44,10 @@ const EarnPage = () => {
           }}
         >
           <Disclaimer
-            title="Note"
-            content={<WidgetDisclaimer widgetName="Earn Widget by Kiln" />}
+            title={t('earn.note')}
+            content={<WidgetDisclaimer widgetName={t('earn.widgetName')} />}
             onAccept={onAccept}
-            buttonText="Continue"
+            buttonText={t('common.continue')}
           />
         </Stack>
       )}

@@ -5,6 +5,7 @@ import { Fragment, useState } from 'react'
 import css from './styles.module.css'
 import CopyButton from '@/components/common/CopyButton'
 import FieldsGrid from '@/components/tx/FieldsGrid'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   hexData: string
@@ -15,10 +16,10 @@ interface Props {
 
 const FIRST_BYTES = 10
 
-const SHOW_MORE = 'Show more'
-const SHOW_LESS = 'Show less'
-
 export const HexEncodedData = ({ hexData, title, highlightFirstBytes = true, limit = 20 }: Props): ReactElement => {
+  const { t } = useTranslation()
+  const SHOW_MORE = t('transactions.showMore')
+  const SHOW_LESS = t('transactions.showLess')
   const [showTxData, setShowTxData] = useState(false)
   // Check if
   const showExpandBtn = hexData.length > limit + SHOW_MORE.length + 2 // 2 for the space and the ellipsis
@@ -30,7 +31,7 @@ export const HexEncodedData = ({ hexData, title, highlightFirstBytes = true, lim
   }
 
   const firstBytes = highlightFirstBytes ? (
-    <Tooltip title="The first 4 bytes determine the contract method that is being called" arrow>
+    <Tooltip title={t('transactions.firstBytesTooltip')} arrow>
       <b>{hexData.slice(0, FIRST_BYTES)}</b>
     </Tooltip>
   ) : null

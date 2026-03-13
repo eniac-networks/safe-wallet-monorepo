@@ -4,6 +4,7 @@ import { shortenAddress } from '@safe-global/utils/utils/formatters'
 import { useRouter } from 'next/router'
 import Disclaimer from '@/components/common/Disclaimer'
 import { AppRoutes } from '@/config/routes'
+import { useTranslation } from 'react-i18next'
 
 export const BlockedAddress = ({
   address,
@@ -14,6 +15,7 @@ export const BlockedAddress = ({
   featureTitle: string
   onClose?: () => void
 }): ReactElement => {
+  const { t } = useTranslation()
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
   const displayAddress = address && isMobile ? shortenAddress(address) : address
@@ -25,9 +27,9 @@ export const BlockedAddress = ({
 
   return (
     <Disclaimer
-      title="Blocked address"
+      title={t('blockedAddress.title')}
       subtitle={displayAddress}
-      content={`The above address is part of the OFAC SDN list and the ${featureTitle} is unavailable for sanctioned addresses.`}
+      content={t('blockedAddress.content', { featureTitle })}
       onAccept={onClose ?? handleAccept}
     />
   )

@@ -19,6 +19,7 @@ import FileUpload, { FileTypes, type FileInfo } from '@/components/common/FileUp
 import ExternalLink from '@/components/common/ExternalLink'
 import { BRAND_NAME } from '@/config/constants'
 import { HelpCenterArticle } from '@safe-global/utils/config/constants'
+import { useTranslation } from 'react-i18next'
 
 type AddressBookCSVRow = ['address', 'name', 'chainId']
 
@@ -36,6 +37,7 @@ const hasEntry = (entry: string[]) => {
 }
 
 const ImportDialog = ({ handleClose }: { handleClose: () => void }): ReactElement => {
+  const { t } = useTranslation()
   const [zoneHover, setZoneHover] = useState<boolean>(false)
   const [csvData, setCsvData] = useState<ParseResult<AddressBookCSVRow>>()
   const [error, setError] = useState<string>()
@@ -70,7 +72,7 @@ const ImportDialog = ({ handleClose }: { handleClose: () => void }): ReactElemen
   }
 
   return (
-    <ModalDialog open onClose={handleClose} dialogTitle="Import address book" hideChainIndicator>
+    <ModalDialog open onClose={handleClose} dialogTitle={t('addressBook.importTitle')} hideChainIndicator>
       <DialogContent>
         <CSVReader
           accept="text/csv"
@@ -124,13 +126,15 @@ const ImportDialog = ({ handleClose }: { handleClose: () => void }): ReactElemen
               onClick(e)
             }
 
+            const chainLabel = chainCount > 1 ? t('addressBook.chainPlural') : t('addressBook.chainSingular')
+
             const fileInfo: FileInfo | undefined = acceptedFile
               ? {
                   name: acceptedFile.name,
                   additionalInfo: formatFileSize(acceptedFile.size),
                   summary: [
                     <Typography data-testid="summary-message" key="abSummary">
-                      {`Found ${entryCount} entries on ${chainCount} ${chainCount > 1 ? 'chains' : 'chain'}`}
+                      {t('addressBook.foundEntries', { entryCount, chainCount, chainLabel })}
                     </Typography>,
                   ],
                 }
@@ -153,19 +157,19 @@ const ImportDialog = ({ handleClose }: { handleClose: () => void }): ReactElemen
         {error && <ErrorMessage>{error}</ErrorMessage>}
 
         <Typography>
-          Only CSV files exported from a {BRAND_NAME} can be imported.
+          {t('addressBook.onlyCsvFiles', { brandName: BRAND_NAME })}
           <br />
           <ExternalLink
             href={HelpCenterArticle.ADDRESS_BOOK_DATA}
-            title="Learn about the address book import and export"
+            title={t('addressBook.learnAboutImportExport')}
           >
-            Learn about the address book import and export
+            {t('addressBook.learnAboutImportExport')}
           </ExternalLink>
         </Typography>
       </DialogContent>
       <DialogActions>
         <Button data-testid="cancel-btn" onClick={handleClose}>
-          Cancel
+          {t('common.cancel')}
         </Button>
         <Button
           data-testid="import-btn"
@@ -174,7 +178,7 @@ const ImportDialog = ({ handleClose }: { handleClose: () => void }): ReactElemen
           disableElevation
           disabled={!csvData || !!error}
         >
-          Import
+          {t('addressBook.import')}
         </Button>
       </DialogActions>
     </ModalDialog>

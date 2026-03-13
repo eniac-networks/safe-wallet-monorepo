@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { trackEvent } from '@/services/analytics'
 import { RECOVERY_EVENTS } from '@/services/analytics/events/recovery'
 import { CardActions, Button, Typography, Divider, Box, CircularProgress } from '@mui/material'
@@ -41,6 +42,7 @@ import { useCurrentChain } from '@/hooks/useChains'
 import { FEATURES, hasFeature } from '@safe-global/utils/utils/chains'
 
 export function RecoverAccountFlowReview({ params }: { params: RecoverAccountFlowProps }): ReactElement | null {
+  const { t } = useTranslation()
   // Form state
   const [isSubmittable, setIsSubmittable] = useState<boolean>(true)
   const [submitError, setSubmitError] = useState<Error | undefined>()
@@ -126,8 +128,9 @@ export function RecoverAccountFlowReview({ params }: { params: RecoverAccountFlo
     <>
       <TxCard>
         <Typography mb={1}>
-          This transaction will reset the Account setup, changing the signers
-          {newThreshold !== safe.threshold ? ' and threshold' : ''}.
+          {newThreshold !== safe.threshold
+            ? t('recovery.resetAccountSetupWithThreshold')
+            : t('recovery.resetAccountSetup')}
         </Typography>
 
         <OwnerList owners={newOwners} />
@@ -136,10 +139,10 @@ export function RecoverAccountFlowReview({ params }: { params: RecoverAccountFlo
 
         <Box my={1}>
           <Typography variant="body2" color="text.secondary" gutterBottom>
-            After recovery, Safe Account transactions will require:
+            {t('recovery.afterRecoveryRequires')}
           </Typography>
           <Typography>
-            <b>{params.threshold}</b> out of <b>{params[RecoverAccountFlowFields.owners].length} signers.</b>
+            <b>{params.threshold}</b> out of <b>{params[RecoverAccountFlowFields.owners].length}</b>{' '}{t('recovery.signers')}
           </Typography>
         </Box>
 
@@ -158,27 +161,27 @@ export function RecoverAccountFlowReview({ params }: { params: RecoverAccountFlo
 
           {safeTxError && (
             <ErrorMessage error={safeTxError}>
-              This recovery will most likely fail. To save gas costs, avoid executing the transaction.
+              {t('recovery.recoveryWillFailAvoidExecuting')}
             </ErrorMessage>
           )}
 
           {executionValidationError && (
             <ErrorMessage error={executionValidationError}>
-              This transaction will most likely fail. To save gas costs, avoid executing the transaction.
+              {t('recovery.txWillFailAvoidExecuting')}
             </ErrorMessage>
           )}
 
           {submitError && (
-            <ErrorMessage error={submitError}>Error submitting the transaction. Please try again.</ErrorMessage>
+            <ErrorMessage error={submitError}>{t('counterfactual.errorSubmitting')}</ErrorMessage>
           )}
 
           <NetworkWarning />
 
           {recovery?.delay !== undefined && (
             <ErrorMessage level="info">
-              Recovery will be{' '}
-              {recovery.delay === 0n ? 'immediately possible' : `possible in ${getPeriod(Number(recovery.delay))}`}{' '}
-              after this transaction is executed.
+              {recovery.delay === 0n
+                ? t('recovery.recoveryImmediatelyPossible')
+                : t('recovery.recoveryPossibleIn', { period: getPeriod(Number(recovery.delay)) })}
             </ErrorMessage>
           )}
 
@@ -195,7 +198,7 @@ export function RecoverAccountFlowReview({ params }: { params: RecoverAccountFlo
                   disabled={!isOk || submitDisabled}
                   onClick={onSubmit}
                 >
-                  {!isSubmittable ? <CircularProgress size={20} /> : 'Execute'}
+                  {!isSubmittable ? <CircularProgress size={20} /> : t('transactions.execute')}
                 </Button>
               )}
             </CheckWallet>

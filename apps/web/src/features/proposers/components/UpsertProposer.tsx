@@ -34,6 +34,7 @@ import type { Delegate } from '@safe-global/safe-gateway-typescript-sdk/dist/typ
 import { type BaseSyntheticEvent, useCallback, useMemo, useState } from 'react'
 import { FormProvider, useForm, type Validate } from 'react-hook-form'
 import useSafeInfo from '@/hooks/useSafeInfo'
+import { useTranslation } from 'react-i18next'
 
 type UpsertProposerProps = {
   onClose: () => void
@@ -52,6 +53,7 @@ type ProposerEntry = {
 }
 
 const UpsertProposer = ({ onClose, onSuccess, proposer }: UpsertProposerProps) => {
+  const { t } = useTranslation()
   const [error, setError] = useState<Error>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [addProposer] = useAddProposerMutation()
@@ -74,9 +76,9 @@ const UpsertProposer = ({ onClose, onSuccess, proposer }: UpsertProposerProps) =
 
   const validateAddress = useCallback<Validate<string>>(
     (value) =>
-      addressIsNotCurrentSafe(safeAddress, 'Cannot add Safe Account itself as proposer')(value) ??
-      addressIsNotOwner(safeOwnerAddresses, 'Cannot add Safe Owner as proposer')(value),
-    [safeAddress, safeOwnerAddresses],
+      addressIsNotCurrentSafe(safeAddress, t('proposers.cannotAddSelf'))(value) ??
+      addressIsNotOwner(safeOwnerAddresses, t('proposers.cannotAddOwner'))(value),
+    [safeAddress, safeOwnerAddresses, t],
   )
 
   const { handleSubmit, formState } = methods
@@ -112,8 +114,8 @@ const UpsertProposer = ({ onClose, onSuccess, proposer }: UpsertProposerProps) =
         showNotification({
           variant: 'success',
           groupKey: 'add-proposer-success',
-          title: 'Proposer added successfully!',
-          message: `${shortenAddress(data.address)} can now suggest transactions for this account.`,
+          title: t('settings.proposerAddedTitle'),
+          message: t('settings.proposerAddedMessage', { address: shortenAddress(data.address) }),
         }),
       )
     } catch (error) {
@@ -148,7 +150,7 @@ const UpsertProposer = ({ onClose, onSuccess, proposer }: UpsertProposerProps) =
           <DialogTitle>
             <Box data-testid="untrusted-token-warning" display="flex" alignItems="center">
               <Typography variant="h6" fontWeight={700} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                {isEditing ? 'Edit' : 'Add'} proposer
+                {isEditing ? t('settings.editProposerTitle') : t('settings.addProposerTitle')}
               </Typography>
 
               <Box flexGrow={1} />
@@ -164,12 +166,11 @@ const UpsertProposer = ({ onClose, onSuccess, proposer }: UpsertProposerProps) =
           <DialogContent>
             <Box mb={2}>
               <Typography variant="body2">
-                You&apos;re about to grant this address the ability to propose transactions. To complete the setup,
-                confirm with a signature from your connected wallet.
+                {t('settings.upsertProposerDescription')}
               </Typography>
             </Box>
 
-            <Alert severity="info">Proposer’s name and address are publicly visible.</Alert>
+            <Alert severity="info">{t(‘settings.proposerPubliclyVisible’)}</Alert>
 
             <Box my={2}>
               {isEditing ? (
@@ -179,7 +180,7 @@ const UpsertProposer = ({ onClose, onSuccess, proposer }: UpsertProposerProps) =
               ) : (
                 <AddressBookInput
                   name="address"
-                  label="Address"
+                  label={t('addressBook.address')}
                   validate={validateAddress}
                   variant="outlined"
                   fullWidth
@@ -189,23 +190,23 @@ const UpsertProposer = ({ onClose, onSuccess, proposer }: UpsertProposerProps) =
             </Box>
 
             <Box mb={2}>
-              <NameInput name="name" label="Name" required />
+              <NameInput name="name" label={t('addressBook.name')} required />
             </Box>
 
             {error && (
               <Box mt={2}>
-                <ErrorMessage error={error}>Error adding proposer</ErrorMessage>
+                <ErrorMessage error={error}>{t('settings.errorAddingProposer')}</ErrorMessage>
               </Box>
             )}
 
-            <NetworkWarning action="sign" />
+            <NetworkWarning action={t('safeMessages.sign')} />
           </DialogContent>
 
           <Divider />
 
           <DialogActions sx={{ padding: 3, justifyContent: 'space-between' }}>
             <Button size="small" variant="text" onClick={onCancel}>
-              Cancel
+              {t('common.cancel')}
             </Button>
 
             <CheckWallet checkNetwork={!isLoading} allowProposer={false}>
@@ -219,7 +220,7 @@ const UpsertProposer = ({ onClose, onSuccess, proposer }: UpsertProposerProps) =
                   disabled={!isOk || isLoading || (isEditing && !canEdit) || !formState.isValid}
                   sx={{ minWidth: '122px', minHeight: '36px' }}
                 >
-                  {isLoading ? <CircularProgress size={20} /> : 'Continue'}
+                  {isLoading ? <CircularProgress size={20} /> : t('common.continue')}
                 </Button>
               )}
             </CheckWallet>

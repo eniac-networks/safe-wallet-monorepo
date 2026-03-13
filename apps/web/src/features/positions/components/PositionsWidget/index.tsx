@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import usePositionsFiatTotal from '@/features/positions/hooks/usePositionsFiatTotal'
 import React, { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { AppRoutes } from '@/config/routes'
 import {
   Accordion,
@@ -30,6 +31,7 @@ import { MixPanelEventParams } from '@/services/analytics/mixpanel-events'
 const MAX_PROTOCOLS = 4
 
 const PositionsWidget = () => {
+  const { t } = useTranslation()
   const router = useRouter()
   const { safe } = router.query
   const { data, error, isLoading } = usePositions()
@@ -47,7 +49,7 @@ const PositionsWidget = () => {
     return (
       <Card data-testid="positions-widget" sx={{ border: 0, px: 1.5, pt: 2.5, pb: 1.5 }}>
         <Stack direction="row" justifyContent="space-between" sx={{ px: 1.5, mb: 1 }}>
-          <Typography fontWeight={700}>Top positions</Typography>
+          <Typography fontWeight={700}>{t('positions.topPositions')}</Typography>
         </Stack>
 
         <Box>
@@ -123,9 +125,9 @@ const PositionsWidget = () => {
     <Card data-testid="positions-widget" sx={{ border: 0, px: 1.5, pt: 2.5, pb: 1.5 }}>
       <Stack direction="row" justifyContent="space-between" sx={{ px: 1.5 }}>
         <Stack direction="row" alignItems="center" gap={1}>
-          <Typography fontWeight={700}>Top positions</Typography>
+          <Typography fontWeight={700}>{t('positions.topPositions')}</Typography>
           <Tooltip
-            title="Experimental. Data may be missing or outdated."
+            title={t('positions.experimental')}
             placement="top"
             arrow
             slotProps={{
@@ -137,7 +139,7 @@ const PositionsWidget = () => {
             }}
           >
             <Chip
-              label="Beta"
+              label={t('spaces.beta')}
               size="small"
               sx={{
                 backgroundColor: 'background.lightGrey',
@@ -155,7 +157,7 @@ const PositionsWidget = () => {
               [MixPanelEventParams.ENTRY_POINT]: 'Dashboard',
             }}
           >
-            <ViewAllLink url={viewAllUrl} text="View all" />
+            <ViewAllLink url={viewAllUrl} text={t('common.viewAll')} />
           </Track>
         )}
       </Stack>
@@ -168,7 +170,7 @@ const PositionsWidget = () => {
             letterSpacing: '1px',
           }}
         >
-          Position balances are not included in the total asset value.
+          {t('positions.positionBalancesDisclaimer')}
         </Typography>
       </Box>
 

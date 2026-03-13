@@ -1,5 +1,6 @@
 import { Button } from '@mui/material'
 import useConnectWallet from '@/components/common/ConnectWallet/useConnectWallet'
+import { useTranslation } from 'react-i18next'
 
 const ConnectWalletButton = ({
   onConnect,
@@ -12,6 +13,7 @@ const ConnectWalletButton = ({
   small?: boolean
   text?: string
 }): React.ReactElement => {
+  const { t } = useTranslation()
   const connectWallet = useConnectWallet()
 
   const handleConnect = () => {
@@ -29,7 +31,7 @@ const ConnectWalletButton = ({
       fullWidth
       sx={{ fontSize: small ? ['12px', '13px'] : '' }}
     >
-      {text || 'Connect'}
+      {text || t('common.connect')}
     </Button>
   )
 }

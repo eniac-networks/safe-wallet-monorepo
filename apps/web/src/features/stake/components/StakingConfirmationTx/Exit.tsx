@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { Alert, Stack, Typography } from '@mui/material'
 import FieldsGrid from '@/components/tx/FieldsGrid'
 import { formatDurationFromMilliseconds } from '@safe-global/utils/utils/formatters'
@@ -10,6 +11,7 @@ type StakingOrderConfirmationViewProps = {
 }
 
 const StakingConfirmationTxExit = ({ order }: StakingOrderConfirmationViewProps) => {
+  const { t } = useTranslation()
   const withdrawIn = formatDurationFromMilliseconds(order.estimatedExitTime + order.estimatedWithdrawalTime, [
     'days',
     'hours',
@@ -24,27 +26,27 @@ const StakingConfirmationTxExit = ({ order }: StakingOrderConfirmationViewProps)
       <ConfirmationOrderHeader
         blocks={[
           {
-            value: `${order.numValidators} Validators`,
-            label: 'Exit',
+            value: `${order.numValidators} ${t('stake.validators')}`,
+            label: t('stake.exit'),
           },
           {
             value: order.value,
             tokenInfo: order.tokenInfo,
-            label: 'Receive',
+            label: t('stake.receive'),
           },
         ]}
       />
       <FieldsGrid
         title={
           <>
-            Withdraw in
+            {t('stake.withdrawIn')}
             <InfoTooltip
               title={
                 <>
-                  Withdrawal time is the sum of:
+                  {t('stake.withdrawTooltipHeader')}
                   <ul>
-                    <li>Time until your validator is successfully exited after the withdraw request</li>
-                    <li>Time for a stake to receive Consensus rewards on the execution layer</li>
+                    <li>{t('stake.withdrawTooltipItem1')}</li>
+                    <li>{t('stake.withdrawTooltipItem2')}</li>
                   </ul>
                 </>
               }
@@ -52,7 +54,7 @@ const StakingConfirmationTxExit = ({ order }: StakingOrderConfirmationViewProps)
           </>
         }
       >
-        Up to {withdrawIn}
+        {t('stake.upTo', { duration: withdrawIn })}
       </FieldsGrid>
       <Typography
         variant="body2"
@@ -61,11 +63,10 @@ const StakingConfirmationTxExit = ({ order }: StakingOrderConfirmationViewProps)
           mt: 2,
         }}
       >
-        The selected amount and any rewards will be withdrawn from Dedicated Staking for ETH after the validator exit.
+        {t('stake.withdrawDescription')}
       </Typography>
       <Alert severity="warning" sx={{ mb: 1 }}>
-        This transaction is a withdrawal request. After it&apos;s executed, you&apos;ll need to complete a separate
-        withdrawal transaction.
+        {t('stake.withdrawWarning')}
       </Alert>
     </Stack>
   )

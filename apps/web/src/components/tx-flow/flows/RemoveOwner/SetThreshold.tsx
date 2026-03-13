@@ -11,7 +11,7 @@ import { TOOLTIP_TITLES } from '@/components/tx-flow/common/constants'
 import type { RemoveOwnerFlowProps } from '.'
 
 import commonCss from '@/components/tx-flow/common/styles.module.css'
-import { maybePlural } from '@safe-global/utils/utils/formatters'
+import { useTranslation } from 'react-i18next'
 
 export const SetThreshold = ({
   params,
@@ -20,6 +20,7 @@ export const SetThreshold = ({
   params: RemoveOwnerFlowProps
   onSubmit: (data: RemoveOwnerFlowProps) => void
 }): ReactElement => {
+  const { t } = useTranslation()
   const { safe } = useSafeInfo()
   const [selectedThreshold, setSelectedThreshold] = useState<number>(params.threshold ?? 1)
 
@@ -38,7 +39,7 @@ export const SetThreshold = ({
     <TxCard>
       <form onSubmit={onSubmitHandler}>
         <Box mb={3}>
-          <Typography mb={2}>Review the signer you want to remove from the active Safe Account:</Typography>
+          <Typography mb={2}>{t('settings.reviewSignerToRemove')}</Typography>
 
           <EthHashInfo address={params.removedOwner.address} shortAddress={false} showCopyButton hasExplorer />
         </Box>
@@ -47,7 +48,7 @@ export const SetThreshold = ({
 
         <Box my={3}>
           <Typography variant="h4" fontWeight={700}>
-            Threshold
+            {t('newSafe.threshold')}
             <Tooltip title={TOOLTIP_TITLES.THRESHOLD} arrow placement="top">
               <span>
                 <SvgIcon
@@ -63,7 +64,7 @@ export const SetThreshold = ({
               </span>
             </Tooltip>
           </Typography>
-          <Typography>Any transaction requires the confirmation of:</Typography>
+          <Typography>{t('newSafe.anyTransactionRequires')}</Typography>
           <Grid
             container
             direction="row"
@@ -84,7 +85,7 @@ export const SetThreshold = ({
             </Grid>
             <Grid item>
               <Typography>
-                out of {newNumberOfOwners} signer{maybePlural(newNumberOfOwners)}
+                {t('newSafe.outOfSigners', { count: newNumberOfOwners, owners: newNumberOfOwners })}
               </Typography>
             </Grid>
           </Grid>
@@ -94,7 +95,7 @@ export const SetThreshold = ({
 
         <CardActions>
           <Button data-testid="next-btn" variant="contained" type="submit">
-            Next
+            {t('newSafe.next')}
           </Button>
         </CardActions>
       </form>

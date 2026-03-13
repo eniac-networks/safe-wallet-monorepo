@@ -6,6 +6,7 @@ import type { Dispatch, SetStateAction } from 'react'
 import FileUpload, { FileTypes } from '@/components/common/FileUpload'
 import InfoIcon from '@/public/images/notifications/info.svg'
 import { BRAND_NAME } from '@/config/constants'
+import { useTranslation } from 'react-i18next'
 
 const AcceptedMimeTypes = {
   'application/json': ['.json'],
@@ -18,6 +19,8 @@ export const ImportFileUpload = ({
   setFileName: Dispatch<SetStateAction<string | undefined>>
   setJsonData: Dispatch<SetStateAction<string | undefined>>
 }) => {
+  const { t } = useTranslation()
+
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       if (acceptedFiles.length === 0) {
@@ -53,7 +56,7 @@ export const ImportFileUpload = ({
 
   return (
     <>
-      <Typography>Import {BRAND_NAME} data by uploading a file in the area below.</Typography>
+      <Typography>{t('settings.importFileDescription', { brandName: BRAND_NAME })}</Typography>
 
       <FileUpload
         fileType={FileTypes.JSON}
@@ -75,7 +78,7 @@ export const ImportFileUpload = ({
             mr: 0.5,
           }}
         />
-        Only JSON files exported from the {BRAND_NAME} can be imported.
+        {t('settings.onlyJsonFiles', { brandName: BRAND_NAME })}
       </Typography>
     </>
   )

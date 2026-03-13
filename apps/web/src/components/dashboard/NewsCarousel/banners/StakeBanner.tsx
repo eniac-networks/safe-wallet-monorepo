@@ -9,24 +9,25 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import CloseIcon from '@mui/icons-material/Close'
 import { OVERVIEW_EVENTS } from '@/services/analytics'
 import { useRouter } from 'next/router'
+import { useTranslation } from 'react-i18next'
 
 export const stakeBannerID = 'stakeBanner'
 
 const StakeBanner = ({ onDismiss }: { onDismiss: () => void }) => {
   const router = useRouter()
+  const { t } = useTranslation()
 
   return (
     <Card className={css.banner}>
       <Stack direction={{ xs: 'column', md: 'row' }} alignItems={{ xs: 'flex-start', md: 'center' }} spacing={2}>
-        <Image className={css.bannerImage} src={EarnIllustrationLight} alt="Earn illustration" width={95} height={95} />
+        <Image className={css.bannerImage} src={EarnIllustrationLight} alt={t('dashboard.earnIllustrationAlt')} width={95} height={95} />
         <Box>
           <Typography variant="h4" fontWeight="bold" color="static.main" className={css.bannerText}>
-            Stake your ETH and earn rewards
+            {t('dashboard.stakeBannerTitle')}
           </Typography>
 
           <Typography variant="body2" color="static.light" className={css.bannerText}>
-            Lock 32 ETH and become a validator easily with the Kiln widget. You can also explore Safe Apps or home
-            staking for other options. Staking involves risks like slashing.
+            {t('dashboard.stakeBannerDescription')}
           </Typography>
 
           <Track {...OVERVIEW_EVENTS.OPEN_STAKING_WIDGET}>
@@ -38,7 +39,7 @@ const StakeBanner = ({ onDismiss }: { onDismiss: () => void }) => {
                 sx={{ mt: 1, p: 0.5 }}
                 color="static"
               >
-                Stake ETH
+                {t('dashboard.stakeEth')}
               </Button>
             </Link>
           </Track>
@@ -46,7 +47,7 @@ const StakeBanner = ({ onDismiss }: { onDismiss: () => void }) => {
       </Stack>
 
       <Track {...OVERVIEW_EVENTS.HIDE_STAKING_BANNER}>
-        <IconButton className={css.closeButton} aria-label="close" onClick={onDismiss}>
+        <IconButton className={css.closeButton} aria-label={t('common.close')} onClick={onDismiss}>
           <CloseIcon fontSize="small" color="border" />
         </IconButton>
       </Track>

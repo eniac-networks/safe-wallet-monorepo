@@ -4,12 +4,14 @@ import classNames from 'classnames'
 import SafeAppIcon from '@/public/images/apps/apps-icon.svg'
 
 import css from './styles.module.css'
+import { useTranslation } from 'react-i18next'
 
 type CustomAppPlaceholderProps = {
   error?: string
 }
 
 const CustomAppPlaceholder = ({ error = '' }: CustomAppPlaceholderProps) => {
+  const { t } = useTranslation()
   return (
     <div className={css.customAppPlaceholderContainer}>
       <SvgIcon
@@ -21,7 +23,7 @@ const CustomAppPlaceholder = ({ error = '' }: CustomAppPlaceholderProps) => {
         inheritViewBox
       />
       <Typography ml={2} color={error ? 'error' : 'text.secondary'}>
-        {error || 'Safe App card'}
+        {error || t('safeApps.appCard')}
       </Typography>
     </div>
   )

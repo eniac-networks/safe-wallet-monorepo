@@ -3,6 +3,7 @@ import DialogActions from '@mui/material/DialogActions'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import type { ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import ModalDialog from '@/components/common/ModalDialog'
 import { useAppDispatch } from '@/store'
@@ -25,6 +26,7 @@ const SafeListRemoveDialog = ({
   address: string
   chainId: string
 }): ReactElement => {
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const safeAddress = useSafeAddress()
   const safeChainId = useChainId()
@@ -46,20 +48,20 @@ const SafeListRemoveDialog = ({
   }
 
   return (
-    <ModalDialog open onClose={handleClose} dialogTitle="Delete entry" chainId={chainId}>
+    <ModalDialog open onClose={handleClose} dialogTitle={t('sidebar.removeAccountTitle')} chainId={chainId}>
       <DialogContent sx={{ p: '24px !important' }}>
         <Typography>
-          Are you sure you want to remove the <b>{safe}</b> account?
+          {t('sidebar.removeAccountConfirm', { safe })}
         </Typography>
       </DialogContent>
 
       <DialogActions>
         <Button data-testid="cancel-btn" onClick={handleClose}>
-          Cancel
+          {t('common.cancel')}
         </Button>
         <Track {...OVERVIEW_EVENTS.DELETED_FROM_WATCHLIST} label={trackingLabel}>
           <Button data-testid="delete-btn" onClick={handleConfirm} variant="danger" disableElevation>
-            Delete
+            {t('common.delete')}
           </Button>
         </Track>
       </DialogActions>

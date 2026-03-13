@@ -14,33 +14,29 @@ import { Box, Button, Grid, Paper, SvgIcon, Typography } from '@mui/material'
 import EthHashInfo from '@/components/common/EthHashInfo'
 import ExternalLink from '@/components/common/ExternalLink'
 import React, { useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { FEATURES } from '@safe-global/utils/utils/chains'
 import { HelpCenterArticle } from '@safe-global/utils/config/constants'
 import useSafeInfo from '@/hooks/useSafeInfo'
 import { Tooltip } from '@mui/material'
 
-const headCells = [
-  {
-    id: 'proposer',
-    label: 'Proposer',
-  },
-  {
-    id: 'creator',
-    label: 'Creator',
-  },
-  {
-    id: 'Actions',
-    label: '',
-  },
-]
-const SafeNotActivated = 'You need to activate the Safe before transacting'
-
 const ProposersList = () => {
+  const { t } = useTranslation()
   const [isAddDialogOpen, setIsAddDialogOpen] = useState<boolean>()
   const proposers = useProposers()
   const isEnabled = useHasFeature(FEATURES.PROPOSERS)
   const { safe } = useSafeInfo()
   const isUndeployedSafe = !safe.deployed
+
+  const headCells = useMemo(
+    () => [
+      { id: 'proposer', label: t('settings.proposerColumn') },
+      { id: 'creator', label: t('settings.creatorColumn') },
+      { id: 'Actions', label: '' },
+    ],
+    [t],
+  )
+  const safeNotActivated = t('settings.safeNotActivated')
 
   const rows = useMemo(() => {
     if (!proposers.data) return []
@@ -92,11 +88,12 @@ const ProposersList = () => {
         <Grid container spacing={3}>
           <Grid item xs>
             <Typography fontWeight="bold" mb={2}>
-              Proposers <Chip label="New" sx={{ backgroundColor: 'secondary.light', color: 'static.main' }} />
+              {t('settings.proposers')}{' '}
+              <Chip label="New" sx={{ backgroundColor: 'secondary.light', color: 'static.main' }} />
             </Typography>
             <Typography mb={2}>
-              Proposers can suggest transactions but cannot approve or execute them. Signers should review and approve
-              transactions first. <ExternalLink href={HelpCenterArticle.PROPOSERS}>Learn more</ExternalLink>
+              {t('settings.proposersDescription')}{' '}
+              <ExternalLink href={HelpCenterArticle.PROPOSERS}>{t('transactions.learnMore')}</ExternalLink>
             </Typography>
 
             {isEnabled && (
@@ -104,7 +101,7 @@ const ProposersList = () => {
                 <OnlyOwner>
                   {(isOk) => (
                     <Track {...SETTINGS_EVENTS.PROPOSERS.ADD_PROPOSER}>
-                      <Tooltip title={isUndeployedSafe ? SafeNotActivated : ''}>
+                      <Tooltip title={isUndeployedSafe ? safeNotActivated : ''}>
                         <span>
                           <Button
                             data-testid="add-proposer-btn"
@@ -114,7 +111,7 @@ const ProposersList = () => {
                             disabled={!isOk || isUndeployedSafe}
                             size="compact"
                           >
-                            Add proposer
+                            {t('settings.addProposer')}
                           </Button>
                         </span>
                       </Tooltip>

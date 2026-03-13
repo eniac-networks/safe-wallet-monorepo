@@ -2,6 +2,7 @@ import useIsExpiredSwap from '@/features/swap/hooks/useIsExpiredSwap'
 import useIsPending from '@/hooks/useIsPending'
 import type { SyntheticEvent } from 'react'
 import { type ReactElement, useContext } from 'react'
+import { useTranslation } from 'react-i18next'
 import { type TransactionSummary } from '@safe-global/safe-gateway-typescript-sdk'
 import { Button, Tooltip } from '@mui/material'
 
@@ -22,6 +23,7 @@ const ExecuteTxButton = ({
   txSummary: TransactionSummary
   compact?: boolean
 }): ReactElement => {
+  const { t } = useTranslation()
   const { setTxFlow } = useContext(TxModalContext)
   const { safe } = useSafeInfo()
   const txNonce = isMultisigExecutionInfo(txSummary.executionInfo) ? txSummary.executionInfo.nonce : undefined
@@ -52,7 +54,7 @@ const ExecuteTxButton = ({
     <>
       <CheckWallet allowNonOwner>
         {(isOk) => (
-          <Tooltip title={isOk && !isNext ? 'You must execute the transaction with the lowest nonce first' : ''}>
+          <Tooltip title={isOk && !isNext ? t('transactions.executeLowestNonceFirst') : ''}>
             <span>
               <Track {...TX_LIST_EVENTS.EXECUTE}>
                 <Button
@@ -64,7 +66,7 @@ const ExecuteTxButton = ({
                   size={compact ? 'small' : 'stretched'}
                   sx={{ minWidth: '106.5px', py: compact ? 0.8 : undefined }}
                 >
-                  Execute
+                  {t('transactions.execute')}
                 </Button>
               </Track>
             </span>

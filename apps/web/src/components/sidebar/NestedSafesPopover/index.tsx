@@ -1,6 +1,7 @@
 import { SvgIcon, Popover, Button, Box, Stack } from '@mui/material'
 import { useContext } from 'react'
 import type { ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import AddIcon from '@/public/images/common/add.svg'
 import { ModalDialogTitle } from '@/components/common/ModalDialog'
@@ -23,6 +24,7 @@ export function NestedSafesPopover({
   nestedSafes: Array<string>
   hideCreationButton?: boolean
 }): ReactElement {
+  const { t } = useTranslation()
   const { setTxFlow } = useContext(TxModalContext)
 
   const onAdd = () => {
@@ -60,7 +62,7 @@ export function NestedSafesPopover({
         onClose={onClose}
         sx={{ borderBottom: ({ palette }) => `1px solid ${palette.border.light}` }}
       >
-        Nested Safes
+        {t('sidebar.nestedSafes')}
       </ModalDialogTitle>
       <Stack
         data-testid="nested-safe-list"
@@ -96,7 +98,7 @@ export function NestedSafesPopover({
                   disabled={!ok}
                 >
                   <SvgIcon component={AddIcon} inheritViewBox fontSize="small" />
-                  Add Nested Safe
+                  {t('sidebar.addNestedSafe')}
                 </Button>
               )}
             </CheckWallet>

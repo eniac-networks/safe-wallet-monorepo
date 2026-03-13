@@ -1,5 +1,6 @@
 import useWallet from '@/hooks/wallets/useWallet'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   Dialog,
   DialogTitle,
@@ -47,6 +48,7 @@ const InternalDeleteTxModal = ({
   safeAddress,
   chainId,
 }: DeleteTxModalProps) => {
+  const { t } = useTranslation()
   const [error, setError] = useState<Error>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
@@ -95,7 +97,7 @@ const InternalDeleteTxModal = ({
         <Box data-testid="untrusted-token-warning" display="flex" alignItems="center">
           <Typography variant="h6" fontWeight={700} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <SvgIcon component={InfoIcon} inheritViewBox color="error" />
-            Delete this transaction?
+            {t('recovery.deleteTxTitle')}
           </Typography>
 
           <Box flexGrow={1} />
@@ -112,16 +114,15 @@ const InternalDeleteTxModal = ({
 
       <DialogContent>
         <Box>
-          Are you sure you want to delete this transaction? This will permanently remove it from the queue but the
-          already given signatures will remain valid.
+          {t('recovery.deleteTxDescription')}
         </Box>
 
         <Box mt={2}>
-          Make sure that you are aware of the{' '}
+          {t('recovery.deleteTxRisksPrefix')}{' '}
           <ExternalLink href="https://help.safe.global/en/articles/40836-why-do-i-need-to-pay-for-cancelling-a-transaction">
-            potential risks
+            {t('recovery.potentialRisks')}
           </ExternalLink>{' '}
-          related to deleting a transaction off-chain.
+          {t('recovery.deleteTxRisksSuffix')}
         </Box>
 
         <Box mt={2}>
@@ -130,7 +131,7 @@ const InternalDeleteTxModal = ({
 
         {error && (
           <Box mt={2}>
-            <ErrorMessage error={error}>Error deleting transaction</ErrorMessage>
+            <ErrorMessage error={error}>{t('recovery.errorDeletingTx')}</ErrorMessage>
           </Box>
         )}
       </DialogContent>
@@ -139,7 +140,7 @@ const InternalDeleteTxModal = ({
 
       <DialogActions sx={{ padding: 3, justifyContent: 'space-between' }}>
         <Button size="small" variant="text" onClick={onCancel}>
-          Keep it
+          {t('recovery.keepIt')}
         </Button>
 
         <CheckWallet checkNetwork>
@@ -153,7 +154,7 @@ const InternalDeleteTxModal = ({
               disabled={!isOk || isLoading}
               sx={{ minWidth: '122px', minHeight: '36px' }}
             >
-              {isLoading ? <CircularProgress size={20} /> : 'Yes, delete'}
+              {isLoading ? <CircularProgress size={20} /> : t('settings.yesDelete')}
             </Button>
           )}
         </CheckWallet>

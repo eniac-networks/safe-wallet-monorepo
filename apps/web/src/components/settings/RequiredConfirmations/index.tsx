@@ -5,9 +5,10 @@ import { ChangeThresholdFlow } from '@/components/tx-flow/flows'
 import CheckWallet from '@/components/common/CheckWallet'
 import { useContext } from 'react'
 import { TxModalContext } from '@/components/tx-flow'
-import { maybePlural } from '@safe-global/utils/utils/formatters'
+import { useTranslation } from 'react-i18next'
 
 export const RequiredConfirmation = ({ threshold, owners }: { threshold: number; owners: number }) => {
+  const { t } = useTranslation()
   const { setTxFlow } = useContext(TxModalContext)
 
   return (
@@ -24,7 +25,7 @@ export const RequiredConfirmation = ({ threshold, owners }: { threshold: number;
               fontWeight: 700,
             }}
           >
-            Required confirmations
+            {t('settings.requiredConfirmations')}
           </Typography>
         </Grid>
 
@@ -34,7 +35,7 @@ export const RequiredConfirmation = ({ threshold, owners }: { threshold: number;
               pb: 2,
             }}
           >
-            Any transaction requires the confirmation of:
+            {t('settings.transactionRequiresConfirmation')}
           </Typography>
 
           <Typography
@@ -44,7 +45,7 @@ export const RequiredConfirmation = ({ threshold, owners }: { threshold: number;
               pr: 2,
             }}
           >
-            <b>{threshold}</b> out of <b>{owners}</b> signer{maybePlural(owners)}.
+            <b>{threshold}</b> {t('settings.outOfSigners', { count: owners, owners })}.
           </Typography>
 
           {owners > 1 && (
@@ -57,7 +58,7 @@ export const RequiredConfirmation = ({ threshold, owners }: { threshold: number;
                     disabled={!isOk}
                     size="small"
                   >
-                    Change
+                    {t('settings.change')}
                   </Button>
                 </Track>
               )}

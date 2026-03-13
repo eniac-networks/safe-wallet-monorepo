@@ -1,6 +1,7 @@
 import React, { type ReactElement } from 'react'
 import { useRouter } from 'next/router'
 import { ListItemButton } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 
 import {
   SidebarList,
@@ -10,12 +11,14 @@ import {
 } from '@/components/sidebar/SidebarList'
 import { useCurrentSpaceId } from '@/features/spaces/hooks/useCurrentSpaceId'
 import { useIsActiceMember } from '@/features/spaces/hooks/useSpaceMembers'
-import { navItems } from './config'
+import { getNavItems } from './config'
 
 const Navigation = (): ReactElement => {
+  const { t } = useTranslation()
   const router = useRouter()
   const spaceId = useCurrentSpaceId()
   const isActiveMember = useIsActiceMember()
+  const navItems = getNavItems(t)
 
   return (
     <SidebarList>

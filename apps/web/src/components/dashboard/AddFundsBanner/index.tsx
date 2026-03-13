@@ -7,8 +7,10 @@ import { Box, Button, Stack, SvgIcon, Typography } from '@mui/material'
 import FiatIcon from '@/public/images/common/fiat2.svg'
 import CopyTooltip from '@/components/common/CopyTooltip'
 import CopyIcon from '@/public/images/common/copy.svg'
+import { useTranslation } from 'react-i18next'
 
 const AddFundsToGetStarted = () => {
+  const { t } = useTranslation()
   const { safe } = useSafeInfo()
   const safeAddress = useSafeAddress()
   const settings = useAppSelector(selectSettings)
@@ -41,10 +43,10 @@ const AddFundsToGetStarted = () => {
       </Box>
       <Box>
         <Typography fontWeight="bold" color="static.main">
-          Add funds to get started
+          {t('dashboard.addFundsBannerTitle')}
         </Typography>
         <Typography variant="body2" color="primary.light">
-          Onramp crypto or send tokens directly to your address from a different wallet.{' '}
+          {t('dashboard.addFundsBannerDescription')}{' '}
         </Typography>
       </Box>
       <Box ml={{ xs: 0, md: 'auto' }}>
@@ -56,7 +58,7 @@ const AddFundsToGetStarted = () => {
             size="small"
             disableElevation
           >
-            Copy address
+            {t('dashboard.copyAddress')}
           </Button>
         </CopyTooltip>
       </Box>

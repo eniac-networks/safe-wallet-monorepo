@@ -32,6 +32,7 @@ import {
   Typography,
 } from '@mui/material'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { FormProvider, useForm } from 'react-hook-form'
 import { trackEvent } from '@/services/analytics'
 import { SPACE_EVENTS, SPACE_LABELS } from '@/services/analytics/events/spaces'
@@ -61,6 +62,7 @@ function getSelectedSafes(safes: AddAccountsFormValues['selectedSafes'], spaceSa
 const SAFE_ACCOUNTS_LIMIT = 10
 
 const AddAccounts = () => {
+  const { t } = useTranslation()
   const isAdmin = useIsAdmin()
   const [open, setOpen] = useState<boolean>(false)
   const [searchQuery, setSearchQuery] = useState('')
@@ -111,13 +113,13 @@ const AddAccounts = () => {
 
       if (result.error) {
         // @ts-ignore
-        setError(result.error?.data?.message || 'Something went wrong adding one or more Safe Accounts.')
+        setError(result.error?.data?.message || t('spaces.addAccountsError'))
         return
       }
 
       dispatch(
         showNotification({
-          message: `Added safe account(s) to space`,
+          message: t('spaces.addedSafeAccountsSuccess'),
           variant: 'success',
           groupKey: 'add-safe-account-success',
         }),
@@ -163,7 +165,7 @@ const AddAccounts = () => {
 
   return (
     <>
-      <Tooltip title={!isAdmin ? 'You need to be an Admin to add accounts' : ''} placement="top">
+      <Tooltip title={!isAdmin ? t('spaces.adminRequiredToAddAccounts') : ''} placement="top">
         <Box component="span">
           <Button
             data-testid="add-space-account-button"
@@ -172,7 +174,7 @@ const AddAccounts = () => {
             disabled={!isAdmin}
             sx={{ whiteSpace: 'nowrap' }}
           >
-            Add accounts
+            {t('spaces.addAccounts')}
           </Button>
         </Box>
       </Tooltip>
@@ -186,11 +188,10 @@ const AddAccounts = () => {
         <DialogContent sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
           <Container fixed maxWidth="sm" disableGutters>
             <Typography component="div" variant="h1" mb={1}>
-              Add Safe Accounts
+              {t('spaces.addSafeAccountsTitle')}
             </Typography>
             <Typography mb={2}>
-              You can add any Safe Account to your Space. This is currently limited to {SAFE_ACCOUNTS_LIMIT} Safe
-              Accounts.
+              {t('spaces.addSafeAccountsLimit', { limit: SAFE_ACCOUNTS_LIMIT })}
             </Typography>
             <Card>
               <FormProvider {...formMethods}>
@@ -198,8 +199,8 @@ const AddAccounts = () => {
                   <Box m={2}>
                     <TextField
                       id="search-by-name"
-                      placeholder="Search"
-                      aria-label="Search Safe list by name"
+                      placeholder={t('spaces.search')}
+                      aria-label={t('spaces.searchSafeListAriaLabel')}
                       variant="filled"
                       hiddenLabel
                       onChange={(e) => {
@@ -243,14 +244,14 @@ const AddAccounts = () => {
                   )}
 
                   <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button onClick={handleClose}>{t('common.cancel')}</Button>
                     <Button
                       data-testid="add-accounts-button"
                       variant="contained"
                       disabled={selectedSafesLength === 0}
                       type="submit"
                     >
-                      Add Accounts ({selectedSafesLength})
+                      {t('spaces.addAccountsCount', { count: selectedSafesLength })}
                     </Button>
                   </DialogActions>
                 </form>

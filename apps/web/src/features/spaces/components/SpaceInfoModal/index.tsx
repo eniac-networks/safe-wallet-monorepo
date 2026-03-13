@@ -21,6 +21,7 @@ import Link from 'next/link'
 import { trackEvent } from '@/services/analytics'
 import { SPACE_EVENTS, SPACE_LABELS } from '@/services/analytics/events/spaces'
 import ExternalLink from '@/components/common/ExternalLink'
+import { useTranslation } from 'react-i18next'
 
 const ListIcon = () => (
   <ListItemIcon
@@ -56,48 +57,49 @@ const SpaceInfoModal = ({
   onClose: () => void
   onCreateSpace?: () => void
 }) => {
+  const { t } = useTranslation()
   return (
     <Dialog open PaperProps={{ style: { width: '870px', maxWidth: '98%', borderRadius: '16px' } }} onClose={onClose}>
       <DialogContent dividers sx={{ p: 0, border: 0 }}>
         <Grid2 container>
           <Grid2 size={{ xs: 12, md: 6 }} p={5} display="flex" flexDirection="column">
             <Typography component="div" variant="h1" mb={1} position="relative">
-              Introducing spaces
+              {t('spaces.introducingSpaces')}
               <Chip
-                label="Beta"
+                label={t('spaces.beta')}
                 size="small"
                 sx={{ ml: 1, fontWeight: 'normal', position: 'absolute', top: '0', right: '0' }}
               />
             </Typography>
 
             <Typography mt={2} mb={3}>
-              Collaborate seamlessly with your team and keep your treasury organized.
+              {t(‘spaces.spaceCollabDescription’)}
             </Typography>
 
-            <List sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <List sx={{ display: ‘flex’, flexDirection: ‘column’, gap: 2 }}>
               <ListItem disablePadding>
                 <ListIcon />
-                Bring all your Safe Accounts into one shared space.
+                {t(‘spaces.safeAccountsFeature’)}
               </ListItem>
 
               <ListItem disablePadding>
                 <ListIcon />
-                Invite team members with shared access—whether they’re signers or just viewers.
+                {t(‘spaces.inviteMembersFeature’)}
               </ListItem>
 
               <ListItem disablePadding>
                 <ListIcon />
-                Everyone sees the same account names, team members, and data.
+                {t(‘spaces.sharedDataFeature’)}
               </ListItem>
 
               <ListItem disablePadding>
                 <ListIcon />
-                Aggregated balances and actions across multiple accounts are coming soon!
+                {t(‘spaces.comingSoonFeature’)}
               </ListItem>
             </List>
 
             <Typography mt={1}>
-              Read the <ExternalLink href={SPACE_HELP_ARTICLE_LINK}>Spaces help article</ExternalLink>
+              {t(‘spaces.readHelpArticlePrefix’)}<ExternalLink href={SPACE_HELP_ARTICLE_LINK}>{t(‘spaces.spacesHelpArticle’)}</ExternalLink>
             </Typography>
 
             {showButtons && (
@@ -112,7 +114,7 @@ const SpaceInfoModal = ({
                       onCreateSpace()
                     }}
                   >
-                    Create a space
+                    {t('spaces.createASpace')}
                   </Button>
                 ) : (
                   <Link href={AppRoutes.welcome.spaces} passHref legacyBehavior>
@@ -123,13 +125,13 @@ const SpaceInfoModal = ({
                         trackEvent({ ...SPACE_EVENTS.OPEN_SPACE_LIST_PAGE, label: SPACE_LABELS.info_modal })
                       }
                     >
-                      Create a space
+                      {t('spaces.createASpace')}
                     </Button>
                   </Link>
                 )}
 
                 <Button variant="text" color="primary" onClick={onClose}>
-                  Maybe later
+                  {t('spaces.maybeLater')}
                 </Button>
               </Stack>
             )}

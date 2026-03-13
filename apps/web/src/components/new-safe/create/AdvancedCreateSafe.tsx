@@ -15,12 +15,14 @@ import { CREATE_SAFE_CATEGORY } from '@/services/analytics'
 import type { CreateSafeInfoItem } from '@/components/new-safe/create/CreateSafeInfos'
 import CreateSafeInfos from '@/components/new-safe/create/CreateSafeInfos'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { type NewSafeFormData } from '.'
 import AdvancedOptionsStep from './steps/AdvancedOptionsStep'
 import { useCurrentChain } from '@/hooks/useChains'
 import { getLatestSafeVersion } from '@safe-global/utils/utils/chains'
 
 const AdvancedCreateSafe = () => {
+  const { t } = useTranslation()
   const router = useRouter()
   const wallet = useWallet()
   const chain = useCurrentChain()
@@ -31,8 +33,8 @@ const AdvancedCreateSafe = () => {
 
   const CreateSafeSteps: TxStepperProps<NewSafeFormData>['steps'] = [
     {
-      title: 'Select network and name of your Safe Account',
-      subtitle: 'Select the network on which to create your Safe Account',
+      title: t('newSafe.advancedStep1Title'),
+      subtitle: t('newSafe.advancedStep1Subtitle'),
       render: (data, onSubmit, onBack, setStep) => (
         <SetNameStep
           isAdvancedFlow
@@ -47,9 +49,8 @@ const AdvancedCreateSafe = () => {
       ),
     },
     {
-      title: 'Signers and confirmations',
-      subtitle:
-        'Set the signer wallets of your Safe Account and how many need to confirm to execute a valid transaction.',
+      title: t('newSafe.step2Title'),
+      subtitle: t('newSafe.step2Subtitle'),
       render: (data, onSubmit, onBack, setStep) => (
         <OwnerPolicyStep
           setDynamicHint={setDynamicHint}
@@ -61,16 +62,15 @@ const AdvancedCreateSafe = () => {
       ),
     },
     {
-      title: 'Advanced settings',
-      subtitle: 'Choose the Safe version and optionally a specific salt nonce',
+      title: t('newSafe.advancedSettingsTitle'),
+      subtitle: t('newSafe.advancedSettingsSubtitle'),
       render: (data, onSubmit, onBack, setStep) => (
         <AdvancedOptionsStep data={data} onSubmit={onSubmit} onBack={onBack} setStep={setStep} />
       ),
     },
     {
-      title: 'Review',
-      subtitle:
-        "You're about to create a new Safe Account and will have to confirm the transaction with your connected wallet.",
+      title: t('newSafe.step3Title'),
+      subtitle: t('newSafe.step3Subtitle'),
       render: (data, onSubmit, onBack, setStep) => (
         <ReviewStep data={data} onSubmit={onSubmit} onBack={onBack} setStep={setStep} />
       ),
@@ -123,7 +123,7 @@ const AdvancedCreateSafe = () => {
               pb: 2,
             }}
           >
-            Create new Safe Account
+            {t('newSafe.createTitle')}
           </Typography>
         </Grid>
         <Grid

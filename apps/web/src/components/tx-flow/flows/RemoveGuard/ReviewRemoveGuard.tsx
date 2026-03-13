@@ -1,4 +1,5 @@
 import { useCallback, useContext, useEffect, type PropsWithChildren } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Typography } from '@mui/material'
 import EthHashInfo from '@/components/common/EthHashInfo'
 import { Errors, logError } from '@/services/exceptions'
@@ -13,6 +14,7 @@ export const ReviewRemoveGuard = ({
   onSubmit,
   children,
 }: PropsWithChildren<{ params: RemoveGuardFlowProps; onSubmit: () => void }>) => {
+  const { t } = useTranslation()
   const { setSafeTx, safeTxError, setSafeTxError } = useContext(SafeTxContext)
 
   useEffect(() => {
@@ -32,13 +34,12 @@ export const ReviewRemoveGuard = ({
 
   return (
     <ReviewTransaction onSubmit={onFormSubmit}>
-      <Typography color="primary.light">Transaction guard</Typography>
+      <Typography color="primary.light">{t('settings.transactionGuard')}</Typography>
 
       <EthHashInfo address={params.address} showCopyButton hasExplorer shortAddress={false} />
 
       <Typography my={2}>
-        Once the transaction guard has been removed, checks by the transaction guard will not be conducted before or
-        after any subsequent transactions.
+        {t('settings.removeGuardDescription')}
       </Typography>
 
       {children}

@@ -6,8 +6,10 @@ import useSafeInfo from '@/hooks/useSafeInfo'
 import { COUNTERFACTUAL_EVENTS } from '@/services/analytics/events/counterfactual'
 import { getBlockExplorerLink } from '@safe-global/utils/utils/chains'
 import { Alert, Typography } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 
 const CheckBalance = () => {
+  const { t } = useTranslation()
   const { safe, safeAddress } = useSafeInfo()
   const chain = useCurrentChain()
 
@@ -23,17 +25,15 @@ const CheckBalance = () => {
       sx={{ display: 'flex', maxWidth: '600px', mt: 3, px: 3, py: 2, mx: 'auto' }}
     >
       <Typography fontWeight="bold" mb={1}>
-        Don&apos;t see your tokens?
+        {t('counterfactual.dontSeeTokens')}
       </Typography>
       <Typography variant="body2" mb={2}>
-        Your Safe Account is not activated yet so we can only display your native balance. Non-native tokens may not
-        show up immediately after the Safe is deployed. Finish the onboarding to deploy your account onchain and unlock
-        all features.{' '}
+        {t('counterfactual.checkBalanceDescription')}{' '}
         {blockExplorerLink && (
           <>
-            You can always view all of your assets on the{' '}
+            {t('counterfactual.viewOnBlockExplorer')}{' '}
             <Track {...COUNTERFACTUAL_EVENTS.CHECK_BALANCES}>
-              <ExternalLink href={blockExplorerLink.href}>Block Explorer</ExternalLink>
+              <ExternalLink href={blockExplorerLink.href}>{t('counterfactual.blockExplorer')}</ExternalLink>
             </Track>
           </>
         )}

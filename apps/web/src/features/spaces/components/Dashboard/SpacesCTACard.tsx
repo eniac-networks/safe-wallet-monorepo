@@ -5,8 +5,10 @@ import SpaceInfoModal from '../SpaceInfoModal'
 import { useState } from 'react'
 import { SPACE_EVENTS, SPACE_LABELS } from '@/services/analytics/events/spaces'
 import { trackEvent } from '@/services/analytics'
+import { useTranslation } from 'react-i18next'
 
 const SpacesCTACard = () => {
+  const { t } = useTranslation()
   const [isInfoOpen, setIsInfoOpen] = useState<boolean>(false)
 
   const handleLearnMore = () => {
@@ -33,15 +35,15 @@ const SpacesCTACard = () => {
             }}
             aria-label="Invite team members"
           >
-            Learn more
+            {t('spaces.learnMore')}
           </Button>
         </Box>
         <Box>
           <Typography variant="body1" color="text.primary" fontWeight={700} mb={1}>
-            Explore spaces
+            {t('spaces.exploreSpaces')}
           </Typography>
           <Typography variant="body2" color="primary.light">
-            Seamlessly use your Safe Accounts from one place and collaborate with your team members.
+            {t('spaces.ctaDescription')}
           </Typography>
         </Box>
       </Paper>

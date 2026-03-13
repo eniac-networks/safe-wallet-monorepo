@@ -5,6 +5,7 @@ import { useCurrentChain } from '@/hooks/useChains'
 import useOnboard from '@/hooks/wallets/useOnboard'
 import useIsWrongChain from '@/hooks/useIsWrongChain'
 import { switchWalletChain } from '@/services/tx/tx-sender/sdk'
+import { useTranslation } from 'react-i18next'
 
 const ChainSwitcher = ({
   fullWidth,
@@ -13,6 +14,7 @@ const ChainSwitcher = ({
   fullWidth?: boolean
   primaryCta?: boolean
 }): ReactElement | null => {
+  const { t } = useTranslation()
   const chain = useCurrentChain()
   const onboard = useOnboard()
   const isWrongChain = useIsWrongChain()
@@ -41,7 +43,7 @@ const ChainSwitcher = ({
         <CircularProgress size={20} />
       ) : (
         <>
-          <Typography noWrap>Switch to&nbsp;</Typography>
+          <Typography noWrap>{t('chainSwitcher.switchTo')}&nbsp;</Typography>
           <img
             src={chain?.chainLogoUri ?? undefined}
             alt={`${chain?.chainName} Logo`}

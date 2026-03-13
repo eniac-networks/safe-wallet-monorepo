@@ -14,8 +14,10 @@ import Track from '@/components/common/Track'
 import { SPACE_EVENTS, SPACE_LABELS } from '@/services/analytics/events/spaces'
 import { useSafeAddressFromUrl } from '@/hooks/useSafeAddressFromUrl'
 import useIsQualifiedSafe from '@/features/spaces/hooks/useIsQualifiedSafe'
+import { useTranslation } from 'react-i18next'
 
 const SpaceBreadcrumbs = () => {
+  const { t } = useTranslation()
   const isQualifiedSafe = useIsQualifiedSafe()
   const spaceId = useCurrentSpaceId()
   const isUserSignedIn = useAppSelector(isAuthenticated)
@@ -54,7 +56,7 @@ const SpaceBreadcrumbs = () => {
       <Typography variant="body2">/</Typography>
 
       {/* In case the nested breadcrumbs are not rendered we want to show the current safe address */}
-      {!parentSafe && <BreadcrumbItem title="Current Safe" address={safeAddress} />}
+      {!parentSafe && <BreadcrumbItem title={t('spaces.currentSafe')} address={safeAddress} />}
     </>
   )
 }

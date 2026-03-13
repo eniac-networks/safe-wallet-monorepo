@@ -1,6 +1,7 @@
 import { Button, SvgIcon, Card, CardHeader, CardContent, Tooltip, Box } from '@mui/material'
 import { useState } from 'react'
 import type { ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { useAppSelector } from '@/store'
 import { selectAllAddedSafes } from '@/store/addedSafesSlice'
@@ -18,6 +19,7 @@ import { AppRoutes } from '@/config/routes'
 import { useRouter } from 'next/router'
 
 export const DataWidget = (): ReactElement => {
+  const { t } = useTranslation()
   const [importModalOpen, setImportModalOpen] = useState(false)
   const [fileName, setFileName] = useState<string>()
   const [jsonData, setJsonData] = useState<string>()
@@ -42,9 +44,9 @@ export const DataWidget = (): ReactElement => {
         className={css.cardHeader}
         title={
           <>
-            <b>{hasData ? 'Export or import your Safe data' : 'Import your Safe data'}</b>
+            <b>{hasData ? t('myAccounts.exportOrImportData') : t('myAccounts.importData')}</b>
             <Tooltip
-              title="Download or upload your local data with your added Safe Accounts, address book and settings."
+              title={t('myAccounts.dataWidgetTooltip')}
               placement="top"
               arrow
             >
@@ -66,7 +68,7 @@ export const DataWidget = (): ReactElement => {
                 startIcon={<SvgIcon component={ExportIcon} inheritViewBox fontSize="small" />}
                 sx={{ width: '100%', py: 0.5, px: 2, mt: 2 }}
               >
-                Export
+                {t('myAccounts.export')}
               </Button>
             </Track>
           )}
@@ -79,7 +81,7 @@ export const DataWidget = (): ReactElement => {
               startIcon={<SvgIcon component={ImportIcon} inheritViewBox fontSize="small" />}
               sx={{ width: '100%', py: 0.5, px: 2, mt: 2 }}
             >
-              Import
+              {t('myAccounts.import')}
             </Button>
           </Track>
         </Box>

@@ -9,7 +9,7 @@ import { useSpaceSafeCount } from '@/features/spaces/hooks/useSpaceSafeCount'
 import InitialsAvatar from '@/features/spaces/components/InitialsAvatar'
 import SpaceContextMenu from '@/features/spaces/components/SpaceCard/SpaceContextMenu'
 import { MemberStatus, useIsAdmin } from '@/features/spaces/hooks/useSpaceMembers'
-import { maybePlural } from '@safe-global/utils/utils/formatters'
+import { useTranslation } from 'react-i18next'
 
 export const SpaceSummary = ({
   name,
@@ -22,6 +22,8 @@ export const SpaceSummary = ({
   numberOfMembers: number
   isCompact?: boolean
 }) => {
+  const { t } = useTranslation()
+
   return (
     <Box className={css.spaceInfo}>
       <Typography variant="body2" fontWeight="bold">
@@ -30,13 +32,13 @@ export const SpaceSummary = ({
 
       <Stack direction="row" spacing={1} alignItems="center" mt={isCompact ? 0 : 0.5}>
         <Typography variant="caption" color="text.secondary">
-          {numberOfAccounts} Account{maybePlural(numberOfAccounts)}
+          {t('spaces.accountCount', { count: numberOfAccounts })}
         </Typography>
 
         <div className={css.dot} />
 
         <Typography variant="caption" color="text.secondary">
-          {numberOfMembers} Member{maybePlural(numberOfMembers)}
+          {t('spaces.memberCount', { count: numberOfMembers })}
         </Typography>
       </Stack>
     </Box>

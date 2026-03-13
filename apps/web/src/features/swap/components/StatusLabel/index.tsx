@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { SvgIcon } from '@mui/material'
 import type { OrderStatuses } from '@safe-global/safe-gateway-typescript-sdk'
 import type { ReactElement } from 'react'
@@ -21,44 +22,45 @@ type StatusProps = {
 
 const statusMap: Record<CustomOrderStatuses, StatusProps> = {
   presignaturePending: {
-    label: 'Execution needed',
+    label: 'swap.executionNeeded',
     color: 'warning',
     icon: SignatureIcon,
   },
   fulfilled: {
-    label: 'Filled',
+    label: 'swap.filled',
     color: 'success',
     icon: CheckIcon,
   },
   open: {
-    label: 'Open',
+    label: 'swap.open',
     color: 'warning',
     icon: ClockIcon,
   },
   cancelled: {
-    label: 'Cancelled',
+    label: 'swap.cancelled',
     color: 'error',
     icon: BlockIcon,
   },
   expired: {
-    label: 'Expired',
+    label: 'swap.expired',
     color: 'primary',
     icon: ClockIcon,
   },
   partiallyFilled: {
-    label: 'Partially filled',
+    label: 'swap.partiallyFilled',
     color: 'success',
     icon: CircleIPartialFillcon,
   },
 }
 export const StatusLabel = (props: Props): ReactElement => {
+  const { t } = useTranslation()
   const { status } = props
   const { label, color, icon } = statusMap[status]
 
   return (
     <TxStatusChip color={color}>
       <SvgIcon component={icon} inheritViewBox fontSize="small" />
-      {label}
+      {t(label)}
     </TxStatusChip>
   )
 }
