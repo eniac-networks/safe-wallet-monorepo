@@ -18,43 +18,44 @@ import {
 import StatusLabel from '@/src/features/ConfirmTx/components/confirmation-views/SwapOrder/StatusLabel'
 import { TouchableOpacity, Linking } from 'react-native'
 import { type ListTableItem } from '@/src/features/ConfirmTx/components/ListTable'
+import { TFunction } from 'i18next'
 
-export const priceRow = (order: OrderTransactionInfo) => {
+export const priceRow = (order: OrderTransactionInfo, t: TFunction) => {
   const { status, sellToken, buyToken } = order
   const executionPrice = getExecutionPrice(order)
   const limitPrice = getLimitPrice(order)
 
   if (status === 'fulfilled') {
     return {
-      label: 'Execution price',
+      label: t('swap.executionPrice'),
       value: `1 ${buyToken.symbol} = ${formatAmount(executionPrice)} ${sellToken.symbol}`,
     }
   }
 
   return {
-    label: 'Limit price',
+    label: t('swap.limitPrice'),
     value: `1 ${buyToken.symbol} = ${formatAmount(limitPrice)} ${sellToken.symbol}`,
   }
 }
 
-export const statusRow = (order: OrderTransactionInfo) => {
+export const statusRow = (order: OrderTransactionInfo, t: TFunction) => {
   const { status } = order
 
   return {
-    label: 'Status',
+    label: t('swap.status'),
     render: () => <StatusLabel status={status} />,
   }
 }
 
-export const expiryRow = (order: OrderTransactionInfo) => {
+export const expiryRow = (order: OrderTransactionInfo, t: TFunction) => {
   const expiresAt = formatWithSchema(order.validUntil * 1000, 'dd/MM/yyyy, HH:mm')
   return {
-    label: 'Expiry',
+    label: t('swap.expiry'),
     value: expiresAt,
   }
 }
 
-export const orderIdRow = (order: OrderTransactionInfo) => {
+export const orderIdRow = (order: OrderTransactionInfo, t: TFunction) => {
   if (!('uid' in order)) {
     return null
   }
@@ -64,7 +65,7 @@ export const orderIdRow = (order: OrderTransactionInfo) => {
   }
 
   return {
-    label: 'Order ID',
+    label: t('swap.orderId'),
     render: () => (
       <View flexDirection="row" alignItems="center" gap="$2">
         <Text fontSize="$4">{ellipsis(order.uid, 6)}</Text>
@@ -77,9 +78,9 @@ export const orderIdRow = (order: OrderTransactionInfo) => {
   }
 }
 
-export const networkRow = (chain: Chain) => {
+export const networkRow = (chain: Chain, t: TFunction) => {
   return {
-    label: 'Network',
+    label: t('transactions.network'),
     render: () => (
       <View flexDirection="row" alignItems="center" gap="$2">
         <Logo logoUri={chain.chainLogoUri} size="$6" />
@@ -89,7 +90,7 @@ export const networkRow = (chain: Chain) => {
   }
 }
 
-export const slippageRow = (order: OrderTransactionInfo) => {
+export const slippageRow = (order: OrderTransactionInfo, t: TFunction) => {
   const orderClass = getOrderClass(order)
   const slippage = getSlippageInPercent(order)
 
@@ -98,22 +99,23 @@ export const slippageRow = (order: OrderTransactionInfo) => {
   }
 
   return {
-    label: 'Slippage',
+    label: t('swap.slippage'),
     value: `${slippage}%`,
   }
 }
 
-export const widgetFeeRow = (order: Pick<OrderTransactionInfo, 'fullAppData' | 'executedFee' | 'executedFeeToken'>) => {
+export const widgetFeeRow = (order: Pick<OrderTransactionInfo, 'fullAppData' | 'executedFee' | 'executedFeeToken'>, t: TFunction) => {
   const bps = getOrderFeeBps(order)
 
   return {
-    label: 'Widget fee',
+    label: t('swap.widgetFee'),
     value: `${Number(bps) / 100} %`,
   }
 }
 
 export const totalFeesRow = (
   order: Pick<OrderTransactionInfo, 'executedFee' | 'executedFeeToken' | 'sellToken' | 'buyToken' | 'kind'>,
+  t: TFunction,
 ) => {
   const { executedFee, executedFeeToken, sellToken, buyToken, kind } = order
 
@@ -134,14 +136,14 @@ export const totalFeesRow = (
   }
 
   return {
-    label: 'Total fees',
+    label: t('swap.totalFees'),
     value: `${formatValue(executedFee, feeToken.decimals)} ${feeToken.symbol}`,
   }
 }
 
-export const numberOfPartsRow = (order: { numberOfParts: string }) => {
+export const numberOfPartsRow = (order: { numberOfParts: string }, t: TFunction) => {
   return {
-    label: 'No of parts',
+    label: t('swap.numberOfParts'),
     value: order.numberOfParts,
   }
 }
@@ -149,89 +151,86 @@ export const numberOfPartsRow = (order: { numberOfParts: string }) => {
 export const partSellAmountRow = (order: {
   partSellAmount: string
   sellToken: { decimals: number; symbol: string }
-}) => {
+}, t: TFunction) => {
   return {
-    label: 'Sell amount',
+    label: t('swap.sellAmount'),
     value: `${formatValue(order.partSellAmount, order.sellToken.decimals)} ${order.sellToken.symbol} per part`,
   }
 }
 
-export const partBuyAmountRow = (order: { minPartLimit: string; buyToken: { decimals: number; symbol: string } }) => {
+export const partBuyAmountRow = (order: { minPartLimit: string; buyToken: { decimals: number; symbol: string } }, t: TFunction) => {
   return {
-    label: 'Buy amount',
+    label: t('swap.buyAmount'),
     value: `${formatValue(order.minPartLimit, order.buyToken.decimals)} ${order.buyToken.symbol} per part`,
   }
 }
 
-export const formatSwapOrderItemsForConfirmation = (txInfo: OrderTransactionInfo, chain: Chain): ListTableItem[] => {
+export const formatSwapOrderItemsForConfirmation = (txInfo: OrderTransactionInfo, chain: Chain, t: TFunction): ListTableItem[] => {
   const items = [
-    priceRow(txInfo),
-    expiryRow(txInfo),
-    slippageRow(txInfo),
-    orderIdRow(txInfo),
-    networkRow(chain),
-    statusRow(txInfo),
-    widgetFeeRow(txInfo),
+    priceRow(txInfo, t),
+    expiryRow(txInfo, t),
+    slippageRow(txInfo, t),
+    orderIdRow(txInfo, t),
+    networkRow(chain, t),
+    statusRow(txInfo, t),
+    widgetFeeRow(txInfo, t),
   ]
 
   return items.filter((item) => item !== null) as ListTableItem[]
 }
 
-export const formatSwapOrderItemsForHistory = (txInfo: OrderTransactionInfo, chain: Chain): ListTableItem[] => {
-  const items = [priceRow(txInfo), orderIdRow(txInfo), networkRow(chain), statusRow(txInfo), totalFeesRow(txInfo)]
+export const formatSwapOrderItemsForHistory = (txInfo: OrderTransactionInfo, chain: Chain, t: TFunction): ListTableItem[] => {
+  const items = [priceRow(txInfo, t), orderIdRow(txInfo, t), networkRow(chain, t), statusRow(txInfo, t), totalFeesRow(txInfo, t)]
 
   return items.filter((item) => item !== null) as ListTableItem[]
 }
 
-export const formatTwapOrderItemsForHistory = (order: TwapOrderTransactionInfo, chain: Chain): ListTableItem[] => {
+export const formatTwapOrderItemsForHistory = (order: TwapOrderTransactionInfo, chain: Chain, t: TFunction): ListTableItem[] => {
   const items = [
-    priceRow(order),
-    numberOfPartsRow(order),
-    partSellAmountRow(order),
-    partBuyAmountRow(order),
-    expiryRow(order),
-    orderIdRow(order),
-    networkRow(chain),
-    statusRow(order),
-    totalFeesRow(order),
+    priceRow(order, t),
+    numberOfPartsRow(order, t),
+    partSellAmountRow(order, t),
+    partBuyAmountRow(order, t),
+    expiryRow(order, t),
+    orderIdRow(order, t),
+    networkRow(chain, t),
+    statusRow(order, t),
+    totalFeesRow(order, t),
   ]
 
   return items.filter((item) => item !== null) as ListTableItem[]
 }
 
-export const formatTwapOrderItemsForConfirmation = (order: TwapOrderTransactionInfo) => {
+export const formatTwapOrderItemsForConfirmation = (order: TwapOrderTransactionInfo, t: TFunction) => {
   const { timeBetweenParts } = order
   let startTime = ''
   if (order.startTime.startType === StartTimeValue.AT_MINING_TIME) {
-    startTime = 'Now'
+    startTime = t('swap.now')
   }
   if (order.startTime.startType === StartTimeValue.AT_EPOCH) {
-    startTime = `At block number: ${order.startTime.epoch}`
+    startTime = t('swap.atBlockNumber', { epoch: order.startTime.epoch })
   }
 
   return [
     {
       renderRow: () => (
         <View flexDirection="row" alignItems="center" gap="$2">
-          <Text fontSize="$4">Order will be split in</Text>
-          <Text fontSize="$4" fontWeight={'700'}>
-            {order.numberOfParts} equal parts
-          </Text>
+          <Text fontSize="$4">{t('swap.orderSplitIn', { count: order.numberOfParts })}</Text>
         </View>
       ),
     },
-    partSellAmountRow(order),
-    partBuyAmountRow(order),
+    partSellAmountRow(order, t),
+    partBuyAmountRow(order, t),
     {
-      label: 'Start time',
+      label: t('swap.startTime'),
       value: startTime,
     },
     {
-      label: 'Part duration',
+      label: t('swap.partDuration'),
       value: getPeriod(+timeBetweenParts),
     },
     {
-      label: 'Total duration',
+      label: t('swap.totalDuration'),
       value: getPeriod(+order.timeBetweenParts * +order.numberOfParts),
     },
   ]

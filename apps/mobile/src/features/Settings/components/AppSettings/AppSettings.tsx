@@ -1,4 +1,5 @@
 import { ScrollView, Text, Theme, View, YStack, getTokenValue } from 'tamagui'
+import { useTranslation } from 'react-i18next'
 import { SafeListItem } from '@/src/components/SafeListItem'
 import { SafeFontIcon as Icon } from '@/src/components/SafeFontIcon/SafeFontIcon'
 import { Pressable } from 'react-native'
@@ -14,10 +15,11 @@ interface AppSettingsProps {
 }
 
 export const AppSettings = ({ sections }: AppSettingsProps) => {
+  const { t } = useTranslation()
   const memoizedSections = useMemo(() => sections, [sections])
   const insets = useSafeAreaInsets()
   const { handleScroll } = useScrollableHeader({
-    children: <NavBarTitle paddingRight={5}>Settings</NavBarTitle>,
+    children: <NavBarTitle paddingRight={5}>{t('settings.title')}</NavBarTitle>,
   })
 
   return (
@@ -35,7 +37,7 @@ export const AppSettings = ({ sections }: AppSettingsProps) => {
         onScroll={handleScroll}
       >
         <LargeHeaderTitle marginLeft={16} marginTop={8}>
-          Settings
+          {t('settings.title')}
         </LargeHeaderTitle>
         <YStack flex={1} paddingHorizontal="$3">
           <YStack space="$4">

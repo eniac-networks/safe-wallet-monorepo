@@ -17,6 +17,7 @@ import { Alert } from '@/src/components/Alert'
 
 import { useDefinedActiveSafe } from '@/src/store/hooks/activeSafe'
 import { useCopyAndDispatchToast } from '@/src/hooks/useCopyAndDispatchToast'
+import { useTranslation } from 'react-i18next'
 
 interface SettingsProps {
   data: SafeState
@@ -39,6 +40,7 @@ export const Settings = ({
   latestSafeVersion,
   isUnsupportedMasterCopy,
 }: SettingsProps) => {
+  const { t } = useTranslation()
   const activeSafe = useDefinedActiveSafe()
   const copy = useCopyAndDispatchToast()
   const { owners = [], threshold, implementation } = data
@@ -69,7 +71,7 @@ export const Settings = ({
                   badgeContent={owners.length ? `${threshold}/${owners.length}` : ''}
                 />
                 <H2 color="$foreground" fontWeight={600} numberOfLines={1}>
-                  {contact?.name || 'Unnamed Safe'}
+                  {contact?.name || t('settings.unnamedSafe')}
                 </H2>
                 <View>
                   <TouchableOpacity onPress={onPressAddressCopy}>
@@ -102,7 +104,7 @@ export const Settings = ({
                     </Skeleton>
                   </View>
                   <Text color="$colorHover" fontSize={'$3'}>
-                    Signers
+                    {t('settings.signers')}
                   </Text>
                 </YStack>
 
@@ -122,7 +124,7 @@ export const Settings = ({
                     </Skeleton>
                   </View>
                   <Text color="$colorHover" fontSize={'$3'}>
-                    Threshold
+                    {t('settings.threshold')}
                   </Text>
                 </YStack>
               </XStack>
@@ -130,7 +132,7 @@ export const Settings = ({
               <YStack>
                 <View padding="$4" borderRadius="$3" gap={'$2'}>
                   <Text color="$colorSecondary" fontWeight={500}>
-                    Members
+                    {t('settings.members')}
                   </Text>
                   <Pressable
                     style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1.0 }]}
@@ -139,7 +141,7 @@ export const Settings = ({
                     }}
                   >
                     <SafeListItem
-                      label={'Signers'}
+                      label={t('settings.signers')}
                       leftNode={<SafeFontIcon name={'owners'} color={'$colorSecondary'} />}
                       rightNode={
                         <View flexDirection={'row'} alignItems={'center'} justifyContent={'center'}>
@@ -158,7 +160,7 @@ export const Settings = ({
                 </View>
 
                 <View backgroundColor="$backgroundDark" padding="$4" borderRadius="$3" gap={'$2'}>
-                  <Text color="$colorSecondary">General</Text>
+                  <Text color="$colorSecondary">{t('settings.general')}</Text>
                   <View backgroundColor={'$background'} borderRadius={'$3'}>
                     <Pressable
                       style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1.0 }]}
@@ -167,7 +169,7 @@ export const Settings = ({
                       }}
                     >
                       <SafeListItem
-                        label={'Notifications'}
+                        label={t('settings.notifications')}
                         leftNode={<SafeFontIcon name={'bell'} color={'$colorSecondary'} />}
                         rightNode={<SafeFontIcon name={'chevron-right'} />}
                       />
@@ -177,7 +179,7 @@ export const Settings = ({
 
                 {displayDevMenu && (
                   <View backgroundColor="$backgroundDark" padding="$4" borderRadius="$3" gap={'$2'}>
-                    <Text color="$foreground">Developer</Text>
+                    <Text color="$foreground">{t('settings.developer')}</Text>
                     <View backgroundColor={'$background'} borderRadius={'$3'}>
                       <Pressable
                         style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1.0 }]}
@@ -186,7 +188,7 @@ export const Settings = ({
                         }}
                       >
                         <SafeListItem
-                          label={'Developer'}
+                          label={t('settings.developer')}
                           leftNode={<SafeFontIcon name={'alert-triangle'} color={'$colorSecondary'} />}
                           rightNode={<SafeFontIcon name={'chevron-right'} />}
                         />
@@ -210,7 +212,7 @@ export const Settings = ({
             >
               {isLatestVersion && <SafeFontIcon testID="check-icon" name={'check-filled'} color={'$success'} />}
               <Text marginLeft={'$2'} textAlign="center" color="$colorSecondary">
-                {implementation?.name} {isLatestVersion ? `(Latest version)` : `(Latest version: ${latestSafeVersion})`}
+                {implementation?.name} {isLatestVersion ? t('settings.latestVersionValue') : t('settings.latestVersionUpgrade', { version: latestSafeVersion })}
               </Text>
             </Pressable>
 
@@ -218,9 +220,8 @@ export const Settings = ({
               <View flex={1} padding="$5">
                 <Alert
                   type="warning"
-                  info="Your Safe Account's base contract is not supported. You should migrate it to a compatible
-              version. Use the web app for this."
-                  message="Base contract is not supported"
+                  info={t('settings.baseContractNotSupportedInfo')}
+                  message={t('settings.baseContractNotSupported')}
                 />
               </View>
             )}

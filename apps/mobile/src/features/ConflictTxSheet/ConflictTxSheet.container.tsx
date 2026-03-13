@@ -4,8 +4,10 @@ import { SafeFontIcon } from '@/src/components/SafeFontIcon'
 import { Link } from 'expo-router'
 import { HelpCenterArticle } from '@safe-global/utils/config/constants'
 import { H3, H6, Text, View } from 'tamagui'
+import { useTranslation } from 'react-i18next'
 
 export const ConflictTxSheetContainer = () => {
+  const { t } = useTranslation()
   return (
     <SafeBottomSheet>
       <View flex={1} justifyContent="center" alignItems="center">
@@ -16,12 +18,11 @@ export const ConflictTxSheetContainer = () => {
         />
 
         <H3 fontWeight={600} marginTop="$6" marginBottom="$4">
-          Conflicting transactions
+          {t('conflictTx.title')}
         </H3>
 
         <H6 textAlign="center" fontWeight={300}>
-          Marked transactions have the same nonce (order in the queue). Executing one of them will automatically replace
-          the other(s).
+          {t('conflictTx.description')}
         </H6>
 
         <Link href={HelpCenterArticle.CONFLICTING_TRANSACTIONS} asChild>
@@ -36,7 +37,7 @@ export const ConflictTxSheetContainer = () => {
           >
             <SafeFontIcon color="$textSecondaryLight" name="info" size={16} />
             <Text fontWeight={600} color="$textSecondaryLight">
-              Why did it happen?
+              {t('conflictTx.whyDidItHappen')}
             </Text>
           </View>
         </Link>

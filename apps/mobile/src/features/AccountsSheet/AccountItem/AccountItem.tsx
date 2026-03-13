@@ -11,6 +11,7 @@ import { RenderItemParams } from 'react-native-draggable-flatlist'
 import { useEditAccountItem } from './hooks/useEditAccountItem'
 import { useAppSelector } from '@/src/store/hooks'
 import { selectContactByAddress } from '@/src/store/addressBookSlice'
+import { useTranslation } from 'react-i18next'
 
 interface AccountItemProps {
   chains: Chain[]
@@ -30,6 +31,7 @@ const getRightNodeLayout = (isEdit: boolean, isActive: boolean) => {
 }
 
 export function AccountItem({ account, drag, chains, isDragging, activeAccount, onSelect }: AccountItemProps) {
+  const { t } = useTranslation()
   const { isEdit, deleteSafe } = useEditAccountItem()
   const isActive = activeAccount === account.address.value
   const contact = useAppSelector(selectContactByAddress(account.address.value))
@@ -40,20 +42,20 @@ export function AccountItem({ account, drag, chains, isDragging, activeAccount, 
   const rightNode = useMemo(() => getRightNodeLayout(isEdit, isActive), [isEdit, isActive])
 
   const onDeleteSafePress = useCallback(() => {
-    Alert.alert('Delete Safe', 'Are you sure you want to delete this safe?', [
+    Alert.alert(t('accounts.deleteSafe'), t('accounts.deleteSafeConfirm'), [
       {
-        text: 'Cancel',
+        text: t('common.cancel'),
         style: 'cancel',
       },
       {
-        text: 'Delete',
+        text: t('common.delete'),
         style: 'destructive',
         onPress: () => {
           deleteSafe(account.address.value as Address)
         },
       },
     ])
-  }, [account.address.value, deleteSafe])
+  }, [account.address.value, deleteSafe, t])
 
   return (
     <TouchableOpacity

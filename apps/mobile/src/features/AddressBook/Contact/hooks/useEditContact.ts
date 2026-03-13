@@ -3,6 +3,7 @@ import { Alert } from 'react-native'
 import { router } from 'expo-router'
 import { useAppDispatch, useAppSelector } from '@/src/store/hooks'
 import { selectAllContacts, addContact, updateContact, type Contact } from '@/src/store/addressBookSlice'
+import { useTranslation } from 'react-i18next'
 
 interface UseEditContactParams {
   mode?: 'view' | 'edit' | 'new'
@@ -12,6 +13,7 @@ interface UseEditContactParams {
 export const useEditContact = ({ mode, setIsEditing }: UseEditContactParams) => {
   const dispatch = useAppDispatch()
   const allContacts = useAppSelector(selectAllContacts)
+  const { t } = useTranslation()
 
   const findExistingContact = useCallback(
     (contactAddress: string) => {
@@ -32,15 +34,15 @@ export const useEditContact = ({ mode, setIsEditing }: UseEditContactParams) => 
 
         if (existingContact) {
           Alert.alert(
-            'Contact Already Exists',
-            `A contact with this address already exists: "${existingContact.name}". Do you want to update the existing contact?`,
+            t('addressBook.contactAlreadyExists'),
+            t('addressBook.contactAlreadyExistsMessage', { name: existingContact.name }),
             [
               {
-                text: 'Cancel',
+                text: t('common.cancel'),
                 style: 'cancel',
               },
               {
-                text: 'Update Existing',
+                text: t('addressBook.updateExisting'),
                 onPress: () => {
                   dispatch(updateContact(contactToSave))
                   setIsEditing(false)
@@ -68,7 +70,7 @@ export const useEditContact = ({ mode, setIsEditing }: UseEditContactParams) => 
         setIsEditing(false)
       }
     },
-    [mode, findExistingContact, dispatch, setIsEditing],
+    [mode, findExistingContact, dispatch, setIsEditing, t],
   )
 
   return {

@@ -4,9 +4,11 @@ import { TabBarIcon } from '@/src/components/navigation/TabBarIcon'
 import { Navbar as AssetsNavbar } from '@/src/features/Assets/components/Navbar/Navbar'
 import { Pressable, StyleSheet } from 'react-native'
 import { useTheme } from 'tamagui'
+import { useTranslation } from 'react-i18next'
 import TransactionHeader from '@/src/features/TxHistory/components/TransactionHeader'
 
 export default function TabLayout() {
+  const { t } = useTranslation()
   const theme = useTheme()
 
   const activeTintColor = theme.color.get()
@@ -27,7 +29,7 @@ export default function TabLayout() {
           name="index"
           options={{
             header: AssetsNavbar,
-            title: 'Home',
+            title: t('tabs.home'),
             tabBarButtonTestID: 'home-tab',
             tabBarButton: ({ children, ...rest }) => {
               return (
@@ -43,12 +45,12 @@ export default function TabLayout() {
         <Tabs.Screen
           name="transactions"
           options={{
-            title: 'Transactions',
+            title: t('tabs.transactions'),
             headerTitle: () => <TransactionHeader />,
             headerStyle: { shadowColor: 'transparent' },
             headerLeftContainerStyle: { flexGrow: 0 },
             tabBarButtonTestID: 'transactions-tab',
-            tabBarLabel: 'Transactions',
+            tabBarLabel: t('tabs.transactions'),
             tabBarButton: ({ children, ...rest }) => {
               return (
                 <Pressable {...rest} style={styles.tabButton}>
@@ -64,7 +66,7 @@ export default function TabLayout() {
           name="settings"
           options={() => {
             return {
-              title: 'Account',
+              title: t('tabs.account'),
               headerShown: false,
               tabBarButtonTestID: 'account-tab',
               tabBarButton: ({ children, ...rest }) => {

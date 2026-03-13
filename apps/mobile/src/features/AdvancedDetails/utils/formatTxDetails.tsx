@@ -14,16 +14,18 @@ import { SafeFontIcon } from '@/src/components/SafeFontIcon'
 import { TouchableOpacity } from 'react-native'
 import { Receiver } from '../components/Receiver'
 import { InfoSheet } from '@/src/components/InfoSheet'
+import { TFunction } from 'i18next'
 
 interface formatTxDetailsProps {
   txDetails?: TransactionDetails
   viewOnExplorer: () => void
+  t: TFunction
 }
 
 const badgeProps: CircleProps = { borderRadius: '$2', paddingHorizontal: '$2', paddingVertical: '$1' }
 const characterDisplayLimit = 15
 
-const formatTxDetails = ({ txDetails, viewOnExplorer }: formatTxDetailsProps): ListTableItem[] => {
+const formatTxDetails = ({ txDetails, viewOnExplorer, t }: formatTxDetailsProps): ListTableItem[] => {
   const items: ListTableItem[] = []
 
   if (!txDetails) {
@@ -32,7 +34,7 @@ const formatTxDetails = ({ txDetails, viewOnExplorer }: formatTxDetailsProps): L
 
   // Basic transaction info
   items.push({
-    label: 'To',
+    label: t('transactions.to'),
     render: () => (
       <>
         <View width="100%">
@@ -62,7 +64,7 @@ const formatTxDetails = ({ txDetails, viewOnExplorer }: formatTxDetailsProps): L
   // Value
   if (txDetails.txData?.value) {
     items.push({
-      label: 'Value',
+      label: t('transactions.value'),
       render: () => <Text>{txDetails.txData?.value || '0'}</Text>,
     })
   }
@@ -71,7 +73,7 @@ const formatTxDetails = ({ txDetails, viewOnExplorer }: formatTxDetailsProps): L
   if (txDetails.txData?.operation !== undefined) {
     const operationText = txDetails.txData.operation === Operation.CALL ? '0 (call)' : '1 (delegate call)'
     items.push({
-      label: 'Operation',
+      label: t('transactions.operation'),
       render: () => (
         <Badge
           circleProps={badgeProps}
@@ -90,23 +92,23 @@ const formatTxDetails = ({ txDetails, viewOnExplorer }: formatTxDetailsProps): L
     const executionInfo = txDetails.detailedExecutionInfo
 
     items.push({
-      label: 'SafeTxGas',
+      label: t('advancedDetails.safeTxGas'),
       render: () => <Text>{executionInfo.safeTxGas}</Text>,
     })
 
     items.push({
-      label: 'BaseGas',
+      label: t('advancedDetails.baseGas'),
       render: () => <Text>{executionInfo.baseGas}</Text>,
     })
 
     items.push({
-      label: 'GasPrice',
+      label: t('advancedDetails.gasPrice'),
       render: () => <Text>{executionInfo.gasPrice}</Text>,
     })
 
     // Gas Token
     items.push({
-      label: 'GasToken',
+      label: t('advancedDetails.gasToken'),
       render: () => (
         <View flexDirection="row" alignItems="center" gap="$1">
           <Identicon address={executionInfo.gasToken as Address} size={24} />
@@ -117,7 +119,7 @@ const formatTxDetails = ({ txDetails, viewOnExplorer }: formatTxDetailsProps): L
 
     // Refund Receiver
     items.push({
-      label: 'RefundReceiver',
+      label: t('advancedDetails.refundReceiver'),
       render: () => (
         <View flexDirection="row" alignItems="center" gap="$1">
           <Identicon address={executionInfo.refundReceiver.value as Address} size={24} />
@@ -132,19 +134,19 @@ const formatTxDetails = ({ txDetails, viewOnExplorer }: formatTxDetailsProps): L
 
     // Nonce
     items.push({
-      label: 'Nonce',
+      label: t('transactions.nonce'),
       render: () => <Text>{executionInfo.nonce}</Text>,
     })
 
     // Safe Tx Hash
     if (executionInfo.safeTxHash) {
       items.push({
-        label: 'Safe Tx Hash',
+        label: t('advancedDetails.safeTxHash'),
         render: () => (
-          <InfoSheet title="Safe Tx Hash" info={executionInfo.safeTxHash}>
+          <InfoSheet title={t('advancedDetails.safeTxHash')} info={executionInfo.safeTxHash}>
             <View flexDirection="row" alignItems="center" gap="$1">
               <Text>{shortenText(executionInfo.safeTxHash || '', characterDisplayLimit)}</Text>
-              <CopyButton value={executionInfo.safeTxHash || ''} color={'$textSecondaryLight'} text="Hash copied." />
+              <CopyButton value={executionInfo.safeTxHash || ''} color={'$textSecondaryLight'} text={t('advancedDetails.hashCopied')} />
             </View>
           </InfoSheet>
         ),
@@ -155,12 +157,12 @@ const formatTxDetails = ({ txDetails, viewOnExplorer }: formatTxDetailsProps): L
   // Transaction Hash
   if (txDetails.txHash) {
     items.push({
-      label: 'Transaction Hash',
+      label: t('advancedDetails.transactionHash'),
       render: () => (
-        <InfoSheet title="Transaction Hash" info={txDetails.txHash || ''}>
+        <InfoSheet title={t('advancedDetails.transactionHash')} info={txDetails.txHash || ''}>
           <View flexDirection="row" alignItems="center" gap="$1">
             <Text>{shortenText(txDetails.txHash || '', characterDisplayLimit)}</Text>
-            <CopyButton value={txDetails.txHash || ''} color={'$textSecondaryLight'} text="Hash copied." />
+            <CopyButton value={txDetails.txHash || ''} color={'$textSecondaryLight'} text={t('advancedDetails.hashCopied')} />
           </View>
         </InfoSheet>
       ),

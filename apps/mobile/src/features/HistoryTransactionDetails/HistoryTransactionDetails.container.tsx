@@ -12,8 +12,10 @@ import { HistoryTransactionInfo } from '@/src/features/HistoryTransactionDetails
 import { ViewOnExplorerButton } from '@/src/features/HistoryTransactionDetails/components/ViewOnExplorerButton'
 import { ShareButton } from '@/src/components/ShareButton'
 import { useShareTransaction } from '@/src/hooks/useShareTransaction'
+import { useTranslation } from 'react-i18next'
 
 function HistoryTransactionDetailsContainer() {
+  const { t } = useTranslation()
   const txId = useRoute<RouteProp<{ params: { txId: string } }>>().params.txId
   const activeSafe = useDefinedActiveSafe()
   const shareTransaction = useShareTransaction(txId)
@@ -30,7 +32,7 @@ function HistoryTransactionDetailsContainer() {
   if (isError) {
     return (
       <View margin="$4">
-        <Alert type="error" message="Error fetching transaction details" />
+        <Alert type="error" message={t('transactions.errorFetchingDetails')} />
       </View>
     )
   }
@@ -43,7 +45,7 @@ function HistoryTransactionDetailsContainer() {
     <>
       <Stack.Screen
         options={{
-          title: 'Transaction details',
+          title: t('transactions.transactionDetails'),
           headerRight: () => <ShareButton onPress={shareTransaction} testID="share-transaction-button" />,
         }}
       />

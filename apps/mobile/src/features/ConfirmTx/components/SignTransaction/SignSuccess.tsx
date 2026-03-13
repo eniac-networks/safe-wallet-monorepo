@@ -9,8 +9,10 @@ import { router } from 'expo-router'
 import { useDispatch } from 'react-redux'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { AbsoluteLinearGradient } from '@/src/components/LinearGradient'
+import { useTranslation } from 'react-i18next'
 
 export default function SignSuccess() {
+  const { t } = useTranslation()
   const dispatch = useDispatch()
   const { bottom } = useSafeAreaInsets()
   const handleDonePress = () => {
@@ -37,7 +39,7 @@ export default function SignSuccess() {
 
               <View margin="$4" width="100%" alignItems="center" gap="$4" padding="$4">
                 <H3 textAlign="center" fontWeight={'600'} lineHeight={32}>
-                  You successfully signed this transaction.
+                  {t('confirmTx.successfullySigned')}
                 </H3>
               </View>
             </View>
@@ -45,7 +47,7 @@ export default function SignSuccess() {
         </View>
 
         <View paddingHorizontal="$4">
-          <SafeButton onPress={handleDonePress}>Done</SafeButton>
+          <SafeButton onPress={handleDonePress}>{t('confirmTx.done')}</SafeButton>
         </View>
       </View>
     </View>

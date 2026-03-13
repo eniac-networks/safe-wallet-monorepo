@@ -1,5 +1,6 @@
 import React from 'react'
 import { Text, View } from 'tamagui'
+import { useTranslation } from 'react-i18next'
 import { SafeInputWithLabel } from '@/src/components/SafeInput/SafeInputWithLabel'
 import { Controller, Control, FieldErrors } from 'react-hook-form'
 import { ContactFormData } from '../schemas'
@@ -14,6 +15,7 @@ interface ContactAddressFieldProps {
 }
 
 export const ContactAddressField = ({ isEditing, contact, control, errors, dirtyFields }: ContactAddressFieldProps) => {
+  const { t } = useTranslation()
   if (isEditing && control) {
     return (
       <View>
@@ -22,11 +24,11 @@ export const ContactAddressField = ({ isEditing, contact, control, errors, dirty
           name="address"
           render={({ field: { onChange, onBlur, value } }) => (
             <SafeInputWithLabel
-              label="Address"
+              label={t('addressBook.address')}
               value={value}
               onBlur={onBlur}
               onChangeText={onChange}
-              placeholder="Enter address"
+              placeholder={t('addressBook.enterAddress')}
               autoCapitalize="none"
               autoCorrect={false}
               error={dirtyFields?.address && !!errors?.address}
@@ -43,7 +45,7 @@ export const ContactAddressField = ({ isEditing, contact, control, errors, dirty
 
   return (
     <SafeInputWithLabel
-      label="Address"
+      label={t('addressBook.address')}
       value={contact?.value || ''}
       disabled
       editable={false}

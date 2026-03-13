@@ -2,6 +2,7 @@ import React from 'react'
 import { View } from 'tamagui'
 import { Alert } from '@/src/components/Alert'
 import { SectionTitle } from '@/src/components/Title'
+import { useTranslation } from 'react-i18next'
 
 interface SignersListHeaderProps {
   withAlert: boolean
@@ -9,20 +10,21 @@ interface SignersListHeaderProps {
 }
 
 export function SignersListHeader({ withAlert, sectionTitle }: SignersListHeaderProps) {
+  const { t } = useTranslation()
   return (
     <View gap="$6">
       <SectionTitle
         paddingHorizontal={'$0'}
-        title={sectionTitle || 'Signers'}
-        description="Signers have full control over the account, they can propose, sign and execute the transactions, as well as reject them."
+        title={sectionTitle || t('signers.signers')}
+        description={t('signers.signersDescription')}
       />
 
       {withAlert && (
         <View marginBottom={'$2'}>
           <Alert
             type="warning"
-            message="Before you import signers..."
-            info={`Make sure to import signers from this list only.\nOthers will not be imported.`}
+            message={t('signers.beforeImportTitle')}
+            info={t('signers.beforeImportWarning')}
             orientation="left"
           />
         </View>

@@ -5,16 +5,18 @@ import { ListTableItem } from '../../../ListTable'
 import { useOpenExplorer } from '@/src/features/ConfirmTx/hooks/useOpenExplorer'
 import { Address } from '@/src/types/address'
 import { HashDisplay } from '@/src/components/HashDisplay'
+import { useTranslation } from 'react-i18next'
 
 export const useRecipientItem = (order: OrderTransactionInfo): ListTableItem[] => {
   const viewRecipientOnExplorer = useOpenExplorer(order.receiver || '')
+  const { t } = useTranslation()
 
   const recipientItem = useMemo(() => {
     const items: ListTableItem[] = []
 
     if (order.receiver && order.owner !== order.receiver) {
       items.push({
-        label: 'Recipient',
+        label: t('bridge.recipient'),
         render: () => (
           <HashDisplay
             value={order.receiver as Address}
@@ -28,7 +30,7 @@ export const useRecipientItem = (order: OrderTransactionInfo): ListTableItem[] =
     }
 
     return items
-  }, [order.receiver, order.owner, viewRecipientOnExplorer])
+  }, [order.receiver, order.owner, viewRecipientOnExplorer, t])
 
   return recipientItem
 }

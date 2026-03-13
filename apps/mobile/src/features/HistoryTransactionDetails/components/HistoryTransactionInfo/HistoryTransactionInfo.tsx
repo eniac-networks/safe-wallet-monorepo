@@ -10,6 +10,7 @@ import { HistoryConfirmationsInfo } from '../HistoryConfirmationsInfo/HistoryCon
 import { Container } from '@/src/components/Container'
 import { HashDisplay } from '@/src/components/HashDisplay'
 import { ActionsRow } from '@/src/components/ActionsRow'
+import { useTranslation } from 'react-i18next'
 
 interface HistoryTransactionInfoProps {
   txId: string
@@ -17,6 +18,7 @@ interface HistoryTransactionInfoProps {
 }
 
 export function HistoryTransactionInfo({ txId, txDetails }: HistoryTransactionInfoProps) {
+  const { t } = useTranslation()
   const { detailedExecutionInfo, executedAt, txHash } = txDetails
 
   return (
@@ -24,7 +26,7 @@ export function HistoryTransactionInfo({ txId, txDetails }: HistoryTransactionIn
       <Container padding="$4" gap="$4" borderRadius="$3">
         {executedAt && (
           <View alignItems="center" flexDirection="row" justifyContent="space-between">
-            <Text color="$textSecondaryLight">Executed</Text>
+            <Text color="$textSecondaryLight">{t('historyTx.executed')}</Text>
             <Text fontSize="$4" color="$textPrimary">
               {formatWithSchema(executedAt, 'd MMM yyyy, HH:mm a')}
             </Text>
@@ -33,7 +35,7 @@ export function HistoryTransactionInfo({ txId, txDetails }: HistoryTransactionIn
 
         {txHash && (
           <View alignItems="center" flexDirection="row" justifyContent="space-between">
-            <Text color="$textSecondaryLight">Transaction hash</Text>
+            <Text color="$textSecondaryLight">{t('historyTx.transactionHash')}</Text>
             <HashDisplay
               value={txHash}
               showIdenticon={false}
@@ -46,11 +48,11 @@ export function HistoryTransactionInfo({ txId, txDetails }: HistoryTransactionIn
         )}
 
         <View alignItems="center" flexDirection="row" justifyContent="space-between">
-          <Text color="$textSecondaryLight">Status</Text>
+          <Text color="$textSecondaryLight">{t('historyTx.status')}</Text>
           <Badge
             themeName="badge_success_variant1"
             circular={false}
-            content="Success"
+            content={t('common.success')}
             fontSize={13}
             circleProps={{ paddingHorizontal: 8, paddingVertical: 2 }}
           />

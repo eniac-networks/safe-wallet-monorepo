@@ -15,6 +15,7 @@ import { Identicon } from '@/src/components/Identicon'
 import { Address } from '@/src/types/address'
 import { CopyButton } from '@/src/components/CopyButton'
 import { TouchableOpacity } from 'react-native'
+import { TFunction } from 'i18next'
 
 const mintBadgeProps: CircleProps = { borderRadius: '$2', paddingHorizontal: '$2', paddingVertical: '$1' }
 
@@ -24,18 +25,20 @@ export const formatGenericViewItems = ({
   chain,
   executionInfo,
   viewOnExplorer,
+  t,
 }: {
   txInfo: TransactionDetails['txInfo']
   txData: TransactionData
   chain: Chain
   executionInfo: MultisigExecutionDetails
   viewOnExplorer: () => void
+  t: TFunction
 }) => {
   const genericViewName = txData.to.name ? ellipsis(txData.to.name, 18) : shortenAddress(txData.to.value)
 
   const items = [
     {
-      label: 'Call',
+      label: t('transactions.call'),
       render: () => (
         <Badge
           circleProps={mintBadgeProps}
@@ -48,7 +51,7 @@ export const formatGenericViewItems = ({
       ),
     },
     {
-      label: 'Contract',
+      label: t('transactions.contract'),
       render: () => (
         <View flexDirection="row" alignItems="center" gap="$2">
           {txData.to.logoUri ? (
@@ -70,7 +73,7 @@ export const formatGenericViewItems = ({
   // Only show settings-specific UI for SettingsChangeTransaction
   if ('settingsInfo' in txInfo && txInfo.settingsInfo?.type === 'CHANGE_THRESHOLD') {
     items.push({
-      label: 'Threshold',
+      label: t('settings.threshold'),
       render: () => (
         <View flexDirection="row" alignItems="center" gap="$2">
           {txInfo.settingsInfo && 'threshold' in txInfo.settingsInfo && (
@@ -90,7 +93,7 @@ export const formatGenericViewItems = ({
   }
 
   items.push({
-    label: 'Network',
+    label: t('transactions.network'),
     render: () => (
       <View flexDirection="row" alignItems="center" gap="$2">
         <Logo logoUri={chain.chainLogoUri} size="$6" />

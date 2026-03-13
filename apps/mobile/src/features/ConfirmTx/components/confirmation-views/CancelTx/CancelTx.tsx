@@ -11,6 +11,7 @@ import { useAppSelector } from '@/src/store/hooks'
 import { ParametersButton } from '../../ParametersButton'
 import { ActionsRow } from '@/src/components/ActionsRow'
 import { SafeFontIcon } from '@/src/components/SafeFontIcon'
+import { useTranslation } from 'react-i18next'
 
 interface CancelTxProps {
   txInfo: CustomTransactionInfo
@@ -19,10 +20,11 @@ interface CancelTxProps {
 }
 
 export function CancelTx({ txInfo, executionInfo, txId }: CancelTxProps) {
+  const { t } = useTranslation()
   const activeSafe = useDefinedActiveSafe()
   const chain = useAppSelector((state: RootState) => selectChainById(state, activeSafe.chainId))
 
-  const items = useMemo(() => formatCancelTxItems(chain), [chain])
+  const items = useMemo(() => formatCancelTxItems(chain, t), [chain, t])
 
   return (
     <YStack gap="$4">
@@ -34,13 +36,12 @@ export function CancelTx({ txInfo, executionInfo, txId }: CancelTxProps) {
         }
         badgeIcon="transaction-contract"
         badgeColor="$textSecondaryLight"
-        title={txInfo.methodName ?? 'On-chain rejection'}
+        title={txInfo.methodName ?? t(‘cancelTx.onChainRejection’)}
         submittedAt={executionInfo.submittedAt}
       />
 
       <Text fontSize="$4">
-        This is an on-chain rejection that didn’t send any funds. This on-chain rejection replaced all transactions with
-        nonce {executionInfo.nonce}.
+        {t(‘cancelTx.description’, { nonce: executionInfo.nonce })}
       </Text>
 
       <ListTable items={items}>

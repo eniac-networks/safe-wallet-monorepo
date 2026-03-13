@@ -1,25 +1,28 @@
 import React from 'react'
 import { H4, Text, View } from 'tamagui'
+import { useTranslation } from 'react-i18next'
 import EmptyToken from './EmptyToken'
 import EmptyNft from './EmptyNFT'
-
-const texts = {
-  token: {
-    icon: <EmptyToken />,
-    title: 'Top up your balance',
-    description: 'Send funds to your Safe Account from another wallet by copying your address.',
-  },
-  nft: {
-    icon: <EmptyNft />,
-    title: 'No NFTs',
-    description: 'This account has no NFTs yet.',
-  },
-}
 
 type Props = {
   fundsType: 'token' | 'nft'
 }
 export const NoFunds = ({ fundsType }: Props) => {
+  const { t } = useTranslation()
+
+  const texts = {
+    token: {
+      icon: <EmptyToken />,
+      title: t('assets.topUpYourBalance'),
+      description: t('assets.topUpDescription'),
+    },
+    nft: {
+      icon: <EmptyNft />,
+      title: t('assets.noNFTs'),
+      description: t('assets.noNFTsDescription'),
+    },
+  }
+
   return (
     <View testID="empty-token" alignItems="center" gap="$2">
       {texts[fundsType].icon}

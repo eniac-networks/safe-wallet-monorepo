@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { Text, View } from 'tamagui'
 import { SafeListItem } from '@/src/components/SafeListItem'
 import { NotificationPermissions } from './NotificationPermissions'
@@ -14,19 +15,20 @@ type Props = {
 }
 
 export const NotificationsSettingsView = ({ onChange, value, isLoading = false }: Props) => {
+  const { t } = useTranslation()
   const activeSafe = useAppSelector(selectActiveSafe)
   const { getAccountType } = useNotificationGTWPermissions(activeSafe?.address as `0x${string}`, activeSafe?.chainId)
 
   return (
     <View paddingHorizontal="$4" marginTop="$2" style={{ flex: 1 }} testID={'notifications-popup-screen'}>
       <Text fontSize="$8" fontWeight={600} marginBottom="$2">
-        Notifications
+        {t('notifications.title')}
       </Text>
       <Text marginBottom="$4">
-        Stay up-to-date and get notified about activities in your account, based on your needs.
+        {t('notifications.stayUpToDate')}
       </Text>
       <SafeListItem
-        label={'Allow notifications'}
+        label={t('notifications.allowNotifications')}
         rightNode={
           <LoadableSwitch
             testID="toggle-app-notifications"

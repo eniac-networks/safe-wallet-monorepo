@@ -12,12 +12,14 @@ import { Address } from '@/src/types/address'
 import { EthAddress } from '@/src/components/EthAddress'
 import { EncodedData } from '@/src/components/EncodedData/EncodedData'
 import { SafeFontIcon } from '@/src/components/SafeFontIcon'
+import { TFunction } from 'i18next'
 
 const badgeProps: CircleProps = { borderRadius: '$2', paddingHorizontal: '$2', paddingVertical: '$1' }
 
 type formatActionDetailsReturn = {
   txData: TransactionDetails['txData']
   action: ActionValueDecoded
+  t: TFunction
 }
 
 const getContractCall = (action: ActionValueDecoded, addressInfoIndex?: AddressInfoIndex) => {
@@ -33,16 +35,19 @@ const TxOptions = ({ value }: { value: string }) => {
   )
 }
 
-const getContractItemLayout = ({
-  logoUri,
-  value,
-  name,
-}: {
-  logoUri?: string | null
-  value: string
-  name?: string | null
-}) => ({
-  label: 'Contract',
+const getContractItemLayout = (
+  {
+    logoUri,
+    value,
+    name,
+  }: {
+    logoUri?: string | null
+    value: string
+    name?: string | null
+  },
+  contractLabel: string,
+) => ({
+  label: contractLabel,
   render: () => (
     <View flexDirection="row" alignItems="center" gap="$2">
       {logoUri ? <Logo logoUri={logoUri} size="$6" /> : <Identicon address={value as Address} size={24} />}
@@ -52,7 +57,7 @@ const getContractItemLayout = ({
   ),
 })
 
-export const formatActionDetails = ({ txData, action }: formatActionDetailsReturn): ListTableItem[] => {
+export const formatActionDetails = ({ txData, action, t }: formatActionDetailsReturn): ListTableItem[] => {
   if (!txData) {
     return []
   }
@@ -61,7 +66,7 @@ export const formatActionDetails = ({ txData, action }: formatActionDetailsRetur
 
   if (action.dataDecoded?.method) {
     columns.push({
-      label: 'Call',
+      label: t('transactions.call'),
       render: () => (
         <Badge
           circleProps={badgeProps}
@@ -75,7 +80,7 @@ export const formatActionDetails = ({ txData, action }: formatActionDetailsRetur
     })
   } else {
     columns.push({
-      label: 'Interacted with',
+      label: t('advancedDetails.interactedWith'),
       render: () => (
         <View flexDirection="row" alignItems="center" gap="$2">
           <Identicon address={action.to as Address} size={24} />
@@ -89,9 +94,9 @@ export const formatActionDetails = ({ txData, action }: formatActionDetailsRetur
   const contractCall = getContractCall(action, txData.addressInfoIndex as AddressInfoIndex)
 
   if (contractCall) {
-    columns.push(getContractItemLayout(contractCall))
+    columns.push(getContractItemLayout(contractCall, t('transactions.contract')))
   } else if (action.to) {
-    columns.push(getContractItemLayout({ value: action.to }))
+    columns.push(getContractItemLayout({ value: action.to }, t('transactions.contract')))
   }
 
   if (action.dataDecoded) {
@@ -112,7 +117,7 @@ export const formatActionDetails = ({ txData, action }: formatActionDetailsRetur
     columns = [
       ...columns,
       {
-        label: 'Data',
+        label: t('transactions.data'),
         render: () => <EncodedData data={action.data} />,
       },
     ]

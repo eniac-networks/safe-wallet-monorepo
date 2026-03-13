@@ -10,12 +10,14 @@ import { ListTable } from '../../ListTable'
 import { TokenAmount } from '@/src/components/TokenAmount'
 import { formatPercentage } from '@safe-global/utils/utils/formatters'
 import { ParametersButton } from '../../ParametersButton'
-import { vaultTypeToLabel, formatVaultDepositItems } from './utils'
+import { getVaultTypeLabel, formatVaultDepositItems } from './utils'
 import { Container } from '@/src/components/Container'
 import { Image } from 'expo-image'
 import { ActionsRow } from '@/src/components/ActionsRow'
+import { useTranslation } from 'react-i18next'
 
 const AdditionalRewards = ({ txInfo }: { txInfo: VaultDepositTransactionInfo }) => {
+  const { t } = useTranslation()
   const reward = txInfo.additionalRewards[0]
   if (!reward) {
     return null
@@ -24,29 +26,29 @@ const AdditionalRewards = ({ txInfo }: { txInfo: VaultDepositTransactionInfo }) 
   return (
     <Container padding="$4" gap="$2">
       <Text fontWeight="600" marginBottom="$2">
-        Additional reward
+        {t('vault.additionalReward')}
       </Text>
       <ListTable
         padding="0"
         gap="$4"
         items={[
           {
-            label: 'Token',
+            label: t('vault.token'),
             value: `${reward.tokenInfo.name} ${reward.tokenInfo.symbol}`,
           },
           {
-            label: 'Earn',
+            label: t('vault.earn'),
             value: formatPercentage(txInfo.additionalRewardsNrr / 100),
           },
           {
-            label: 'Fee',
+            label: t('vault.fee'),
             value: '0%',
           },
         ]}
       />
       <XStack alignItems="center" gap="$1" marginTop="$2">
         <Text fontSize={12} color="$colorSecondary">
-          Powered by
+          {t('vault.poweredBy')}
         </Text>
         <Image source={{ uri: txInfo.vaultInfo.logoUri }} style={{ width: 16, height: 16 }} />
         <Text fontSize={12} color="$colorSecondary">
@@ -65,8 +67,9 @@ interface VaultDepositProps {
 }
 
 export function VaultDeposit({ txInfo, executionInfo, txId, decodedData }: VaultDepositProps) {
+  const { t } = useTranslation()
   const totalNrr = (txInfo.baseNrr + txInfo.additionalRewardsNrr) / 100
-  const items = useMemo(() => formatVaultDepositItems(txInfo), [txInfo])
+  const items = useMemo(() => formatVaultDepositItems(txInfo, t), [txInfo, t])
 
   return (
     <YStack gap="$4">
@@ -76,7 +79,7 @@ export function VaultDeposit({ txInfo, executionInfo, txId, decodedData }: Vault
         badgeColor="$textSecondaryLight"
         title={
           <XStack gap="$1">
-            <Text fontSize="$4">{vaultTypeToLabel[txInfo.type]}</Text>
+            <Text fontSize="$4">{getVaultTypeLabel(txInfo.type, t)}</Text>
             <TokenAmount
               value={txInfo.value}
               tokenSymbol={txInfo.tokenInfo.symbol}
@@ -87,7 +90,7 @@ export function VaultDeposit({ txInfo, executionInfo, txId, decodedData }: Vault
         submittedAt={executionInfo.submittedAt}
       />
 
-      <ListTable items={[{ label: 'Earn (after fees)', value: formatPercentage(totalNrr) }, ...items]} gap="$4">
+      <ListTable items={[{ label: t('vault.earnAfterFees'), value: formatPercentage(totalNrr) }, ...items]} gap="$4">
         <ParametersButton txId={txId} />
       </ListTable>
 

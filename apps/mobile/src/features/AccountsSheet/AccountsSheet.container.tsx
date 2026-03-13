@@ -1,4 +1,5 @@
 import { H6 } from 'tamagui'
+import { useTranslation } from 'react-i18next'
 import { SafeBottomSheet } from '@/src/components/SafeBottomSheet'
 import { MyAccountsContainer, MyAccountsFooter } from '@/src/features/AccountsSheet/MyAccounts'
 import { TouchableOpacity } from 'react-native'
@@ -9,6 +10,7 @@ import { useMyAccountsSortable } from '@/src/features/AccountsSheet/MyAccounts/h
 import { useMyAccountsAnalytics } from '@/src/features/AccountsSheet/MyAccounts/hooks/useMyAccountsAnalytics'
 
 export const AccountsSheetContainer = () => {
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const isEdit = useAppSelector(selectMyAccountsMode)
   const { safes, onDragEnd } = useMyAccountsSortable()
@@ -27,7 +29,7 @@ export const AccountsSheetContainer = () => {
 
   return (
     <SafeBottomSheet
-      title="My accounts"
+      title={t('accounts.myAccounts')}
       items={safes}
       keyExtractor={({ item }) => item.address}
       FooterComponent={MyAccountsFooter}
@@ -36,7 +38,7 @@ export const AccountsSheetContainer = () => {
       onDragEnd={onDragEnd}
       actions={
         <TouchableOpacity onPress={toggleEditMode}>
-          <H6 fontWeight={700}>{isEdit ? 'Done' : 'Edit'}</H6>
+          <H6 fontWeight={700}>{isEdit ? t('accounts.done') : t('accounts.edit')}</H6>
         </TouchableOpacity>
       }
     />

@@ -11,6 +11,7 @@ import { TwapOrderTransactionInfo } from '@safe-global/store/gateway/AUTO_GENERA
 import { OrderTransactionInfo } from '@safe-global/store/gateway/types'
 import { formatSwapOrderItemsForHistory, formatTwapOrderItemsForHistory } from '@/src/utils/swapOrderUtils'
 import { HistoryAdvancedDetailsButton } from '../HistoryAdvancedDetailsButton'
+import { useTranslation } from 'react-i18next'
 
 interface HistorySwapOrderProps {
   txId: string
@@ -18,6 +19,7 @@ interface HistorySwapOrderProps {
 }
 
 export function HistorySwapOrder({ txId, txInfo }: HistorySwapOrderProps) {
+  const { t } = useTranslation()
   const order = txInfo
   const isTwapOrder = isTwapOrderTxInfo(order)
 
@@ -30,11 +32,11 @@ export function HistorySwapOrder({ txId, txInfo }: HistorySwapOrderProps) {
     }
 
     if (isTwapOrder) {
-      return formatTwapOrderItemsForHistory(order as TwapOrderTransactionInfo, chain)
+      return formatTwapOrderItemsForHistory(order as TwapOrderTransactionInfo, chain, t)
     }
 
-    return formatSwapOrderItemsForHistory(txInfo as OrderTransactionInfo, chain)
-  }, [txInfo, order, isTwapOrder, chain])
+    return formatSwapOrderItemsForHistory(txInfo as OrderTransactionInfo, chain, t)
+  }, [txInfo, order, isTwapOrder, chain, t])
 
   // Format the swap header data for history context
   const { sellToken, buyToken, sellAmount, buyAmount, kind } = order
@@ -51,8 +53,8 @@ export function HistorySwapOrder({ txId, txInfo }: HistorySwapOrderProps) {
         toToken={buyToken}
         fromAmount={sellTokenValue}
         toAmount={buyTokenValue}
-        fromLabel={isSellOrder ? 'Sell' : 'For at most'}
-        toLabel={isSellOrder ? 'For at least' : 'Buy exactly'}
+        fromLabel={isSellOrder ? t('swap.sell') : t('swap.forAtMost')}
+        toLabel={isSellOrder ? t('swap.forAtLeast') : t('swap.buyExactly')}
       />
 
       <ListTable items={orderItems}>

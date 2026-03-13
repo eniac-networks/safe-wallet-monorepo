@@ -14,6 +14,7 @@ import { BlockaidModuleResponse } from '@safe-global/utils/services/security/mod
 import { BlockaidBalanceChanges } from './blockaid/balance/BlockaidBalanceChanges'
 import { BlockaidWarning } from './blockaid/scans/BlockaidWarning'
 import { InfoSheet } from '@/src/components/InfoSheet'
+import { useTranslation } from 'react-i18next'
 
 type Props = {
   tenderly: {
@@ -31,22 +32,23 @@ type Props = {
 }
 
 export const TransactionChecksView = ({ tenderly, blockaid }: Props) => {
+  const { t } = useTranslation()
   const { enabled, fetchStatus } = tenderly
   const { handleScroll } = useScrollableHeader({
-    children: <NavBarTitle>Transaction checks</NavBarTitle>,
+    children: <NavBarTitle>{t('transactionChecks.title')}</NavBarTitle>,
   })
 
   return (
     <ScrollView contentContainerStyle={{ paddingHorizontal: '$4', paddingTop: '$3' }} onScroll={handleScroll}>
       <View>
-        <LargeHeaderTitle marginBottom={'$5'}>Transaction checks</LargeHeaderTitle>
+        <LargeHeaderTitle marginBottom={'$5'}>{t('transactionChecks.title')}</LargeHeaderTitle>
       </View>
       <YStack gap={'$4'}>
         <Container gap={'$3'}>
           {blockaid.enabled ? (
             <BlockaidBalanceChanges blockaidResponse={blockaid.payload} fetchStatusLoading={blockaid.loading} />
           ) : (
-            <Text>Security check is disabled</Text>
+            <Text>{t('transactionChecks.securityCheckDisabled')}</Text>
           )}
         </Container>
         <Container gap={'$3'}>
@@ -54,10 +56,10 @@ export const TransactionChecksView = ({ tenderly, blockaid }: Props) => {
             <>
               <XStack justifyContent="space-between">
                 <XStack gap={'$2'}>
-                  <Text fontWeight={600}>Transaction simulation</Text>
+                  <Text fontWeight={600}>{t('transactionChecks.simulation')}</Text>
                   <InfoSheet
-                    title="Simulation"
-                    info="The transaction can be simulated before execution to ensure that it will succeed. You can view a full detailed report on Tenderly."
+                    title={t('transactionChecks.simulationInfoTitle')}
+                    info={t('transactionChecks.simulationInfo')}
                   />
                 </XStack>
 
@@ -67,7 +69,7 @@ export const TransactionChecksView = ({ tenderly, blockaid }: Props) => {
                     content={
                       <XStack gap={'$2'} justifyContent="center" alignItems="center">
                         <CircleSnail size={12} borderWidth={0} thickness={1} />
-                        <Text fontSize={12}>Loading</Text>
+                        <Text fontSize={12}>{t('common.loading')}</Text>
                       </XStack>
                     }
                   />
@@ -78,12 +80,12 @@ export const TransactionChecksView = ({ tenderly, blockaid }: Props) => {
                     content={
                       <XStack gap={'$2'} justifyContent="center" alignItems="center">
                         <SafeFontIcon name="check-filled" size={12} />
-                        <Text fontSize={12}>Success</Text>
+                        <Text fontSize={12}>{t('common.success')}</Text>
                       </XStack>
                     }
                   />
                 ) : (
-                  <Badge circular={false} themeName="badge_error" content={<Text fontSize={12}>Failed</Text>} />
+                  <Badge circular={false} themeName="badge_error" content={<Text fontSize={12}>{t('common.failed')}</Text>} />
                 )}
               </XStack>
               {tenderly.fetchStatus === FETCH_STATUS.SUCCESS && (
@@ -94,19 +96,19 @@ export const TransactionChecksView = ({ tenderly, blockaid }: Props) => {
                     Linking.openURL(tenderly.simulationLink)
                   }}
                 >
-                  View details on Tenderly
+                  {t('transactionChecks.viewOnTenderly')}
                 </SafeButton>
               )}
               {tenderly.fetchStatus === FETCH_STATUS.LOADING && (
                 <XStack gap={'$2'}>
                   <CircleSnail size={16} borderWidth={0} thickness={1} />
-                  <Text>Simulating with Tenderly...</Text>
+                  <Text>{t('transactionChecks.simulatingWithTenderly')}</Text>
                 </XStack>
               )}
-              {tenderly.fetchStatus === FETCH_STATUS.ERROR && <Text>Error</Text>}
+              {tenderly.fetchStatus === FETCH_STATUS.ERROR && <Text>{t('common.error')}</Text>}
             </>
           ) : (
-            <Text>Transaction simulation is disabled</Text>
+            <Text>{t('transactionChecks.simulationDisabled')}</Text>
           )}
         </Container>
 

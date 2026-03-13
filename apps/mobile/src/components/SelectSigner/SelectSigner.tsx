@@ -7,6 +7,7 @@ import { SafeFontIcon } from '@/src/components/SafeFontIcon'
 import { router } from 'expo-router'
 import { ContactDisplayNameContainer } from '@/src/features/AddressBook'
 import { Address } from '@/src/types/address'
+import { useTranslation } from 'react-i18next'
 
 type Props = {
   address: Address
@@ -14,6 +15,7 @@ type Props = {
 }
 
 export function SelectSigner({ address, txId }: Props) {
+  const { t } = useTranslation()
   return (
     <View
       onPress={() => router.push({ pathname: '/change-signer-sheet', params: { txId } })}
@@ -23,7 +25,7 @@ export function SelectSigner({ address, txId }: Props) {
       gap={'$2'}
     >
       <Image testID="signature-button-image" width={16} height={16} source={Signature} />
-      <Text fontWeight={700}>Sign with</Text>
+      <Text fontWeight={700}>{t('confirmTx.signWith')}</Text>
 
       <Identicon address={address} size={24} />
 

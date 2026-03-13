@@ -8,7 +8,9 @@ import { updatePromptAttempts } from '@/src/store/notificationsSlice'
 
 import { View } from 'tamagui'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useTranslation } from 'react-i18next'
 function NotificationsOptIn() {
+  const { t } = useTranslation()
   const { bottom } = useSafeAreaInsets()
   const dispatch = useAppDispatch()
   const { isAppNotificationEnabled, enableNotification, isLoading } = useNotificationManager()
@@ -34,19 +36,19 @@ function NotificationsOptIn() {
     <View style={{ flex: 1, paddingBottom: bottom }}>
       <OptIn
         testID="notifications-opt-in-screen"
-        title="Stay in the loop with account activity"
-        description="Get notified when you receive assets, and when transactions require your action."
+        title={t('notifications.stayInTheLoop')}
+        description={t('notifications.getNotifiedDesc')}
         image={image}
         isVisible
         colorScheme={colorScheme}
         isLoading={isLoading}
         ctaButton={{
           onPress: enableNotification,
-          label: 'Enable notifications',
+          label: t('notifications.enableNotifications'),
         }}
         secondaryButton={{
           onPress: handleReject,
-          label: 'Maybe later',
+          label: t('common.maybeLater'),
         }}
       />
     </View>

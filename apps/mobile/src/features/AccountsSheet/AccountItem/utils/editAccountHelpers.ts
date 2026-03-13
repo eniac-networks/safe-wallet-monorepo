@@ -9,6 +9,7 @@ import Logger from '@/src/utils/logger'
 import { CommonActions } from '@react-navigation/native'
 import { Alert } from 'react-native'
 import { StandardErrorResult, ErrorType, createErrorResult, createSuccessResult } from '@/src/utils/errors'
+import { TFunction } from 'i18next'
 
 interface SafesCollection extends Record<string, SafesSliceItem> {}
 
@@ -146,19 +147,19 @@ export const cleanupPrivateKeysForOwners = async (
   return createSuccessResult({ processedCount, failures })
 }
 
-export const createDeletionMessage = (ownersWithPrivateKeys: Address[], ownersToDelete: Address[]): string => {
-  let message = `This account has ${ownersWithPrivateKeys.length} owner(s) with private keys stored on this device.`
+export const createDeletionMessage = (ownersWithPrivateKeys: Address[], ownersToDelete: Address[], t: TFunction): string => {
+  let message = t('accounts.ownersWithPrivateKeysMessage', { count: ownersWithPrivateKeys.length })
 
   if (ownersToDelete.length > 0) {
-    message += ` ${ownersToDelete.length} of these private key(s) will be deleted because they are not used in other safes.`
+    message += ' ' + t('accounts.ownersToDeleteMessage', { count: ownersToDelete.length })
   }
 
   if (ownersToDelete.length < ownersWithPrivateKeys.length) {
     const keysToKeep = ownersWithPrivateKeys.length - ownersToDelete.length
-    message += ` ${keysToKeep} private key(s) will be kept because they are used as signers in other safes.`
+    message += ' ' + t('accounts.keysToKeepMessage', { count: keysToKeep })
   }
 
-  message += ' This action cannot be undone.'
+  message += ' ' + t('accounts.cannotBeUndone')
   return message
 }
 
@@ -205,10 +206,11 @@ interface HandleConfirmedDeletionParams {
   navigationConfig: SafeNavigationConfig
   resolve: () => void
   reject: (error: Error) => void
+  t: TFunction
 }
 
 const handleConfirmedDeletion = async (params: HandleConfirmedDeletionParams) => {
-  const { address, ownersToDelete, removeAllDelegatesForOwner, navigationConfig, resolve, reject } = params
+  const { address, ownersToDelete, removeAllDelegatesForOwner, navigationConfig, resolve, reject, t } = params
   try {
     if (ownersToDelete.length === 0) {
       proceedWithSafeDeletion(address, navigationConfig)
@@ -224,8 +226,8 @@ const handleConfirmedDeletion = async (params: HandleConfirmedDeletionParams) =>
 
     if (!cleanupResult.success) {
       Logger.error('Failed to clean up private keys during safe deletion:', cleanupResult.error)
-      Alert.alert('Error', cleanupResult.error?.message || 'Failed to delete private keys. Please try again.')
-      reject(new Error(cleanupResult.error?.message || 'Failed to delete private keys'))
+      Alert.alert(t('common.error'), cleanupResult.error?.message || t('accounts.failedToDeletePrivateKeys'))
+      reject(new Error(cleanupResult.error?.message || t('accounts.failedToDeletePrivateKeys')))
       return
     }
 
@@ -233,7 +235,7 @@ const handleConfirmedDeletion = async (params: HandleConfirmedDeletionParams) =>
     resolve()
   } catch (error) {
     Logger.error('Failed to clean up private keys during safe deletion:', error)
-    Alert.alert('Error', 'Failed to delete private keys. Please try again.')
+    Alert.alert(t('common.error'), t('accounts.failedToDeletePrivateKeys'))
     reject(error as Error)
   }
 }
@@ -247,10 +249,11 @@ interface HandleSafeDeletionParams {
     ownerPrivateKey: string,
   ) => Promise<StandardErrorResult<{ processedCount: number }>>
   navigationConfig: SafeNavigationConfig
+  t: TFunction
 }
 
 export const handleSafeDeletion = async (params: HandleSafeDeletionParams): Promise<void> => {
-  const { address, allSafesInfo, allSigners, removeAllDelegatesForOwner, navigationConfig } = params
+  const { address, allSafesInfo, allSigners, removeAllDelegatesForOwner, navigationConfig, t } = params
   const ownersWithPrivateKeys = getSafeOwnersWithPrivateKeys(address, allSafesInfo, allSigners)
   const ownersToDelete = getOwnersToDelete(address, allSafesInfo, allSigners)
 
@@ -259,13 +262,13 @@ export const handleSafeDeletion = async (params: HandleSafeDeletionParams): Prom
     return
   }
 
-  const message = createDeletionMessage(ownersWithPrivateKeys, ownersToDelete)
-  const buttonTitle = ownersToDelete.length > 0 ? 'Delete account and private keys' : 'Delete account'
+  const message = createDeletionMessage(ownersWithPrivateKeys, ownersToDelete, t)
+  const buttonTitle = ownersToDelete.length > 0 ? t('accounts.deleteAccountAndPrivateKeys') : t('accounts.deleteAccount')
 
   return new Promise((resolve, reject) => {
-    Alert.alert('Delete account', message, [
+    Alert.alert(t('accounts.deleteAccount'), message, [
       {
-        text: 'Cancel',
+        text: t('common.cancel'),
         style: 'cancel',
         onPress: () => reject(new Error('User cancelled deletion')),
       },
@@ -280,6 +283,7 @@ export const handleSafeDeletion = async (params: HandleSafeDeletionParams): Prom
             navigationConfig,
             resolve,
             reject,
+            t,
           }),
       },
     ])

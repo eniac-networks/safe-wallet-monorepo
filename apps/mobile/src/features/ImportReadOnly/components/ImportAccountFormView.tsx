@@ -11,6 +11,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Controller, useFormContext } from 'react-hook-form'
 import type { FormValues } from '@/src/features/ImportReadOnly/types'
 import SafeAccountInput from '@/src/components/SafeAccountInput'
+import { useTranslation } from 'react-i18next'
 
 type ImportAccountFormViewProps = {
   isEnteredAddressValid: boolean
@@ -18,6 +19,7 @@ type ImportAccountFormViewProps = {
 }
 
 export const ImportAccountFormView: React.FC<ImportAccountFormViewProps> = ({ isEnteredAddressValid, onContinue }) => {
+  const { t } = useTranslation()
   const {
     control,
     formState: { errors, isValid, dirtyFields },
@@ -27,7 +29,7 @@ export const ImportAccountFormView: React.FC<ImportAccountFormViewProps> = ({ is
   const result = watch('importedSafeResult')
 
   const { handleScroll } = useScrollableHeader({
-    children: <NavBarTitle paddingRight={5}>Import Safe account</NavBarTitle>,
+    children: <NavBarTitle paddingRight={5}>{t('importReadOnly.title')}</NavBarTitle>,
   })
 
   return (
@@ -39,8 +41,8 @@ export const ImportAccountFormView: React.FC<ImportAccountFormViewProps> = ({ is
           flex={1}
           contentContainerStyle={{ paddingBottom: '$4', paddingHorizontal: '$4' }}
         >
-          <LargeHeaderTitle marginBottom={'$4'}>Import Safe account</LargeHeaderTitle>
-          <Text>Paste the address of an account you want to import.</Text>
+          <LargeHeaderTitle marginBottom={'$4'}>{t('importReadOnly.title')}</LargeHeaderTitle>
+          <Text>{t('importReadOnly.description')}</Text>
           <View marginTop={'$4'}>
             <Controller
               control={control}
@@ -52,7 +54,7 @@ export const ImportAccountFormView: React.FC<ImportAccountFormViewProps> = ({ is
                     onChangeText={onChange}
                     multiline={true}
                     autoFocus={true}
-                    placeholder="Enter safe name here"
+                    placeholder={t('importReadOnly.enterSafeName')}
                     error={errors.name?.message}
                     success={dirtyFields.name && !errors.name}
                   />
@@ -81,7 +83,7 @@ export const ImportAccountFormView: React.FC<ImportAccountFormViewProps> = ({ is
             disabled={!isValid || result?.isFetching || !result?.data?.length}
             testID={'continue-button'}
           >
-            Continue
+            {t('dataImport.continue')}
           </SafeButton>
         </View>
       </YStack>

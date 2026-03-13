@@ -1,15 +1,17 @@
 import { Text, View } from 'tamagui'
 import { BlockaidMessage } from '@/src/features/TransactionChecks/components/blockaid/scans/BlockaidMessage'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 
 export const BlockaidError = () => {
+  const { t } = useTranslation()
   return (
     <View backgroundColor="$backgroundSecondary" padding="$3" borderRadius="$2">
       <Text fontWeight="700" fontSize={16} marginBottom="$2">
-        Proceed with caution
+        {t('blockaid.proceedWithCaution')}
       </Text>
       <Text fontSize={14}>
-        The transaction could not be checked for security alerts. Verify the details and addresses before proceeding.
+        {t('blockaid.couldNotCheck')}
       </Text>
       <BlockaidMessage />
     </View>

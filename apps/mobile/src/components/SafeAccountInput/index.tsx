@@ -8,7 +8,9 @@ import { Identicon } from '../Identicon'
 import { View } from 'tamagui'
 import { SafeFontIcon } from '../SafeFontIcon'
 import { useImportSafe } from './hooks/useImportSafe'
+import { useTranslation } from 'react-i18next'
 function SafeAccountInput() {
+  const { t } = useTranslation()
   const {
     control,
     formState: { errors, dirtyFields },
@@ -30,7 +32,7 @@ function SafeAccountInput() {
             value={value}
             onChangeText={onChange}
             multiline={true}
-            placeholder="Paste address..."
+            placeholder={t('importReadOnly.pasteAddress')}
             error={errors.safeAddress?.message}
             success={dirtyFields.safeAddress && !errors.safeAddress}
             left={addressWithoutPrefix ? <Identicon address={addressWithoutPrefix as `0x${string}`} size={32} /> : null}

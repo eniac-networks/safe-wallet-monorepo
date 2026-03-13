@@ -1,5 +1,7 @@
 import React, { useMemo, useCallback } from 'react'
 import { View, Text, getTokenValue } from 'tamagui'
+import { useTranslation } from 'react-i18next'
+import { type TFunction } from 'i18next'
 import { Tabs } from 'react-native-collapsible-tab-view'
 import { getGroupHash, getTxHash } from '@/src/features/TxHistory/utils'
 import { HistoryTransactionItems } from '@safe-global/store/gateway/types'
@@ -97,7 +99,7 @@ const getItemType = (item: HistoryTransactionItems | HistoryTransactionItems[]) 
   return 'unknown'
 }
 
-const createEmptyComponent = (isInitialLoading: boolean) => {
+const createEmptyComponent = (isInitialLoading: boolean, t: TFunction) => {
   if (isInitialLoading) {
     return (
       <View
@@ -107,7 +109,7 @@ const createEmptyComponent = (isInitialLoading: boolean) => {
         paddingTop="$4"
         testID="tx-history-initial-loader"
       >
-        <TransactionSkeleton count={6} sectionTitles={['Recent transactions']} />
+        <TransactionSkeleton count={6} sectionTitles={[t('txHistory.recentTransactions')]} />
       </View>
     )
   }
@@ -157,6 +159,7 @@ export function TxHistoryList({
 }: TxHistoryList) {
   const { bottom } = useSafeAreaInsets()
   const router = useRouter()
+  const { t } = useTranslation()
 
   const onHistoryTransactionPress = useCallback(
     (transaction: TxCardPress) => {
@@ -187,7 +190,7 @@ export function TxHistoryList({
   const hasTransactions = !!(transactions && transactions.length > 0)
   const isInitialLoading = !!(isLoading && !hasTransactions && !refreshing)
 
-  const renderEmptyComponent = useMemo(() => createEmptyComponent(isInitialLoading), [isInitialLoading])
+  const renderEmptyComponent = useMemo(() => createEmptyComponent(isInitialLoading, t), [isInitialLoading, t])
 
   const renderHeaderComponent = useMemo(
     () => createHeaderComponent(isLoading, hasTransactions),

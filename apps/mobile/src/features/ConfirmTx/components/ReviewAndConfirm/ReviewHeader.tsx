@@ -1,12 +1,14 @@
 import React from 'react'
 import { Text, YStack } from 'tamagui'
+import { useTranslation } from 'react-i18next'
 
 export function ReviewHeader() {
+  const { t } = useTranslation()
   return (
     <YStack space="$4" paddingTop="$4">
       <YStack space="$2">
         <Text color="$colorSecondary">
-          Review this transaction data and make sure it matches with the details on the web app.
+          {t('confirmTx.reviewDataHint')}
         </Text>
       </YStack>
     </YStack>

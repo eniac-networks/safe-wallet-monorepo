@@ -14,6 +14,7 @@ import {
   ImportProgressCallback,
 } from './helpers/transforms'
 import { ImportProgressScreenView } from './components/ImportProgressScreenView'
+import { useTranslation } from 'react-i18next'
 
 export const ImportProgressScreen = () => {
   const router = useRouter()
@@ -21,9 +22,10 @@ export const ImportProgressScreen = () => {
   const dispatch = useAppDispatch()
   const currency = useAppSelector(selectCurrency)
   const { createDelegate } = useDelegate()
+  const { t } = useTranslation()
 
   const [progress, setProgress] = useState(0)
-  const [progressMessage, setProgressMessage] = useState('Initializing...')
+  const [progressMessage, setProgressMessage] = useState(() => t('dataImport.initializing'))
   const hasImportStarted = useRef(false)
 
   useEffect(() => {
@@ -50,7 +52,7 @@ export const ImportProgressScreen = () => {
         // Step 1: Fetch SafeOverview data and store it properly
         currentStep++
         setProgress(5)
-        setProgressMessage('Fetching safe information...')
+        setProgressMessage(t('dataImport.fetchingSafeInfo'))
         Logger.info('Starting SafeOverview data fetch and storage...')
 
         const safeInfos =
@@ -67,19 +69,19 @@ export const ImportProgressScreen = () => {
           setProgressMessage(message)
         }
 
-        const allOwners = await fetchAndStoreSafeOverviews(safeInfos, currency, dispatch, safeOverviewProgressCallback)
+        const allOwners = await fetchAndStoreSafeOverviews(safeInfos, currency, dispatch, safeOverviewProgressCallback, t)
 
         // Step 2: Store safe contacts (quick operation)
         currentStep++
         setProgress(30)
-        setProgressMessage('Storing safe contacts...')
+        setProgressMessage(t('dataImport.storingSafeContacts'))
         Logger.info('Storing safe contacts...')
         storeSafeContacts(data, dispatch)
 
         // Step 3: Import and validate signers/private keys with delegate creation
         currentStep++
         setProgress(35)
-        setProgressMessage('Processing signers and creating delegates...')
+        setProgressMessage(t('dataImport.processingSigner'))
         Logger.info('Starting key import with validation and delegate creation...')
 
         // Create progress callback for key validation
@@ -97,18 +99,19 @@ export const ImportProgressScreen = () => {
           updateNotImportedKeys,
           createDelegate,
           keyValidationProgressCallback,
+          t,
         )
 
         // Step 4: Import address book/contacts
         currentStep++
         setProgress(80)
-        setProgressMessage('Importing address book...')
+        setProgressMessage(t('dataImport.importingAddressBook'))
         Logger.info('Starting contacts import...')
         storeContacts(data, dispatch)
 
         // Complete
         setProgress(100)
-        setProgressMessage('Import completed successfully!')
+        setProgressMessage(t('dataImport.importCompleted'))
 
         // Wait a bit to show completion
         await new Promise((resolve) => setTimeout(resolve, 1000))
@@ -117,7 +120,7 @@ export const ImportProgressScreen = () => {
         router.push('/import-data/import-success')
       } catch (error) {
         Logger.error('Import failed:', error)
-        setProgressMessage('Import failed. Please try again.')
+        setProgressMessage(t('dataImport.importFailedRetry'))
         // Reset the flag on error so user can retry
         hasImportStarted.current = false
         // Wait a bit to show error message
@@ -128,7 +131,7 @@ export const ImportProgressScreen = () => {
     }
 
     performImport()
-  }, [importedData, dispatch, router, currency, createDelegate, updateNotImportedKeys])
+  }, [importedData, dispatch, router, currency, createDelegate, updateNotImportedKeys, t])
 
   return <ImportProgressScreenView progress={progress} message={progressMessage} />
 }

@@ -14,6 +14,7 @@ import { getSignerName } from '../AddSigner/utils'
 import { ParametersButton } from '../../ParametersButton'
 import { NormalizedSettingsChangeTransaction } from '../../ConfirmationView/types'
 import { useOpenExplorer } from '@/src/features/ConfirmTx/hooks/useOpenExplorer'
+import { useTranslation } from 'react-i18next'
 
 interface RemoveSignerProps {
   txInfo: NormalizedSettingsChangeTransaction
@@ -22,13 +23,14 @@ interface RemoveSignerProps {
 }
 
 export function RemoveSigner({ txInfo, executionInfo, txId }: RemoveSignerProps) {
+  const { t } = useTranslation()
   const activeSafe = useDefinedActiveSafe()
   const activeChain = useAppSelector((state: RootState) => selectChainById(state, activeSafe.chainId))
   const viewOnExplorer = useOpenExplorer(txInfo.settingsInfo?.owner?.value)
 
   const items = useMemo(
-    () => formatRemoveSignerItems(txInfo, activeChain, viewOnExplorer),
-    [txInfo, activeChain, viewOnExplorer],
+    () => formatRemoveSignerItems(txInfo, activeChain, viewOnExplorer, t),
+    [txInfo, activeChain, viewOnExplorer, t],
   )
   const newRemovedSigners = getSignerName(txInfo)
 

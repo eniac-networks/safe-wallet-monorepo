@@ -7,8 +7,10 @@ import { LargeHeaderTitle } from '@/src/components/Title'
 import { SafeButton } from '@/src/components/SafeButton'
 import { router } from 'expo-router'
 import { AbsoluteLinearGradient } from '@/src/components/LinearGradient'
+import { useTranslation } from 'react-i18next'
 
 export default function SignError({ onRetryPress, description }: { onRetryPress: () => void; description?: string }) {
+  const { t } = useTranslation()
   const theme = useTheme()
   const colors: [string, string] = [theme.errorDark.get(), 'transparent']
   const { bottom } = useSafeAreaInsets()
@@ -34,11 +36,11 @@ export default function SignError({ onRetryPress, description }: { onRetryPress:
 
               <View margin="$4" width="100%" alignItems="center" gap="$4">
                 <LargeHeaderTitle textAlign="center" size="$8" lineHeight={32} maxWidth={200} fontWeight={600}>
-                  Couldn't sign the transaction
+                  {t('confirmTx.couldNotSign')}
                 </LargeHeaderTitle>
 
                 <Text textAlign="center" fontSize="$4" width="80%">
-                  {description || 'There was an error executing this transaction.'}
+                  {description || t('confirmTx.errorExecuting')}
                 </Text>
               </View>
             </View>
@@ -46,9 +48,9 @@ export default function SignError({ onRetryPress, description }: { onRetryPress:
         </View>
 
         <View paddingHorizontal="$4" gap="$4">
-          <SafeButton onPress={onRetryPress}>Retry</SafeButton>
+          <SafeButton onPress={onRetryPress}>{t('confirmTx.retry')}</SafeButton>
           <SafeButton text onPress={router.back}>
-            View transaction
+            {t('confirmTx.viewTransaction')}
           </SafeButton>
         </View>
       </View>

@@ -3,6 +3,7 @@ import { Text, View, Theme } from 'tamagui'
 import { SafeFontIcon } from '@/src/components/SafeFontIcon'
 import { Pressable, Keyboard } from 'react-native'
 import { useContactNetworkData } from '../hooks/useContactNetworkData'
+import { useTranslation } from 'react-i18next'
 
 interface ContactNetworkRowProps {
   onPress: () => void
@@ -11,6 +12,7 @@ interface ContactNetworkRowProps {
 
 export const ContactNetworkRow = ({ onPress, chainIds }: ContactNetworkRowProps) => {
   const { displayText } = useContactNetworkData(chainIds)
+  const { t } = useTranslation()
 
   const handlePress = () => {
     Keyboard.dismiss()
@@ -30,7 +32,7 @@ export const ContactNetworkRow = ({ onPress, chainIds }: ContactNetworkRowProps)
         >
           <View flexDirection="row" alignItems="center" gap="$2">
             <Text fontSize="$4" fontWeight="400" color="$colorSecondary">
-              Network
+              {t('transactions.network')}
             </Text>
           </View>
           <View flexDirection="row" alignItems="center" gap="$2">

@@ -3,15 +3,17 @@ import { TokenAmount } from '@/src/components/TokenAmount'
 import { SafeListItem } from '@/src/components/SafeListItem'
 import { TokenIcon } from '@/src/components/TokenIcon'
 import { SafeListItemProps } from '@/src/components/SafeListItem/SafeListItem'
+import { useTranslation } from 'react-i18next'
 
 type VaultTxDepositCardProps = {
   info: VaultDepositTransactionInfo
 } & Partial<SafeListItemProps>
 
 export const VaultTxDepositCard = ({ info, ...rest }: VaultTxDepositCardProps) => {
+  const { t } = useTranslation()
   return (
     <SafeListItem
-      label={'Deposit'}
+      label={t('vault.deposit')}
       icon="transaction-earn"
       type={'Earn'}
       rightNode={

@@ -29,6 +29,7 @@ import { additionalSafesRtkApi } from '@safe-global/store/gateway/safes'
 import { addSignerWithEffects } from '@/src/store/signersSlice'
 import { storePrivateKey } from '@/src/hooks/useSign/useSign'
 import Logger from '@/src/utils/logger'
+import { TFunction } from 'i18next'
 
 export interface NotImportedKey {
   address: string
@@ -128,6 +129,7 @@ export const fetchAndStoreSafeOverviews = async (
   currency = 'USD',
   dispatch: AppDispatch,
   progressCallback?: ImportProgressCallback,
+  t?: TFunction,
 ): Promise<Set<string>> => {
   if (safes.length === 0) {
     return new Set()
@@ -135,7 +137,7 @@ export const fetchAndStoreSafeOverviews = async (
 
   // Step 1: Add safe addresses to state with minimal data so extraReducer can update them
   Logger.info(`Pre-populating ${safes.length} safe addresses in Redux state`)
-  progressCallback?.(0, 'Preparing safes for data fetch...')
+  progressCallback?.(0, t ? t('dataImport.preparingSafes') : 'Preparing safes for data fetch...')
 
   for (const safe of safes) {
     // Add safe with minimal data - the extraReducer will update this with full data
@@ -173,7 +175,7 @@ export const fetchAndStoreSafeOverviews = async (
     const batchProgress = Math.round((i / chunks.length) * 100)
 
     Logger.info(`Processing batch ${i + 1}/${chunks.length} with ${chunk.length} safes`)
-    progressCallback?.(batchProgress, `Fetching safe data (batch ${i + 1}/${chunks.length})`)
+    progressCallback?.(batchProgress, t ? t('dataImport.fetchingSafeDataBatch', { current: i + 1, total: chunks.length }) : `Fetching safe data (batch ${i + 1}/${chunks.length})`)
 
     try {
       // Make the API call for this batch - this will trigger the extraReducer to update the state
@@ -208,7 +210,7 @@ export const fetchAndStoreSafeOverviews = async (
     }
   }
 
-  progressCallback?.(100, `Fetched complete data for ${safes.length} safes`)
+  progressCallback?.(100, t ? t('dataImport.fetchedSafeData', { count: safes.length }) : `Fetched complete data for ${safes.length} safes`)
   Logger.info(`Extracted ${allOwners.size} unique owners from ${safes.length} safes`)
   Logger.info(`Complete SafeOverview data has been stored in Redux store via RTK query extraReducer`)
   return allOwners
@@ -264,6 +266,7 @@ export const storeKeysWithValidation = async (
     error?: string
   }>,
   progressCallback?: ImportProgressCallback,
+  t?: TFunction,
 ): Promise<void> => {
   if (!data.keys) {
     return
@@ -279,7 +282,7 @@ export const storeKeysWithValidation = async (
     const keyAddress = key.address.toLowerCase()
     const keyProgress = Math.round((i / data.keys.length) * 100)
 
-    progressCallback?.(keyProgress, `Processing key ${i + 1}/${data.keys.length}`)
+    progressCallback?.(keyProgress, t ? t('dataImport.processingKey', { current: i + 1, total: data.keys.length }) : `Processing key ${i + 1}/${data.keys.length}`)
 
     if (!allOwners.has(keyAddress)) {
       // Key is not an owner of any safe, don't import it
@@ -302,7 +305,7 @@ export const storeKeysWithValidation = async (
 
       // Create delegate for this owner
       try {
-        progressCallback?.(keyProgress, `Creating delegate for ${key.name || key.address}`)
+        progressCallback?.(keyProgress, t ? t('dataImport.creatingDelegate', { name: key.name || key.address }) : `Creating delegate for ${key.name || key.address}`)
 
         // Pass null as safe address to create a delegate for the chain, not for a specific safe
         const delegateResult = await createDelegate(privateKey, null)
@@ -349,7 +352,7 @@ export const storeKeysWithValidation = async (
   // Update the context with not imported keys
   updateNotImportedKeys(notImportedKeys)
 
-  progressCallback?.(100, `Completed: ${importedCount} keys imported`)
+  progressCallback?.(100, t ? t('dataImport.completedKeys', { count: importedCount }) : `Completed: ${importedCount} keys imported`)
   Logger.info(`Import validation complete: ${importedCount} keys imported, ${notImportedKeys.length} keys not imported`)
 }
 

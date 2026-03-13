@@ -9,6 +9,7 @@ import { getCrashlytics } from '@react-native-firebase/crashlytics'
 import { setAnalyticsCollectionEnabled } from '@/src/services/analytics'
 import { isAndroid, PRIVACY_POLICY_URL, TERMS_OF_USE_URL } from '@/src/config/constants'
 import { Platform } from 'react-native'
+import { useTranslation } from 'react-i18next'
 
 const StyledText = styled(Text, {
   fontSize: '$3',
@@ -18,6 +19,7 @@ const StyledText = styled(Text, {
 export const GetStarted = () => {
   const router = useRouter()
   const insets = useSafeAreaInsets()
+  const { t } = useTranslation()
 
   const enableCrashlytics = async () => {
     await getCrashlytics().setCrashlyticsCollectionEnabled(true)
@@ -75,7 +77,7 @@ export const GetStarted = () => {
           paddingHorizontal={'$10'}
           lineHeight={'$9'}
         >
-          How would you like to continue?
+          {t('getStarted.howToContinue')}
         </Text>
 
         <SafeButton
@@ -84,11 +86,11 @@ export const GetStarted = () => {
           testID={'add-account-button'}
           onPress={onPressAddAccount}
         >
-          Add account
+          {t('getStarted.addAccount')}
         </SafeButton>
         {!isAndroid && (
           <SafeButton outlined icon={<SafeFontIcon name={'upload'} />} onPress={onPressImportAccount}>
-            Migrate old app
+            {t('getStarted.migrateOldApp')}
           </SafeButton>
         )}
         <View
@@ -99,13 +101,13 @@ export const GetStarted = () => {
           flexWrap="wrap"
           justifyContent="center"
         >
-          <StyledText>By continuing, you agree to our </StyledText>
+          <StyledText>{t('getStarted.agreeToTerms')} </StyledText>
           <Link href={TERMS_OF_USE_URL} target={'_blank'} asChild>
-            <StyledText textDecorationLine={'underline'}>User Terms</StyledText>
+            <StyledText textDecorationLine={'underline'}>{t('getStarted.userTerms')}</StyledText>
           </Link>
-          <StyledText> and </StyledText>
+          <StyledText> {t('getStarted.and')} </StyledText>
           <Link href={PRIVACY_POLICY_URL} target={'_blank'} asChild>
-            <StyledText textDecorationLine={'underline'}>Privacy Policy</StyledText>
+            <StyledText textDecorationLine={'underline'}>{t('getStarted.privacyPolicy')}</StyledText>
           </Link>
           <StyledText>.</StyledText>
         </View>

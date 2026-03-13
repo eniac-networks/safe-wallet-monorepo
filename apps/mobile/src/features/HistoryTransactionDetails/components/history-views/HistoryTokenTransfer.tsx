@@ -10,6 +10,7 @@ import { TokenAmount } from '@/src/components/TokenAmount'
 import { HistoryAdvancedDetailsButton } from '@/src/features/HistoryTransactionDetails/components/HistoryAdvancedDetailsButton'
 import { HashDisplay } from '@/src/components/HashDisplay'
 import { NetworkDisplay } from '../shared'
+import { useTranslation } from 'react-i18next'
 
 interface HistoryTokenTransferProps {
   txId: string
@@ -17,6 +18,7 @@ interface HistoryTokenTransferProps {
 }
 
 export function HistoryTokenTransfer({ txId, txInfo }: HistoryTokenTransferProps) {
+  const { t } = useTranslation()
   const { value, tokenSymbol, logoUri, decimals } = useTokenDetails(txInfo)
 
   const isOutgoing = txInfo.direction === 'OUTGOING'
@@ -27,8 +29,8 @@ export function HistoryTokenTransfer({ txId, txInfo }: HistoryTokenTransferProps
   const badgeColor = isOutgoing ? '$error' : '$success'
   const badgeThemeName = isOutgoing ? 'badge_error' : 'badge_success'
 
-  const fieldLabel = isOutgoing ? 'To' : 'From'
-  const transactionType = isOutgoing ? 'Sent' : 'Received'
+  const fieldLabel = isOutgoing ? t('transactions.to') : t('common.from')
+  const transactionType = isOutgoing ? t('common.sent') : t('common.received')
 
   return (
     <>

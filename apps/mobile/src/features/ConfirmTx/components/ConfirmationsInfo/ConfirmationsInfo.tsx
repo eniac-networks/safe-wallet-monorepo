@@ -5,6 +5,7 @@ import { SafeFontIcon } from '@/src/components/SafeFontIcon'
 import { SafeListItem } from '@/src/components/SafeListItem'
 import { MultisigExecutionDetails } from '@safe-global/store/gateway/AUTO_GENERATED/transactions'
 import { useRouter } from 'expo-router'
+import { useTranslation } from 'react-i18next'
 
 interface ConfirmationsInfoProps {
   detailedExecutionInfo: MultisigExecutionDetails
@@ -12,6 +13,7 @@ interface ConfirmationsInfoProps {
 }
 
 export function ConfirmationsInfo({ detailedExecutionInfo, txId }: ConfirmationsInfoProps) {
+  const { t } = useTranslation()
   const router = useRouter()
 
   const hasEnoughConfirmations =
@@ -26,7 +28,7 @@ export function ConfirmationsInfo({ detailedExecutionInfo, txId }: Confirmations
 
   return (
     <SafeListItem
-      label="Confirmations"
+      label={t('transactions.confirmations')}
       onPress={onConfirmationsPress}
       rightNode={
         <View alignItems="center" flexDirection="row" gap="$2">

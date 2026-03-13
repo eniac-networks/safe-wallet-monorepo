@@ -9,6 +9,7 @@ import { NotImportedKey } from '../helpers/transforms'
 import { Identicon } from '@/src/components/Identicon'
 import { Container } from '@/src/components/Container'
 import { InfoSheet } from '@/src/components/InfoSheet'
+import { useTranslation } from 'react-i18next'
 
 interface ImportSuccessScreenViewProps {
   bottomInset: number
@@ -23,6 +24,7 @@ export const ImportSuccessScreenView = ({
   onContinue,
   notImportedKeys,
 }: ImportSuccessScreenViewProps) => {
+  const { t } = useTranslation()
   return (
     <View flex={1} paddingBottom={bottomInset} testID="import-success-screen">
       <LinearGradient colors={gradientColors} style={styles.background} />
@@ -39,31 +41,31 @@ export const ImportSuccessScreenView = ({
               <YStack margin="$4" width="100%" alignItems="center" gap="$4">
                 {/* Title */}
                 <H2 fontWeight={'600'} textAlign="center">
-                  Import complete!
+                  {t('dataImport.importComplete')}
                 </H2>
 
                 {/* Subtitle */}
                 <Text fontSize="$4" textAlign="center" marginHorizontal={'$4'} color="$colorSecondary">
                   {notImportedKeys.length > 0
-                    ? "Your data has been successfully imported. However, some signers are not associated with your Safe accounts and won't be added"
-                    : 'Your accounts, signers, and contacts are ready to use.'}
+                    ? t('dataImport.partialSuccessDesc')
+                    : t('dataImport.successDesc')}
                 </Text>
 
                 {/* Not Imported Keys Section */}
                 {notImportedKeys.length > 0 && (
                   <YStack width="100%" gap="$3" marginTop="$4" paddingHorizontal="$2">
-                    <InfoSheet info="Those keys were not associated with any Safe account from your import.">
+                    <InfoSheet info={t('dataImport.keysNotAssociated')}>
                       <XStack alignItems="center" justifyContent="center" gap="$2">
                         <SafeFontIcon size={16} name={'info'} color="$colorSecondary" />
                         <Text fontWeight="500" color="$colorSecondary">
-                          Why did it happen?
+                          {t('dataImport.whyDidItHappen')}
                         </Text>
                       </XStack>
                     </InfoSheet>
 
                     <Container gap="$2" backgroundColor="$background" padding="$3" borderRadius="$3">
                       <Text fontWeight="500" marginBottom="$2">
-                        Not imported:
+                        {t('dataImport.notImported')}
                       </Text>
                       {notImportedKeys.map((key, index) => (
                         <XStack key={index} alignItems="center" gap="$3" paddingVertical="$1">
@@ -88,10 +90,10 @@ export const ImportSuccessScreenView = ({
 
         <View paddingHorizontal="$4">
           <Text fontSize="$2" color="$colorSecondary" marginBottom="$2" textAlign="center">
-            This does not affect your imported accounts or the security of your data.
+            {t('dataImport.doesNotAffect')}
           </Text>
           <SafeButton primary testID="continue-button" onPress={onContinue}>
-            Continue
+            {t('dataImport.continue')}
           </SafeButton>
         </View>
       </View>

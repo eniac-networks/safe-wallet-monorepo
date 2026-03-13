@@ -5,6 +5,7 @@ import { CircleSnail } from 'react-native-progress'
 import { InfoSheet } from '@/src/components/InfoSheet'
 import { PoweredByBlockaid } from '../PoweredByBlockaid'
 import { BalanceChange } from '@/src/features/TransactionChecks/components/blockaid/balance/BalanceChange'
+import { useTranslation } from 'react-i18next'
 
 type BlockaidBalanceChangesProps = {
   blockaidResponse?: {
@@ -17,6 +18,7 @@ type BlockaidBalanceChangesProps = {
 }
 
 const BalanceChanges = ({ blockaidResponse }: BlockaidBalanceChangesProps) => {
+  const { t } = useTranslation()
   const { isLoading, error, payload } = blockaidResponse ?? {}
 
   const totalBalanceChanges = payload?.balanceChange
@@ -28,7 +30,7 @@ const BalanceChanges = ({ blockaidResponse }: BlockaidBalanceChangesProps) => {
       <XStack gap="$2" alignItems="center">
         <CircleSnail size={16} borderWidth={0} thickness={1} />
         <Text fontSize={14} color="$textSecondary">
-          Calculating...
+          {t('transactionChecks.calculating')}
         </Text>
       </XStack>
     )
@@ -36,14 +38,14 @@ const BalanceChanges = ({ blockaidResponse }: BlockaidBalanceChangesProps) => {
   if (error) {
     return (
       <Text fontSize={14} color="$textSecondary">
-        Could not calculate balance changes.
+        {t('transactionChecks.couldNotCalculate')}
       </Text>
     )
   }
   if (totalBalanceChanges === 0) {
     return (
       <Text fontSize={14} color="$textSecondary">
-        No balance change detected
+        {t('transactionChecks.noBalanceChange')}
       </Text>
     )
   }
@@ -65,21 +67,22 @@ const BalanceChanges = ({ blockaidResponse }: BlockaidBalanceChangesProps) => {
 }
 
 export const BlockaidBalanceChanges = ({ blockaidResponse, fetchStatusLoading }: BlockaidBalanceChangesProps) => {
+  const { t } = useTranslation()
   return (
     <YStack>
       <XStack gap="$2">
         <Text fontWeight="700" marginBottom="$2">
-          Balance change
+          {t('transactionChecks.balanceChange')}
         </Text>
         <InfoSheet
-          title="Balance change"
-          info="The balance change gives an overview of the implications of a transaction. You can see which assets will be sent and received after the transaction is executed."
+          title={t('transactionChecks.balanceChange')}
+          info={t('transactionChecks.balanceChangeInfo')}
         />
       </XStack>
       {fetchStatusLoading ? (
         <XStack gap={'$2'}>
           <CircleSnail size={16} borderWidth={0} thickness={1} />
-          <Text>Checking balance with Blockaid...</Text>
+          <Text>{t('transactionChecks.checkingWithBlockaid')}</Text>
         </XStack>
       ) : (
         <>

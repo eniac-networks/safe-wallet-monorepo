@@ -7,6 +7,7 @@ import { NormalizedSettingsChangeTransaction } from '@/src/features/ConfirmTx/co
 import { HistoryAdvancedDetailsButton } from '@/src/features/HistoryTransactionDetails/components/HistoryAdvancedDetailsButton'
 import { HashDisplay } from '@/src/components/HashDisplay'
 import { ThresholdChangeDisplay, NetworkDisplay } from '../shared'
+import { useTranslation } from 'react-i18next'
 
 interface HistoryRemoveSignerProps {
   txId: string
@@ -15,6 +16,7 @@ interface HistoryRemoveSignerProps {
 }
 
 export function HistoryRemoveSigner({ txId, txInfo, executionInfo }: HistoryRemoveSignerProps) {
+  const { t } = useTranslation()
   return (
     <>
       <HistoryTransactionHeader
@@ -22,14 +24,14 @@ export function HistoryRemoveSigner({ txId, txInfo, executionInfo }: HistoryRemo
         isIdenticon
         badgeIcon="transaction-contract"
         badgeColor="$textSecondaryLight"
-        transactionType="Remove signer"
+        transactionType={t('signerChange.removeSigner')}
       />
 
       <View>
         <YStack gap="$4" marginTop="$8">
           <Container padding="$4" gap="$4" borderRadius="$3">
             <View alignItems="center" flexDirection="row" justifyContent="space-between">
-              <Text color="$textSecondaryLight">Removed signer</Text>
+              <Text color="$textSecondaryLight">{t('signerChange.removedSigner')}</Text>
               <View flexDirection="row" alignItems="center" gap="$2">
                 <HashDisplay value={txInfo.settingsInfo?.owner?.value} />
               </View>

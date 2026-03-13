@@ -6,6 +6,7 @@ import { SafeButton } from '@/src/components/SafeButton'
 import { KeyboardAvoidingView, ActivityIndicator, Platform, StyleSheet } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { SafeInput } from '@/src/components/SafeInput'
+import { useTranslation } from 'react-i18next'
 
 type Props = {
   isKeyVisible: boolean
@@ -28,6 +29,7 @@ export const PrivateKeyView = ({
   onHidePrivateKey,
 }: Props) => {
   const { bottom, top } = useSafeAreaInsets()
+  const { t } = useTranslation()
 
   const displayKey = isKeyVisible && privateKey ? privateKey : MASKED_PRIVATE_KEY
 
@@ -35,7 +37,7 @@ export const PrivateKeyView = ({
     <YStack flex={1}>
       <ScrollView flex={1} contentContainerStyle={{ paddingHorizontal: '$4' }}>
         <Container marginTop={'$4'} rowGap={'$1'}>
-          <Text color={'$colorSecondary'}>Private Key</Text>
+          <Text color={'$colorSecondary'}>{t('privateKey.privateKey')}</Text>
           <SafeInput
             value={displayKey}
             editable={false}
@@ -44,7 +46,7 @@ export const PrivateKeyView = ({
             style={styles.input}
             right={
               isKeyVisible && privateKey ? (
-                <CopyButton value={privateKey} color={'$colorSecondary'} hitSlop={2} text={'Private key copied'} />
+                <CopyButton value={privateKey} color={'$colorSecondary'} hitSlop={2} text={t('privateKey.privateKeyCopied')} />
               ) : null
             }
           />
@@ -56,9 +58,9 @@ export const PrivateKeyView = ({
               <ActivityIndicator color="white" />
             </SafeButton>
           ) : isKeyVisible ? (
-            <SafeButton onPress={onHidePrivateKey}>Hide private key</SafeButton>
+            <SafeButton onPress={onHidePrivateKey}>{t('privateKey.hidePrivateKey')}</SafeButton>
           ) : (
-            <SafeButton onPress={onViewPrivateKey}>View private key</SafeButton>
+            <SafeButton onPress={onViewPrivateKey}>{t('privateKey.viewPrivateKey')}</SafeButton>
           )}
         </View>
       </ScrollView>
@@ -66,7 +68,7 @@ export const PrivateKeyView = ({
       <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={top + bottom}>
         <View paddingHorizontal={'$4'} paddingTop={'$2'} paddingBottom={bottom ?? 60}>
           <SafeButton danger={true} onPress={onDeletePrivateKey} disabled={isLoading}>
-            Delete private key
+            {t('privateKey.deletePrivateKey')}
           </SafeButton>
         </View>
       </KeyboardAvoidingView>

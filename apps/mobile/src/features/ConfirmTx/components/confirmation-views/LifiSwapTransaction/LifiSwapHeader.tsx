@@ -3,6 +3,7 @@ import { SwapTransactionInfo, MultisigExecutionDetails } from '@safe-global/stor
 import { formatWithSchema } from '@/src/utils/date'
 import { formatValue } from '@/src/utils/formatters'
 import { SwapHeader } from '@/src/components/SwapHeader'
+import { useTranslation } from 'react-i18next'
 
 interface LifiSwapHeaderProps {
   txInfo: SwapTransactionInfo
@@ -10,6 +11,7 @@ interface LifiSwapHeaderProps {
 }
 
 export function LifiSwapHeader({ txInfo, executionInfo }: LifiSwapHeaderProps) {
+  const { t } = useTranslation()
   const { fromToken, toToken, fromAmount, toAmount } = txInfo
   const date = formatWithSchema(executionInfo.submittedAt, 'MMM d yyyy')
   const time = formatWithSchema(executionInfo.submittedAt, 'hh:mm a')
@@ -25,8 +27,8 @@ export function LifiSwapHeader({ txInfo, executionInfo }: LifiSwapHeaderProps) {
       toToken={toToken}
       fromAmount={sellTokenValue}
       toAmount={buyTokenValue}
-      fromLabel="Sell"
-      toLabel="For"
+      fromLabel={t('swap.sell')}
+      toLabel={t('swap.for')}
     />
   )
 }

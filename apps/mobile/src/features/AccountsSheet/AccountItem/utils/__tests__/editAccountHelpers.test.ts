@@ -12,6 +12,17 @@ import { AppDispatch } from '@/src/store'
 import { keyStorageService } from '@/src/services/key-storage'
 import { removeSigner } from '@/src/store/signersSlice'
 import Logger from '@/src/utils/logger'
+import { TFunction } from 'i18next'
+
+const mockT = ((key: string, params?: Record<string, unknown>) => {
+  const map: Record<string, string> = {
+    'accounts.ownersWithPrivateKeysMessage': `This account has ${params?.count} owner(s) with private keys stored on this device.`,
+    'accounts.ownersToDeleteMessage': `${params?.count} of these private key(s) will be deleted because they are not used in other safes.`,
+    'accounts.keysToKeepMessage': `${params?.count} private key(s) will be kept because they are used as signers in other safes.`,
+    'accounts.cannotBeUndone': 'This action cannot be undone.',
+  }
+  return map[key] ?? key
+}) as unknown as TFunction
 
 jest.mock('@/src/services/key-storage', () => ({
   keyStorageService: {
@@ -139,7 +150,7 @@ describe('editAccountHelpers', () => {
       const ownersWithPrivateKeys = [mockAddress1, mockAddress2]
       const ownersToDelete = [mockAddress1]
 
-      const result = createDeletionMessage(ownersWithPrivateKeys, ownersToDelete)
+      const result = createDeletionMessage(ownersWithPrivateKeys, ownersToDelete, mockT)
 
       expect(result).toContain('2 owner(s) with private keys')
       expect(result).toContain('1 of these private key(s) will be deleted')
@@ -151,7 +162,7 @@ describe('editAccountHelpers', () => {
       const ownersWithPrivateKeys = [mockAddress1]
       const ownersToDelete = [mockAddress1]
 
-      const result = createDeletionMessage(ownersWithPrivateKeys, ownersToDelete)
+      const result = createDeletionMessage(ownersWithPrivateKeys, ownersToDelete, mockT)
 
       expect(result).toContain('1 owner(s) with private keys')
       expect(result).toContain('1 of these private key(s) will be deleted')
@@ -162,7 +173,7 @@ describe('editAccountHelpers', () => {
       const ownersWithPrivateKeys = [mockAddress1, mockAddress2]
       const ownersToDelete: Address[] = []
 
-      const result = createDeletionMessage(ownersWithPrivateKeys, ownersToDelete)
+      const result = createDeletionMessage(ownersWithPrivateKeys, ownersToDelete, mockT)
 
       expect(result).toContain('2 owner(s) with private keys')
       expect(result).not.toContain('will be deleted')

@@ -5,6 +5,7 @@ import TransferOldAppDark from '@/assets/images/transfer-old-app-dark.png'
 import TransferOldAppLight from '@/assets/images/transfer-old-app-light.png'
 import { ColorSchemeName } from 'react-native'
 import { GradientText } from '@/src/components/GradientText'
+import { useTranslation } from 'react-i18next'
 
 const StyledText = styled(Text, {
   fontSize: '$4',
@@ -24,6 +25,7 @@ export const DataTransferView = ({
   onPressTransferData,
   onPressStartFresh,
 }: DataTransferViewProps) => {
+  const { t } = useTranslation()
   return (
     <YStack flex={1} paddingTop={'$4'} testID="data-transfer-screen">
       {/* Content */}
@@ -39,19 +41,19 @@ export const DataTransferView = ({
               gradientStart={{ x: 0, y: 0 }}
               gradientEnd={{ x: 1, y: 0 }}
             >
-              Still have the old app?
+              {t('dataImport.stillHaveOldApp')}
             </GradientText>
           ) : (
             <H5 fontWeight={'600'} color="$colorSecondary">
-              Still have the old app?
+              {t('dataImport.stillHaveOldApp')}
             </H5>
           )}
 
           <H2 fontWeight={'600'} textAlign="center">
-            Import old app data
+            {t('dataImport.importOldAppData')}
           </H2>
 
-          <StyledText>Move your Safe accounts, signers, and address book in minutes.</StyledText>
+          <StyledText>{t('dataImport.moveYourData')}</StyledText>
         </YStack>
 
         {/* Phone Mockup */}
@@ -61,11 +63,11 @@ export const DataTransferView = ({
       {/* Bottom Buttons */}
       <YStack gap="$3" paddingHorizontal="$4" paddingBottom={bottomInset} paddingTop="$4">
         <SafeButton primary testID="transfer-data-button" onPress={onPressTransferData}>
-          Import data
+          {t('dataImport.importData')}
         </SafeButton>
 
         <SafeButton text testID="start-fresh-button" onPress={onPressStartFresh}>
-          Start fresh
+          {t('dataImport.startFresh')}
         </SafeButton>
       </YStack>
     </YStack>

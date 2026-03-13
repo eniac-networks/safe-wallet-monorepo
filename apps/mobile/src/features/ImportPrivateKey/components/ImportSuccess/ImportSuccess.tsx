@@ -11,11 +11,13 @@ import { Button, Text, View } from 'tamagui'
 import { ToastViewport } from '@tamagui/toast'
 import { useCopyAndDispatchToast } from '@/src/hooks/useCopyAndDispatchToast'
 import Logger from '@/src/utils/logger'
+import { useTranslation } from 'react-i18next'
 
 export function ImportSuccess() {
   const { address, name } = useLocalSearchParams<{ address: `0x${string}`; name: string }>()
   const router = useRouter()
   const copy = useCopyAndDispatchToast()
+  const { t } = useTranslation()
 
   const handleContinuePress = async () => {
     try {
@@ -39,10 +41,10 @@ export function ImportSuccess() {
             />
 
             <View margin="$10" width="100%" alignItems="center" gap="$4">
-              <LargeHeaderTitle textAlign="center">Your signer is ready!</LargeHeaderTitle>
+              <LargeHeaderTitle textAlign="center">{t('importPrivateKey.signerReady')}</LargeHeaderTitle>
 
               <Text textAlign="center" fontSize="$4">
-                You can now use it to interact with your Safe Account — sign and execute transactions seamlessly.
+                {t('importPrivateKey.signerReadyDesc')}
               </Text>
             </View>
 
@@ -63,7 +65,7 @@ export function ImportSuccess() {
                     }}
                     icon={<SafeFontIcon name="copy" />}
                   >
-                    Copy
+                    {t('common.copy')}
                   </Button>
                 </View>
               }
@@ -77,7 +79,7 @@ export function ImportSuccess() {
 
       <View paddingHorizontal="$3">
         <SafeButton onPress={handleContinuePress} testID={'import-success-continue'}>
-          Continue
+          {t('dataImport.continue')}
         </SafeButton>
       </View>
     </View>

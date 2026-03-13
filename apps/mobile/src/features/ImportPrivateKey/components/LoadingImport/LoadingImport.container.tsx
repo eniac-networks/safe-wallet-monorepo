@@ -16,6 +16,7 @@ import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
 import { SerializedError } from '@reduxjs/toolkit'
 import { LoadingScreen } from '@/src/components/LoadingScreen'
 import { selectCurrency } from '@/src/store/settingsSlice'
+import { useTranslation } from 'react-i18next'
 
 const getData = (
   manySafes: SafesGetSafeOverviewV1ApiResponse | undefined,
@@ -41,6 +42,7 @@ const getError = (
 }
 
 export function LoadingImport() {
+  const { t } = useTranslation()
   const glob = useGlobalSearchParams<{ safeAddress?: string; chainId?: string; import_safe?: string }>()
   const { address } = useLocalSearchParams()
   const chainIds = useAppSelector(selectAllChainsIds)
@@ -131,5 +133,5 @@ export function LoadingImport() {
     }
   }, [data, redirectToError])
 
-  return <LoadingScreen title="Creating your signer..." description="Verifying address..." />
+  return <LoadingScreen title={t('loadingImport.creatingSigner')} description={t('loadingImport.verifyingAddress')} />
 }

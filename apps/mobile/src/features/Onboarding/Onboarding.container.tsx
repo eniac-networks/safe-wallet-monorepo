@@ -1,7 +1,9 @@
 import React from 'react'
 import { OnboardingCarousel } from './components/OnboardingCarousel'
-import { items } from './components/OnboardingCarousel/items'
+import { getCarouselItems } from './components/OnboardingCarousel/items'
+import { useTranslation } from 'react-i18next'
 
 export function Onboarding() {
-  return <OnboardingCarousel items={items} />
+  const { t } = useTranslation()
+  return <OnboardingCarousel items={getCarouselItems(t)} />
 }

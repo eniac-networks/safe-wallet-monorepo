@@ -1,6 +1,7 @@
 import '@/src/platform/fetch'
 import '@/src/platform/crypto-shims'
 import '@/src/platform/intl-polyfills'
+import i18n from '@/src/i18n'
 import { Stack } from 'expo-router'
 import 'react-native-reanimated'
 import { SafeThemeProvider } from '@/src/theme/provider/safeTheme'
@@ -21,12 +22,16 @@ import { getDefaultScreenOptions } from '@/src/navigation/hooks/utils'
 import { NavigationGuardHOC } from '@/src/navigation/NavigationGuardHOC'
 import { TestCtrls } from '@/src/tests/e2e-maestro/components/TestCtrls'
 import Logger, { LogLevel } from '@/src/utils/logger'
+import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useInitWeb3 } from '@/src/hooks/useInitWeb3'
 import { useInitSafeCoreSDK } from '@/src/hooks/coreSDK/useInitSafeCoreSDK'
 import NotificationsService from '@/src/services/notifications/NotificationService'
 import { syncNotificationExtensionData } from '@/src/services/notifications/store-sync/sync'
 import { useScreenTracking } from '@/src/hooks/useScreenTracking'
 import { useAnalytics } from '@/src/hooks/useAnalytics'
+import { useAppSelector } from '@/src/store/hooks'
+import { selectLocale } from '@/src/store/settingsSlice'
 import { DataFetchProvider } from '../theme/provider/DataFetchProvider'
 import { config, actions } from '@/src/platform/security'
 import { useFreeRasp } from 'freerasp-react-native'
@@ -48,6 +53,12 @@ const HooksInitializer = () => {
   useInitSafeCoreSDK()
   useAnalytics() // Tracks activeSafe changes, but only once analytics is enabled in GetStarted screen
   useNotificationHandler()
+  const locale = useAppSelector(selectLocale)
+  useEffect(() => {
+    if (locale) {
+      i18n.changeLanguage(locale)
+    }
+  }, [locale])
   return null
 }
 
@@ -63,6 +74,7 @@ persistor.subscribe(() => {
 })
 
 function RootLayout() {
+  const { t } = useTranslation()
   useFreeRasp(config, actions)
   useScreenTracking()
 
@@ -110,17 +122,17 @@ function RootLayout() {
                             <Stack.Screen name="notifications-settings" options={{ headerShown: true, title: '' }} />
                             <Stack.Screen
                               name="transaction-parameters"
-                              options={{ headerShown: true, title: 'Transaction Details' }}
+                              options={{ headerShown: true, title: t('nav.transactionDetails') }}
                             />
                             <Stack.Screen name="transaction-actions" options={{ headerShown: true, title: '' }} />
                             <Stack.Screen name="action-details" options={{ headerShown: true, title: '' }} />
                             <Stack.Screen
                               name="history-transaction-details"
-                              options={{ headerShown: true, title: 'Transaction details' }}
+                              options={{ headerShown: true, title: t('transactions.transactionDetails') }}
                             />
                             <Stack.Screen
                               name="history-advanced-details"
-                              options={{ headerShown: true, title: 'Advanced Details' }}
+                              options={{ headerShown: true, title: t('nav.advancedDetails') }}
                             />
                             <Stack.Screen name="address-book" options={{ headerShown: true, title: '' }} />
                             <Stack.Screen name="contact" options={{ headerShown: true, title: '' }} />
@@ -193,14 +205,14 @@ function RootLayout() {
                             <Stack.Screen
                               name="confirm-transaction"
                               options={{
-                                title: 'Confirm transaction',
+                                title: t('nav.confirmTransaction'),
                                 headerRight: () => <View width={16} />,
                               }}
                             />
                             <Stack.Screen
                               name="review-and-confirm"
                               options={{
-                                title: 'Review and confirm',
+                                title: t('nav.reviewAndConfirm'),
                                 headerRight: () => <View width={16} />,
                               }}
                             />
@@ -208,7 +220,14 @@ function RootLayout() {
                               name="currency"
                               options={{
                                 headerShown: true,
-                                title: 'Currency',
+                                title: t('nav.currency'),
+                              }}
+                            />
+                            <Stack.Screen
+                              name="language"
+                              options={{
+                                headerShown: true,
+                                title: t('nav.language'),
                               }}
                             />
                             <Stack.Screen

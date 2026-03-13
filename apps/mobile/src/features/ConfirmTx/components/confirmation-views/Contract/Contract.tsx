@@ -11,6 +11,7 @@ import { useAppSelector } from '@/src/store/hooks'
 import { ParametersButton } from '../../ParametersButton'
 import { useOpenExplorer } from '@/src/features/ConfirmTx/hooks/useOpenExplorer'
 import { ActionsRow } from '@/src/components/ActionsRow'
+import { useTranslation } from 'react-i18next'
 
 interface ContractProps {
   txInfo: CustomTransactionInfo
@@ -19,11 +20,12 @@ interface ContractProps {
 }
 
 export function Contract({ txInfo, executionInfo, txId }: ContractProps) {
+  const { t } = useTranslation()
   const activeSafe = useDefinedActiveSafe()
   const chain = useAppSelector((state: RootState) => selectChainById(state, activeSafe.chainId))
   const viewOnExplorer = useOpenExplorer(txInfo.to.value)
 
-  const items = useMemo(() => formatContractItems(txInfo, chain, viewOnExplorer), [txInfo, chain, viewOnExplorer])
+  const items = useMemo(() => formatContractItems(txInfo, chain, viewOnExplorer, t), [txInfo, chain, viewOnExplorer, t])
 
   return (
     <YStack gap="$4">
@@ -32,7 +34,7 @@ export function Contract({ txInfo, executionInfo, txId }: ContractProps) {
         isIdenticon={!txInfo.to.logoUri}
         badgeIcon="transaction-contract"
         badgeColor="$textSecondaryLight"
-        title={txInfo.methodName ?? 'Contract interaction'}
+        title={txInfo.methodName ?? t('transactionActions.contractInteraction')}
         submittedAt={executionInfo.submittedAt}
       />
 

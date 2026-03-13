@@ -8,12 +8,14 @@ import { useGuard } from '@/src/context/GuardProvider'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTransactionSigner } from '@/src/features/ConfirmTx/hooks/useTransactionSigner'
 import { Address } from '@/src/types/address'
+import { useTranslation } from 'react-i18next'
 
 interface ReviewFooterProps {
   txId: string
 }
 
 export function ReviewFooter({ txId }: ReviewFooterProps) {
+  const { t } = useTranslation()
   const { signerState } = useTransactionSigner(txId)
   const { activeSigner } = signerState
   const { isBiometricsEnabled } = useBiometrics()
@@ -54,7 +56,7 @@ export function ReviewFooter({ txId }: ReviewFooterProps) {
       <SelectSigner address={activeSigner?.value as Address} txId={txId} />
 
       <SafeButton onPress={handleConfirmPress} width="100%">
-        Confirm transaction
+        {t('confirmTx.confirmTransaction')}
       </SafeButton>
     </Stack>
   )

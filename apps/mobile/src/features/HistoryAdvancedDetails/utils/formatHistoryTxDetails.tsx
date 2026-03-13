@@ -9,9 +9,11 @@ import { Operation } from '@safe-global/safe-gateway-typescript-sdk'
 import { HashDisplay } from '@/src/components/HashDisplay'
 import { Badge } from '@/src/components/Badge'
 import { HexDataDisplay } from '@/src/components/HexDataDisplay'
+import { TFunction } from 'i18next'
 
 interface formatHistoryTxDetailsProps {
   txDetails?: TransactionDetails
+  t: TFunction
 }
 
 export interface HistoryTxDetailsSection {
@@ -19,7 +21,7 @@ export interface HistoryTxDetailsSection {
   items: ListTableItem[]
 }
 
-const formatHistoryTxDetails = ({ txDetails }: formatHistoryTxDetailsProps): HistoryTxDetailsSection[] => {
+const formatHistoryTxDetails = ({ txDetails, t }: formatHistoryTxDetailsProps): HistoryTxDetailsSection[] => {
   const sections: HistoryTxDetailsSection[] = []
 
   if (!txDetails) {
@@ -33,14 +35,14 @@ const formatHistoryTxDetails = ({ txDetails }: formatHistoryTxDetailsProps): His
     const executionInfo = txDetails.detailedExecutionInfo
 
     basicInfoItems.push({
-      label: 'Nonce',
+      label: t('transactions.nonce'),
       render: () => <Text>{executionInfo.nonce}</Text>,
     })
 
     // Safe Tx Hash
     if (executionInfo.safeTxHash) {
       basicInfoItems.push({
-        label: 'safeTxHash',
+        label: t('advancedDetails.safeTxHash'),
         render: () => (
           <HashDisplay
             value={executionInfo.safeTxHash as Address}
@@ -66,7 +68,7 @@ const formatHistoryTxDetails = ({ txDetails }: formatHistoryTxDetailsProps): His
   if (txDetails.txData?.operation !== undefined && txDetails.txData.dataDecoded?.method) {
     const methodCalled = txDetails.txData.dataDecoded?.method
     parametersItems.push({
-      label: txDetails.txData.operation === Operation.CALL ? 'Call' : 'Delegate Call',
+      label: txDetails.txData.operation === Operation.CALL ? t('transactions.call') : t('transactions.delegateCall'),
       render: () => (
         <Badge
           circular={false}
@@ -80,7 +82,7 @@ const formatHistoryTxDetails = ({ txDetails }: formatHistoryTxDetailsProps): His
 
   if (txDetails.txData?.to?.value) {
     parametersItems.push({
-      label: 'To',
+      label: t('transactions.to'),
       render: () => (
         <HashDisplay
           value={txDetails.txData?.to.value as Address}
@@ -93,25 +95,25 @@ const formatHistoryTxDetails = ({ txDetails }: formatHistoryTxDetailsProps): His
 
   if (txDetails.txData?.value) {
     parametersItems.push({
-      label: 'Value',
+      label: t('transactions.value'),
       render: () => <Text>{txDetails.txData?.value}</Text>,
     })
   }
 
   parametersItems.push({
-    label: 'Data',
+    label: t('transactions.data'),
     render: () => {
       if (!txDetails.txData?.hexData) {
         return <Text fontWeight={600}>0x</Text>
       }
 
-      return <HexDataDisplay data={txDetails.txData?.hexData || '0x'} title="Hex Data" copyMessage="Data copied." />
+      return <HexDataDisplay data={txDetails.txData?.hexData || '0x'} title={t('transactions.hexData')} copyMessage={t('advancedDetails.dataCopied')} />
     },
   })
 
   if (parametersItems.length > 0) {
     sections.push({
-      title: 'Parameters',
+      title: t('transactions.parameters'),
       items: parametersItems,
     })
   }
@@ -125,33 +127,33 @@ const formatHistoryTxDetails = ({ txDetails }: formatHistoryTxDetailsProps): His
     if (txDetails.txData?.operation !== undefined) {
       const operationText = txDetails.txData.operation === Operation.CALL ? '0 (call)' : '1 (delegateCall)'
       decodedDataItems.push({
-        label: 'Operation',
+        label: t('transactions.operation'),
         render: () => <Text>{operationText}</Text>,
       })
     }
 
     decodedDataItems.push({
-      label: 'safeTxGas',
+      label: t('advancedDetails.safeTxGas'),
       render: () => <Text>{executionInfo.safeTxGas}</Text>,
     })
 
     decodedDataItems.push({
-      label: 'baseGas',
+      label: t('advancedDetails.baseGas'),
       render: () => <Text>{executionInfo.baseGas}</Text>,
     })
 
     decodedDataItems.push({
-      label: 'gasPrice',
+      label: t('advancedDetails.gasPrice'),
       render: () => <Text>{executionInfo.gasPrice}</Text>,
     })
 
     decodedDataItems.push({
-      label: 'gasToken',
+      label: t('advancedDetails.gasToken'),
       render: () => <Text>{executionInfo.gasToken}</Text>,
     })
 
     decodedDataItems.push({
-      label: 'refundReceiver',
+      label: t('advancedDetails.refundReceiver'),
       render: () => <Text>{executionInfo.refundReceiver.value}</Text>,
     })
 
@@ -159,12 +161,12 @@ const formatHistoryTxDetails = ({ txDetails }: formatHistoryTxDetailsProps): His
       executionInfo.confirmations.forEach((confirmation, index) => {
         if (confirmation.signature) {
           decodedDataItems.push({
-            label: `Signature ${index + 1}`,
+            label: t('advancedDetails.signature', { n: index + 1 }),
             render: () => (
               <View flexDirection="row" alignItems="center" gap="$1">
                 <Text>{confirmation.signature ? `${confirmation.signature.length / 2 - 1} bytes` : '0 bytes'}</Text>
                 {confirmation.signature && (
-                  <CopyButton value={confirmation.signature} color={'$textSecondaryLight'} text="Signature copied." />
+                  <CopyButton value={confirmation.signature} color={'$textSecondaryLight'} text={t('advancedDetails.signatureCopied')} />
                 )}
               </View>
             ),
@@ -175,9 +177,9 @@ const formatHistoryTxDetails = ({ txDetails }: formatHistoryTxDetailsProps): His
 
     if (txDetails.txData?.hexData) {
       decodedDataItems.push({
-        label: 'Raw data',
+        label: t('transactions.rawData'),
         render: () => (
-          <HexDataDisplay data={txDetails.txData?.hexData} title="Raw Data" copyMessage="Raw data copied." />
+          <HexDataDisplay data={txDetails.txData?.hexData} title={t('transactions.rawData')} copyMessage={t('advancedDetails.rawDataCopied')} />
         ),
       })
     }
@@ -185,7 +187,7 @@ const formatHistoryTxDetails = ({ txDetails }: formatHistoryTxDetailsProps): His
 
   if (decodedDataItems.length > 0) {
     sections.push({
-      title: 'Decoded data',
+      title: t('advancedDetails.decodedData'),
       items: decodedDataItems,
     })
   }

@@ -2,6 +2,7 @@ import { Container } from '@/src/components/Container'
 import { SafeFontIcon } from '@/src/components/SafeFontIcon'
 import { DimensionValue } from 'react-native'
 import { View, Text } from 'tamagui'
+import { useTranslation } from 'react-i18next'
 
 export interface ReadOnlyProps {
   signers: string[]
@@ -10,6 +11,7 @@ export interface ReadOnlyProps {
 }
 
 export const ReadOnly = ({ signers, marginBottom = '$6', marginTop = '$2' }: ReadOnlyProps) => {
+  const { t } = useTranslation()
   if (signers.length === 0) {
     return (
       <Container
@@ -23,7 +25,7 @@ export const ReadOnly = ({ signers, marginBottom = '$6', marginTop = '$2' }: Rea
         <View flexDirection="row" alignItems="center" gap="$2">
           <SafeFontIcon name="eye-n" size={16} color="$colorLight" />
           <Text color="$colorLight" fontSize="$4" fontWeight={600} lineHeight={20} letterSpacing={-0.1}>
-            This is a read-only account
+            {t('assets.readOnlyAccount')}
           </Text>
         </View>
       </Container>

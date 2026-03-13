@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 import { Alert } from 'react-native'
+import { useTranslation } from 'react-i18next'
 import { AddressInfo } from '@safe-global/store/gateway/AUTO_GENERATED/transactions'
 import { useAppDispatch } from '@/src/store/hooks'
 import { removeContact } from '@/src/store/addressBookSlice'
@@ -19,19 +20,20 @@ export const ContactItemActionsContainer: React.FC<ContactItemActionsContainerPr
   const dispatch = useAppDispatch()
   const copy = useCopyAndDispatchToast()
   const actions = useContactActions()
+  const { t } = useTranslation()
 
   const handleDeleteContact = useCallback(
     (contact: AddressInfo) => {
       Alert.alert(
-        'Delete Contact',
-        'Do you really want to delete this contact?',
+        t('addressBook.deleteContact'),
+        t('addressBook.deleteContactConfirm'),
         [
           {
-            text: 'Cancel',
+            text: t('common.cancel'),
             style: 'cancel',
           },
           {
-            text: 'Delete',
+            text: t('common.delete'),
             style: 'destructive',
             onPress: () => {
               dispatch(removeContact(contact.value))
@@ -41,7 +43,7 @@ export const ContactItemActionsContainer: React.FC<ContactItemActionsContainerPr
         { cancelable: true },
       )
     },
-    [dispatch],
+    [dispatch, t],
   )
 
   const handleCopyContact = useCallback(

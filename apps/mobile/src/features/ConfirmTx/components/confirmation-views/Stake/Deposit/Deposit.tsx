@@ -9,6 +9,7 @@ import {
 } from '@safe-global/store/gateway/AUTO_GENERATED/transactions'
 import { TokenAmount } from '@/src/components/TokenAmount'
 import { ParametersButton } from '../../../ParametersButton'
+import { useTranslation } from 'react-i18next'
 
 interface StakingDepositProps {
   txInfo: NativeStakingDepositTransactionInfo
@@ -17,8 +18,9 @@ interface StakingDepositProps {
 }
 
 export function StakingDeposit({ txInfo, executionInfo, txId }: StakingDepositProps) {
-  const items = useMemo(() => formatStakingDepositItems(txInfo), [txInfo])
-  const validatorItems = useMemo(() => formatStakingValidatorItems(txInfo), [txInfo])
+  const { t } = useTranslation()
+  const items = useMemo(() => formatStakingDepositItems(txInfo, t), [txInfo, t])
+  const validatorItems = useMemo(() => formatStakingValidatorItems(txInfo, t), [txInfo, t])
 
   return (
     <YStack gap="$4">
@@ -44,8 +46,7 @@ export function StakingDeposit({ txInfo, executionInfo, txId }: StakingDepositPr
 
       <ListTable items={validatorItems}>
         <Text fontSize="$3" color="$textSecondaryLight" marginTop="$2">
-          Earn ETH rewards with dedicated validators. Rewards must be withdrawn manually, and you can request a
-          withdrawal at any time.
+          {t('staking.earnEthRewards')}
         </Text>
       </ListTable>
     </YStack>

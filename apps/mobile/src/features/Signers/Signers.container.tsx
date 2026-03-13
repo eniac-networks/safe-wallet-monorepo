@@ -6,10 +6,12 @@ import { SafeButton } from '@/src/components/SafeButton'
 import { SignersList } from './components/SignersList'
 import { useSignersGroupService } from './hooks/useSignersGroupService'
 import { useRouter } from 'expo-router'
+import { useTranslation } from 'react-i18next'
 
 export const SignersContainer = () => {
   const { group, isFetching } = useSignersGroupService()
   const router = useRouter()
+  const { t } = useTranslation()
 
   const onImportSigner = () => {
     router.push('/import-signers')
@@ -34,7 +36,7 @@ export const SignersContainer = () => {
       </View>
 
       <SafeButton onPress={onImportSigner} testID={'import-signer-button'}>
-        Import signer
+        {t('signers.importSigner')}
       </SafeButton>
     </View>
   )

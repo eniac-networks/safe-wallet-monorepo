@@ -7,6 +7,7 @@ import { useDelegateCleanup } from '@/src/hooks/useDelegateCleanup'
 import { useAppDispatch } from '@/src/store/hooks'
 import { type Address } from '@/src/types/address'
 import { cleanupSinglePrivateKey } from '@/src/features/AccountsSheet/AccountItem/utils/editAccountHelpers'
+import { useTranslation } from 'react-i18next'
 
 type Props = {
   signerAddress: Address
@@ -16,6 +17,7 @@ export const PrivateKeyContainer = ({ signerAddress }: Props) => {
   const router = useRouter()
   const dispatch = useAppDispatch()
   const { removeAllDelegatesForOwner } = useDelegateCleanup()
+  const { t } = useTranslation()
 
   const [isKeyVisible, setIsKeyVisible] = useState(false)
   const [privateKey, setPrivateKey] = useState<string | null>(null)
@@ -28,7 +30,7 @@ export const PrivateKeyContainer = ({ signerAddress }: Props) => {
       const key = await keyStorageService.getPrivateKey(signerAddress)
 
       if (!key) {
-        Alert.alert('Error', 'Biometric authentication failed. Please try again.')
+        Alert.alert(t('common.error'), t('privateKey.biometricFailed'))
         return
       }
 
@@ -36,34 +38,34 @@ export const PrivateKeyContainer = ({ signerAddress }: Props) => {
       setIsKeyVisible(true)
     } catch (error) {
       console.error('Error retrieving private key:', error)
-      Alert.alert('Error', 'Failed to retrieve private key')
+      Alert.alert(t('common.error'), t('privateKey.failedToRetrieve'))
     } finally {
       setIsLoading(false)
     }
-  }, [signerAddress])
+  }, [signerAddress, t])
 
   const handleViewPrivateKey = useCallback(() => {
     Alert.alert(
-      'View private key',
-      'Are you sure you want to display your private key on screen? Make sure no one else can see your screen.',
+      t('privateKey.viewConfirmTitle'),
+      t('privateKey.viewConfirmMsg'),
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: t('common.cancel'), style: 'cancel' },
         {
-          text: 'Yes, show key',
+          text: t('privateKey.yesShowKey'),
           style: 'destructive',
           onPress: executeViewPrivateKey,
         },
       ],
     )
-  }, [executeViewPrivateKey])
+  }, [executeViewPrivateKey, t])
 
   const showDeleteFailureAlert = useCallback((message?: string) => {
     Alert.alert(
-      'Cannot delete private key',
-      message || 'Failed to unsubscribe from push notifications. Please check your internet connection and try again.',
-      [{ text: 'OK' }],
+      t('privateKey.cannotDelete'),
+      message || t('privateKey.failedToUnsubscribe'),
+      [{ text: t('common.ok') }],
     )
-  }, [])
+  }, [t])
 
   const executeDeletePrivateKey = useCallback(async () => {
     setIsLoading(true)
@@ -77,28 +79,28 @@ export const PrivateKeyContainer = ({ signerAddress }: Props) => {
       }
 
       router.back()
-      Alert.alert('Success', 'Private key has been deleted successfully')
+      Alert.alert(t('common.success'), t('privateKey.deleteSuccess'))
     } catch (_error) {
-      showDeleteFailureAlert('An unexpected error occurred')
+      showDeleteFailureAlert(t('privateKey.unexpectedError'))
     } finally {
       setIsLoading(false)
     }
-  }, [signerAddress, dispatch, removeAllDelegatesForOwner, router, showDeleteFailureAlert])
+  }, [signerAddress, dispatch, removeAllDelegatesForOwner, router, showDeleteFailureAlert, t])
 
   const handleDeletePrivateKey = useCallback(() => {
     Alert.alert(
-      'Delete private key',
-      'This will make this signer no longer able to sign transactions in this safe and in any other safe on this device that uses this private key. Do you want to proceed?',
+      t('privateKey.deleteConfirmTitle'),
+      t('privateKey.deleteConfirmMsg'),
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: t('common.cancel'), style: 'cancel' },
         {
-          text: 'Yes, delete',
+          text: t('privateKey.yesDelete'),
           style: 'destructive',
           onPress: executeDeletePrivateKey,
         },
       ],
     )
-  }, [executeDeletePrivateKey])
+  }, [executeDeletePrivateKey, t])
 
   const handleHidePrivateKey = useCallback(() => {
     setIsKeyVisible(false)

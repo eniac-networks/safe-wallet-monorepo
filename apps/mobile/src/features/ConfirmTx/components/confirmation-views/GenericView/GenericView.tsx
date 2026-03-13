@@ -15,6 +15,7 @@ import { TransactionHeader } from '../../TransactionHeader'
 import { ParametersButton } from '../../ParametersButton'
 import { useOpenExplorer } from '@/src/features/ConfirmTx/hooks/useOpenExplorer'
 import { ActionsRow } from '@/src/components/ActionsRow'
+import { useTranslation } from 'react-i18next'
 
 interface GenericViewProps {
   txInfo: TransactionDetails['txInfo']
@@ -24,12 +25,13 @@ interface GenericViewProps {
 }
 
 export function GenericView({ txInfo, txData, executionInfo, txId }: GenericViewProps) {
+  const { t } = useTranslation()
   const activeSafe = useDefinedActiveSafe()
   const chain = useAppSelector((state: RootState) => selectChainById(state, activeSafe.chainId))
   const viewOnExplorer = useOpenExplorer(txData.to.value)
   const items = useMemo(
-    () => formatGenericViewItems({ txInfo, txData, chain, executionInfo, viewOnExplorer }),
-    [txInfo, executionInfo, txData, chain, viewOnExplorer],
+    () => formatGenericViewItems({ txInfo, txData, chain, executionInfo, viewOnExplorer, t }),
+    [txInfo, executionInfo, txData, chain, viewOnExplorer, t],
   )
 
   return (
@@ -39,7 +41,7 @@ export function GenericView({ txInfo, txData, executionInfo, txId }: GenericView
         isIdenticon={!txData.to.logoUri}
         badgeIcon="transaction-contract"
         badgeColor="$textSecondaryLight"
-        title={txData.dataDecoded?.method ?? 'Contract interaction'}
+        title={txData.dataDecoded?.method ?? t('transactionActions.contractInteraction')}
         submittedAt={executionInfo.submittedAt}
       />
 

@@ -4,6 +4,7 @@ import { TransactionDetails } from '@safe-global/store/gateway/AUTO_GENERATED/tr
 import { Container } from '@/src/components/Container'
 import { CopyButton } from '@/src/components/CopyButton'
 import useSafeTx from '@/src/hooks/useSafeTx'
+import { useTranslation } from 'react-i18next'
 
 interface JSONTabProps {
   txDetails: TransactionDetails
@@ -11,6 +12,7 @@ interface JSONTabProps {
 
 export function JSONTab({ txDetails }: JSONTabProps) {
   const safeTx = useSafeTx(txDetails)
+  const { t } = useTranslation()
   const jsonData = safeTx ? JSON.stringify(safeTx.data, null, 2) : undefined
 
   if (!jsonData) {
@@ -21,7 +23,7 @@ export function JSONTab({ txDetails }: JSONTabProps) {
     <Tabs.ScrollView contentContainerStyle={{ padding: 16, marginTop: 16 }}>
       <Container>
         <View position="absolute" right={10} top={10} zIndex={1000}>
-          <CopyButton value={jsonData} color="$colorSecondary" size={16} text="JSON value copied to clipboard" />
+          <CopyButton value={jsonData} color="$colorSecondary" size={16} text={t('confirmTx.jsonCopied')} />
         </View>
         <Text>{jsonData}</Text>
       </Container>

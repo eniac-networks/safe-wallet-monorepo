@@ -8,8 +8,10 @@ import { useTransactionSigning } from './hooks/useTransactionSigning'
 import { useAppSelector } from '@/src/store/hooks'
 import { selectActiveSigner } from '@/src/store/activeSignerSlice'
 import { useDefinedActiveSafe } from '@/src/store/hooks/activeSafe'
+import { useTranslation } from 'react-i18next'
 
 export function SignTransaction() {
+  const { t } = useTranslation()
   const { txId } = useLocalSearchParams<{ txId: string }>()
   const activeSafe = useDefinedActiveSafe()
   const activeSigner = useAppSelector((state) => selectActiveSigner(state, activeSafe.address))
@@ -31,24 +33,24 @@ export function SignTransaction() {
     const handleRetry = () => {
       console.error('Cannot retry: missing transaction ID')
     }
-    return <SignError description="Missing transaction ID" onRetryPress={handleRetry} />
+    return <SignError description={t('signTransaction.missingTxId')} onRetryPress={handleRetry} />
   }
 
   if (!activeSigner) {
     const handleRetry = () => {
       console.error('Cannot retry: no active signer')
     }
-    return <SignError description="No signer selected" onRetryPress={handleRetry} />
+    return <SignError description={t('signTransaction.noSignerSelected')} onRetryPress={handleRetry} />
   }
 
   // Handle API errors
   if (isApiError) {
-    return <SignError onRetryPress={retry} description="Failed to submit transaction confirmation" />
+    return <SignError onRetryPress={retry} description={t('signTransaction.failedToSubmit')} />
   }
 
   // Handle signing errors
   if (status === 'error') {
-    return <SignError onRetryPress={retry} description="There was an error signing the transaction." />
+    return <SignError onRetryPress={retry} description={t('signTransaction.errorSigning')} />
   }
 
   // Handle success
@@ -58,9 +60,9 @@ export function SignTransaction() {
 
   // Show loading state
   if (status === 'loading' || isApiLoading) {
-    return <LoadingScreen title="Signing transaction..." description="It may take a few seconds..." />
+    return <LoadingScreen title={t('signTransaction.signing')} description={t('signTransaction.takeFewSeconds')} />
   }
 
   // This should rarely be reached (idle state while authorized)
-  return <LoadingScreen title="Preparing to sign..." description="Initializing signing process..." />
+  return <LoadingScreen title={t('signTransaction.preparingToSign')} description={t('signTransaction.initializing')} />
 }

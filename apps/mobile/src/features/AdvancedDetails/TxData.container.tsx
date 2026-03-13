@@ -8,10 +8,12 @@ import { Alert } from '@/src/components/Alert'
 import { LoadingTx } from '../ConfirmTx/components/LoadingTx'
 import { formatTxDetails } from './utils/formatTxDetails'
 import { useOpenExplorer } from '@/src/features/ConfirmTx/hooks/useOpenExplorer'
+import { useTranslation } from 'react-i18next'
 
 export function TxDataContainer() {
   const activeSafe = useDefinedActiveSafe()
   const { txId } = useLocalSearchParams<{ txId: string }>()
+  const { t } = useTranslation()
 
   const {
     data: txDetails,
@@ -24,12 +26,12 @@ export function TxDataContainer() {
 
   const viewOnExplorer = useOpenExplorer(txDetails?.txData?.to.value || '')
 
-  const parameters = useMemo(() => formatTxDetails({ txDetails, viewOnExplorer }), [txDetails, viewOnExplorer])
+  const parameters = useMemo(() => formatTxDetails({ txDetails, viewOnExplorer, t }), [txDetails, viewOnExplorer, t])
 
   if (isError) {
     return (
       <View margin="$4">
-        <Alert type="error" message="Error fetching transaction details" />
+        <Alert type="error" message={t('advancedDetails.errorFetchingDetails')} />
       </View>
     )
   }

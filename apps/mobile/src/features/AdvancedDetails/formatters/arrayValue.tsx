@@ -4,28 +4,29 @@ import { ReactElement } from 'react'
 import { Text, View } from 'tamagui'
 import { shortenText } from '@safe-global/utils/utils/formatters'
 import { CopyButton } from '@/src/components/CopyButton'
+import { TFunction } from 'i18next'
 
-const renderArrayValue = (value: object, index?: number): ReactElement => {
+export const formatArrayValue = (param: DataDecodedParameter, t: TFunction): ListTableItem => {
   const displayLimit = 30
 
-  if (Array.isArray(value)) {
+  const renderArrayValue = (value: object, index?: number): ReactElement => {
+    if (Array.isArray(value)) {
+      return (
+        <View key={`array-${index}`}>
+          <Text>[</Text>
+          <View marginLeft={'$2'}>{value.map(renderArrayValue)}</View>
+          <Text>]</Text>
+        </View>
+      )
+    }
     return (
-      <View key={`array-${index}`}>
-        <Text>[</Text>
-        <View marginLeft={'$2'}>{value.map(renderArrayValue)}</View>
-        <Text>]</Text>
+      <View key={`value-${value}-${index}`} flexDirection="row" alignItems="center" gap="$1">
+        <Text>{shortenText(String(value), displayLimit)}</Text>
+        <CopyButton value={String(value)} color={'$textSecondaryLight'} text={t('advancedDetails.dataCopied')} />
       </View>
     )
   }
-  return (
-    <View key={`value-${value}-${index}`} flexDirection="row" alignItems="center" gap="$1">
-      <Text>{shortenText(String(value), displayLimit)}</Text>
-      <CopyButton value={String(value)} color={'$textSecondaryLight'} text="Data copied." />
-    </View>
-  )
-}
 
-export const formatArrayValue = (param: DataDecodedParameter): ListTableItem => {
   return {
     label: (
       <View display="flex" flexDirection="row" gap="$1">

@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { ScrollView, YStack, View } from 'tamagui'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { CurrencySection } from './CurrencySection'
@@ -16,22 +17,23 @@ export const CurrencyView: React.FC<CurrencyViewProps> = ({
   onCurrencySelect,
   onSearchQueryChange,
 }) => {
+  const { t } = useTranslation()
   const insets = useSafeAreaInsets()
   const { isDark } = useTheme()
 
   const { handleScroll } = useScrollableHeader({
-    children: <NavBarTitle>Currency</NavBarTitle>,
+    children: <NavBarTitle>{t('currency.title')}</NavBarTitle>,
   })
 
   const LargeHeader = (
     <View paddingTop={'$3'} paddingHorizontal={'$4'}>
-      <LargeHeaderTitle>Currency</LargeHeaderTitle>
+      <LargeHeaderTitle>{t('currency.title')}</LargeHeaderTitle>
     </View>
   )
 
   const SearchBarComponent = (
     <View paddingHorizontal={'$4'} paddingVertical={'$2'} backgroundColor={isDark ? '$background' : '$backgroundPaper'}>
-      <SafeSearchBar placeholder="Search" onSearch={onSearchQueryChange} />
+      <SafeSearchBar placeholder={t('currency.search')} onSearch={onSearchQueryChange} />
     </View>
   )
 
@@ -51,7 +53,7 @@ export const CurrencyView: React.FC<CurrencyViewProps> = ({
         <YStack paddingHorizontal="$4" paddingTop="$2">
           {cryptoCurrencies.length > 0 && (
             <CurrencySection
-              title="Crypto"
+              title={t('currency.crypto')}
               currencies={cryptoCurrencies}
               selectedCurrency={selectedCurrency}
               onCurrencySelect={onCurrencySelect}
@@ -60,7 +62,7 @@ export const CurrencyView: React.FC<CurrencyViewProps> = ({
 
           {fiatCurrencies.length > 0 && (
             <CurrencySection
-              title="Fiat"
+              title={t('currency.fiat')}
               currencies={fiatCurrencies}
               selectedCurrency={selectedCurrency}
               onCurrencySelect={onCurrencySelect}

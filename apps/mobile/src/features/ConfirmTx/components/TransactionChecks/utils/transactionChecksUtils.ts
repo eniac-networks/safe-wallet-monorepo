@@ -1,5 +1,6 @@
 import { IconName } from '@/src/types/iconTypes'
 import { AlertType } from '@/src/components/Alert'
+import { TFunction } from 'i18next'
 
 export interface SecurityState {
   enabled: boolean
@@ -24,11 +25,11 @@ export const getTransactionChecksIcon = (security: SecurityState): IconName => {
   return 'shield'
 }
 
-export const getTransactionChecksLabel = (isScanning: boolean): string => {
+export const getTransactionChecksLabel = (isScanning: boolean, t: TFunction): string => {
   if (isScanning) {
-    return 'Checking transaction...'
+    return t('transactionChecks.checkingTransaction')
   }
-  return 'Transaction checks'
+  return t('transactionChecks.title')
 }
 
 export const getAlertType = (security: SecurityState): AlertType => {

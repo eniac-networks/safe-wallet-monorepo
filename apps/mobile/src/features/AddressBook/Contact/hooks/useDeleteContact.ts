@@ -3,6 +3,7 @@ import { Alert } from 'react-native'
 import { router } from 'expo-router'
 import { useAppDispatch } from '@/src/store/hooks'
 import { removeContact, type Contact } from '@/src/store/addressBookSlice'
+import { useTranslation } from 'react-i18next'
 
 interface UseDeleteContactParams {
   contact?: Contact | null
@@ -11,6 +12,7 @@ interface UseDeleteContactParams {
 
 export const useDeleteContact = ({ contact, setIsEditing }: UseDeleteContactParams) => {
   const dispatch = useAppDispatch()
+  const { t } = useTranslation()
 
   const handleDeleteConfirm = useCallback(() => {
     if (!contact) {
@@ -30,22 +32,22 @@ export const useDeleteContact = ({ contact, setIsEditing }: UseDeleteContactPara
     }
 
     Alert.alert(
-      'Delete Contact',
-      'Do you really want to delete this contact?',
+      t('addressBook.deleteContact'),
+      t('addressBook.deleteContactConfirm'),
       [
         {
-          text: 'Cancel',
+          text: t('common.cancel'),
           style: 'cancel',
         },
         {
-          text: 'Delete',
+          text: t('common.delete'),
           style: 'destructive',
           onPress: handleDeleteConfirm,
         },
       ],
       { cancelable: true },
     )
-  }, [contact, handleDeleteConfirm])
+  }, [contact, handleDeleteConfirm, t])
 
   return {
     handleDeletePress,

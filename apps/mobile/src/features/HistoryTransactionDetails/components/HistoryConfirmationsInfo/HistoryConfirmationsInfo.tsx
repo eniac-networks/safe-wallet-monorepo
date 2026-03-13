@@ -8,6 +8,7 @@ import { useRouter } from 'expo-router'
 import { useAppSelector } from '@/src/store/hooks'
 import { selectSigners } from '@/src/store/signersSlice'
 import { Address } from '@/src/types/address'
+import { useTranslation } from 'react-i18next'
 
 interface HistoryConfirmationsInfoProps {
   detailedExecutionInfo: MultisigExecutionDetails
@@ -15,6 +16,7 @@ interface HistoryConfirmationsInfoProps {
 }
 
 export function HistoryConfirmationsInfo({ detailedExecutionInfo, txId }: HistoryConfirmationsInfoProps) {
+  const { t } = useTranslation()
   const router = useRouter()
   const importedSigners = useAppSelector(selectSigners)
 
@@ -32,7 +34,7 @@ export function HistoryConfirmationsInfo({ detailedExecutionInfo, txId }: Histor
 
   return (
     <SafeListItem
-      label="Confirmations"
+      label={t('transactions.confirmations')}
       onPress={onConfirmationsPress}
       rightNode={
         <View alignItems="center" flexDirection="row" gap="$2">
@@ -47,7 +49,7 @@ export function HistoryConfirmationsInfo({ detailedExecutionInfo, txId }: Histor
               content={
                 <View alignItems="center" flexDirection="row" gap="$1">
                   <Text fontSize="$3" color="$textSecondaryLight" fontWeight={600}>
-                    You signed
+                    {t('transactions.youSigned')}
                   </Text>
                 </View>
               }

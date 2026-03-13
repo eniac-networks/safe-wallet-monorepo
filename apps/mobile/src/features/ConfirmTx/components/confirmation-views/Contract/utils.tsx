@@ -9,15 +9,16 @@ import { shortenAddress } from '@safe-global/utils/utils/formatters'
 import { Chain } from '@safe-global/store/gateway/AUTO_GENERATED/chains'
 import { CopyButton } from '@/src/components/CopyButton'
 import { TouchableOpacity } from 'react-native'
+import { TFunction } from 'i18next'
 
 const mintBadgeProps: CircleProps = { borderRadius: '$2', paddingHorizontal: '$2', paddingVertical: '$1' }
 
-export const formatContractItems = (txInfo: CustomTransactionInfo, chain: Chain, viewOnExplorer: () => void) => {
+export const formatContractItems = (txInfo: CustomTransactionInfo, chain: Chain, viewOnExplorer: () => void, t: TFunction) => {
   const contractName = txInfo.to.name ? ellipsis(txInfo.to.name, 18) : shortenAddress(txInfo.to.value)
 
   return [
     {
-      label: 'Call',
+      label: t('transactions.call'),
       render: () => (
         <Badge
           circleProps={mintBadgeProps}
@@ -30,7 +31,7 @@ export const formatContractItems = (txInfo: CustomTransactionInfo, chain: Chain,
       ),
     },
     {
-      label: 'Contract',
+      label: t('transactions.contract'),
       render: () => {
         return (
           <View flexDirection="row" alignItems="center" gap="$2">
@@ -46,7 +47,7 @@ export const formatContractItems = (txInfo: CustomTransactionInfo, chain: Chain,
       },
     },
     {
-      label: 'Network',
+      label: t('transactions.network'),
       render: () => (
         <View flexDirection="row" alignItems="center" gap="$2">
           <Logo logoUri={chain.chainLogoUri} size="$6" />

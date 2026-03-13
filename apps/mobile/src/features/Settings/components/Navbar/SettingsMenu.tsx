@@ -16,12 +16,14 @@ import { FloatingMenu } from '../FloatingMenu'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { trackEvent } from '@/src/services/analytics/firebaseAnalytics'
 import { createAppSettingsOpenEvent, createSettingsMenuActionEvent } from '@/src/services/analytics/events/settings'
+import { useTranslation } from 'react-i18next'
 type Props = {
   safeAddress: string | undefined
 }
 export const SettingsMenu = ({ safeAddress }: Props) => {
   const toast = useToastController()
   const insets = useSafeAreaInsets()
+  const { t } = useTranslation()
   const activeSafe = useDefinedActiveSafe()
   const { deleteSafe } = useEditAccountItem()
   const activeChain = useAppSelector((state: RootState) => selectChainById(state, activeSafe.chainId))
@@ -92,7 +94,7 @@ export const SettingsMenu = ({ safeAddress }: Props) => {
             if (nativeEvent.event === 'rename') {
               router.push({
                 pathname: '/signers/[address]',
-                params: { address: safeAddress, editMode: 'true', title: 'Rename safe' },
+                params: { address: safeAddress, editMode: 'true', title: t('settings.renameSafe') },
               })
             }
 
@@ -106,17 +108,17 @@ export const SettingsMenu = ({ safeAddress }: Props) => {
             }
 
             if (nativeEvent.event === 'remove') {
-              Alert.alert('Remove account', 'Are you sure you want to remove this account?', [
+              Alert.alert(t('settings.removeAccount'), t('settings.removeAccountConfirm'), [
                 {
-                  text: 'Cancel',
+                  text: t('common.cancel'),
                   style: 'cancel',
                 },
                 {
-                  text: 'Remove',
+                  text: t('common.remove'),
                   onPress: async () => {
                     try {
                       await deleteSafe(safeAddress as Address)
-                      toast.show(`The safe with address ${safeAddress} was deleted.`, {
+                      toast.show(t('settings.safeDeleted', { address: safeAddress }), {
                         native: true,
                         duration: 2000,
                       })
@@ -125,7 +127,7 @@ export const SettingsMenu = ({ safeAddress }: Props) => {
                         return
                       }
                       console.error('Error deleting safe:', error)
-                      toast.show('Failed to delete safe. Please try again.', {
+                      toast.show(t('settings.failedToDelete'), {
                         native: true,
                         duration: 3000,
                       })
@@ -143,7 +145,7 @@ export const SettingsMenu = ({ safeAddress }: Props) => {
           actions={[
             {
               id: 'rename',
-              title: 'Rename',
+              title: t('settings.rename'),
               image: Platform.select({
                 ios: 'pencil',
                 android: 'baseline_create_24',
@@ -152,7 +154,7 @@ export const SettingsMenu = ({ safeAddress }: Props) => {
             },
             {
               id: 'explorer',
-              title: 'View on explorer',
+              title: t('settings.viewOnExplorer'),
               image: Platform.select({
                 ios: 'link',
                 android: 'baseline_explore_24',
@@ -161,7 +163,7 @@ export const SettingsMenu = ({ safeAddress }: Props) => {
             },
             {
               id: 'copy',
-              title: 'Copy address',
+              title: t('settings.copyAddress'),
               image: Platform.select({
                 ios: 'doc.on.doc',
                 android: 'baseline_auto_awesome_motion_24',
@@ -170,7 +172,7 @@ export const SettingsMenu = ({ safeAddress }: Props) => {
             },
             {
               id: 'share',
-              title: 'Share account',
+              title: t('settings.shareAccount'),
               image: Platform.select({
                 ios: 'square.and.arrow.up.on.square',
                 android: 'baseline_arrow_outward_24',
@@ -179,7 +181,7 @@ export const SettingsMenu = ({ safeAddress }: Props) => {
             },
             {
               id: 'remove',
-              title: 'Remove account',
+              title: t('settings.removeAccount'),
               attributes: {
                 destructive: true,
               },

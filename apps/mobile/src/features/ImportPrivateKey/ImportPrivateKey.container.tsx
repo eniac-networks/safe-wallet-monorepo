@@ -10,15 +10,17 @@ import { SafeButton } from '@/src/components/SafeButton'
 import { SafeInput } from '@/src/components/SafeInput'
 import { useImportPrivateKey } from './hooks/useImportPrivateKey'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useTranslation } from 'react-i18next'
 
 const CUSTOM_VERTICAL_OFFSET = 70
 
 export function ImportPrivateKey() {
+  const { t } = useTranslation()
   const [isMasked, setIsMasked] = useState(true)
   const { top } = useSafeAreaInsets()
   const { handlePrivateKeyChange, handleImport, onPrivateKeyPaste, wallet, privateKey, error } = useImportPrivateKey()
   const { handleScroll } = useScrollableHeader({
-    children: <NavBarTitle paddingRight={5}>Import a private key</NavBarTitle>,
+    children: <NavBarTitle paddingRight={5}>{t('dataImport.importPrivateKey')}</NavBarTitle>,
   })
 
   return (
@@ -27,8 +29,8 @@ export function ImportPrivateKey() {
         <View marginTop="$2">
           <SectionTitle
             paddingHorizontal={0}
-            title="Import a private key"
-            description="Enter your private key below. Make sure to do so in a safe and private place."
+            title={t('dataImport.importPrivateKey')}
+            description={t('dataImport.privateKeyDescription')}
           />
         </View>
 
@@ -38,7 +40,7 @@ export function ImportPrivateKey() {
               height={114}
               value={privateKey}
               onChangeText={handlePrivateKeyChange}
-              placeholder="Paste here or type..."
+              placeholder={t('dataImport.pasteHereOrType')}
               secureTextEntry={isMasked}
               success={!!wallet}
               textAlign="center"
@@ -62,14 +64,14 @@ export function ImportPrivateKey() {
               size="$5"
               onPress={onPrivateKeyPaste}
             >
-              Paste
+              {t('dataImport.paste')}
             </Button>
           </View>
         </YStack>
       </ScrollView>
 
       <SafeButton onPress={handleImport} testID={'import-signer-button'}>
-        Import signer
+        {t('dataImport.importSigner')}
       </SafeButton>
     </KeyboardAvoidingView>
   )

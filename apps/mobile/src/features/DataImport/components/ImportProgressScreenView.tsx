@@ -1,6 +1,7 @@
 import React from 'react'
 import { Text, YStack, H2, ScrollView, View } from 'tamagui'
 import { Bar } from 'react-native-progress'
+import { useTranslation } from 'react-i18next'
 
 interface ImportProgressScreenViewProps {
   progress: number
@@ -8,6 +9,7 @@ interface ImportProgressScreenViewProps {
 }
 
 export const ImportProgressScreenView = ({ progress, message }: ImportProgressScreenViewProps) => {
+  const { t } = useTranslation()
   return (
     <ScrollView contentContainerStyle={{ flex: 1 }}>
       <YStack flex={1} testID="import-progress-screen">
@@ -16,12 +18,12 @@ export const ImportProgressScreenView = ({ progress, message }: ImportProgressSc
           <YStack gap="$6" alignItems="center" maxWidth={300}>
             {/* Title */}
             <H2 fontWeight={'600'} textAlign="center">
-              Importing data...
+              {t('dataImport.importingData')}
             </H2>
 
             {/* Subtitle */}
             <Text fontSize="$4" textAlign="center" color="$colorSecondary">
-              Hang on, it may take a few seconds
+              {t('dataImport.hangOn')}
             </Text>
 
             {/* Progress Message */}

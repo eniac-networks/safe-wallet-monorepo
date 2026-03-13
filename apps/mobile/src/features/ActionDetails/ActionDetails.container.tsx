@@ -10,11 +10,13 @@ import { Alert } from '@/src/components/Alert'
 
 import { LoadingTx } from '../ConfirmTx/components/LoadingTx'
 import ActionsDetails from './ActionsDetails'
+import { useTranslation } from 'react-i18next'
 
 export function ActionDetailsContainer() {
   const { txId, action, actionName } = useLocalSearchParams<{ txId: string; actionName: string; action: string }>()
   const parsedAction = useMemo(() => JSON.parse(action), [action])
   const activeSafe = useDefinedActiveSafe()
+  const { t } = useTranslation()
 
   const { data, isFetching, isError } = useTransactionsGetTransactionByIdV1Query({
     chainId: activeSafe.chainId,
@@ -26,7 +28,7 @@ export function ActionDetailsContainer() {
   })
 
   if (isError) {
-    return <Alert type="error" message="Error fetching action details" />
+    return <Alert type="error" message={t('actionDetails.errorFetchingDetails')} />
   }
 
   if (isFetching || !data) {

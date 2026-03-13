@@ -7,10 +7,12 @@ import { EthAddress } from '@/src/components/EthAddress'
 import { Address } from '@/src/types/address'
 import { Identicon } from '@/src/components/Identicon'
 import { InfoSheet } from '@/src/components/InfoSheet'
+import { useTranslation } from 'react-i18next'
 
 export const characterDisplayLimit = 15
 
 export const DisplayValue = ({ type, value }: { type: string; value: string }) => {
+  const { t } = useTranslation()
   const isLong = value.length > characterDisplayLimit
 
   switch (type) {
@@ -27,14 +29,14 @@ export const DisplayValue = ({ type, value }: { type: string; value: string }) =
       return (
         <View flexDirection="row" alignItems="center" gap="$1">
           <Text>{shortenText(value, characterDisplayLimit)}</Text>
-          <CopyButton value={value} color={'$textSecondaryLight'} text="Data copied." />
+          <CopyButton value={value} color={'$textSecondaryLight'} text={t('advancedDetails.dataCopied')} />
         </View>
       )
     default:
       return (
         <View flexDirection="row" alignItems="center" gap="$1">
           <Text>{isLong ? shortenText(value, characterDisplayLimit) : value}</Text>
-          {isLong && <CopyButton value={value} color={'$textSecondaryLight'} text="Data copied." />}
+          {isLong && <CopyButton value={value} color={'$textSecondaryLight'} text={t('advancedDetails.dataCopied')} />}
         </View>
       )
   }

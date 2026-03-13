@@ -4,6 +4,7 @@ import { MultisigExecutionDetails } from '@safe-global/store/gateway/AUTO_GENERA
 import { formatWithSchema } from '@/src/utils/date'
 import { formatValue } from '@/src/utils/formatters'
 import { SwapHeader } from '@/src/components/SwapHeader'
+import { useTranslation } from 'react-i18next'
 
 interface SwapOrderHeaderProps {
   txInfo: OrderTransactionInfo
@@ -11,6 +12,7 @@ interface SwapOrderHeaderProps {
 }
 
 export function SwapOrderHeader({ txInfo, executionInfo }: SwapOrderHeaderProps) {
+  const { t } = useTranslation()
   const { sellToken, buyToken, sellAmount, buyAmount, kind } = txInfo
   const date = formatWithSchema(executionInfo.submittedAt, 'MMM d yyyy')
   const time = formatWithSchema(executionInfo.submittedAt, 'hh:mm a')
@@ -28,8 +30,8 @@ export function SwapOrderHeader({ txInfo, executionInfo }: SwapOrderHeaderProps)
       toToken={buyToken}
       fromAmount={sellTokenValue}
       toAmount={buyTokenValue}
-      fromLabel={isSellOrder ? 'Sell' : 'For at most'}
-      toLabel={isSellOrder ? 'For at least' : 'Buy exactly'}
+      fromLabel={isSellOrder ? t('swap.sell') : t('swap.forAtMost')}
+      toLabel={isSellOrder ? t('swap.forAtLeast') : t('swap.buyExactly')}
     />
   )
 }

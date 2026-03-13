@@ -1,5 +1,6 @@
 import { SafeBottomSheet } from '@/src/components/SafeBottomSheet'
 import React, { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useAppSelector } from '@/src/store/hooks'
 import { useDefinedActiveSafe } from '@/src/store/hooks/activeSafe'
 import { RootState } from '@/src/store'
@@ -21,6 +22,7 @@ import { ContactDisplayNameContainer } from '../AddressBook'
 import { useTxSignerActions } from '../ConfirmTx/hooks/useTxSignerActions'
 
 export const ChangeSignerSheetContainer = () => {
+  const { t } = useTranslation()
   const { setTxSigner } = useTxSignerActions()
   const activeSafe = useDefinedActiveSafe()
   const signers = useAppSelector(selectSigners)
@@ -67,7 +69,7 @@ export const ChangeSignerSheetContainer = () => {
 
   return (
     <SafeBottomSheet
-      title="Select signer"
+      title={t('signers.selectSigner')}
       items={items}
       loading={isLoading || isLoadingTxDetails}
       keyExtractor={({ item }) => item.value}

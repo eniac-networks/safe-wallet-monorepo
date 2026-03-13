@@ -10,6 +10,7 @@ import { SignersListHeader } from './SignersListHeader'
 import { SafeState } from '@safe-global/store/gateway/AUTO_GENERATED/safes'
 import { AddressInfo } from '@safe-global/store/gateway/AUTO_GENERATED/transactions'
 import SignersListItem from './SignersListItem'
+import { useTranslation } from 'react-i18next'
 
 export type SignerSection = {
   id: string
@@ -27,7 +28,8 @@ interface SignersListProps {
 }
 
 export function SignersList({ signersGroup, isFetching, hasLocalSigners, navbarTitle }: SignersListProps) {
-  const title = navbarTitle || 'Signers'
+  const { t } = useTranslation()
+  const title = navbarTitle || t('signers.signers')
   const { handleScroll } = useScrollableHeader({
     children: <NavBarTitle>{title}</NavBarTitle>,
   })
@@ -56,7 +58,7 @@ export function SignersList({ signersGroup, isFetching, hasLocalSigners, navbarT
       keyExtractor={keyExtractor}
       renderItem={renderItem}
       scrollEventThrottle={16}
-      renderSectionHeader={({ section: { title } }) => <SafeListItem.Header title={title} />}
+      renderSectionHeader={({ section: { title } }) => <SafeListItem.Header title={t(title)} />}
     />
   )
 }

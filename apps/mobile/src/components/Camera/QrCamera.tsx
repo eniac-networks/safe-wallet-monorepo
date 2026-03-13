@@ -4,6 +4,7 @@ import { Dimensions, Linking, Pressable, StyleSheet, useWindowDimensions } from 
 import { useTheme } from '@/src/theme/hooks/useTheme'
 import React, { useCallback } from 'react'
 import { useRouter } from 'expo-router'
+import { useTranslation } from 'react-i18next'
 
 const { width } = Dimensions.get('window')
 import { BlurView } from 'expo-blur'
@@ -64,6 +65,7 @@ function CameraLens({
   onActivateCamera: () => void
   isCameraActive: boolean
 }) {
+  const { t } = useTranslation()
   const { isDark } = useTheme()
 
   const color = isDark ? getTokenValue('$color.textPrimaryDark') : getTokenValue('$color.textPrimaryLight')
@@ -80,7 +82,7 @@ function CameraLens({
     }
   }, [hasPermission, isCameraActive, onActivateCamera, onPressSettings])
 
-  const buttonText = 'Enable camera'
+  const buttonText = t('camera.enableCamera')
   const buttonAction = handleGrantOrActivatePress
 
   return (
@@ -109,7 +111,7 @@ function CameraLens({
 }
 
 export const QrCamera = ({
-  heading = 'Scan a QR Code',
+  heading,
   footer,
   onScan,
   isCameraActive,
@@ -117,6 +119,8 @@ export const QrCamera = ({
   hasPermission,
   onActivateCamera,
 }: QrCameraProps) => {
+  const { t } = useTranslation()
+  const resolvedHeading = heading ?? t('camera.scanQrCode')
   const device = useCameraDevice('back')
   const { height } = useWindowDimensions()
   const codeScanner = useCodeScanner({
@@ -147,7 +151,7 @@ export const QrCamera = ({
               intensity={30}
               tint={'systemUltraThinMaterialDark'}
             >
-              <CameraHeader heading={heading} />
+              <CameraHeader heading={resolvedHeading} />
             </BlurView>
 
             {/* Middle with transparent center */}

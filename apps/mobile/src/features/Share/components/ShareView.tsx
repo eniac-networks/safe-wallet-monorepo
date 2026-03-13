@@ -9,6 +9,7 @@ import QRCodeStyled from 'react-native-qrcode-styled'
 import { StyleSheet } from 'react-native'
 import { useCopyAndDispatchToast } from '@/src/hooks/useCopyAndDispatchToast'
 import React, { useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import { ToastViewport } from '@tamagui/toast'
 import { Chain } from '@safe-global/store/gateway/AUTO_GENERATED/chains'
 import { ChainsDisplay } from '@/src/components/ChainsDisplay'
@@ -22,13 +23,14 @@ type ShareViewProps = {
 }
 
 export const ShareView = ({ activeSafe, availableChains }: ShareViewProps) => {
+  const { t } = useTranslation()
   const copyAndDispatchToast = useCopyAndDispatchToast()
   const contact = useAppSelector(selectContactByAddress(activeSafe.address))
   const safeAddress = activeSafe.address
 
   const onPressShare = async () => {
     Share.open({
-      title: 'Your safe Address',
+      title: t('share.yourSafeAddress'),
       message: safeAddress,
     }).then((res) => {
       // what to do with the result?
@@ -44,7 +46,7 @@ export const ShareView = ({ activeSafe, availableChains }: ShareViewProps) => {
     <>
       <YStack flex={1} paddingBottom={'$4'}>
         <YStack flex={1} justifyContent={'flex-end'} alignItems={'center'} marginBottom={'$6'}>
-          <H3 fontWeight={600}>{contact ? contact.name : 'Unnamed safe'}</H3>
+          <H3 fontWeight={600}>{contact ? contact.name : t('share.unnamedSafe')}</H3>
         </YStack>
         <YStack flex={3} alignItems={'center'}>
           <Container marginHorizontal={'$10'}>
@@ -85,16 +87,16 @@ export const ShareView = ({ activeSafe, availableChains }: ShareViewProps) => {
           </Container>
           <XStack gap={'$3'} marginTop={'$6'}>
             <SafeButton size={'$sm'} onPress={onPressShare} icon={<SafeFontIcon name={'export'} size={16} />} secondary>
-              Share
+              {t('share.share')}
             </SafeButton>
             <SafeButton size={'$sm'} onPress={onPressCopy} icon={<SafeFontIcon name={'copy'} size={16} />} secondary>
-              Copy
+              {t('share.copy')}
             </SafeButton>
           </XStack>
         </YStack>
         <YStack flex={1} justifyContent={'flex-end'} alignItems={'center'}>
           <Text color={'$colorLight'} textAlign={'center'} fontSize={'$3'}>
-            This account is only available on
+            {t('share.availableOn')}
             <Text color={'$color'} fontWeight={600}>
               {' '}
               {getAvailableChainsNames(availableChains)}.

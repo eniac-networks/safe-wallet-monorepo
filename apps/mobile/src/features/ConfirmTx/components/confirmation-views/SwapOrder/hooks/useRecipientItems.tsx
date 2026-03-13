@@ -8,16 +8,18 @@ import { EthAddress } from '@/src/components/EthAddress'
 import { SafeFontIcon } from '@/src/components/SafeFontIcon'
 import { useOpenExplorer } from '@/src/features/ConfirmTx/hooks/useOpenExplorer'
 import { Address } from '@/src/types/address'
+import { useTranslation } from 'react-i18next'
 
 export const useRecipientItem = (order: OrderTransactionInfo): ListTableItem[] => {
   const viewRecipientOnExplorer = useOpenExplorer(order.receiver || '')
+  const { t } = useTranslation()
 
   const recipientItem = useMemo(() => {
     const items: ListTableItem[] = []
 
     if (order.receiver && order.owner !== order.receiver) {
       items.push({
-        label: 'Recipient',
+        label: t('bridge.recipient'),
         render: () => (
           <View flexDirection="row" alignItems="center" gap="$2">
             <Identicon address={order.receiver as Address} size={24} />
@@ -36,7 +38,7 @@ export const useRecipientItem = (order: OrderTransactionInfo): ListTableItem[] =
     }
 
     return items
-  }, [order.receiver, order.owner, viewRecipientOnExplorer])
+  }, [order.receiver, order.owner, viewRecipientOnExplorer, t])
 
   return recipientItem
 }

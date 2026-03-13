@@ -6,6 +6,7 @@ import { TransactionQueuedItem } from '@safe-global/store/gateway/AUTO_GENERATED
 import { TxCardPress } from '@/src/components/TxInfo/types'
 import { TouchableOpacity } from 'react-native'
 import { useTheme } from '@/src/theme/hooks/useTheme'
+import { useTranslation } from 'react-i18next'
 
 interface TxConflictingCard {
   transactions: TransactionQueuedItem[]
@@ -15,6 +16,7 @@ interface TxConflictingCard {
 
 function TxConflictingComponent({ transactions, inQueue, onPress }: TxConflictingCard) {
   const { isDark } = useTheme()
+  const { t } = useTranslation()
 
   const handleConflictTxPress = useCallback(
     (transaction?: TransactionQueuedItem) => {
@@ -37,7 +39,7 @@ function TxConflictingComponent({ transactions, inQueue, onPress }: TxConflictin
     >
       <TouchableOpacity onPress={() => onPress()}>
         <View>
-          <Alert type="warning" message="Conflicting transactions" />
+          <Alert type="warning" message={t('conflictTx.title')} />
         </View>
       </TouchableOpacity>
 

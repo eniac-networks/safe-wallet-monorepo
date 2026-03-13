@@ -7,9 +7,11 @@ import { Link, useLocalSearchParams } from 'expo-router'
 import React from 'react'
 import { ScrollView } from 'react-native'
 import { Text, View } from 'tamagui'
+import { useTranslation } from 'react-i18next'
 
 export function ImportError() {
   const { address } = useLocalSearchParams<{ address: `0x${string}` }>()
+  const { t } = useTranslation()
 
   return (
     <View flex={1} justifyContent="space-between">
@@ -31,15 +33,14 @@ export function ImportError() {
             </View>
 
             <View margin="$10" width="100%" alignItems="center" gap="$4">
-              <LargeHeaderTitle textAlign="center">Private key couldn't be imported</LargeHeaderTitle>
+              <LargeHeaderTitle textAlign="center">{t(‘importPrivateKey.notImported’)}</LargeHeaderTitle>
 
               <Text textAlign="center" fontSize="$4">
-                This private key does not belong to any signer of this Safe Account. Double-check the address and try to
-                import again.
+                {t(‘importPrivateKey.notImportedDesc’)}
               </Text>
 
               <Text textAlign="center" fontSize="$4">
-                Don’t worry, your private key was not stored!
+                {t(‘importPrivateKey.notStoredWarning’)}
               </Text>
             </View>
           </View>
@@ -48,7 +49,7 @@ export function ImportError() {
 
       <View paddingHorizontal="$3" gap="$6">
         <Link href={'../'} asChild>
-          <SafeButton>Import again</SafeButton>
+          <SafeButton>{t('importPrivateKey.importAgain')}</SafeButton>
         </Link>
       </View>
     </View>

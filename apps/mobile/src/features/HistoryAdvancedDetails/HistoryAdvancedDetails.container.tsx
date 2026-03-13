@@ -7,10 +7,12 @@ import { useDefinedActiveSafe } from '@/src/store/hooks/activeSafe'
 import { Alert } from '@/src/components/Alert'
 import { LoadingTx } from '@/src/features/ConfirmTx/components/LoadingTx'
 import { formatHistoryTxDetails } from './utils/formatHistoryTxDetails'
+import { useTranslation } from 'react-i18next'
 
 export function HistoryAdvancedDetailsContainer() {
   const activeSafe = useDefinedActiveSafe()
   const { txId } = useLocalSearchParams<{ txId: string }>()
+  const { t } = useTranslation()
 
   const {
     data: txDetails,
@@ -21,12 +23,12 @@ export function HistoryAdvancedDetailsContainer() {
     id: txId,
   })
 
-  const sections = useMemo(() => formatHistoryTxDetails({ txDetails }), [txDetails])
+  const sections = useMemo(() => formatHistoryTxDetails({ txDetails, t }), [txDetails, t])
 
   if (isError) {
     return (
       <View margin="$4">
-        <Alert type="error" message="Error fetching transaction details" />
+        <Alert type="error" message={t('advancedDetails.errorFetchingDetails')} />
       </View>
     )
   }

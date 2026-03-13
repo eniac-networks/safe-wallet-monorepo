@@ -1,5 +1,6 @@
 import React from 'react'
 import { Text, View } from 'tamagui'
+import { useTranslation } from 'react-i18next'
 
 interface NetworkSelectorHeaderProps {
   isReadOnly: boolean
@@ -18,7 +19,8 @@ interface SubtitleProps {
 }
 
 const Title = ({ isReadOnly }: TitleProps) => {
-  const title = isReadOnly ? 'Available Networks' : 'Select Networks'
+  const { t } = useTranslation()
+  const title = isReadOnly ? t('network.availableNetworks') : t('network.selectNetworks')
 
   return (
     <Text fontSize="$6" fontWeight="600" color="$color">
@@ -28,13 +30,21 @@ const Title = ({ isReadOnly }: TitleProps) => {
 }
 
 const Subtitle = ({ isReadOnly, isAllChainsSelected, selectedChainCount }: SubtitleProps) => {
-  const prefix = isReadOnly ? 'Contact is available on' : 'Contact available on'
+  const { t } = useTranslation()
+  const unit = selectedChainCount === 1 ? t('network.networkSingular') : t('network.networkPlural')
+
+  let text: string
+  if (isAllChainsSelected) {
+    text = isReadOnly ? t('network.readOnlyAvailableAll') : t('network.editableAvailableAll')
+  } else {
+    text = isReadOnly
+      ? t('network.readOnlyAvailableCount', { count: selectedChainCount, unit })
+      : t('network.editableAvailableCount', { count: selectedChainCount, unit })
+  }
 
   return (
     <Text fontSize="$3" color="$colorSecondary" textAlign="center" marginTop="$2">
-      {isAllChainsSelected
-        ? `${prefix} all networks`
-        : `${prefix} ${selectedChainCount} ${selectedChainCount === 1 ? 'network' : 'networks'}`}
+      {text}
     </Text>
   )
 }

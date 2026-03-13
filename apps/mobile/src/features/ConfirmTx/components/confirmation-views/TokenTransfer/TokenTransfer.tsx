@@ -6,6 +6,7 @@ import { Logo } from '@/src/components/Logo'
 import { EthAddress } from '@/src/components/EthAddress'
 import { Identicon } from '@/src/components/Identicon'
 import { TransactionHeader } from '../../TransactionHeader'
+import { useTranslation } from 'react-i18next'
 import {
   MultisigExecutionDetails,
   TransferTransactionInfo,
@@ -28,6 +29,7 @@ interface TokenTransferProps {
 }
 
 export function TokenTransfer({ txId, txInfo, executionInfo, executedAt }: TokenTransferProps) {
+  const { t } = useTranslation()
   const activeSafe = useDefinedActiveSafe()
   const activeChain = useAppSelector((state: RootState) => selectChainById(state, activeSafe.chainId))
   const { value, tokenSymbol, logoUri, decimals } = useTokenDetails(txInfo)
@@ -61,7 +63,7 @@ export function TokenTransfer({ txId, txInfo, executionInfo, executedAt }: Token
         <YStack gap="$4" marginTop="$8">
           <Container padding="$4" gap="$4" borderRadius="$3">
             <View alignItems="center" flexDirection="row" justifyContent="space-between">
-              <Text color="$textSecondaryLight">To</Text>
+              <Text color="$textSecondaryLight">{t('transactions.to')}</Text>
 
               <View flexDirection="row" alignItems="center" gap="$2">
                 <Identicon address={recipientAddress} size={24} />
@@ -83,7 +85,7 @@ export function TokenTransfer({ txId, txInfo, executionInfo, executedAt }: Token
             </View>
 
             <View alignItems="center" flexDirection="row" justifyContent="space-between">
-              <Text color="$textSecondaryLight">Network</Text>
+              <Text color="$textSecondaryLight">{t('transactions.network')}</Text>
 
               <View flexDirection="row" alignItems="center" gap="$2">
                 <Logo logoUri={activeChain?.chainLogoUri} size="$6" />

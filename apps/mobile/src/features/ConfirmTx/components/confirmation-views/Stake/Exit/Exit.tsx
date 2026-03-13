@@ -8,6 +8,7 @@ import {
 } from '@safe-global/store/gateway/AUTO_GENERATED/transactions'
 import { TokenAmount } from '@/src/components/TokenAmount'
 import { ParametersButton } from '../../../ParametersButton'
+import { useTranslation } from 'react-i18next'
 
 interface StakingExitProps {
   txInfo: NativeStakingWithdrawTransactionInfo
@@ -16,9 +17,10 @@ interface StakingExitProps {
 }
 
 export function StakingExit({ txInfo, executionInfo, txId }: StakingExitProps) {
+  const { t } = useTranslation()
   const receiveItems = [
     {
-      label: 'Receive',
+      label: t('staking.receive'),
       render: () => (
         <TokenAmount
           value={txInfo.value}

@@ -12,6 +12,7 @@ import { useDefinedActiveSafe } from '@/src/store/hooks/activeSafe'
 import { selectChainById } from '@/src/store/chains'
 import { useOpenExplorer } from '@/src/features/ConfirmTx/hooks/useOpenExplorer'
 import { ParametersButton } from '../../ParametersButton'
+import { useTranslation } from 'react-i18next'
 
 interface SendNFTProps {
   txId: string
@@ -20,13 +21,14 @@ interface SendNFTProps {
 }
 
 export function SendNFT({ txId, txInfo, executionInfo }: SendNFTProps) {
+  const { t } = useTranslation()
   const activeSafe = useDefinedActiveSafe()
   const activeChain = useAppSelector((state: RootState) => selectChainById(state, activeSafe.chainId))
   const viewOnExplorer = useOpenExplorer(txInfo.recipient.value)
 
   const items = useMemo(
-    () => formatSendNFTItems(txInfo, activeChain, viewOnExplorer),
-    [txInfo, activeChain, viewOnExplorer],
+    () => formatSendNFTItems(txInfo, activeChain, viewOnExplorer, t),
+    [txInfo, activeChain, viewOnExplorer, t],
   )
   const { value, tokenSymbol } = useTokenDetails(txInfo)
 

@@ -2,6 +2,7 @@ import React from 'react'
 import { SafeFontIcon } from '@/src/components/SafeFontIcon'
 import { SafeListItem } from '@/src/components/SafeListItem'
 import { useRouter } from 'expo-router'
+import { useTranslation } from 'react-i18next'
 import { TransactionDetails } from '@safe-global/store/gateway/AUTO_GENERATED/transactions'
 import { useTransactionSecurity } from './hooks/useTransactionSecurity'
 import { getTransactionChecksLabel, shouldShowBottomContent } from './utils/transactionChecksUtils'
@@ -15,6 +16,7 @@ interface TransactionChecksProps {
 
 export function TransactionChecks({ txId, txDetails }: TransactionChecksProps) {
   const router = useRouter()
+  const { t } = useTranslation()
   const security = useTransactionSecurity(txDetails)
 
   const handleTransactionChecksPress = () => {
@@ -28,7 +30,7 @@ export function TransactionChecks({ txId, txDetails }: TransactionChecksProps) {
     <SafeListItem
       onPress={handleTransactionChecksPress}
       leftNode={<TransactionChecksLeftNode security={security} />}
-      label={getTransactionChecksLabel(security.isScanning)}
+      label={getTransactionChecksLabel(security.isScanning, t)}
       rightNode={<SafeFontIcon name="chevron-right" size={16} />}
       bottomContent={shouldShowBottomContent(security) ? <TransactionChecksBottomContent security={security} /> : null}
     />

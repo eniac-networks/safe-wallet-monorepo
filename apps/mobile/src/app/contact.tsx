@@ -1,19 +1,21 @@
 import React from 'react'
 import { Stack, useLocalSearchParams } from 'expo-router'
 import { ContactDetailContainer } from '@/src/features/AddressBook'
+import { useTranslation } from 'react-i18next'
 
 function ContactScreen() {
+  const { t } = useTranslation()
   const { mode } = useLocalSearchParams<{ mode?: 'view' | 'edit' | 'new' }>()
 
   const getTitle = () => {
     switch (mode) {
       case 'new':
-        return 'New contact'
+        return t('addressBook.newContact')
       case 'edit':
-        return 'Edit contact'
+        return t('addressBook.editContact')
       case 'view':
       default:
-        return 'Contact'
+        return t('addressBook.contact')
     }
   }
 

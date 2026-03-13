@@ -7,6 +7,7 @@ import { NormalizedSettingsChangeTransaction } from '@/src/features/ConfirmTx/co
 import { HistoryAdvancedDetailsButton } from '@/src/features/HistoryTransactionDetails/components/HistoryAdvancedDetailsButton'
 import { SafeFontIcon } from '@/src/components/SafeFontIcon'
 import { ThresholdChangeDisplay, NetworkDisplay } from '../shared'
+import { useTranslation } from 'react-i18next'
 
 interface HistoryChangeThresholdProps {
   txId: string
@@ -15,6 +16,7 @@ interface HistoryChangeThresholdProps {
 }
 
 export function HistoryChangeThreshold({ txId, txInfo, executionInfo }: HistoryChangeThresholdProps) {
+  const { t } = useTranslation()
   return (
     <>
       <HistoryTransactionHeader
@@ -25,7 +27,7 @@ export function HistoryChangeThreshold({ txId, txInfo, executionInfo }: HistoryC
         }
         badgeIcon="transaction-contract"
         badgeColor="$textSecondaryLight"
-        transactionType="Threshold change"
+        transactionType={t('signerChange.thresholdChange')}
       />
 
       <View>

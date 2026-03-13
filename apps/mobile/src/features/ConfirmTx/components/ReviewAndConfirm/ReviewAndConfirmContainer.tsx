@@ -4,16 +4,18 @@ import { Loader } from '@/src/components/Loader'
 import { Text, View } from 'tamagui'
 import { ReviewAndConfirmView } from './ReviewAndConfirmView'
 import { useTransactionData } from '../../hooks/useTransactionData'
+import { useTranslation } from 'react-i18next'
 
 export function ReviewAndConfirmContainer() {
   const { txId } = useLocalSearchParams<{ txId: string }>()
+  const { t } = useTranslation()
 
   const { data: txDetails, isFetching: isLoading, isError } = useTransactionData(txId || '')
 
   if (!txId) {
     return (
       <View flex={1} justifyContent="center" alignItems="center">
-        <Text>Missing transaction ID</Text>
+        <Text>{t('signTransaction.missingTxId')}</Text>
       </View>
     )
   }
@@ -29,7 +31,7 @@ export function ReviewAndConfirmContainer() {
   if (isError || !txDetails) {
     return (
       <View flex={1} justifyContent="center" alignItems="center">
-        <Text>Error loading transaction details</Text>
+        <Text>{t('confirmTx.errorLoadingTxDetails')}</Text>
       </View>
     )
   }

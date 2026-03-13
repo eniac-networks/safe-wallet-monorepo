@@ -1,6 +1,7 @@
 import React from 'react'
 import { Linking } from 'react-native'
 import { router } from 'expo-router'
+import { useTranslation } from 'react-i18next'
 
 import { Text, View } from 'tamagui'
 import { AppSettings } from './AppSettings'
@@ -15,8 +16,10 @@ import { selectAppNotificationStatus } from '@/src/store/notificationsSlice'
 import { selectCurrency } from '@/src/store/settingsSlice'
 import { capitalize } from '@/src/utils/formatters'
 import { SAFE_WEB_FEEDBACK_URL } from '@/src/config/constants'
+import i18n, { SUPPORTED_LANGUAGES, type SupportedLanguage } from '@/src/i18n'
 
 export const AppSettingsContainer = () => {
+  const { t } = useTranslation()
   const { toggleBiometrics, isBiometricsEnabled, isLoading: isBiometricsLoading, getBiometricsUIInfo } = useBiometrics()
   const { enableNotification, disableNotification, isLoading: isNotificationsLoading } = useNotificationManager()
   const isAppNotificationEnabled = useAppSelector(selectAppNotificationStatus)
@@ -33,10 +36,10 @@ export const AppSettingsContainer = () => {
 
   const settingsSections = [
     {
-      sectionName: 'Preferences',
+      sectionName: t('appSettings.preferences'),
       items: [
         {
-          label: 'Currency',
+          label: t('appSettings.currency'),
           leftIcon: 'token',
           onPress: () => router.push('/currency'),
           disabled: false,
@@ -48,7 +51,21 @@ export const AppSettingsContainer = () => {
           ),
         },
         {
-          label: 'Appearance',
+          label: t('appSettings.language'),
+          leftIcon: 'settings',
+          onPress: () => router.push('/language'),
+          disabled: false,
+          rightNode: (
+            <View flexDirection="row" alignItems="center" gap={4}>
+              <Text color="$colorSecondary">
+                {SUPPORTED_LANGUAGES[i18n.language as SupportedLanguage] ?? i18n.language.toUpperCase()}
+              </Text>
+              <Icon name={'chevron-right'} />
+            </View>
+          ),
+        },
+        {
+          label: t('appSettings.appearance'),
           leftIcon: 'appearance',
           disabled: false,
           type: 'floating-menu',
@@ -62,15 +79,15 @@ export const AppSettingsContainer = () => {
               actions={[
                 {
                   id: 'auto',
-                  title: 'Auto',
+                  title: t('appSettings.auto'),
                 },
                 {
                   id: 'dark',
-                  title: 'Dark',
+                  title: t('appSettings.dark'),
                 },
                 {
                   id: 'light',
-                  title: 'Light',
+                  title: t('appSettings.light'),
                 },
               ]}
             >
@@ -84,7 +101,7 @@ export const AppSettingsContainer = () => {
       ],
     },
     {
-      sectionName: 'Security',
+      sectionName: t('appSettings.security'),
       items: [
         {
           label: getBiometricsUIInfo().label,
@@ -102,26 +119,26 @@ export const AppSettingsContainer = () => {
           disabled: false,
         },
         {
-          label: 'Change passcode',
+          label: t('appSettings.changePasscode'),
           leftIcon: 'lock',
           onPress: () => console.log('change passcode'),
           disabled: true,
-          tag: 'Coming soon',
+          tag: t('appSettings.comingSoon'),
         },
       ],
     },
     {
-      sectionName: 'General',
+      sectionName: t('appSettings.general'),
       items: [
         {
-          label: 'Address book',
+          label: t('appSettings.addressBook'),
           leftIcon: 'address-book',
           type: 'menu',
           onPress: () => router.push('/address-book'),
           disabled: false,
         },
         {
-          label: 'Allow notifications',
+          label: t('appSettings.allowNotifications'),
           leftIcon: 'bell',
           type: 'switch',
           rightNode: (
@@ -138,32 +155,32 @@ export const AppSettingsContainer = () => {
       ],
     },
     {
-      sectionName: 'About',
+      sectionName: t('appSettings.about'),
       items: [
         {
-          label: 'Rate us',
+          label: t('appSettings.rateUs'),
           leftIcon: 'star',
           onPress: () => console.log('rate us'),
           disabled: true,
           type: 'external-link',
-          tag: 'Coming soon',
+          tag: t('appSettings.comingSoon'),
         },
         {
-          label: 'Follow us on X',
+          label: t('appSettings.followUsOnX'),
           leftIcon: 'twitter-x',
           onPress: () => Linking.openURL('https://x.com/safe?s=21'),
           disabled: false,
           type: 'external-link',
         },
         {
-          label: 'Leave feedback',
+          label: t('appSettings.leaveFeedback'),
           leftIcon: 'chat',
           onPress: () => Linking.openURL(SAFE_WEB_FEEDBACK_URL),
           disabled: false,
           type: 'external-link',
         },
         {
-          label: 'Help center',
+          label: t('appSettings.helpCenter'),
           leftIcon: 'question',
           onPress: () => Linking.openURL('https://help.safe.global/en/'),
           disabled: false,

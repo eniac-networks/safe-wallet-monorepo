@@ -10,8 +10,10 @@ import { Alert } from '@/src/components/Alert'
 
 import { LoadingTx } from '../ConfirmTx/components/LoadingTx'
 import { TxActionsList } from './components/TxActionsList'
+import { useTranslation } from 'react-i18next'
 
 export function TransactionActionsContainer() {
+  const { t } = useTranslation()
   const { txId } = useLocalSearchParams<{ txId: string }>()
   const activeSafe = useDefinedActiveSafe()
 
@@ -21,20 +23,20 @@ export function TransactionActionsContainer() {
   })
 
   const { handleScroll } = useScrollableHeader({
-    children: <NavBarTitle>Actions</NavBarTitle>,
+    children: <NavBarTitle>{t('transactionActions.title')}</NavBarTitle>,
   })
 
   if (isError) {
     return (
       <View margin="$4">
-        <Alert type="error" message="Error fetching transaction actions" />
+        <Alert type="error" message={t('transactionActions.errorFetching')} />
       </View>
     )
   }
 
   return (
     <ScrollView onScroll={handleScroll}>
-      <LargeHeaderTitle paddingHorizontal="$4">Actions</LargeHeaderTitle>
+      <LargeHeaderTitle paddingHorizontal="$4">{t('transactionActions.title')}</LargeHeaderTitle>
 
       {isFetching || !data ? <LoadingTx /> : <TxActionsList txDetails={data} />}
     </ScrollView>

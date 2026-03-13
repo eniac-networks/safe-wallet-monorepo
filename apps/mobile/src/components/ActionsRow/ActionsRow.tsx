@@ -6,6 +6,7 @@ import { SafeFontIcon } from '@/src/components/SafeFontIcon'
 import { useRouter } from 'expo-router'
 import { DataDecoded } from '@safe-global/store/gateway/AUTO_GENERATED/transactions'
 import { isMultiSendData } from '@/src/utils/transaction-guards'
+import { useTranslation } from 'react-i18next'
 
 interface ActionsRowProps {
   txId: string
@@ -15,6 +16,7 @@ interface ActionsRowProps {
 
 export function ActionsRow({ txId, decodedData, actionCount }: ActionsRowProps) {
   const router = useRouter()
+  const { t } = useTranslation()
 
   const handleViewActions = () => {
     router.push({
@@ -41,7 +43,7 @@ export function ActionsRow({ txId, decodedData, actionCount }: ActionsRowProps) 
 
   return (
     <SafeListItem
-      label="Actions"
+      label={t('transactionActions.title')}
       rightNode={
         <View flexDirection="row" alignItems="center" gap="$2">
           <Badge themeName="badge_background_inverted" content={count} circleSize="$6" />

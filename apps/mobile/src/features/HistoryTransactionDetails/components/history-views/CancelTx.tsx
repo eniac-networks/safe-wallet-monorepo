@@ -4,6 +4,7 @@ import { CustomTransactionInfo, MultisigExecutionDetails } from '@safe-global/st
 import { SafeFontIcon } from '@/src/components/SafeFontIcon'
 import { Address } from '@/src/types/address'
 import { HistoryTransactionBase } from './HistoryTransactionBase'
+import { useTranslation } from 'react-i18next'
 
 interface CancelTxProps {
   txInfo: CustomTransactionInfo
@@ -12,6 +13,7 @@ interface CancelTxProps {
 }
 
 export function CancelTx({ txId, txInfo, executionInfo }: CancelTxProps) {
+  const { t } = useTranslation()
   const recipientAddress = txInfo?.to?.value as Address
 
   return (
@@ -25,8 +27,8 @@ export function CancelTx({ txId, txInfo, executionInfo }: CancelTxProps) {
       }
       badgeIcon="transaction-contract"
       badgeColor="$textSecondaryLight"
-      transactionType={txInfo.methodName ?? 'On-chain rejection'}
-      description={`This is an on-chain rejection that didn't send any funds. This on-chain rejection replaced all transactions with nonce ${executionInfo.nonce}.`}
+      transactionType={txInfo.methodName ?? t('cancelTx.onChainRejection')}
+      description={t('cancelTx.description', { nonce: executionInfo.nonce })}
     />
   )
 }

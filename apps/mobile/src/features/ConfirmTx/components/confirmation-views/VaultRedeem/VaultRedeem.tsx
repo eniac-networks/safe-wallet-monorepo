@@ -10,11 +10,13 @@ import { TokenAmount } from '@/src/components/TokenAmount'
 import { formatPercentage } from '@safe-global/utils/utils/formatters'
 import { ParametersButton } from '../../ParametersButton'
 import { Container } from '@/src/components/Container'
-import { vaultTypeToLabel } from '../VaultDeposit/utils'
+import { getVaultTypeLabel } from '../VaultDeposit/utils'
 import { formatVaultRedeemItems } from './utils'
 import { Image } from 'expo-image'
+import { useTranslation } from 'react-i18next'
 
 const AdditionalRewards = ({ txInfo }: { txInfo: VaultRedeemTransactionInfo }) => {
+  const { t } = useTranslation()
   const reward = txInfo.additionalRewards[0]
   if (!reward) {
     return null
@@ -28,25 +30,25 @@ const AdditionalRewards = ({ txInfo }: { txInfo: VaultRedeemTransactionInfo }) =
   return (
     <Container bordered padding="$4" gap="$2">
       <Text fontWeight="600" marginBottom="$2">
-        Additional reward
+        {t('vault.additionalReward')}
       </Text>
       <ListTable
         padding="0"
         gap="$4"
         items={[
           {
-            label: 'Token',
+            label: t('vault.token'),
             value: `${reward.tokenInfo.name} ${reward.tokenInfo.symbol}`,
           },
           {
-            label: 'Earn',
+            label: t('vault.earn'),
             value: formatPercentage(txInfo.additionalRewardsNrr / 100),
           },
         ]}
       />
       <XStack alignItems="center" gap="$1" marginTop="$2">
         <Text fontSize={12} color="$colorSecondary">
-          Powered by
+          {t('vault.poweredBy')}
         </Text>
         <Image source={{ uri: txInfo.vaultInfo.logoUri }} style={{ width: 16, height: 16 }} />
         <Text fontSize={12} color="$colorSecondary">
@@ -64,7 +66,8 @@ interface VaultRedeemProps {
 }
 
 export function VaultRedeem({ txInfo, executionInfo, txId }: VaultRedeemProps) {
-  const items = useMemo(() => formatVaultRedeemItems(txInfo), [txInfo])
+  const { t } = useTranslation()
+  const items = useMemo(() => formatVaultRedeemItems(txInfo, t), [txInfo, t])
 
   return (
     <YStack gap="$4">
@@ -75,7 +78,7 @@ export function VaultRedeem({ txInfo, executionInfo, txId }: VaultRedeemProps) {
         title={
           <XStack gap="$1">
             <Text color="$textSecondaryLight" fontSize="$4">
-              {vaultTypeToLabel[txInfo.type]}
+              {getVaultTypeLabel(txInfo.type, t)}
             </Text>
             <TokenAmount
               value={txInfo.value}

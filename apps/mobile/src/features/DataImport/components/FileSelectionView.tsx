@@ -4,6 +4,7 @@ import { SafeButton } from '@/src/components/SafeButton'
 import ImportDataSelectFilesDark from '@/assets/images/import-data-select-files-dark.png'
 import ImportDataSelectFilesLight from '@/assets/images/import-data-select-files-light.png'
 import { ColorSchemeName, TouchableOpacity } from 'react-native'
+import { useTranslation } from 'react-i18next'
 
 const StyledText = styled(Text, {
   fontSize: '$4',
@@ -19,15 +20,16 @@ interface FileSelectionViewProps {
 }
 
 export const FileSelectionView = ({ colorScheme, bottomInset, onFileSelect, onImagePress }: FileSelectionViewProps) => {
+  const { t } = useTranslation()
   return (
     <YStack flex={1} testID="file-selection-screen" paddingBottom={bottomInset}>
       <YStack flex={1} paddingHorizontal="$4" justifyContent="space-between" marginTop={'$4'}>
         <YStack gap="$4" flex={1}>
           <H2 fontWeight={'600'} textAlign="center" marginHorizontal={'$4'}>
-            Import your file
+            {t('dataImport.importYourFile')}
           </H2>
 
-          <StyledText>Find the exported file from your old app to continue.</StyledText>
+          <StyledText>{t('dataImport.findExportedFile')}</StyledText>
 
           <YStack flex={1} justifyContent="center" alignItems="center">
             <TouchableOpacity onPress={onImagePress} activeOpacity={0.8}>
@@ -42,7 +44,7 @@ export const FileSelectionView = ({ colorScheme, bottomInset, onFileSelect, onIm
 
         <YStack gap="$4">
           <SafeButton primary testID="select-file-to-import-button" onPress={onFileSelect}>
-            Select from files
+            {t('dataImport.selectFromFiles')}
           </SafeButton>
         </YStack>
       </YStack>

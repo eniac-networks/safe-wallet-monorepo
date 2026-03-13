@@ -5,6 +5,7 @@ import { MultiSend } from '@safe-global/store/gateway/types'
 import { CustomTransactionInfo, SafeAppInfo } from '@safe-global/store/gateway/AUTO_GENERATED/transactions'
 import { SafeListItemProps } from '@/src/components/SafeListItem/SafeListItem'
 import { Logo } from '@/src/components/Logo'
+import { useTranslation } from 'react-i18next'
 
 type TxContractInteractionCardProps = {
   txInfo: CustomTransactionInfo | MultiSend
@@ -12,8 +13,9 @@ type TxContractInteractionCardProps = {
 } & Partial<SafeListItemProps>
 
 export function TxContractInteractionCard({ txInfo, safeAppInfo, ...rest }: TxContractInteractionCardProps) {
+  const { t } = useTranslation()
   const logoUri = safeAppInfo?.logoUri || txInfo.to.logoUri
-  const label = safeAppInfo?.name || txInfo.to.name || 'Contract interaction'
+  const label = safeAppInfo?.name || txInfo.to.name || t('transactionActions.contractInteraction')
 
   return (
     <SafeListItem

@@ -1,12 +1,14 @@
 import { router } from 'expo-router'
 import React from 'react'
 import { Button, View } from 'tamagui'
+import { useTranslation } from 'react-i18next'
 
 interface ParametersButtonProps {
   txId: string
 }
 
 export function ParametersButton({ txId }: ParametersButtonProps) {
+  const { t } = useTranslation()
   const goToAdvancedDetails = () => {
     router.push({
       pathname: '/transaction-parameters',
@@ -27,7 +29,7 @@ export function ParametersButton({ txId }: ParametersButtonProps) {
         fullscreen
         onPress={goToAdvancedDetails}
       >
-        Transaction details
+        {t('confirmTx.transactionDetails')}
       </Button>
     </View>
   )

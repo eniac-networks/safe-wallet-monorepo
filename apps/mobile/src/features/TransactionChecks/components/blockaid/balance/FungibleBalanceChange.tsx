@@ -11,6 +11,7 @@ import { Logo } from '@/src/components/Logo'
 import { Badge } from '@/src/components/Badge'
 import { formatAmount } from '@safe-global/utils/utils/formatNumber'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 
 export const FungibleBalanceChange = ({
   change,
@@ -22,6 +23,7 @@ export const FungibleBalanceChange = ({
   positive?: boolean
 }) => {
   const { balances } = useBalances()
+  const { t } = useTranslation()
   const logoUri =
     asset.logo_url ??
     balances?.items.find((item) => {
@@ -41,7 +43,7 @@ export const FungibleBalanceChange = ({
         circular={false}
         content={
           <Text fontSize={12}>
-            {positive ? '+' : '-'} {change.value ? formatAmount(change.value) : 'unknown'}
+            {positive ? '+' : '-'} {change.value ? formatAmount(change.value) : t('transactionChecks.unknown')}
           </Text>
         }
       />

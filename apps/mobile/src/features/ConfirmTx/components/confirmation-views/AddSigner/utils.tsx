@@ -10,6 +10,7 @@ import { Identicon } from '@/src/components/Identicon'
 import { NormalizedSettingsChangeTransaction } from '../../ConfirmationView/types'
 import { CopyButton } from '@/src/components/CopyButton'
 import { TouchableOpacity } from 'react-native'
+import { TFunction } from 'i18next'
 
 export const getSignerName = (txInfo: NormalizedSettingsChangeTransaction) => {
   if (!txInfo.settingsInfo) {
@@ -30,12 +31,13 @@ export const formatAddSignerItems = (
   chain: Chain,
   executionInfo: MultisigExecutionDetails,
   viewOnExplorer: () => void,
+  t: TFunction,
 ) => {
   const newSignerAddress = getSignerName(txInfo)
 
   const items = [
     {
-      label: 'New signer',
+      label: t('signerChange.newSigner'),
       render: () => (
         <View flexDirection="row" alignItems="center" gap="$2">
           <Identicon address={txInfo.settingsInfo?.owner?.value} size={24} />
@@ -49,7 +51,7 @@ export const formatAddSignerItems = (
       ),
     },
     {
-      label: 'Network',
+      label: t('transactions.network'),
       render: () => (
         <View flexDirection="row" alignItems="center" gap="$2">
           <Logo logoUri={chain.chainLogoUri} size="$6" />
@@ -62,7 +64,7 @@ export const formatAddSignerItems = (
   const hasThresholdChanged = txInfo.settingsInfo?.threshold !== executionInfo.confirmationsRequired
   if (hasThresholdChanged) {
     items.push({
-      label: 'Threshold change',
+      label: t('signerChange.thresholdChange'),
       render: () => (
         <View flexDirection="row" alignItems="center" gap="$2">
           <Text fontSize="$4">

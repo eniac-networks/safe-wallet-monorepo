@@ -1,5 +1,6 @@
 import { SafeBottomSheet } from '@/src/components/SafeBottomSheet'
 import React, { useCallback, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useDefinedActiveSafe } from '@/src/store/hooks/activeSafe'
 import { RouteProp, useRoute } from '@react-navigation/native'
 import { SignersCard } from '@/src/components/transactions-list/Card/SignersCard'
@@ -17,6 +18,7 @@ import { useAppSelector } from '@/src/store/hooks'
 import { ContactDisplayNameContainer } from '../AddressBook'
 
 export const ConfirmationsSheetContainer = () => {
+  const { t } = useTranslation()
   const activeSafe = useDefinedActiveSafe()
   const importedSigners = useAppSelector(selectSigners)
   const txId = useRoute<RouteProp<{ params: { txId: string } }>>().params.txId
@@ -59,11 +61,11 @@ export const ConfirmationsSheetContainer = () => {
   const getSignerTag = useMemo(() => {
     return (signerAddress: Address): string | undefined => {
       if (importedSigners[signerAddress]?.value) {
-        return 'You'
+        return t('transactions.you')
       }
 
       if (proposer?.value === signerAddress) {
-        return 'Creator'
+        return t('transactions.creator')
       }
 
       return undefined
@@ -88,7 +90,7 @@ export const ConfirmationsSheetContainer = () => {
                     {(isHistoryTransaction || hasSigned) && <SafeFontIcon size={12} name="check" />}
 
                     <Text fontWeight={600} color={'$color'}>
-                      {isHistoryTransaction || hasSigned ? 'Signed' : 'Pending'}
+                      {isHistoryTransaction || hasSigned ? t('transactions.signed') : t('transactions.pending')}
                     </Text>
                   </View>
                 }
@@ -104,7 +106,7 @@ export const ConfirmationsSheetContainer = () => {
 
   return (
     <SafeBottomSheet
-      title={isHistoryTransaction ? 'Signed by' : 'Confirmations'}
+      title={isHistoryTransaction ? t('transactions.signedBy') : t('transactions.confirmations')}
       loading={isLoading}
       items={sortedSigners}
       keyExtractor={({ item }) => item.value}

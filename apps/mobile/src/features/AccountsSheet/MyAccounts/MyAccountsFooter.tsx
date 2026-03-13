@@ -4,6 +4,7 @@ import React from 'react'
 import { styled, Text, View, getTokenValue } from 'tamagui'
 import { Link } from 'expo-router'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useTranslation } from 'react-i18next'
 const MyAccountsFooterContainer = styled(View, {
   borderTopWidth: 1,
   borderTopColor: '$colorSecondary',
@@ -20,6 +21,7 @@ const MyAccountsButton = styled(View, {
 
 export function MyAccountsFooter() {
   const { bottom } = useSafeAreaInsets()
+  const { t } = useTranslation()
   return (
     <MyAccountsFooterContainer marginBottom={-bottom} paddingBottom={bottom + getTokenValue('$4')}>
       <Link href={'/(import-accounts)'} asChild>
@@ -33,7 +35,7 @@ export function MyAccountsFooter() {
           </View>
 
           <Text fontSize="$4" fontWeight={600}>
-            Add existing account
+            {t('accounts.addExistingAccount')}
           </Text>
         </MyAccountsButton>
       </Link>

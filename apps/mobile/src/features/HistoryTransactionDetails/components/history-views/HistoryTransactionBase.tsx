@@ -8,6 +8,7 @@ import { HistoryAdvancedDetailsButton } from '@/src/features/HistoryTransactionD
 import { IconName } from '@/src/types/iconTypes'
 import { BadgeThemeTypes } from '@/src/components/Logo/Logo'
 import { NetworkDisplay } from '../shared'
+import { useTranslation } from 'react-i18next'
 
 interface HistoryTransactionBaseProps {
   txId: string
@@ -40,6 +41,7 @@ export function HistoryTransactionBase({
   description,
   children,
 }: HistoryTransactionBaseProps) {
+  const { t } = useTranslation()
   return (
     <YStack gap="$4">
       <HistoryTransactionHeader
@@ -57,7 +59,7 @@ export function HistoryTransactionBase({
       <Container padding="$4" gap="$4" borderRadius="$3">
         {recipientAddress && (
           <View alignItems="center" flexDirection="row" justifyContent="space-between">
-            <Text color="$textSecondaryLight">To</Text>
+            <Text color="$textSecondaryLight">{t('transactions.to')}</Text>
             <HashDisplay value={recipientAddress} />
           </View>
         )}

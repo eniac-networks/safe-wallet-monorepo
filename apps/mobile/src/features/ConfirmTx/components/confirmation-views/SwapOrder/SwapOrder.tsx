@@ -15,6 +15,7 @@ import { Alert } from '@/src/components/Alert'
 import { useRecipientItem } from './hooks'
 import { ParametersButton } from '@/src/features/ConfirmTx/components/ParametersButton'
 import { ActionsRow } from '@/src/components/ActionsRow'
+import { useTranslation } from 'react-i18next'
 
 interface SwapOrderProps {
   executionInfo: MultisigExecutionDetails
@@ -24,17 +25,18 @@ interface SwapOrderProps {
 }
 
 export function SwapOrder({ executionInfo, txInfo, decodedData, txId }: SwapOrderProps) {
+  const { t } = useTranslation()
   const order = txInfo
   const isTwapOrder = isTwapOrderTxInfo(order)
 
   const activeSafe = useDefinedActiveSafe()
   const chain = useAppSelector((state) => selectChainById(state, activeSafe.chainId))
 
-  const swapItems = useMemo(() => formatSwapOrderItemsForConfirmation(txInfo, chain), [txInfo, chain])
+  const swapItems = useMemo(() => formatSwapOrderItemsForConfirmation(txInfo, chain, t), [txInfo, chain, t])
 
   const twapItems = useMemo(() => {
-    return isTwapOrder ? formatTwapOrderItemsForConfirmation(order) : []
-  }, [order, chain])
+    return isTwapOrder ? formatTwapOrderItemsForConfirmation(order, t) : []
+  }, [order, chain, t])
 
   const isChangingFallbackHandler = decodedData && isSettingTwapFallbackHandler(decodedData)
 
@@ -56,8 +58,8 @@ export function SwapOrder({ executionInfo, txInfo, decodedData, txId }: SwapOrde
       {showRecipientWarning && (
         <Alert
           type="warning"
-          message="Order recipient address differs from order owner."
-          info="Double check the address to prevent fund loss."
+          message={t('swap.recipientDiffers')}
+          info={t('swap.doubleCheckAddress')}
           testID="recipient-warning-alert"
         />
       )}

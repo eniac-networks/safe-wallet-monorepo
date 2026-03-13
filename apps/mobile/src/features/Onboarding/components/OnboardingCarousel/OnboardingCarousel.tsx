@@ -10,6 +10,7 @@ import { useAppDispatch } from '@/src/store/hooks'
 import { updateSettings } from '@/src/store/settingsSlice'
 import { ONBOARDING_VERSION } from '@/src/config/constants'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useTranslation } from 'react-i18next'
 
 interface OnboardingCarouselProps {
   items: CarouselItem[]
@@ -19,6 +20,7 @@ export function OnboardingCarousel({ items }: OnboardingCarouselProps) {
   const [activeTab, setActiveTab] = useState(items[0].name)
   const dispatch = useAppDispatch()
   const router = useRouter()
+  const { t } = useTranslation()
 
   const insets = useSafeAreaInsets()
 
@@ -67,7 +69,7 @@ export function OnboardingCarousel({ items }: OnboardingCarouselProps) {
               backgroundColor={getTokenValue('$color.textContrastDark')}
               color={getTokenValue('$color.textPrimaryDark')}
             >
-              Get started
+              {t('onboarding.getStarted')}
             </SafeButton>
           </View>
         </View>

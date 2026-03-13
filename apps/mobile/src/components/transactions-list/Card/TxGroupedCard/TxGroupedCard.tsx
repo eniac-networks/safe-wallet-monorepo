@@ -4,10 +4,10 @@ import { SafeFontIcon } from '@/src/components/SafeFontIcon/SafeFontIcon'
 import { TxInfo } from '@/src/components/TxInfo'
 import { getOrderClass } from '@/src/hooks/useTransactionType'
 import { isSwapTransferOrderTxInfo } from '@/src/utils/transaction-guards'
-import { OrderTransactionInfo } from '@safe-global/store/gateway/types'
 import { TransactionQueuedItem, TransactionItem } from '@safe-global/store/gateway/AUTO_GENERATED/transactions'
 import { Container } from '@/src/components/Container'
 import { TxCardPress } from '@/src/components/TxInfo/types'
+import { useTranslation } from 'react-i18next'
 
 interface TxGroupedCard {
   transactions: (TransactionItem | TransactionQueuedItem)[]
@@ -15,22 +15,24 @@ interface TxGroupedCard {
   onPress?: (tx: TxCardPress) => void
 }
 
-const orderClassTitles: Record<string, string> = {
-  limit: 'Limit order settlement',
-  twap: 'TWAP order settlement',
-  liquidity: 'Liquidity order settlement',
-  market: 'Swap order settlement',
-}
-
-const getSettlementOrderTitle = (order: OrderTransactionInfo): string => {
-  const orderClass = getOrderClass(order)
-  return orderClassTitles[orderClass] || orderClassTitles['market']
-}
-
 function TxGroupedCardComponent({ transactions, inQueue, onPress }: TxGroupedCard) {
+  const { t } = useTranslation()
   const firstTxInfo = transactions[0].transaction.txInfo
   const isSwapTransfer = isSwapTransferOrderTxInfo(firstTxInfo)
-  const label = isSwapTransfer ? getSettlementOrderTitle(firstTxInfo) : 'Bulk transactions'
+
+  let label: string
+  if (isSwapTransfer) {
+    const orderClass = getOrderClass(firstTxInfo)
+    const keyMap: Record<string, string> = {
+      limit: 'txGroupedCard.limitOrderSettlement',
+      twap: 'txGroupedCard.twapOrderSettlement',
+      liquidity: 'txGroupedCard.liquidityOrderSettlement',
+      market: 'txGroupedCard.swapOrderSettlement',
+    }
+    label = t(keyMap[orderClass] || 'txGroupedCard.swapOrderSettlement')
+  } else {
+    label = t('txGroupedCard.bulkTransactions')
+  }
 
   return (
     <Container>

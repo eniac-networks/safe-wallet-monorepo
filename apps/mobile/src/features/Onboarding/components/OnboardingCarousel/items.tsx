@@ -6,6 +6,7 @@ import PersonalisedUpdates from '@/assets/images/personalised-updates.png'
 import TrackAnywhere from '@/assets/images/anywhere.png'
 import { CarouselItem } from './CarouselItem'
 import React from 'react'
+import { TFunction } from 'i18next'
 
 const windowHeight = Dimensions.get('window').height
 const windowWidth = Dimensions.get('window').width
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
   },
 })
 
-export const items: CarouselItem[] = [
+export const getCarouselItems = (t: TFunction): CarouselItem[] => [
   {
     name: 'tracking',
     image: (
@@ -42,17 +43,17 @@ export const items: CarouselItem[] = [
     title: (
       <>
         <H1 style={styles.textContainer} fontWeight={600}>
-          Track your
+          {t('onboarding.tracking.titleLine1')}
         </H1>
         <H1 style={styles.textContainer} fontWeight={600}>
-          accounts.
+          {t('onboarding.tracking.titleLine2')}
         </H1>
         <H1 style={styles.textContainer} fontWeight={600} color="$primary">
-          Anywhere.
+          {t('onboarding.tracking.titleLine3')}
         </H1>
       </>
     ),
-    description: 'Easily track balances and get real-time updates on account activity — anytime.',
+    description: t('onboarding.tracking.description'),
   },
   {
     name: 'signing',
@@ -64,15 +65,15 @@ export const items: CarouselItem[] = [
     title: (
       <>
         <H1 style={styles.textContainer} fontWeight={600} marginHorizontal={windowWidth <= maxGoodWidth ? -10 : 0}>
-          Sign transactions
+          {t('onboarding.signing.titleLine1')}
         </H1>
 
         <H1 style={styles.textContainer} fontWeight={600}>
-          on the go
+          {t('onboarding.signing.titleLine2')}
         </H1>
       </>
     ),
-    description: 'Enjoy peace of mind with transaction checks, ensuring secure signing.',
+    description: t('onboarding.signing.description'),
   },
   {
     name: 'update-to-date',
@@ -84,16 +85,16 @@ export const items: CarouselItem[] = [
     title: (
       <>
         <H1 style={styles.textContainer} fontWeight={600}>
-          Get
+          {t('onboarding.updates.titleLine1')}
         </H1>
         <H1 style={styles.textContainer} fontWeight={600}>
-          personalized
+          {t('onboarding.updates.titleLine2')}
         </H1>
         <H1 style={styles.textContainer} fontWeight={600}>
-          updates
+          {t('onboarding.updates.titleLine3')}
         </H1>
       </>
     ),
-    description: 'Stay informed with personalized notifications tailored to your accounts.',
+    description: t('onboarding.updates.description'),
   },
 ]

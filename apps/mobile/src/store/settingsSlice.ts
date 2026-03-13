@@ -9,6 +9,7 @@ export interface SettingsState {
   onboardingVersionSeen: string
   themePreference: ThemePreference
   currency: string
+  locale?: string
   env: EnvState
 }
 
@@ -16,6 +17,7 @@ const initialState: SettingsState = {
   onboardingVersionSeen: '',
   themePreference: 'auto' as ThemePreference,
   currency: 'usd',
+  locale: undefined,
   env: {
     rpc: {},
     tenderly: {
@@ -50,6 +52,9 @@ const settingsSlice = createSlice({
     setTenderly: (state, { payload }: PayloadAction<EnvState['tenderly']>) => {
       state.env.tenderly = merge({}, state.env.tenderly, payload)
     },
+    setLocale: (state, { payload }: PayloadAction<string>) => {
+      state.locale = payload
+    },
   },
 })
 
@@ -68,5 +73,7 @@ export const selectRpc = createSelector(selectSettingsState, (settings) => {
 
 export const selectTenderly = createSelector(selectSettingsState, (settings) => settings?.env?.tenderly)
 
-export const { updateSettings, resetSettings, setCurrency } = settingsSlice.actions
+export const { updateSettings, resetSettings, setCurrency, setLocale } = settingsSlice.actions
 export default settingsSlice.reducer
+
+export const selectLocale = createSelector(selectSettingsState, (settings) => settings.locale)

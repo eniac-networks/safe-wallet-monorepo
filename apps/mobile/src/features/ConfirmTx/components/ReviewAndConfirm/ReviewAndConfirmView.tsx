@@ -7,6 +7,7 @@ import { ReviewFooter } from './ReviewFooter'
 import { DataTab } from './tabs/DataTab'
 import { JSONTab } from './tabs/JSONTab'
 import { useTheme as useCurrentTheme } from '@/src/theme/hooks/useTheme'
+import { useTranslation } from 'react-i18next'
 
 interface ReviewAndConfirmViewProps {
   txDetails: TransactionDetails
@@ -14,6 +15,7 @@ interface ReviewAndConfirmViewProps {
 }
 
 export function ReviewAndConfirmView({ txDetails, txId }: ReviewAndConfirmViewProps) {
+  const { t } = useTranslation()
   const { isDark } = useCurrentTheme()
   const theme = useTheme()
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -44,10 +46,10 @@ export function ReviewAndConfirmView({ txDetails, txId }: ReviewAndConfirmViewPr
         }}
         renderHeader={() => <ReviewHeader />}
       >
-        <Tabs.Tab name="Data" label="Data">
+        <Tabs.Tab name="Data" label={t('transactions.data')}>
           <DataTab />
         </Tabs.Tab>
-        <Tabs.Tab name="JSON" label="JSON">
+        <Tabs.Tab name="JSON" label={t('confirmTx.json')}>
           <JSONTab txDetails={txDetails} />
         </Tabs.Tab>
       </Tabs.Container>

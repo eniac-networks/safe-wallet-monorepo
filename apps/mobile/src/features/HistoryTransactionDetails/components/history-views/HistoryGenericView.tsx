@@ -7,6 +7,7 @@ import {
 import { Address } from '@/src/types/address'
 import { useTransactionType } from '@/src/hooks/useTransactionType'
 import { HistoryTransactionBase } from './HistoryTransactionBase'
+import { useTranslation } from 'react-i18next'
 
 interface HistoryGenericViewProps {
   txId: string
@@ -16,6 +17,7 @@ interface HistoryGenericViewProps {
 }
 
 export function HistoryGenericView({ txId, txInfo, txData, executedAt }: HistoryGenericViewProps) {
+  const { t } = useTranslation()
   const recipientAddress = txData?.to?.value as Address
 
   // Create a transaction object for the hook - need full Transaction type
@@ -30,7 +32,7 @@ export function HistoryGenericView({ txId, txInfo, txData, executedAt }: History
 
   // Get transaction type information for display
   const txType = useTransactionType(transaction)
-  const transactionLabel = txType.text || 'Transaction'
+  const transactionLabel = txType.text || t('common.transaction')
 
   return (
     <HistoryTransactionBase

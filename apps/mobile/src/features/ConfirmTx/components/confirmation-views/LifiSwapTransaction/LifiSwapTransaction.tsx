@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react'
 import { YStack, Text } from 'tamagui'
+import { useTranslation } from 'react-i18next'
 import { ListTable } from '../../ListTable'
 import { MultisigExecutionDetails, SwapTransactionInfo } from '@safe-global/store/gateway/AUTO_GENERATED/transactions'
 import { formatUnits } from 'ethers'
@@ -16,6 +17,7 @@ interface LifiSwapTransactionProps {
 }
 
 export function LifiSwapTransaction({ txId, executionInfo, txInfo }: LifiSwapTransactionProps) {
+  const { t } = useTranslation()
   const lifiSwapItems = useMemo(() => {
     const items: ListTableItem[] = []
 
@@ -25,7 +27,7 @@ export function LifiSwapTransaction({ txId, executionInfo, txInfo }: LifiSwapTra
     const exchangeRate = Number(toAmountDecimals) / Number(fromAmountDecimals)
 
     items.push({
-      label: 'Price',
+      label: t('swap.price'),
       render: () => (
         <Text>
           1 {txInfo.fromToken.symbol} = {formatAmount(exchangeRate)} {txInfo.toToken.symbol}
@@ -35,7 +37,7 @@ export function LifiSwapTransaction({ txId, executionInfo, txInfo }: LifiSwapTra
 
     // Receiver
     items.push({
-      label: 'Receiver',
+      label: t('bridge.recipient'),
       render: () => (
         <EthAddress
           address={txInfo.recipient.value as `0x${string}`}
@@ -52,7 +54,7 @@ export function LifiSwapTransaction({ txId, executionInfo, txInfo }: LifiSwapTra
     )
 
     items.push({
-      label: 'Fees',
+      label: t('bridge.fees'),
       render: () => (
         <Text>
           {Number(totalFee).toFixed(6)} {txInfo.fromToken.symbol}
@@ -61,7 +63,7 @@ export function LifiSwapTransaction({ txId, executionInfo, txInfo }: LifiSwapTra
     })
 
     return items
-  }, [txInfo])
+  }, [txInfo, t])
 
   return (
     <YStack gap="$4">

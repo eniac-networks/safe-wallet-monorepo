@@ -10,16 +10,18 @@ import { Alert } from '@/src/components/Alert'
 import { ConfirmTxForm } from './components/ConfirmTxForm'
 import { useTransactionSigner } from './hooks/useTransactionSigner'
 import { useTxSignerAutoSelection } from './hooks/useTxSignerAutoSelection'
+import { useTranslation } from 'react-i18next'
 
 function ConfirmTxContainer() {
   const txId = useRoute<RouteProp<{ params: { txId: string } }>>().params.txId
+  const { t } = useTranslation()
 
   const { txDetails, detailedExecutionInfo, isLoading, isError } = useTransactionSigner(txId)
 
   useTxSignerAutoSelection(detailedExecutionInfo)
 
   const { handleScroll } = useScrollableHeader({
-    children: <NavBarTitle paddingRight={5}>Confirm transaction</NavBarTitle>,
+    children: <NavBarTitle paddingRight={5}>{t('confirmTx.confirmTransaction')}</NavBarTitle>,
     alwaysVisible: true,
   })
 
@@ -33,7 +35,7 @@ function ConfirmTxContainer() {
   if (isError) {
     return (
       <View margin="$4">
-        <Alert type="error" message="Error fetching transaction details" />
+        <Alert type="error" message={t('transactions.errorFetchingDetails')} />
       </View>
     )
   }

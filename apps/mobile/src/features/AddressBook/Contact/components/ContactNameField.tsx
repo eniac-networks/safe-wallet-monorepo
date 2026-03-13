@@ -1,5 +1,6 @@
 import React from 'react'
 import { Text, View } from 'tamagui'
+import { useTranslation } from 'react-i18next'
 import { SafeInputWithLabel } from '@/src/components/SafeInput/SafeInputWithLabel'
 import { Controller, Control, FieldErrors } from 'react-hook-form'
 import { ContactFormData } from '../schemas'
@@ -14,6 +15,7 @@ interface ContactNameFieldProps {
 }
 
 export const ContactNameField = ({ isEditing, contact, control, errors, dirtyFields }: ContactNameFieldProps) => {
+  const { t } = useTranslation()
   const isNew = !contact?.value
 
   if (isEditing && control) {
@@ -24,12 +26,12 @@ export const ContactNameField = ({ isEditing, contact, control, errors, dirtyFie
           name="name"
           render={({ field: { onChange, onBlur, value } }) => (
             <SafeInputWithLabel
-              label="Name"
+              label={t('addressBook.name')}
               value={value}
               autoFocus
               onBlur={onBlur}
               onChangeText={onChange}
-              placeholder={isNew ? 'Enter name' : contact?.name || 'Enter name'}
+              placeholder={isNew ? t('addressBook.enterName') : contact?.name || t('addressBook.enterName')}
               error={dirtyFields?.name && !!errors?.name}
               success={dirtyFields?.name && !errors?.name && value.trim().length > 0}
             />
@@ -40,5 +42,5 @@ export const ContactNameField = ({ isEditing, contact, control, errors, dirtyFie
     )
   }
 
-  return <SafeInputWithLabel label="Name" value={contact?.name || 'Unnamed contact'} disabled editable={false} />
+  return <SafeInputWithLabel label={t('addressBook.name')} value={contact?.name || t('addressBook.unnamedContact')} disabled editable={false} />
 }

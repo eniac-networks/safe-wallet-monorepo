@@ -14,6 +14,7 @@ import { ChainIndicator } from '@/src/components/ChainIndicator'
 import { ParametersButton } from '../../ParametersButton'
 import { formatAmount } from '@safe-global/utils/utils/formatNumber'
 import { ActionsRow } from '@/src/components/ActionsRow'
+import { useTranslation } from 'react-i18next'
 
 interface BridgeTransactionProps {
   txId: string
@@ -22,6 +23,7 @@ interface BridgeTransactionProps {
 }
 
 export function BridgeTransaction({ txId, txInfo, decodedData }: BridgeTransactionProps) {
+  const { t } = useTranslation()
   const activeSafe = useDefinedActiveSafe()
   const chain = useAppSelector((state) => selectChainById(state, activeSafe.chainId))
 
@@ -34,39 +36,39 @@ export function BridgeTransaction({ txId, txInfo, decodedData }: BridgeTransacti
 
     if (txInfo.status === 'PENDING' || txInfo.status === 'AWAITING_EXECUTION') {
       items.push({
-        label: 'Amount',
+        label: t('bridge.amount'),
         render: () => (
           <View flexDirection="row" alignItems="center" gap="$2" flexWrap="wrap" justifyContent="center">
-            <Text>Sending</Text>
+            <Text>{t('bridge.sending')}</Text>
             <TokenAmount
               value={actualFromAmount.toString()}
               decimals={txInfo.fromToken.decimals}
               tokenSymbol={txInfo.fromToken.symbol}
             />
-            <Text>to</Text>
+            <Text>{t('transactions.to').toLowerCase()}</Text>
             <ChainIndicator chainId={txInfo.toChain} onlyLogo />
           </View>
         ),
       })
     } else if (txInfo.status === 'FAILED') {
       items.push({
-        label: 'Amount',
+        label: t('bridge.amount'),
         render: () => (
           <View flexDirection="row" alignItems="center" gap="$2" flexWrap="wrap">
-            <Text>Failed to send</Text>
+            <Text>{t('bridge.failedToSend')}</Text>
             <TokenAmount
               value={actualFromAmount.toString()}
               decimals={txInfo.fromToken.decimals}
               tokenSymbol={txInfo.fromToken.symbol}
             />
-            <Text>to {txInfo.toChain}</Text>
+            <Text>{t('transactions.to').toLowerCase()} {txInfo.toChain}</Text>
           </View>
         ),
       })
 
       if (txInfo.substatus) {
         items.push({
-          label: 'Substatus',
+          label: t('bridge.substatus'),
           render: () => <Text>{txInfo.substatus}</Text>,
         })
       }
@@ -77,30 +79,30 @@ export function BridgeTransaction({ txId, txInfo, decodedData }: BridgeTransacti
       const exchangeRate = toAmountDecimals ? Number(toAmountDecimals) / Number(fromAmountDecimals) : undefined
 
       items.push({
-        label: 'Amount',
+        label: t('bridge.amount'),
         render: () => (
           <YStack gap="$2">
             <View flexDirection="row" alignItems="center" gap="$2" flexWrap="wrap">
-              <Text>Sell</Text>
+              <Text>{t('swap.sell')}</Text>
               <TokenAmount
                 value={actualFromAmount.toString()}
                 decimals={txInfo.fromToken.decimals}
                 tokenSymbol={txInfo.fromToken.symbol}
               />
-              <Text>on {chain?.chainName ?? 'Unknown Chain'}</Text>
+              <Text>{t('bridge.on')} {chain?.chainName ?? 'Unknown Chain'}</Text>
             </View>
             {txInfo.toToken && txInfo.toAmount ? (
               <View flexDirection="row" alignItems="center" gap="$2" flexWrap="wrap">
-                <Text>For</Text>
+                <Text>{t('swap.for')}</Text>
                 <TokenAmount
                   value={txInfo.toAmount}
                   decimals={txInfo.toToken.decimals}
                   tokenSymbol={txInfo.toToken.symbol}
                 />
-                <Text>on {txInfo.toChain}</Text>
+                <Text>{t('bridge.on')} {txInfo.toChain}</Text>
               </View>
             ) : (
-              <Text>Could not find buy token information.</Text>
+              <Text>{t('bridge.couldNotFindBuyToken')}</Text>
             )}
           </YStack>
         ),
@@ -108,7 +110,7 @@ export function BridgeTransaction({ txId, txInfo, decodedData }: BridgeTransacti
 
       if (exchangeRate && txInfo.toToken) {
         items.push({
-          label: 'Exchange Rate',
+          label: t('bridge.exchangeRate'),
           render: () => (
             <Text>
               1 {txInfo.fromToken.symbol} = {formatAmount(exchangeRate)} {txInfo.toToken?.symbol}
@@ -120,7 +122,7 @@ export function BridgeTransaction({ txId, txInfo, decodedData }: BridgeTransacti
 
     // Recipient
     items.push({
-      label: 'Recipient',
+      label: t('bridge.recipient'),
       render: () => (
         <EthAddress
           address={txInfo.recipient.value as `0x${string}`}
@@ -137,7 +139,7 @@ export function BridgeTransaction({ txId, txInfo, decodedData }: BridgeTransacti
     )
 
     items.push({
-      label: 'Fees',
+      label: t('bridge.fees'),
       render: () => (
         <Text>
           {Number(totalFee).toFixed(6)} {txInfo.fromToken.symbol}
@@ -146,7 +148,7 @@ export function BridgeTransaction({ txId, txInfo, decodedData }: BridgeTransacti
     })
 
     return items
-  }, [txInfo, chain])
+  }, [txInfo, chain, t])
 
   return (
     <YStack gap="$4">

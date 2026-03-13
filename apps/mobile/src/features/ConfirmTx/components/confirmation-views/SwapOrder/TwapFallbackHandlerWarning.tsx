@@ -1,14 +1,13 @@
 import { Alert } from '@/src/components/Alert'
+import { useTranslation } from 'react-i18next'
 
 export const TwapFallbackHandlerWarning = () => {
+  const { t } = useTranslation()
   return (
     <Alert
-      message={'Enable TWAPs and submit order.'}
+      message={t('swap.enableTwap')}
       iconName={'info'}
-      info={
-        'To enable TWAP orders you need to set a custom fallback handler. This software is developed by CoW Swap and\n' +
-        'Safe will not be responsible for any possible issues with it.'
-      }
+      info={t('swap.twapHandlerInfo')}
       type="warning"
     />
   )

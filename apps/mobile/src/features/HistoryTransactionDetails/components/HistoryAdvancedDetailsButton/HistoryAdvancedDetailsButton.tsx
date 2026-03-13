@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Button } from 'tamagui'
 import { useRouter } from 'expo-router'
+import { useTranslation } from 'react-i18next'
 
 interface HistoryAdvancedDetailsButtonProps {
   txId: string
@@ -8,6 +9,7 @@ interface HistoryAdvancedDetailsButtonProps {
 
 export function HistoryAdvancedDetailsButton({ txId }: HistoryAdvancedDetailsButtonProps) {
   const router = useRouter()
+  const { t } = useTranslation()
 
   const goToAdvancedDetails = () => {
     router.push({
@@ -29,7 +31,7 @@ export function HistoryAdvancedDetailsButton({ txId }: HistoryAdvancedDetailsBut
         fullscreen
         onPress={goToAdvancedDetails}
       >
-        View transaction data
+        {t('historyTx.viewTransactionData')}
       </Button>
     </View>
   )

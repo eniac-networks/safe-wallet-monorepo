@@ -13,8 +13,10 @@ import { useDefinedActiveSafe } from '@/src/store/hooks/activeSafe'
 import { formatCurrency, formatCurrencyPrecise } from '@safe-global/utils/utils/formatNumber'
 import { shouldDisplayPreciseBalance } from '@/src/utils/balance'
 import { selectCurrency } from '@/src/store/settingsSlice'
+import { useTranslation } from 'react-i18next'
 
 export const NetworksSheetContainer = () => {
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const chains = useAppSelector(selectAllChains)
   const activeSafe = useDefinedActiveSafe()
@@ -39,7 +41,7 @@ export const NetworksSheetContainer = () => {
 
   return (
     <SafeBottomSheet
-      title="Select network"
+      title={t('network.selectNetwork')}
       items={data}
       keyExtractor={({ item }) => item.chainId}
       renderItem={({ item, onClose }) => (

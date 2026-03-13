@@ -4,11 +4,12 @@ import { VaultRedeemTransactionInfo } from '@safe-global/store/gateway/AUTO_GENE
 import { TokenAmount } from '@/src/components/TokenAmount'
 import { ListTableItem } from '../../ListTable'
 import { Image } from 'expo-image'
+import { TFunction } from 'i18next'
 
-export const formatVaultRedeemItems = (txInfo: VaultRedeemTransactionInfo): ListTableItem[] => {
+export const formatVaultRedeemItems = (txInfo: VaultRedeemTransactionInfo, t: TFunction): ListTableItem[] => {
   return [
     {
-      label: 'Current reward',
+      label: t('vault.currentReward'),
       render: () => (
         <TokenAmount
           value={txInfo.currentReward}
@@ -18,7 +19,7 @@ export const formatVaultRedeemItems = (txInfo: VaultRedeemTransactionInfo): List
       ),
     },
     {
-      label: 'Withdraw from',
+      label: t('vault.withdrawFrom'),
       render: () => (
         <View flexDirection="row" alignItems="center" gap="$2">
           <Image source={{ uri: txInfo.vaultInfo.logoUri }} style={{ width: 24, height: 24 }} />

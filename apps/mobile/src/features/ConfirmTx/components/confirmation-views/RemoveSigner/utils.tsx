@@ -9,17 +9,19 @@ import { getSignerName } from '../AddSigner/utils'
 import { NormalizedSettingsChangeTransaction } from '../../ConfirmationView/types'
 import { CopyButton } from '@/src/components/CopyButton'
 import { TouchableOpacity } from 'react-native'
+import { TFunction } from 'i18next'
 
 export const formatRemoveSignerItems = (
   txInfo: NormalizedSettingsChangeTransaction,
   chain: Chain,
   viewOnExplorer: () => void,
+  t: TFunction,
 ) => {
   const newRemovedSigners = getSignerName(txInfo)
 
   return [
     {
-      label: 'Removed signer',
+      label: t('signerChange.removedSigner'),
       render: () => (
         <View flexDirection="row" alignItems="center" gap="$2">
           <Identicon address={txInfo.settingsInfo?.owner?.value} size={24} />
@@ -32,7 +34,7 @@ export const formatRemoveSignerItems = (
       ),
     },
     {
-      label: 'Network',
+      label: t('transactions.network'),
       render: () => (
         <View flexDirection="row" alignItems="center" gap="$2">
           <Logo logoUri={chain.chainLogoUri} size="$6" />

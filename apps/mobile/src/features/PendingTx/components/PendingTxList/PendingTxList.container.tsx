@@ -13,6 +13,7 @@ import { Loader } from '@/src/components/Loader'
 import { TransactionSkeleton, TransactionSkeletonItem } from '@/src/components/TransactionSkeleton'
 import { CircleSnail } from 'react-native-progress'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useTranslation } from 'react-i18next'
 
 export interface GroupedPendingTxsWithTitle {
   title: string
@@ -40,10 +41,11 @@ export function PendingTxListContainer({
 }: PendingTxListContainerProps) {
   const theme = useTheme()
   const { bottom } = useSafeAreaInsets()
+  const { t } = useTranslation()
   const { handleScroll } = useScrollableHeader({
     children: (
       <>
-        <NavBarTitle paddingRight={5}>Pending transactions</NavBarTitle>
+        <NavBarTitle paddingRight={5}>{t('pendingTx.pendingTransactions')}</NavBarTitle>
         <Badge
           content={`${amount}${hasMore ? '+' : ''}`}
           circleSize={'$6'}
@@ -68,7 +70,7 @@ export function PendingTxListContainer({
           paddingTop="$4"
           testID="pending-tx-initial-loader"
         >
-          <TransactionSkeleton count={4} sectionTitles={['Next', 'In queue']} />
+          <TransactionSkeleton count={4} sectionTitles={[t('pendingTx.next'), t('pendingTx.inQueue')]} />
         </View>
       )
     }
@@ -85,12 +87,12 @@ export function PendingTxListContainer({
       >
         <View alignItems="center" gap="$3">
           <Text color="$textSecondary" textAlign="center">
-            Queued transactions will appear here
+            {t('pendingTx.queuedWillAppear')}
           </Text>
         </View>
       </View>
     )
-  }, [isInitialLoading])
+  }, [isInitialLoading, t])
 
   // ListFooterComponent for pagination loading (bottom loading)
   const renderFooterComponent = useMemo(() => {
@@ -106,7 +108,7 @@ export function PendingTxListContainer({
 
   const LargeHeader = (
     <View flexDirection={'row'} alignItems={'flex-start'} paddingTop={'$3'}>
-      <LargeHeaderTitle marginRight={5}>Pending transactions</LargeHeaderTitle>
+      <LargeHeaderTitle marginRight={5}>{t('pendingTx.pendingTransactions')}</LargeHeaderTitle>
       {isLoading && !refreshing ? (
         <Loader size={24} color="$warning1ContrastTextDark" />
       ) : (
@@ -153,7 +155,11 @@ export function PendingTxListContainer({
         }
         ListEmptyComponent={renderEmptyComponent}
         ListFooterComponent={renderFooterComponent}
-        renderSectionHeader={({ section: { title } }) => <SafeListItem.Header title={title} />}
+        renderSectionHeader={({ section: { title } }) => (
+          <SafeListItem.Header
+            title={title === 'Next' ? t('pendingTx.next') : title === 'In queue' ? t('pendingTx.inQueue') : title}
+          />
+        )}
         onScroll={handleScroll}
         scrollEventThrottle={16}
         contentContainerStyle={{

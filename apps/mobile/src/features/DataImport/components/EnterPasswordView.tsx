@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { Text, YStack, H2, XStack, ScrollView } from 'tamagui'
 import { SafeButton } from '@/src/components/SafeButton'
 import { KeyboardAvoidingView } from 'react-native'
@@ -24,6 +25,7 @@ export const EnterPasswordView = ({
   onPasswordChange,
   onDecrypt,
 }: EnterPasswordViewProps) => {
+  const { t } = useTranslation()
   return (
     <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }} keyboardVerticalOffset={bottomInset + topInset}>
       <ScrollView contentContainerStyle={{ flex: 1 }} keyboardShouldPersistTaps="handled">
@@ -31,16 +33,16 @@ export const EnterPasswordView = ({
           <YStack flex={1} paddingHorizontal="$4" justifyContent="space-between" marginTop={'$4'}>
             <YStack gap="$6">
               <H2 fontWeight={'600'} textAlign="center" marginHorizontal={'$4'}>
-                Enter password
+                {t('dataImport.enterPassword')}
               </H2>
 
               <XStack justifyContent="center">
-                <Alert type="warning" message="Use the password you set to encrypt the file." orientation="left" />
+                <Alert type="warning" message={t('dataImport.usePasswordHint')} orientation="left" />
               </XStack>
 
               <YStack gap="$4">
                 <SafeInput
-                  placeholder="Enter the file password"
+                  placeholder={t('dataImport.enterFilePassword')}
                   keyboardType="visible-password"
                   value={password}
                   onChangeText={onPasswordChange}
@@ -52,7 +54,7 @@ export const EnterPasswordView = ({
                 <YStack>
                   {fileName && (
                     <Text color="$colorSecondary" fontSize="$3" testID="file-name">
-                      File: {fileName}
+                      {t('dataImport.filePrefix', { name: fileName })}
                     </Text>
                   )}
                 </YStack>
@@ -67,7 +69,7 @@ export const EnterPasswordView = ({
                 disabled={!password.length || isLoading}
                 opacity={!password.length || isLoading ? 0.5 : 1}
               >
-                {isLoading ? 'Decrypting...' : 'Continue'}
+                {isLoading ? t('dataImport.decrypting') : t('dataImport.continue')}
               </SafeButton>
             </YStack>
           </YStack>

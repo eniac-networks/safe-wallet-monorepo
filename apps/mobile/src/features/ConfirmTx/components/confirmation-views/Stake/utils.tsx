@@ -8,26 +8,30 @@ import {
   NativeStakingValidatorsExitTransactionInfo,
 } from '@safe-global/store/gateway/AUTO_GENERATED/transactions'
 import { ListTableItem } from '../../ListTable'
+import { TFunction } from 'i18next'
 
 const CURRENCY = 'USD'
 
-export const stakingTypeToLabel = {
-  NativeStakingDeposit: 'Deposit',
-  NativeStakingValidatorsExit: 'Withdraw request',
-  NativeStakingWithdraw: 'Claim',
-} as const
+export const getStakingTypeLabel = (type: 'NativeStakingDeposit' | 'NativeStakingValidatorsExit' | 'NativeStakingWithdraw', t: TFunction) => {
+  const map = {
+    NativeStakingDeposit: t('staking.deposit'),
+    NativeStakingValidatorsExit: t('staking.withdrawRequest'),
+    NativeStakingWithdraw: t('staking.claim'),
+  }
+  return map[type]
+}
 
-export const formatStakingDepositItems = (txInfo: NativeStakingDepositTransactionInfo): ListTableItem[] => {
+export const formatStakingDepositItems = (txInfo: NativeStakingDepositTransactionInfo, t: TFunction): ListTableItem[] => {
   // Fee is returned in decimal format, multiply by 100 for percentage
   const fee = (txInfo.fee * 100).toFixed(2)
 
   return [
     {
-      label: 'Rewards rate',
+      label: t('staking.rewardsRate'),
       value: `${txInfo.annualNrr.toFixed(3)}%`,
     },
     {
-      label: 'Net annual rewards',
+      label: t('staking.netAnnualRewards'),
       render: () => (
         <View flexDirection="row" alignItems="center" gap="$1">
           <TokenAmount
@@ -41,7 +45,7 @@ export const formatStakingDepositItems = (txInfo: NativeStakingDepositTransactio
       ),
     },
     {
-      label: 'Net monthly rewards',
+      label: t('staking.netMonthlyRewards'),
       render: () => (
         <View flexDirection="row" alignItems="center" gap="$1">
           <TokenAmount
@@ -55,31 +59,32 @@ export const formatStakingDepositItems = (txInfo: NativeStakingDepositTransactio
       ),
     },
     {
-      label: 'Widget fee',
+      label: t('swap.widgetFee'),
       value: `${fee}%`,
     },
   ]
 }
 
-export const formatStakingValidatorItems = (txInfo: NativeStakingDepositTransactionInfo): ListTableItem[] => {
+export const formatStakingValidatorItems = (txInfo: NativeStakingDepositTransactionInfo, t: TFunction): ListTableItem[] => {
   return [
     {
-      label: 'Validator',
+      label: t('staking.validator'),
       value: `${txInfo.numValidators}`,
     },
     {
-      label: 'Activation time',
+      label: t('staking.activationTime'),
       value: formatDurationFromMilliseconds(txInfo.estimatedEntryTime),
     },
     {
-      label: 'Rewards',
-      value: 'Approx. every 5 days after activation',
+      label: t('staking.rewards'),
+      value: t('staking.approxRewards'),
     },
   ]
 }
 
 export const formatStakingWithdrawRequestItems = (
   txInfo: NativeStakingValidatorsExitTransactionInfo,
+  t: TFunction,
 ): ListTableItem[] => {
   const withdrawIn = formatDurationFromMilliseconds(txInfo.estimatedExitTime + txInfo.estimatedWithdrawalTime, [
     'days',
@@ -88,11 +93,11 @@ export const formatStakingWithdrawRequestItems = (
 
   return [
     {
-      label: 'Exit',
-      value: `${txInfo.numValidators} Validator${txInfo.numValidators !== 1 ? 's' : ''}`,
+      label: t('staking.exit'),
+      value: t('staking.validatorCount', { count: txInfo.numValidators }),
     },
     {
-      label: 'Receive',
+      label: t('staking.receive'),
       render: () => (
         <TokenAmount
           value={txInfo.value}
@@ -103,8 +108,8 @@ export const formatStakingWithdrawRequestItems = (
       ),
     },
     {
-      label: 'Withdraw in',
-      value: `Up to ${withdrawIn}`,
+      label: t('staking.withdrawIn'),
+      value: t('staking.upTo', { duration: withdrawIn }),
     },
   ]
 }

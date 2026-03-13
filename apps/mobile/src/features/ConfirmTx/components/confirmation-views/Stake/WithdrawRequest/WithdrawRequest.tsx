@@ -10,6 +10,7 @@ import {
 import { TokenAmount } from '@/src/components/TokenAmount'
 import { ParametersButton } from '../../../ParametersButton'
 import { Alert } from '@/src/components/Alert'
+import { useTranslation } from 'react-i18next'
 
 interface StakingWithdrawRequestProps {
   txInfo: NativeStakingValidatorsExitTransactionInfo
@@ -18,7 +19,8 @@ interface StakingWithdrawRequestProps {
 }
 
 export function StakingWithdrawRequest({ txInfo, executionInfo, txId }: StakingWithdrawRequestProps) {
-  const withdrawRequestItems = useMemo(() => formatStakingWithdrawRequestItems(txInfo), [txInfo])
+  const { t } = useTranslation()
+  const withdrawRequestItems = useMemo(() => formatStakingWithdrawRequestItems(txInfo, t), [txInfo, t])
 
   return (
     <YStack gap="$4">
@@ -28,7 +30,7 @@ export function StakingWithdrawRequest({ txInfo, executionInfo, txId }: StakingW
         badgeColor="$textSecondaryLight"
         title={
           <XStack gap="$1">
-            <Text>Receive</Text>
+            <Text>{t('staking.receive')}</Text>
             <TokenAmount
               value={txInfo.value}
               tokenSymbol={txInfo.tokenInfo.symbol}
@@ -42,14 +44,14 @@ export function StakingWithdrawRequest({ txInfo, executionInfo, txId }: StakingW
       <ListTable items={withdrawRequestItems}>
         <ParametersButton txId={txId} />
         <Text fontSize="$3" color="$textSecondaryLight">
-          The selected amount and any rewards will be withdrawn from Dedicated Staking for ETH after the validator exit.
+          {t('staking.withdrawalNote')}
         </Text>
       </ListTable>
 
       <YStack gap="$3">
         <Alert
           type="warning"
-          message="This transaction is a withdrawal request. After it's executed, you'll need to complete a separate withdrawal transaction."
+          message={t('staking.withdrawalRequestNote')}
         />
       </YStack>
     </YStack>

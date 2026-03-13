@@ -1,5 +1,6 @@
 import { AddressInfo } from '@safe-global/store/gateway/AUTO_GENERATED/transactions'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { NoContacts } from './List/NoContacts'
 import { View } from 'tamagui'
@@ -19,16 +20,17 @@ type Props = {
 }
 
 export const AddressBookListView = ({ contacts, filteredContacts, onSearch, onSelectContact, onAddContact }: Props) => {
+  const { t } = useTranslation()
   const insets = useSafeAreaInsets()
 
   return (
     <View marginTop="$2" style={{ flex: 1, marginBottom: insets.bottom }} testID={'address-book-screen'}>
       <View flex={1}>
         <View paddingHorizontal="$4">
-          <LargeHeaderTitle>Address book</LargeHeaderTitle>
+          <LargeHeaderTitle>{t('addressBook.title')}</LargeHeaderTitle>
         </View>
         <View paddingHorizontal="$4">
-          <SafeSearchBar placeholder="Name, address" onSearch={onSearch} throttleTime={300} />
+          <SafeSearchBar placeholder={t('addressBook.nameAddress')} onSearch={onSearch} throttleTime={300} />
         </View>
         {contacts.length === 0 && <NoContacts />}
         {contacts.length > 0 && filteredContacts.length === 0 && <NoContactsFound />}
@@ -37,7 +39,7 @@ export const AddressBookListView = ({ contacts, filteredContacts, onSearch, onSe
       {/* Add Contact Button */}
       <View paddingTop="$4" paddingHorizontal="$4">
         <SafeButton primary onPress={onAddContact}>
-          Add contact
+          {t('addressBook.addContact')}
         </SafeButton>
       </View>
     </View>

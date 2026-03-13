@@ -4,6 +4,7 @@ import { SafeButton } from '@/src/components/SafeButton'
 import { SafeFontIcon } from '@/src/components/SafeFontIcon'
 import { Container } from '@/src/components/Container'
 import { Badge } from '@/src/components/Badge'
+import { useTranslation } from 'react-i18next'
 
 interface ImportSummary {
   safeAccountsCount: number
@@ -24,22 +25,23 @@ export const ReviewDataView = ({
   isImportDataAvailable,
   onContinue,
 }: ReviewDataViewProps) => {
+  const { t } = useTranslation()
   return (
     <ScrollView contentContainerStyle={{ flex: 1 }}>
       <YStack flex={1} testID="review-data-screen">
         <YStack flex={1} paddingHorizontal="$4" justifyContent="space-between" marginTop={'$4'}>
           <YStack gap="$3">
             <H2 fontWeight={'600'} textAlign="center" marginHorizontal={'$4'}>
-              Review data
+              {t('dataImport.reviewData')}
             </H2>
 
             <Text fontSize="$4" textAlign="center" marginHorizontal={'$4'}>
-              Check that everything looks correct before importing.
+              {t('dataImport.reviewDataDesc')}
             </Text>
 
             <Container gap="$3" marginTop="$4" padding="$4" backgroundColor="$background" borderRadius="$4">
               <Text color="$colorSecondary" fontSize="$3" fontWeight="500">
-                Importing:
+                {t('dataImport.importing')}
               </Text>
 
               <XStack
@@ -56,10 +58,10 @@ export const ReviewDataView = ({
                   />
                   <YStack>
                     <Text fontSize="$4" fontWeight="500">
-                      Safe Accounts
+                      {t('dataImport.safeAccounts')}
                     </Text>
                     <Text fontSize="$2" color="$colorSecondary">
-                      Including read-only
+                      {t('dataImport.includingReadOnly')}
                     </Text>
                   </YStack>
                 </XStack>
@@ -81,10 +83,10 @@ export const ReviewDataView = ({
                   />
                   <YStack>
                     <Text fontSize="$4" fontWeight="500">
-                      Signers
+                      {t('signers.signers')}
                     </Text>
                     <Text fontSize="$2" color="$colorSecondary">
-                      Generated and imported
+                      {t('dataImport.generatedAndImported')}
                     </Text>
                   </YStack>
                 </XStack>
@@ -111,10 +113,10 @@ export const ReviewDataView = ({
                   />
                   <YStack>
                     <Text fontSize="$4" fontWeight="500">
-                      Address Book
+                      {t('addressBook.title')}
                     </Text>
                     <Text fontSize="$2" color="$colorSecondary">
-                      All added contacts
+                      {t('dataImport.allAddedContacts')}
                     </Text>
                   </YStack>
                 </XStack>
@@ -137,7 +139,7 @@ export const ReviewDataView = ({
               marginHorizontal={'$4'}
               testID="privacy-notice"
             >
-              Your data stays private and secure during the transfer.
+              {t('dataImport.privacyNotice')}
             </Text>
 
             {/* Continue button */}
@@ -148,7 +150,7 @@ export const ReviewDataView = ({
               disabled={!isImportDataAvailable}
               opacity={!isImportDataAvailable ? 0.5 : 1}
             >
-              Continue
+              {t('dataImport.continue')}
             </SafeButton>
           </YStack>
         </YStack>

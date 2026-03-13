@@ -9,11 +9,12 @@ import { Identicon } from '@/src/components/Identicon'
 import { Chain } from '@safe-global/store/gateway/AUTO_GENERATED/chains'
 import { shortenAddress } from '@safe-global/utils/utils/formatters'
 import { TouchableOpacity } from 'react-native'
+import { TFunction } from 'i18next'
 
-export const formatSendNFTItems = (txInfo: TransferTransactionInfo, chain: Chain, viewOnExplorer: () => void) => {
+export const formatSendNFTItems = (txInfo: TransferTransactionInfo, chain: Chain, viewOnExplorer: () => void, t: TFunction) => {
   return [
     {
-      label: 'New signer',
+      label: t('bridge.recipient'),
       render: () => (
         <View flexDirection="row" alignItems="center" gap="$2">
           <Identicon address={txInfo.recipient.value as Address} size={24} />
@@ -28,7 +29,7 @@ export const formatSendNFTItems = (txInfo: TransferTransactionInfo, chain: Chain
       ),
     },
     {
-      label: 'Network',
+      label: t('transactions.network'),
       render: () => (
         <View flexDirection="row" alignItems="center" gap="$2">
           <Logo logoUri={chain.chainLogoUri} size="$6" />

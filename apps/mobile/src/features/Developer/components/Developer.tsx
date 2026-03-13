@@ -3,6 +3,7 @@ import { CopyButton } from '@/src/components/CopyButton'
 import { type Info } from '@/src/features/Developer/types'
 import { getCrashlytics } from '@react-native-firebase/crashlytics'
 import { SafeButton } from '@/src/components/SafeButton'
+import { useTranslation } from 'react-i18next'
 
 type DeveloperProps = {
   info: Info
@@ -32,20 +33,21 @@ const Info = ({ info }: InfoProps) => {
   )
 }
 export const Developer = ({ info }: DeveloperProps) => {
+  const { t } = useTranslation()
   return (
     <View flex={1}>
       <ScrollView paddingHorizontal={'$4'}>
         <View>
-          <H2>App info</H2>
+          <H2>{t('developer.appInfo')}</H2>
           <Info info={info.application} />
         </View>
         <View marginTop={'$2'}>
-          <H2>Device Info</H2>
+          <H2>{t('developer.deviceInfo')}</H2>
           <Info info={info.device} />
         </View>
         <View marginTop={'$4'}>
-          <Text>The button below will crash the app on purpose. This is for testing purposes only.</Text>
-          <SafeButton onPress={() => getCrashlytics().crash()}>Crash App</SafeButton>
+          <Text>{t('developer.crashWarning')}</Text>
+          <SafeButton onPress={() => getCrashlytics().crash()}>{t('developer.crashApp')}</SafeButton>
         </View>
       </ScrollView>
     </View>

@@ -4,6 +4,7 @@ import { SafeFontIcon } from '@/src/components/SafeFontIcon/SafeFontIcon'
 import { Badge } from '@/src/components/Badge'
 import { Loader } from '@/src/components/Loader'
 import { Alert } from '../../Alert'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   number: string
@@ -13,6 +14,7 @@ interface Props {
 }
 
 export const PendingTransactions = ({ number, isLoading, fullWidth, onPress }: Props) => {
+  const { t } = useTranslation()
   const startIcon = isLoading ? (
     <Loader size={24} color="$warning1ContrastTextDark" />
   ) : (
@@ -31,7 +33,7 @@ export const PendingTransactions = ({ number, isLoading, fullWidth, onPress }: P
       fullWidth={fullWidth}
       endIcon={endIcon}
       startIcon={startIcon}
-      message="Pending transactions"
+      message={t('pendingTx.pendingTransactions')}
       onPress={onPress}
       testID="pending-transactions"
     />

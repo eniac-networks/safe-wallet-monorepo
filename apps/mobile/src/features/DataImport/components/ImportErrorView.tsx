@@ -6,6 +6,7 @@ import { Badge } from '@/src/components/Badge'
 import { SafeFontIcon } from '@/src/components/SafeFontIcon'
 import { LargeHeaderTitle } from '@/src/components/Title'
 import { SafeButton } from '@/src/components/SafeButton'
+import { useTranslation } from 'react-i18next'
 
 interface ImportErrorViewProps {
   colors: [string, string]
@@ -14,6 +15,7 @@ interface ImportErrorViewProps {
 }
 
 export const ImportErrorView = ({ colors, bottomInset, onTryAgain }: ImportErrorViewProps) => {
+  const { t } = useTranslation()
   return (
     <YStack flex={1} testID="import-error-screen" paddingBottom={bottomInset}>
       <LinearGradient colors={colors} style={styles.background} />
@@ -36,11 +38,11 @@ export const ImportErrorView = ({ colors, bottomInset, onTryAgain }: ImportError
 
               <View margin="$4" width="100%" alignItems="center" gap="$4">
                 <LargeHeaderTitle textAlign="center" size="$8" lineHeight={32} maxWidth={200} fontWeight={600}>
-                  Import failed
+                  {t('dataImport.importFailed')}
                 </LargeHeaderTitle>
 
                 <Text textAlign="center" fontSize="$4" width="80%">
-                  The file could not be processed. Please check the file details and try again.
+                  {t('dataImport.importFailedDesc')}
                 </Text>
               </View>
             </View>
@@ -48,7 +50,7 @@ export const ImportErrorView = ({ colors, bottomInset, onTryAgain }: ImportError
         </View>
 
         <View paddingHorizontal="$4" gap="$4">
-          <SafeButton onPress={onTryAgain}>Try again</SafeButton>
+          <SafeButton onPress={onTryAgain}>{t('dataImport.tryAgain')}</SafeButton>
         </View>
       </View>
     </YStack>

@@ -12,6 +12,7 @@ import { Controller, FieldNamesMarkedBoolean, type Control, type FieldErrors } f
 import { type FormValues } from '@/src/features/Signer/types'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { SafeListItem } from '@/src/components/SafeListItem'
+import { useTranslation } from 'react-i18next'
 type Props = {
   signerAddress: string
   onPressExplorer: () => void
@@ -38,6 +39,7 @@ export const SignerView = ({
   hasPrivateKey,
 }: Props) => {
   const { bottom, top } = useSafeAreaInsets()
+  const { t } = useTranslation()
 
   return (
     <YStack flex={1}>
@@ -47,7 +49,7 @@ export const SignerView = ({
         </View>
         <View justifyContent={'center'} alignItems={'center'} marginTop={'$4'}>
           <H2 numberOfLines={1} maxWidth={300} marginTop={'$2'} textAlign={'center'}>
-            {name || 'Unnamed signer'}
+            {name || t('signer.unnamedSigner')}
           </H2>
         </View>
 
@@ -58,12 +60,12 @@ export const SignerView = ({
             render={({ field: { onChange, onBlur, value } }) => {
               return (
                 <SafeInputWithLabel
-                  label={'Name'}
-                  value={editMode ? value : value || (!dirtyFields.name ? 'Unnamed signer' : '')}
+                  label={t('addressBook.name')}
+                  value={editMode ? value : value || (!dirtyFields.name ? t('signer.unnamedSigner') : '')}
                   onBlur={onBlur}
                   disabled={!editMode}
                   onChangeText={onChange}
-                  placeholder={'Enter signer name'}
+                  placeholder={t('signer.enterSignerName')}
                   error={dirtyFields.name && !!errors.name}
                   success={dirtyFields.name && !errors.name}
                   right={
@@ -79,7 +81,7 @@ export const SignerView = ({
         </View>
 
         <Container marginTop={'$4'} rowGap={'$1'}>
-          <Text color={'$colorSecondary'}>Address</Text>
+          <Text color={'$colorSecondary'}>{t('addressBook.address')}</Text>
           <XStack columnGap={'$3'}>
             <Text flex={1}>{signerAddress}</Text>
             <YStack justifyContent={'flex-start'}>
@@ -96,7 +98,7 @@ export const SignerView = ({
         {hasPrivateKey && !editMode && (
           <View marginTop={'$4'} borderTopWidth={1} borderColor={'$borderLight'} paddingTop={'$4'}>
             <SafeListItem
-              label="View private key"
+              label={t('privateKey.viewPrivateKey')}
               rightNode={<SafeFontIcon name="chevron-right" />}
               onPress={onPressViewPrivateKey}
               pressStyle={{ opacity: 0.2 }}
@@ -106,7 +108,7 @@ export const SignerView = ({
       </ScrollView>
       <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={top + bottom}>
         <View paddingHorizontal={'$4'} paddingTop={'$2'} paddingBottom={bottom ?? 60}>
-          {editMode ? <SafeButton onPress={onPressEdit}>Save</SafeButton> : null}
+          {editMode ? <SafeButton onPress={onPressEdit}>{t('common.save')}</SafeButton> : null}
         </View>
       </KeyboardAvoidingView>
     </YStack>

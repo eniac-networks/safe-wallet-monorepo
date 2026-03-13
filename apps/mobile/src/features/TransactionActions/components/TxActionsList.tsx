@@ -11,12 +11,17 @@ import { useTxTokenInfo } from '@safe-global/utils/hooks/useTxTokenInfo'
 import { useAppSelector } from '@/src/store/hooks'
 import { selectActiveChainCurrency } from '@/src/store/chains'
 import { Identicon } from '@/src/components/Identicon'
+import { useTranslation } from 'react-i18next'
 
 interface TxActionsListProps {
   txDetails: TransactionDetails
 }
 
-export const getActionName = (action: ActionValueDecoded | MultiSend, addressInfoIndex?: AddressInfoIndex): string => {
+export const getActionName = (
+  action: ActionValueDecoded | MultiSend,
+  addressInfoIndex?: AddressInfoIndex,
+  fallback = 'contract interaction',
+): string => {
   const contractName = (addressInfoIndex as AddressInfoIndex)?.[action.to]?.name
   let name = shortenAddress(action.to)
 
@@ -24,7 +29,7 @@ export const getActionName = (action: ActionValueDecoded | MultiSend, addressInf
     name = action.dataDecoded.method
   }
 
-  return contractName ? `${contractName}: ${name}` : action.dataDecoded?.method || 'contract interaction'
+  return contractName ? `${contractName}: ${name}` : action.dataDecoded?.method || fallback
 }
 
 interface TxActionItemProps {
@@ -35,6 +40,7 @@ interface TxActionItemProps {
 }
 
 const TxActionItem = ({ action, index, addressInfoIndex, txData }: TxActionItemProps) => {
+  const { t } = useTranslation()
   const valueDecoded = txData?.dataDecoded?.parameters?.[0].valueDecoded
   const tx = Array.isArray(valueDecoded) ? valueDecoded[index] : undefined
   const nativeCurrency = useAppSelector(selectActiveChainCurrency)
@@ -61,8 +67,10 @@ const TxActionItem = ({ action, index, addressInfoIndex, txData }: TxActionItemP
           {transferTokenInfo?.tokenInfo?.symbol ? (
             <View flexDirection="row" alignItems="center" gap={'$2'}>
               <Text fontSize="$4" flex={1} numberOfLines={1} ellipsizeMode="tail">
-                Send {formatVisualAmount(transferTokenInfo.transferValue, transferTokenInfo?.tokenInfo?.decimals, 6)}{' '}
-                {transferTokenInfo.tokenInfo.symbol} to
+                {t('transactionActions.sendTo', {
+                  amount: formatVisualAmount(transferTokenInfo.transferValue, transferTokenInfo?.tokenInfo?.decimals, 6),
+                  symbol: transferTokenInfo.tokenInfo.symbol,
+                })}
               </Text>
               <Identicon address={tx.to as `0x${string}`} size={20} />{' '}
               <Text fontSize="$4" numberOfLines={1} ellipsizeMode="tail" flexShrink={1}>
@@ -71,7 +79,7 @@ const TxActionItem = ({ action, index, addressInfoIndex, txData }: TxActionItemP
             </View>
           ) : (
             <Text fontSize="$4" flexShrink={1} flexWrap="wrap">
-              {getActionName(action, addressInfoIndex as AddressInfoIndex)}
+              {getActionName(action, addressInfoIndex as AddressInfoIndex, t('transactionActions.contractInteraction'))}
             </Text>
           )}
         </View>
@@ -83,6 +91,7 @@ const TxActionItem = ({ action, index, addressInfoIndex, txData }: TxActionItemP
 }
 
 export function TxActionsList({ txDetails }: TxActionsListProps) {
+  const { t } = useTranslation()
   const { txId } = useLocalSearchParams<{ txId: string }>()
 
   const { dataDecoded, addressInfoIndex } = txDetails.txData || {}
@@ -92,7 +101,7 @@ export function TxActionsList({ txDetails }: TxActionsListProps) {
       pathname: '/action-details',
       params: {
         txId,
-        actionName: getActionName(action, addressInfoIndex as AddressInfoIndex),
+        actionName: getActionName(action, addressInfoIndex as AddressInfoIndex, t('transactionActions.contractInteraction')),
         action: JSON.stringify(action),
       },
     })
@@ -111,7 +120,7 @@ export function TxActionsList({ txDetails }: TxActionsListProps) {
         }
         return (
           <Container
-            key={`${getActionName(action, addressInfoIndex as AddressInfoIndex)}-${index}`}
+            key={`${getActionName(action, addressInfoIndex as AddressInfoIndex, t('transactionActions.contractInteraction'))}-${index}`}
             padding="$42"
             gap="$5"
             borderRadius="$3"

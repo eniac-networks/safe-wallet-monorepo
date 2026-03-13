@@ -8,6 +8,7 @@ import { Address } from '@/src/types/address'
 import { useCallback } from 'react'
 import { useNavigation } from 'expo-router'
 import { handleSafeDeletion } from '../utils/editAccountHelpers'
+import { useTranslation } from 'react-i18next'
 
 export const useEditAccountItem = () => {
   const isEdit = useAppSelector(selectMyAccountsMode)
@@ -17,6 +18,7 @@ export const useEditAccountItem = () => {
   const dispatch = useAppDispatch()
   const navigation = useNavigation()
   const { removeAllDelegatesForOwner } = useDelegateCleanup()
+  const { t } = useTranslation()
 
   const deleteSafe = useCallback(
     async (address: Address) => {
@@ -33,9 +35,10 @@ export const useEditAccountItem = () => {
         allSigners,
         removeAllDelegatesForOwner,
         navigationConfig,
+        t,
       })
     },
-    [navigation, activeSafe, safes, dispatch, allSigners, removeAllDelegatesForOwner],
+    [navigation, activeSafe, safes, dispatch, allSigners, removeAllDelegatesForOwner, t],
   )
 
   return { isEdit, deleteSafe }

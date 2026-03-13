@@ -1,5 +1,6 @@
 import React from 'react'
 import { SafeButton } from '@/src/components/SafeButton'
+import { useTranslation } from 'react-i18next'
 
 interface ContactActionButtonProps {
   isEditing: boolean
@@ -9,17 +10,18 @@ interface ContactActionButtonProps {
 }
 
 export const ContactActionButton = ({ isEditing, isValid, onEdit, onSave }: ContactActionButtonProps) => {
+  const { t } = useTranslation()
   if (isEditing) {
     return (
       <SafeButton primary onPress={onSave} disabled={!isValid}>
-        Save contact
+        {t('addressBook.saveContact')}
       </SafeButton>
     )
   }
 
   return (
     <SafeButton secondary onPress={onEdit}>
-      Edit contact
+      {t('addressBook.editContact')}
     </SafeButton>
   )
 }

@@ -8,7 +8,9 @@ import { useBiometrics } from '@/src/hooks/useBiometrics'
 import Logger from '@/src/utils/logger'
 import { View } from 'tamagui'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useTranslation } from 'react-i18next'
 function BiometricsOptIn() {
+  const { t } = useTranslation()
   const { toggleBiometrics, getBiometricsUIInfo, isBiometricsEnabled, isLoading } = useBiometrics()
   const { bottom } = useSafeAreaInsets()
   const local = useLocalSearchParams<{
@@ -59,7 +61,7 @@ function BiometricsOptIn() {
       await toggleBiometrics(true)
     } catch (error) {
       Logger.error('Error enabling biometrics', error)
-      toast.show('Error enabling biometrics', {
+      toast.show(t('biometrics.errorEnabling'), {
         native: false,
         duration: 2000,
       })
@@ -78,26 +80,24 @@ function BiometricsOptIn() {
 
   const image = isDark ? darkImage : lightImage
 
-  const infoMessage = 'Biometrics is required to import a signer.'
-
   return (
     <View style={{ flex: 1, paddingBottom: bottom }}>
       <OptIn
         testID="biometrics-opt-in-screen"
-        title="Simplify access, enhance security"
-        description="Enable biometrics to unlock the app quickly and confirm transactions securely using your device's biometric authentication."
+        title={t('biometrics.title')}
+        description={t('biometrics.description')}
         image={image}
         isVisible
         isLoading={isLoading}
         colorScheme={colorScheme}
-        infoMessage={infoMessage}
+        infoMessage={t('biometrics.requiredToImportSigner')}
         ctaButton={{
           onPress: handleAccept,
           label: getBiometricsUIInfo().label,
         }}
         secondaryButton={{
           onPress: handleReject,
-          label: 'Maybe later',
+          label: t('common.maybeLater'),
         }}
       />
     </View>

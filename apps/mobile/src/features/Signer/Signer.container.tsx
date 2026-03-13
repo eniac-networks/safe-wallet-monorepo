@@ -5,6 +5,7 @@ import { selectContactByAddress, upsertContact } from '@/src/store/addressBookSl
 import { selectSignerHasPrivateKey } from '@/src/store/signersSlice'
 import React, { useCallback, useState } from 'react'
 import { Alert, Linking } from 'react-native'
+import { useTranslation } from 'react-i18next'
 import { selectActiveChain } from '@/src/store/chains'
 import { getHashedExplorerUrl } from '@safe-global/utils/utils/gateway'
 import { usePreventLeaveScreen } from '@/src/hooks/usePreventLeaveScreen'
@@ -15,6 +16,7 @@ import { formSchema } from '@/src/features/Signer/schema'
 
 export const SignerContainer = () => {
   const { address } = useLocalSearchParams<{ address: string }>()
+  const { t } = useTranslation()
   const router = useRouter()
   const dispatch = useAppDispatch()
   const activeChain = useAppSelector(selectActiveChain)
@@ -63,13 +65,13 @@ export const SignerContainer = () => {
   const onPressEdit = useCallback(() => {
     if (editMode) {
       if (!isValid) {
-        Alert.alert('Cancel edit', 'Your form contains errors. Do you want to cancel the edit?', [
+        Alert.alert(t('signer.cancelEdit'), t('signer.cancelEditConfirm'), [
           {
-            text: 'No',
+            text: t('common.no'),
             onPress: () => console.log('Cancel Pressed'),
           },
           {
-            text: 'Yes',
+            text: t('common.yes'),
             onPress: () => {
               clearErrors()
               reset()
@@ -83,7 +85,7 @@ export const SignerContainer = () => {
       handleSubmit(onSubmit)()
     }
     setEditMode(() => !editMode)
-  }, [editMode, handleSubmit, onSubmit, isValid])
+  }, [editMode, handleSubmit, onSubmit, isValid, t])
 
   const formName = watch('name')
 
