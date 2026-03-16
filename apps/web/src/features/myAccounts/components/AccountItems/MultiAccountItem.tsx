@@ -199,7 +199,7 @@ function usePinActions(
     )
 
     trackEvent({ ...OVERVIEW_EVENTS.PIN_SAFE, label: PIN_SAFE_LABELS.pin })
-  }, [name, safes, allAddedSafes, dispatch, findOverview, address])
+  }, [name, safes, allAddedSafes, dispatch, findOverview, address, t])
 
   const removeFromPinnedList = useCallback(() => {
     for (const safe of safes) {
@@ -216,7 +216,7 @@ function usePinActions(
     )
 
     trackEvent({ ...OVERVIEW_EVENTS.PIN_SAFE, label: PIN_SAFE_LABELS.unpin })
-  }, [dispatch, name, address, safes])
+  }, [dispatch, name, address, safes, t])
 
   return { addToPinnedList, removeFromPinnedList }
 }

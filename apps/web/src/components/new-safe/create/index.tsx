@@ -169,7 +169,7 @@ const CreateSafe = () => {
     },
   ]
 
-  const staticHint = useMemo(() => staticHints[activeStep], [activeStep])
+  const staticHint = useMemo(() => staticHints[activeStep], [activeStep, staticHints])
 
   const initialStep = 0
   const initialData: NewSafeFormData = {

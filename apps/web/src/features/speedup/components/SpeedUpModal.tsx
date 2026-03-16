@@ -156,6 +156,7 @@ export const SpeedUpModal = ({
     wallet,
     safeTx,
     trigger,
+    t,
   ])
 
   if (!hasActions) {
@@ -229,9 +230,7 @@ export const SpeedUpModal = ({
           <SvgIcon inheritViewBox component={RocketSpeedup} sx={{ width: 90, height: 90 }} />
         </Box>
 
-        <Typography data-testid="speedup-summary">
-          {t('speedup.tooLong')}
-        </Typography>
+        <Typography data-testid="speedup-summary">{t('speedup.tooLong')}</Typography>
       </DialogContent>
     </ModalDialog>
   )

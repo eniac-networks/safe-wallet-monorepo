@@ -125,7 +125,7 @@ const CsvTxExportButton = ({ hasActiveFilter }: CsvTxExportProps): ReactElement 
       errorNotification()
       setExportJobId(null)
     }
-  }, [exportStatus, error, dispatch])
+  }, [exportStatus, error, dispatch, t])
 
   return (
     <>

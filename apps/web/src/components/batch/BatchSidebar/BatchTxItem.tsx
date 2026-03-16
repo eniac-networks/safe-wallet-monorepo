@@ -56,7 +56,7 @@ const BatchTxItem = ({
         trackEvent(BATCH_EVENTS.BATCH_DELETE_TX)
       }
     },
-    [onDelete, id],
+    [onDelete, id, t],
   )
 
   return (

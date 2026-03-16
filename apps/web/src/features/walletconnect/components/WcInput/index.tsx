@@ -60,7 +60,7 @@ const WcInput = ({ uri }: { uri: string }) => {
         }
       }, PROPOSAL_TIMEOUT)
     },
-    [loading, setError, setLoading, walletConnect],
+    [loading, setError, setLoading, walletConnect, t],
   )
 
   // Insert a pre-filled uri

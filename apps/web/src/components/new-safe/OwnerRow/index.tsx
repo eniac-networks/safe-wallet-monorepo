@@ -56,7 +56,7 @@ export const OwnerRow = ({
         return t('newSafe.signerAlreadyAdded')
       }
     },
-    [getValues, safeAddress],
+    [getValues, safeAddress, t],
   )
 
   const { name, ens, resolving } = useAddressResolver(owner.address)
@@ -136,7 +136,11 @@ export const OwnerRow = ({
         >
           {removable && (
             <>
-              <IconButton data-testid="remove-owner-btn" onClick={() => remove?.(index)} aria-label={t('settings.removeSigner')}>
+              <IconButton
+                data-testid="remove-owner-btn"
+                onClick={() => remove?.(index)}
+                aria-label={t('settings.removeSigner')}
+              >
                 <SvgIcon component={DeleteIcon} inheritViewBox />
               </IconButton>
             </>

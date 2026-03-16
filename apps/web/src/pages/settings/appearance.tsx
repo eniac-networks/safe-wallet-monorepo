@@ -9,7 +9,7 @@ import { selectSettings, setCopyShortName, setDarkMode } from '@/store/settingsS
 import SettingsHeader from '@/components/settings/SettingsHeader'
 import { trackEvent, SETTINGS_EVENTS } from '@/services/analytics'
 import { useDarkMode } from '@/hooks/useDarkMode'
-import ExternalLink from '@/components/common/ExternalLink'
+// import ExternalLink from '@/components/common/ExternalLink'
 import { BRAND_NAME } from '@/config/constants'
 import LanguageSwitcher from '@/components/common/LanguageSwitcher'
 

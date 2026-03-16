@@ -4,7 +4,7 @@ import { TX_LIST_EVENTS } from '@/services/analytics'
 import Track from '@/components/common/Track'
 import { useTranslation } from 'react-i18next'
 
-const _TrustedToggleButton = ({
+const TrustedToggleButton = ({
   onlyTrusted,
   setOnlyTrusted,
   hasDefaultTokenlist,
@@ -33,4 +33,4 @@ const _TrustedToggleButton = ({
   )
 }
 
-export default _TrustedToggleButton
+export default TrustedToggleButton
