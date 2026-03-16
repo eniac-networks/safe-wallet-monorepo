@@ -58,7 +58,13 @@ const formatParameters = ({ txData, t }: formatParametersProps): ListTableItem[]
   if (txData?.hexData) {
     items.push({
       label: t('transactions.hexData'),
-      render: () => <HexDataDisplay data={txData?.hexData} title={t('transactions.hexData')} copyMessage={t('advancedDetails.dataCopied')} />,
+      render: () => (
+        <HexDataDisplay
+          data={txData?.hexData}
+          title={t('transactions.hexData')}
+          copyMessage={t('advancedDetails.dataCopied')}
+        />
+      ),
     })
   }
 

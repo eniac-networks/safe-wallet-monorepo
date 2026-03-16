@@ -163,9 +163,7 @@ export const ReviewBatch = ({ params }: { params: ExecuteBatchFlowProps }) => {
   return (
     <>
       <TxCard>
-        <Typography variant="body2">
-          {t('batch.description', { count: params.txs.length })}
-        </Typography>
+        <Typography variant="body2">{t('batch.description', { count: params.txs.length })}</Typography>
 
         {multiSendContract && <SendToBlock address={multisendContractAddress} title={t('batch.interactWith')} />}
 
@@ -194,19 +192,11 @@ export const ReviewBatch = ({ params }: { params: ExecuteBatchFlowProps }) => {
           </>
         ) : null}
 
-        <Alert severity="warning">
-          {t('batch.revertWarning')}
-        </Alert>
+        <Alert severity="warning">{t('batch.revertWarning')}</Alert>
 
-        {error && (
-          <ErrorMessage error={asError(error)}>
-            {t('batch.willFail')}
-          </ErrorMessage>
-        )}
+        {error && <ErrorMessage error={asError(error)}>{t('batch.willFail')}</ErrorMessage>}
 
-        {submitError && (
-          <ErrorMessage error={submitError}>{t('counterfactual.errorSubmitting')}</ErrorMessage>
-        )}
+        {submitError && <ErrorMessage error={submitError}>{t('counterfactual.errorSubmitting')}</ErrorMessage>}
 
         {isRejectedByUser && <WalletRejectionError />}
 

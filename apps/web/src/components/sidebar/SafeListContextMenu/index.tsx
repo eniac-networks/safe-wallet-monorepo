@@ -118,7 +118,9 @@ const SafeListContextMenu = ({
             <ListItemIcon>
               <SvgIcon component={EditIcon} inheritViewBox fontSize="small" color="success" />
             </ListItemIcon>
-            <ListItemText data-testid="rename-btn">{hasName ? t('sidebar.rename') : t('sidebar.giveName')}</ListItemText>
+            <ListItemText data-testid="rename-btn">
+              {hasName ? t('sidebar.rename') : t('sidebar.giveName')}
+            </ListItemText>
           </MenuItem>
         )}
 

@@ -123,11 +123,7 @@ const SetAddressStep = ({ data, onSubmit, onBack }: StepRenderProps<LoadSafeForm
                       <CircularProgress size={20} />
                     </InputAdornment>
                   ) : (
-                    <Tooltip
-                      title={t('newSafe.nameTooltip')}
-                      arrow
-                      placement="top"
-                    >
+                    <Tooltip title={t('newSafe.nameTooltip')} arrow placement="top">
                       <InputAdornment position="end">
                         <SvgIcon component={InfoIcon} inheritViewBox />
                       </InputAdornment>

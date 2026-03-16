@@ -77,7 +77,8 @@ function SpaceCreationModal({ onClose }: { onClose: () => void }): ReactElement 
               <NameInput data-testid="space-name-input" label={t('newSafe.nameLabel')} autoFocus name="name" required />
             </Box>
             <Typography variant="body2" color="text.secondary">
-              {t('spaces.dataPrivacyPrefix')}<ExternalLink href={AppRoutes.privacy}>{t('newSafe.privacyPolicy')}</ExternalLink>
+              {t('spaces.dataPrivacyPrefix')}
+              <ExternalLink href={AppRoutes.privacy}>{t('newSafe.privacyPolicy')}</ExternalLink>
             </Typography>
 
             {error && (

@@ -37,9 +37,7 @@ export default function LanguageScreen() {
               marginBottom="$2"
             >
               <Text fontSize={16}>{name}</Text>
-              {(i18n.language === code || i18n.language.startsWith(code + '-')) && (
-                <Text color="$primary">✓</Text>
-              )}
+              {(i18n.language === code || i18n.language.startsWith(code + '-')) && <Text color="$primary">✓</Text>}
             </View>
           </Pressable>
         )}

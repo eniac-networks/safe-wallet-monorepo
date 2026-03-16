@@ -149,9 +149,7 @@ const ActivateAccountFlow = () => {
   return (
     <TxLayout title={t('counterfactual.activateAccount')} hideNonce>
       <TxCard>
-        <Typography>
-          {t('counterfactual.aboutToDeployDescription')}
-        </Typography>
+        <Typography>{t('counterfactual.aboutToDeployDescription')}</Typography>
 
         <Divider sx={{ mx: -3, my: 2 }} />
 
@@ -203,11 +201,7 @@ const ActivateAccountFlow = () => {
             </Box>
           )}
           {isWrongChain && <NetworkWarning />}
-          {!walletCanPay && !willRelay && (
-            <ErrorMessage>
-              {t('newSafe.insufficientFunds')}
-            </ErrorMessage>
-          )}
+          {!walletCanPay && !willRelay && <ErrorMessage>{t('newSafe.insufficientFunds')}</ErrorMessage>}
         </Box>
 
         <Divider sx={{ mx: -3, mt: 2, mb: 1 }} />

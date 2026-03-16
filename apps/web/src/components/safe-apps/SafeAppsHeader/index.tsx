@@ -20,9 +20,7 @@ const SafeAppsHeader = (): ReactElement => {
         </Typography>
 
         {/* Safe Apps Subtitle */}
-        <Typography className={css.subtitle}>
-          {t('safeApps.connectToApps')}
-        </Typography>
+        <Typography className={css.subtitle}>{t('safeApps.connectToApps')}</Typography>
       </Box>
 
       {/* Safe Apps Tabs */}

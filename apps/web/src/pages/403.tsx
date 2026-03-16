@@ -18,9 +18,7 @@ const Custom403: NextPage = () => {
   return (
     <main>
       <h1>{t('errors.accessRestricted')}</h1>
-      <p>
-        {t('errors.accessRestrictedDescription', { terms: termsLink })}
-      </p>
+      <p>{t('errors.accessRestrictedDescription', { terms: termsLink })}</p>
     </main>
   )
 }

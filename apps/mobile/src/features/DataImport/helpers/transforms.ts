@@ -175,7 +175,12 @@ export const fetchAndStoreSafeOverviews = async (
     const batchProgress = Math.round((i / chunks.length) * 100)
 
     Logger.info(`Processing batch ${i + 1}/${chunks.length} with ${chunk.length} safes`)
-    progressCallback?.(batchProgress, t ? t('dataImport.fetchingSafeDataBatch', { current: i + 1, total: chunks.length }) : `Fetching safe data (batch ${i + 1}/${chunks.length})`)
+    progressCallback?.(
+      batchProgress,
+      t
+        ? t('dataImport.fetchingSafeDataBatch', { current: i + 1, total: chunks.length })
+        : `Fetching safe data (batch ${i + 1}/${chunks.length})`,
+    )
 
     try {
       // Make the API call for this batch - this will trigger the extraReducer to update the state
@@ -210,7 +215,10 @@ export const fetchAndStoreSafeOverviews = async (
     }
   }
 
-  progressCallback?.(100, t ? t('dataImport.fetchedSafeData', { count: safes.length }) : `Fetched complete data for ${safes.length} safes`)
+  progressCallback?.(
+    100,
+    t ? t('dataImport.fetchedSafeData', { count: safes.length }) : `Fetched complete data for ${safes.length} safes`,
+  )
   Logger.info(`Extracted ${allOwners.size} unique owners from ${safes.length} safes`)
   Logger.info(`Complete SafeOverview data has been stored in Redux store via RTK query extraReducer`)
   return allOwners
@@ -282,7 +290,12 @@ export const storeKeysWithValidation = async (
     const keyAddress = key.address.toLowerCase()
     const keyProgress = Math.round((i / data.keys.length) * 100)
 
-    progressCallback?.(keyProgress, t ? t('dataImport.processingKey', { current: i + 1, total: data.keys.length }) : `Processing key ${i + 1}/${data.keys.length}`)
+    progressCallback?.(
+      keyProgress,
+      t
+        ? t('dataImport.processingKey', { current: i + 1, total: data.keys.length })
+        : `Processing key ${i + 1}/${data.keys.length}`,
+    )
 
     if (!allOwners.has(keyAddress)) {
       // Key is not an owner of any safe, don't import it
@@ -305,7 +318,12 @@ export const storeKeysWithValidation = async (
 
       // Create delegate for this owner
       try {
-        progressCallback?.(keyProgress, t ? t('dataImport.creatingDelegate', { name: key.name || key.address }) : `Creating delegate for ${key.name || key.address}`)
+        progressCallback?.(
+          keyProgress,
+          t
+            ? t('dataImport.creatingDelegate', { name: key.name || key.address })
+            : `Creating delegate for ${key.name || key.address}`,
+        )
 
         // Pass null as safe address to create a delegate for the chain, not for a specific safe
         const delegateResult = await createDelegate(privateKey, null)
@@ -352,7 +370,10 @@ export const storeKeysWithValidation = async (
   // Update the context with not imported keys
   updateNotImportedKeys(notImportedKeys)
 
-  progressCallback?.(100, t ? t('dataImport.completedKeys', { count: importedCount }) : `Completed: ${importedCount} keys imported`)
+  progressCallback?.(
+    100,
+    t ? t('dataImport.completedKeys', { count: importedCount }) : `Completed: ${importedCount} keys imported`,
+  )
   Logger.info(`Import validation complete: ${importedCount} keys imported, ${notImportedKeys.length} keys not imported`)
 }
 

@@ -12,7 +12,10 @@ import { TFunction } from 'i18next'
 
 const CURRENCY = 'USD'
 
-export const getStakingTypeLabel = (type: 'NativeStakingDeposit' | 'NativeStakingValidatorsExit' | 'NativeStakingWithdraw', t: TFunction) => {
+export const getStakingTypeLabel = (
+  type: 'NativeStakingDeposit' | 'NativeStakingValidatorsExit' | 'NativeStakingWithdraw',
+  t: TFunction,
+) => {
   const map = {
     NativeStakingDeposit: t('staking.deposit'),
     NativeStakingValidatorsExit: t('staking.withdrawRequest'),
@@ -21,7 +24,10 @@ export const getStakingTypeLabel = (type: 'NativeStakingDeposit' | 'NativeStakin
   return map[type]
 }
 
-export const formatStakingDepositItems = (txInfo: NativeStakingDepositTransactionInfo, t: TFunction): ListTableItem[] => {
+export const formatStakingDepositItems = (
+  txInfo: NativeStakingDepositTransactionInfo,
+  t: TFunction,
+): ListTableItem[] => {
   // Fee is returned in decimal format, multiply by 100 for percentage
   const fee = (txInfo.fee * 100).toFixed(2)
 
@@ -65,7 +71,10 @@ export const formatStakingDepositItems = (txInfo: NativeStakingDepositTransactio
   ]
 }
 
-export const formatStakingValidatorItems = (txInfo: NativeStakingDepositTransactionInfo, t: TFunction): ListTableItem[] => {
+export const formatStakingValidatorItems = (
+  txInfo: NativeStakingDepositTransactionInfo,
+  t: TFunction,
+): ListTableItem[] => {
   return [
     {
       label: t('staking.validator'),

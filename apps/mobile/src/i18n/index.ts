@@ -10,18 +10,16 @@ export const SUPPORTED_LANGUAGES = {
 
 export type SupportedLanguage = keyof typeof SUPPORTED_LANGUAGES
 
-i18n
-  .use(initReactI18next)
-  .init({
-    resources: {
-      en: { translation: en },
-      'zh-TW': { translation: zhTW },
-    },
-    fallbackLng: 'en',
-    supportedLngs: ['en', 'zh-TW'],
-    interpolation: {
-      escapeValue: false,
-    },
-  })
+i18n.use(initReactI18next).init({
+  resources: {
+    en: { translation: en },
+    'zh-TW': { translation: zhTW },
+  },
+  fallbackLng: 'en',
+  supportedLngs: ['en', 'zh-TW'],
+  interpolation: {
+    escapeValue: false,
+  },
+})
 
 export default i18n

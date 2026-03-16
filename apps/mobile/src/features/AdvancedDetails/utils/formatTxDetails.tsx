@@ -146,7 +146,11 @@ const formatTxDetails = ({ txDetails, viewOnExplorer, t }: formatTxDetailsProps)
           <InfoSheet title={t('advancedDetails.safeTxHash')} info={executionInfo.safeTxHash}>
             <View flexDirection="row" alignItems="center" gap="$1">
               <Text>{shortenText(executionInfo.safeTxHash || '', characterDisplayLimit)}</Text>
-              <CopyButton value={executionInfo.safeTxHash || ''} color={'$textSecondaryLight'} text={t('advancedDetails.hashCopied')} />
+              <CopyButton
+                value={executionInfo.safeTxHash || ''}
+                color={'$textSecondaryLight'}
+                text={t('advancedDetails.hashCopied')}
+              />
             </View>
           </InfoSheet>
         ),
@@ -162,7 +166,11 @@ const formatTxDetails = ({ txDetails, viewOnExplorer, t }: formatTxDetailsProps)
         <InfoSheet title={t('advancedDetails.transactionHash')} info={txDetails.txHash || ''}>
           <View flexDirection="row" alignItems="center" gap="$1">
             <Text>{shortenText(txDetails.txHash || '', characterDisplayLimit)}</Text>
-            <CopyButton value={txDetails.txHash || ''} color={'$textSecondaryLight'} text={t('advancedDetails.hashCopied')} />
+            <CopyButton
+              value={txDetails.txHash || ''}
+              color={'$textSecondaryLight'}
+              text={t('advancedDetails.hashCopied')}
+            />
           </View>
         </InfoSheet>
       ),

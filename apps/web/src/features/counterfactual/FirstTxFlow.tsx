@@ -74,7 +74,12 @@ const FirstTxFlow = ({ open, onClose }: { open: boolean; onClose: () => void }) 
   const showRecoveryOption = supportsRecovery && !recovery
 
   return (
-    <ModalDialog open={open} dialogTitle={t('counterfactual.createNewTransaction')} hideChainIndicator onClose={onClose}>
+    <ModalDialog
+      open={open}
+      dialogTitle={t('counterfactual.createNewTransaction')}
+      hideChainIndicator
+      onClose={onClose}
+    >
       <Grid
         container
         spacing={2}
@@ -134,7 +139,11 @@ const FirstTxFlow = ({ open, onClose }: { open: boolean; onClose: () => void }) 
         )}
 
         <Grid item>
-          <ChoiceButton title={t('counterfactual.sendToken')} icon={AssetsIcon} onClick={() => handleClick(onSendToken)} />
+          <ChoiceButton
+            title={t('counterfactual.sendToken')}
+            icon={AssetsIcon}
+            onClick={() => handleClick(onSendToken)}
+          />
         </Grid>
       </Grid>
     </ModalDialog>

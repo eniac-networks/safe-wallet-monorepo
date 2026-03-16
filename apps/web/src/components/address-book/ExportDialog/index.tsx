@@ -65,15 +65,10 @@ function ExportDialog({
   return (
     <ModalDialog open onClose={handleClose} dialogTitle={t('addressBook.exportTitle')} hideChainIndicator>
       <DialogContent sx={{ p: '24px !important' }}>
-        <Typography data-testid="export-summary">
-          {t('addressBook.exportSummary', { count: length })}
-        </Typography>
+        <Typography data-testid="export-summary">{t('addressBook.exportSummary', { count: length })}</Typography>
 
         <Typography mt={1}>
-          <ExternalLink
-            href={HelpCenterArticle.ADDRESS_BOOK_DATA}
-            title={t('addressBook.learnAboutImportExport')}
-          >
+          <ExternalLink href={HelpCenterArticle.ADDRESS_BOOK_DATA} title={t('addressBook.learnAboutImportExport')}>
             {t('addressBook.learnAboutImportExport')}
           </ExternalLink>
         </Typography>

@@ -104,7 +104,10 @@ export const slippageRow = (order: OrderTransactionInfo, t: TFunction) => {
   }
 }
 
-export const widgetFeeRow = (order: Pick<OrderTransactionInfo, 'fullAppData' | 'executedFee' | 'executedFeeToken'>, t: TFunction) => {
+export const widgetFeeRow = (
+  order: Pick<OrderTransactionInfo, 'fullAppData' | 'executedFee' | 'executedFeeToken'>,
+  t: TFunction,
+) => {
   const bps = getOrderFeeBps(order)
 
   return {
@@ -148,24 +151,34 @@ export const numberOfPartsRow = (order: { numberOfParts: string }, t: TFunction)
   }
 }
 
-export const partSellAmountRow = (order: {
-  partSellAmount: string
-  sellToken: { decimals: number; symbol: string }
-}, t: TFunction) => {
+export const partSellAmountRow = (
+  order: {
+    partSellAmount: string
+    sellToken: { decimals: number; symbol: string }
+  },
+  t: TFunction,
+) => {
   return {
     label: t('swap.sellAmount'),
     value: `${formatValue(order.partSellAmount, order.sellToken.decimals)} ${order.sellToken.symbol} per part`,
   }
 }
 
-export const partBuyAmountRow = (order: { minPartLimit: string; buyToken: { decimals: number; symbol: string } }, t: TFunction) => {
+export const partBuyAmountRow = (
+  order: { minPartLimit: string; buyToken: { decimals: number; symbol: string } },
+  t: TFunction,
+) => {
   return {
     label: t('swap.buyAmount'),
     value: `${formatValue(order.minPartLimit, order.buyToken.decimals)} ${order.buyToken.symbol} per part`,
   }
 }
 
-export const formatSwapOrderItemsForConfirmation = (txInfo: OrderTransactionInfo, chain: Chain, t: TFunction): ListTableItem[] => {
+export const formatSwapOrderItemsForConfirmation = (
+  txInfo: OrderTransactionInfo,
+  chain: Chain,
+  t: TFunction,
+): ListTableItem[] => {
   const items = [
     priceRow(txInfo, t),
     expiryRow(txInfo, t),
@@ -179,13 +192,27 @@ export const formatSwapOrderItemsForConfirmation = (txInfo: OrderTransactionInfo
   return items.filter((item) => item !== null) as ListTableItem[]
 }
 
-export const formatSwapOrderItemsForHistory = (txInfo: OrderTransactionInfo, chain: Chain, t: TFunction): ListTableItem[] => {
-  const items = [priceRow(txInfo, t), orderIdRow(txInfo, t), networkRow(chain, t), statusRow(txInfo, t), totalFeesRow(txInfo, t)]
+export const formatSwapOrderItemsForHistory = (
+  txInfo: OrderTransactionInfo,
+  chain: Chain,
+  t: TFunction,
+): ListTableItem[] => {
+  const items = [
+    priceRow(txInfo, t),
+    orderIdRow(txInfo, t),
+    networkRow(chain, t),
+    statusRow(txInfo, t),
+    totalFeesRow(txInfo, t),
+  ]
 
   return items.filter((item) => item !== null) as ListTableItem[]
 }
 
-export const formatTwapOrderItemsForHistory = (order: TwapOrderTransactionInfo, chain: Chain, t: TFunction): ListTableItem[] => {
+export const formatTwapOrderItemsForHistory = (
+  order: TwapOrderTransactionInfo,
+  chain: Chain,
+  t: TFunction,
+): ListTableItem[] => {
   const items = [
     priceRow(order, t),
     numberOfPartsRow(order, t),

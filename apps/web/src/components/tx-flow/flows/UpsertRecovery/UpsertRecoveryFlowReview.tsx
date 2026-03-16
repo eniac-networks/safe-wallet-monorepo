@@ -72,7 +72,9 @@ export function UpsertRecoveryFlowReview({ children, ...props }: ReviewTransacti
   return (
     <ReviewTransaction {...props}>
       <Typography>
-        {t('recovery.txWillUpdateRecovery', { action: t(isEdit ? 'recovery.updateRecovery' : 'recovery.enableRecovery') })}
+        {t('recovery.txWillUpdateRecovery', {
+          action: t(isEdit ? 'recovery.updateRecovery' : 'recovery.enableRecovery'),
+        })}
       </Typography>
 
       <TxDataRow title={t('recovery.trustedRecoverer')}>

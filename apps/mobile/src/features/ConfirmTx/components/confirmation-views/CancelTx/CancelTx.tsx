@@ -36,13 +36,11 @@ export function CancelTx({ txInfo, executionInfo, txId }: CancelTxProps) {
         }
         badgeIcon="transaction-contract"
         badgeColor="$textSecondaryLight"
-        title={txInfo.methodName ?? t(‘cancelTx.onChainRejection’)}
+        title={txInfo.methodName ?? t('cancelTx.onChainRejection')}
         submittedAt={executionInfo.submittedAt}
       />
 
-      <Text fontSize="$4">
-        {t(‘cancelTx.description’, { nonce: executionInfo.nonce })}
-      </Text>
+      <Text fontSize="$4">{t('cancelTx.description', { nonce: executionInfo.nonce })}</Text>
 
       <ListTable items={items}>
         <ParametersButton txId={txId} />

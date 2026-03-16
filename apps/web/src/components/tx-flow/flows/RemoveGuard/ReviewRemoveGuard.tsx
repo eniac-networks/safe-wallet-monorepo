@@ -38,9 +38,7 @@ export const ReviewRemoveGuard = ({
 
       <EthHashInfo address={params.address} showCopyButton hasExplorer shortAddress={false} />
 
-      <Typography my={2}>
-        {t('settings.removeGuardDescription')}
-      </Typography>
+      <Typography my={2}>{t('settings.removeGuardDescription')}</Typography>
 
       {children}
     </ReviewTransaction>

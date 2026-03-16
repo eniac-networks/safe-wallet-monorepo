@@ -46,7 +46,12 @@ export const PrivateKeyView = ({
             style={styles.input}
             right={
               isKeyVisible && privateKey ? (
-                <CopyButton value={privateKey} color={'$colorSecondary'} hitSlop={2} text={t('privateKey.privateKeyCopied')} />
+                <CopyButton
+                  value={privateKey}
+                  color={'$colorSecondary'}
+                  hitSlop={2}
+                  text={t('privateKey.privateKeyCopied')}
+                />
               ) : null
             }
           />

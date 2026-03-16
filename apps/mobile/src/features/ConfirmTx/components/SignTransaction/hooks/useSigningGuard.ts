@@ -23,16 +23,12 @@ export function useSigningGuard() {
     // 2. We haven't shown alert before AND
     // 3. We've never been authorized (prevents alert after successful signing)
     if (!canSign && !hasShownAlert.current && !hasEverBeenAuthorized.current) {
-      Alert.alert(
-        t('signTransaction.somethingFishy'),
-        t('signTransaction.fishyMessage'),
-        [
-          {
-            text: t('signTransaction.goBack'),
-            onPress: () => router.back(),
-          },
-        ],
-      )
+      Alert.alert(t('signTransaction.somethingFishy'), t('signTransaction.fishyMessage'), [
+        {
+          text: t('signTransaction.goBack'),
+          onPress: () => router.back(),
+        },
+      ])
       hasShownAlert.current = true
     }
   }, [canSign, router, t])

@@ -13,7 +13,12 @@ import { TFunction } from 'i18next'
 
 const mintBadgeProps: CircleProps = { borderRadius: '$2', paddingHorizontal: '$2', paddingVertical: '$1' }
 
-export const formatContractItems = (txInfo: CustomTransactionInfo, chain: Chain, viewOnExplorer: () => void, t: TFunction) => {
+export const formatContractItems = (
+  txInfo: CustomTransactionInfo,
+  chain: Chain,
+  viewOnExplorer: () => void,
+  t: TFunction,
+) => {
   const contractName = txInfo.to.name ? ellipsis(txInfo.to.name, 18) : shortenAddress(txInfo.to.value)
 
   return [

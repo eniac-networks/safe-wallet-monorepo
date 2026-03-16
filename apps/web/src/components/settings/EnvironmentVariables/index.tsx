@@ -111,11 +111,7 @@ const EnvironmentVariables = () => {
                 }}
               >
                 {t('settings.rpcProvider')}
-                <Tooltip
-                  placement="top"
-                  arrow
-                  title={t('settings.rpcProviderTooltip')}
-                >
+                <Tooltip placement="top" arrow title={t('settings.rpcProviderTooltip')}>
                   <span>
                     <SvgIcon
                       component={InfoIcon}

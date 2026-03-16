@@ -21,7 +21,13 @@ const MsgShareLink = ({ safeMessageHash, button }: { safeMessageHash: string; bu
     <Track {...MESSAGE_EVENTS.COPY_DEEPLINK}>
       <CopyTooltip text={txUrl} initialToolTipText={t('messages.copyMessageUrl')}>
         {button ? (
-          <Button data-testid="share-btn" aria-label={t('messages.share')} variant="contained" size="small" onClick={() => {}}>
+          <Button
+            data-testid="share-btn"
+            aria-label={t('messages.share')}
+            variant="contained"
+            size="small"
+            onClick={() => {}}
+          >
             {t('messages.copyLink')}
           </Button>
         ) : (

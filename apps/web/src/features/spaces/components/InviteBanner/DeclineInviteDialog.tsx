@@ -49,9 +49,7 @@ const DeclineInviteDialog = ({ space, onClose }: DeclineInviteDialogProps) => {
   return (
     <ModalDialog open onClose={onClose} dialogTitle={t('spaces.declineInvitation')} hideChainIndicator>
       <DialogContent sx={{ p: '24px !important' }}>
-        <Typography>
-          {t('spaces.confirmDeclineInvite', { name: space.name })}
-        </Typography>
+        <Typography>{t('spaces.confirmDeclineInvite', { name: space.name })}</Typography>
         {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
       </DialogContent>
 

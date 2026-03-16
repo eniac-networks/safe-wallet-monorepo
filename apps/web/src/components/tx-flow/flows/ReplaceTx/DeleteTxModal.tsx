@@ -113,9 +113,7 @@ const InternalDeleteTxModal = ({
       <Divider />
 
       <DialogContent>
-        <Box>
-          {t('recovery.deleteTxDescription')}
-        </Box>
+        <Box>{t('recovery.deleteTxDescription')}</Box>
 
         <Box mt={2}>
           {t('recovery.deleteTxRisksPrefix')}{' '}

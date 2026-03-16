@@ -30,9 +30,7 @@ export function RemoveRecoveryFlowReview({
 
   return (
     <ReviewTransaction onSubmit={onFormSubmit}>
-      <Typography>
-        {t('recovery.removeRecoveryDescription')}
-      </Typography>
+      <Typography>{t('recovery.removeRecoveryDescription')}</Typography>
 
       <OwnerList
         title={t('recovery.removingRecoverer')}

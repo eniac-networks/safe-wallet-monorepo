@@ -85,7 +85,11 @@ export const TransactionChecksView = ({ tenderly, blockaid }: Props) => {
                     }
                   />
                 ) : (
-                  <Badge circular={false} themeName="badge_error" content={<Text fontSize={12}>{t('common.failed')}</Text>} />
+                  <Badge
+                    circular={false}
+                    themeName="badge_error"
+                    content={<Text fontSize={12}>{t('common.failed')}</Text>}
+                  />
                 )}
               </XStack>
               {tenderly.fetchStatus === FETCH_STATUS.SUCCESS && (

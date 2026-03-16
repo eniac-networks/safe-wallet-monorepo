@@ -144,9 +144,7 @@ export function UpsertRecoveryFlowSettings({ delayModifier }: { delayModifier?: 
                 {t('recovery.trustedRecoverer')}
               </Typography>
 
-              <Typography variant="body2">
-                {t('recovery.chooseRecoverer')}
-              </Typography>
+              <Typography variant="body2">{t('recovery.chooseRecoverer')}</Typography>
             </div>
             <div>
               <AddressBookInput
@@ -174,9 +172,7 @@ export function UpsertRecoveryFlowSettings({ delayModifier }: { delayModifier?: 
                 </Tooltip>
               </Typography>
 
-              <Typography variant="body2">
-                {t('recovery.reviewWindowDescription')}
-              </Typography>
+              <Typography variant="body2">{t('recovery.reviewWindowDescription')}</Typography>
             </div>
             <Box
               sx={{

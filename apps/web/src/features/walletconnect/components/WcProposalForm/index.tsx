@@ -101,7 +101,12 @@ const WcProposalForm = ({ proposal, onApprove, onReject }: ProposalFormProps): R
 
       {proposer.metadata.icons[0] && (
         <div className={css.icon}>
-          <SafeAppIconCard src={proposer.metadata.icons[0]} width={32} height={32} alt={`${name || t('walletconnect.dApp')} logo`} />
+          <SafeAppIconCard
+            src={proposer.metadata.icons[0]}
+            width={32}
+            height={32}
+            alt={`${name || t('walletconnect.dApp')} logo`}
+          />
         </div>
       )}
 
@@ -146,7 +151,13 @@ const WcProposalForm = ({ proposal, onApprove, onReject }: ProposalFormProps): R
           className={css.button}
           disabled={!!loading}
         >
-          {loading === WCLoadingState.REJECT ? <CircularProgress size={20} /> : isUnsupportedChain ? t('common.close') : t('common.reject')}
+          {loading === WCLoadingState.REJECT ? (
+            <CircularProgress size={20} />
+          ) : isUnsupportedChain ? (
+            t('common.close')
+          ) : (
+            t('common.reject')
+          )}
         </Button>
       </div>
     </div>

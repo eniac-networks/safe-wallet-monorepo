@@ -306,7 +306,9 @@ const ActivateSafeWidget = ({ chain }: { chain: ChainInfo | undefined }) => {
   const { t } = useTranslation()
   const [open, setOpen] = useState<boolean>(false)
 
-  const title = chain ? t('dashboard.activateAccountOnChain', { chain: chain.chainName }) : t('dashboard.activateYourSafeAccount')
+  const title = chain
+    ? t('dashboard.activateAccountOnChain', { chain: chain.chainName })
+    : t('dashboard.activateYourSafeAccount')
   const content = t('dashboard.activateDescription')
 
   return (

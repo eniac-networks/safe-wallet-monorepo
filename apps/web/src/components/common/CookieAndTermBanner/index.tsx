@@ -20,7 +20,6 @@ import css from './styles.module.css'
 import { AppRoutes } from '@/config/routes'
 import ExternalLink from '../ExternalLink'
 
-
 const CookieCheckbox = ({
   checkboxProps,
   label,
@@ -109,8 +108,7 @@ export const CookieAndTermBanner = ({
                 mb: 2,
               }}
             >
-              {t('cookies.consentPre')}{' '}
-              <ExternalLink href={AppRoutes.terms}>{t('cookies.consentTerms')}</ExternalLink>{' '}
+              {t('cookies.consentPre')} <ExternalLink href={AppRoutes.terms}>{t('cookies.consentTerms')}</ExternalLink>{' '}
               {t('cookies.consentMid', { date: metadata.lastUpdated })}{' '}
               <ExternalLink href={AppRoutes.cookie}>{t('cookies.consentPolicy')}</ExternalLink>
             </Typography>
@@ -128,7 +126,11 @@ export const CookieAndTermBanner = ({
                     mb: 2,
                   }}
                 >
-                  <CookieCheckbox checkboxProps={{ id: 'necessary', disabled: true }} label={t('cookies.necessary')} checked />
+                  <CookieCheckbox
+                    checkboxProps={{ id: 'necessary', disabled: true }}
+                    label={t('cookies.necessary')}
+                    checked
+                  />
                   <br />
                   <Typography variant="body2">{t('cookies.necessaryDesc')}</Typography>
                 </Box>

@@ -151,9 +151,7 @@ const AddMemberModal = ({ onClose }: { onClose: () => void }): ReactElement => {
       <FormProvider {...methods}>
         <form onSubmit={onSubmit}>
           <DialogContent sx={{ py: 2 }}>
-            <Typography mb={2}>
-              {t('spaces.inviteDescription')}
-            </Typography>
+            <Typography mb={2}>{t('spaces.inviteDescription')}</Typography>
 
             <Stack spacing={3}>
               <MemberInfoForm />

@@ -46,7 +46,8 @@ export const HelpImportView = ({ bottomInset, onPressProceedToImport, onPressNee
             <XStack gap="$3" alignItems="center">
               <StepBadge step="2" />
               <StepText>
-                {t('dataImport.step2GoTo')} <HighlightedText>{t('dataImport.step2Settings')}</HighlightedText> → <HighlightedText>{t('dataImport.step2ExportData')}</HighlightedText>.
+                {t('dataImport.step2GoTo')} <HighlightedText>{t('dataImport.step2Settings')}</HighlightedText> →{' '}
+                <HighlightedText>{t('dataImport.step2ExportData')}</HighlightedText>.
               </StepText>
             </XStack>
 

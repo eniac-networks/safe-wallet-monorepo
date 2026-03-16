@@ -37,9 +37,7 @@ export const QrCameraView = ({
         footer={
           <>
             <Text textAlign={'center'}>
-              {permission === 'denied'
-                ? t('importReadOnly.cameraDisabledDesc')
-                : t('importReadOnly.scanQrCodeDesc')}
+              {permission === 'denied' ? t('importReadOnly.cameraDisabledDesc') : t('importReadOnly.scanQrCodeDesc')}
             </Text>
             <View alignItems="center" marginTop="$5">
               <SafeButton

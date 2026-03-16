@@ -15,12 +15,7 @@ export function NestedSafeInfo(): ReactElement {
       <NestedSafes />
       <Box display="flex" gap={1} py={2}>
         <Typography fontWeight={700}>{t('sidebar.noNestedSafesYet')}</Typography>
-        <Tooltip
-          title={t('settings.nestedSafesDescription')}
-          placement="top"
-          arrow
-          sx={{ ml: 1 }}
-        >
+        <Tooltip title={t('settings.nestedSafesDescription')} placement="top" arrow sx={{ ml: 1 }}>
           <span>
             <SvgIcon
               component={InfoIcon}
@@ -41,24 +36,22 @@ export function NestedSafeInfo(): ReactElement {
         </Typography>
       </Box>
       <List sx={{ p: 0, display: 'flex', flexDirection: 'column', gap: 2 }}>
-        {[
-          t('sidebar.nestedSafesFeature1'),
-          t('sidebar.nestedSafesFeature2'),
-          t('sidebar.nestedSafesFeature3'),
-        ].map((item) => {
-          return (
-            <ListItem key={item} sx={{ p: 0, pl: 1.5, alignItems: 'unset' }}>
-              <ListItemAvatar sx={{ minWidth: 'unset', mr: 3 }}>
-                <Avatar sx={{ width: 25, height: 25, backgroundColor: 'success.background' }}>
-                  <CheckIcon fontSize="small" color="success" />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText sx={{ m: 0 }} primaryTypographyProps={{ variant: 'body2' }}>
-                {item}
-              </ListItemText>
-            </ListItem>
-          )
-        })}
+        {[t('sidebar.nestedSafesFeature1'), t('sidebar.nestedSafesFeature2'), t('sidebar.nestedSafesFeature3')].map(
+          (item) => {
+            return (
+              <ListItem key={item} sx={{ p: 0, pl: 1.5, alignItems: 'unset' }}>
+                <ListItemAvatar sx={{ minWidth: 'unset', mr: 3 }}>
+                  <Avatar sx={{ width: 25, height: 25, backgroundColor: 'success.background' }}>
+                    <CheckIcon fontSize="small" color="success" />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText sx={{ m: 0 }} primaryTypographyProps={{ variant: 'body2' }}>
+                  {item}
+                </ListItemText>
+              </ListItem>
+            )
+          },
+        )}
       </List>
     </Box>
   )

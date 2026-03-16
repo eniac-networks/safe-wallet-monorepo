@@ -107,12 +107,7 @@ const Navigation = (): ReactElement => {
         const isSettingsItem = item.href === AppRoutes.settings.setup
 
         return (
-          <Tooltip
-            title={isDisabled ? t('nav.activateSafeFirst') : ''}
-            placement="right"
-            key={item.href}
-            arrow
-          >
+          <Tooltip title={isDisabled ? t('nav.activateSafeFirst') : ''} placement="right" key={item.href} arrow>
             <div>
               <ListItemButton
                 // disablePadding

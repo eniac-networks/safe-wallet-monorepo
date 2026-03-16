@@ -30,9 +30,7 @@ export function AlreadySigned({ txId, safeAddress, chainId, hasEnoughConfirmatio
   return (
     <YStack justifyContent="center" gap="$4" alignItems="center" paddingHorizontal={'$4'}>
       <Text fontSize="$4" fontWeight={400} textAlign="center" color="$textSecondaryLight">
-        {hasEnoughConfirmations
-          ? t('confirmTx.canBeExecutedWebOnly')
-          : t('confirmTx.thresholdNotReached')}
+        {hasEnoughConfirmations ? t('confirmTx.canBeExecutedWebOnly') : t('confirmTx.thresholdNotReached')}
       </Text>
 
       {hasEnoughConfirmations && (

@@ -69,7 +69,13 @@ export const ImportProgressScreen = () => {
           setProgressMessage(message)
         }
 
-        const allOwners = await fetchAndStoreSafeOverviews(safeInfos, currency, dispatch, safeOverviewProgressCallback, t)
+        const allOwners = await fetchAndStoreSafeOverviews(
+          safeInfos,
+          currency,
+          dispatch,
+          safeOverviewProgressCallback,
+          t,
+        )
 
         // Step 2: Store safe contacts (quick operation)
         currentStep++

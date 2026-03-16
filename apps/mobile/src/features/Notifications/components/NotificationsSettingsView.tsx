@@ -24,9 +24,7 @@ export const NotificationsSettingsView = ({ onChange, value, isLoading = false }
       <Text fontSize="$8" fontWeight={600} marginBottom="$2">
         {t('notifications.title')}
       </Text>
-      <Text marginBottom="$4">
-        {t('notifications.stayUpToDate')}
-      </Text>
+      <Text marginBottom="$4">{t('notifications.stayUpToDate')}</Text>
       <SafeListItem
         label={t('notifications.allowNotifications')}
         rightNode={

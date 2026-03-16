@@ -147,7 +147,11 @@ export const cleanupPrivateKeysForOwners = async (
   return createSuccessResult({ processedCount, failures })
 }
 
-export const createDeletionMessage = (ownersWithPrivateKeys: Address[], ownersToDelete: Address[], t: TFunction): string => {
+export const createDeletionMessage = (
+  ownersWithPrivateKeys: Address[],
+  ownersToDelete: Address[],
+  t: TFunction,
+): string => {
   let message = t('accounts.ownersWithPrivateKeysMessage', { count: ownersWithPrivateKeys.length })
 
   if (ownersToDelete.length > 0) {
@@ -263,7 +267,8 @@ export const handleSafeDeletion = async (params: HandleSafeDeletionParams): Prom
   }
 
   const message = createDeletionMessage(ownersWithPrivateKeys, ownersToDelete, t)
-  const buttonTitle = ownersToDelete.length > 0 ? t('accounts.deleteAccountAndPrivateKeys') : t('accounts.deleteAccount')
+  const buttonTitle =
+    ownersToDelete.length > 0 ? t('accounts.deleteAccountAndPrivateKeys') : t('accounts.deleteAccount')
 
   return new Promise((resolve, reject) => {
     Alert.alert(t('accounts.deleteAccount'), message, [

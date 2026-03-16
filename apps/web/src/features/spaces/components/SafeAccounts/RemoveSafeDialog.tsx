@@ -67,9 +67,7 @@ const RemoveSafeDialog = ({
   return (
     <ModalDialog open onClose={handleClose} dialogTitle={t('spaces.removeSafeAccount')} hideChainIndicator>
       <DialogContent sx={{ p: '24px !important' }}>
-        <Typography>
-          {t('spaces.confirmRemoveSafe', { address })}
-        </Typography>
+        <Typography>{t('spaces.confirmRemoveSafe', { address })}</Typography>
         {error && (
           <Alert severity="error" sx={{ mt: 2 }}>
             {error}

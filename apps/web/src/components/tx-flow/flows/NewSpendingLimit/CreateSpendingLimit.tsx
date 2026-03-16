@@ -75,9 +75,7 @@ export const CreateSpendingLimit = () => {
           <Typography variant="h4" fontWeight={700} mt={3}>
             {t('spendingLimit.resetTimer')}
           </Typography>
-          <Typography>
-            {t('spendingLimit.resetTimerDescription')}
-          </Typography>
+          <Typography>{t('spendingLimit.resetTimerDescription')}</Typography>
           <FormControl fullWidth className={css.select}>
             <InputLabel shrink={false}>{t('spendingLimit.timePeriod')}</InputLabel>
             <Controller

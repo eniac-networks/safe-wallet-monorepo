@@ -44,9 +44,7 @@ const SpendingLimits = () => {
         <Grid item xs>
           {isEnabled ? (
             <Box>
-              <Typography>
-                {t('settings.spendingLimitsDescription')}
-              </Typography>
+              <Typography>{t('settings.spendingLimitsDescription')}</Typography>
 
               <CheckWallet>
                 {(isOk) => (

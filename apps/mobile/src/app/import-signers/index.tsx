@@ -81,10 +81,7 @@ function ImportSignersPage() {
   return (
     <View style={{ flex: 1 }} paddingBottom={bottom}>
       <ScrollView onScroll={handleScroll}>
-        <SectionTitle
-          title={title}
-          description={t('importSigners.description')}
-        />
+        <SectionTitle title={title} description={t('importSigners.description')} />
 
         {memoizedItems.map((item, index) => (
           <SafeCard

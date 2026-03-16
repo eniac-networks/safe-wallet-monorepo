@@ -105,9 +105,7 @@ const OutreachPopup = (): ReactElement | null => {
                   <br />
                   {t('outreach.headingLine2')}
                 </Typography>
-                <Typography>
-                  {t('outreach.body')}
-                </Typography>
+                <Typography>{t('outreach.body')}</Typography>
                 <Track {...OUTREACH_EVENTS.OPEN_SURVEY}>
                   <Link rel="noreferrer noopener" target="_blank" href={outreachUrl}>
                     <Button fullWidth variant="contained" onClick={handleOpenSurvey}>

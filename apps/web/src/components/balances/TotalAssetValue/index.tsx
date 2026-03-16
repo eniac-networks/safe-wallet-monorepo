@@ -5,13 +5,7 @@ import useSafeInfo from '@/hooks/useSafeInfo'
 import { useVisibleBalances } from '@/hooks/useVisibleBalances'
 import { useTranslation } from 'react-i18next'
 
-const TotalAssetValue = ({
-  fiatTotal,
-  title,
-}: {
-  fiatTotal: string | number | undefined
-  title?: string
-}) => {
+const TotalAssetValue = ({ fiatTotal, title }: { fiatTotal: string | number | undefined; title?: string }) => {
   const { t } = useTranslation()
   const { safe } = useSafeInfo()
   const { balances } = useVisibleBalances()

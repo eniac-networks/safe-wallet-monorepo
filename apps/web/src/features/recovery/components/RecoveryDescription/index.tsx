@@ -33,9 +33,7 @@ export function RecoveryDescription({ item }: { item: RecoveryQueueItem }): Reac
   }, [args.data, args.to, args.value, safe.threshold, safe.owners])
 
   if (isMalicious) {
-    return (
-      <ErrorMessage>{t('recovery.maliciousActions')}</ErrorMessage>
-    )
+    return <ErrorMessage>{t('recovery.maliciousActions')}</ErrorMessage>
   }
 
   // TODO: Improve by using Tenderly to check if the proposal will fail

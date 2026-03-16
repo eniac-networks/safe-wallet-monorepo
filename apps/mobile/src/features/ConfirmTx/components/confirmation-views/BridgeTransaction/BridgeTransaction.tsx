@@ -61,7 +61,9 @@ export function BridgeTransaction({ txId, txInfo, decodedData }: BridgeTransacti
               decimals={txInfo.fromToken.decimals}
               tokenSymbol={txInfo.fromToken.symbol}
             />
-            <Text>{t('transactions.to').toLowerCase()} {txInfo.toChain}</Text>
+            <Text>
+              {t('transactions.to').toLowerCase()} {txInfo.toChain}
+            </Text>
           </View>
         ),
       })
@@ -89,7 +91,9 @@ export function BridgeTransaction({ txId, txInfo, decodedData }: BridgeTransacti
                 decimals={txInfo.fromToken.decimals}
                 tokenSymbol={txInfo.fromToken.symbol}
               />
-              <Text>{t('bridge.on')} {chain?.chainName ?? 'Unknown Chain'}</Text>
+              <Text>
+                {t('bridge.on')} {chain?.chainName ?? 'Unknown Chain'}
+              </Text>
             </View>
             {txInfo.toToken && txInfo.toAmount ? (
               <View flexDirection="row" alignItems="center" gap="$2" flexWrap="wrap">
@@ -99,7 +103,9 @@ export function BridgeTransaction({ txId, txInfo, decodedData }: BridgeTransacti
                   decimals={txInfo.toToken.decimals}
                   tokenSymbol={txInfo.toToken.symbol}
                 />
-                <Text>{t('bridge.on')} {txInfo.toChain}</Text>
+                <Text>
+                  {t('bridge.on')} {txInfo.toChain}
+                </Text>
               </View>
             ) : (
               <Text>{t('bridge.couldNotFindBuyToken')}</Text>

@@ -73,33 +73,34 @@ const SpaceInfoModal = ({
             </Typography>
 
             <Typography mt={2} mb={3}>
-              {t(‘spaces.spaceCollabDescription’)}
+              {t('spaces.spaceCollabDescription')}
             </Typography>
 
-            <List sx={{ display: ‘flex’, flexDirection: ‘column’, gap: 2 }}>
+            <List sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
               <ListItem disablePadding>
                 <ListIcon />
-                {t(‘spaces.safeAccountsFeature’)}
+                {t('spaces.safeAccountsFeature')}
               </ListItem>
 
               <ListItem disablePadding>
                 <ListIcon />
-                {t(‘spaces.inviteMembersFeature’)}
+                {t('spaces.inviteMembersFeature')}
               </ListItem>
 
               <ListItem disablePadding>
                 <ListIcon />
-                {t(‘spaces.sharedDataFeature’)}
+                {t('spaces.sharedDataFeature')}
               </ListItem>
 
               <ListItem disablePadding>
                 <ListIcon />
-                {t(‘spaces.comingSoonFeature’)}
+                {t('spaces.comingSoonFeature')}
               </ListItem>
             </List>
 
             <Typography mt={1}>
-              {t(‘spaces.readHelpArticlePrefix’)}<ExternalLink href={SPACE_HELP_ARTICLE_LINK}>{t(‘spaces.spacesHelpArticle’)}</ExternalLink>
+              {t('spaces.readHelpArticlePrefix')}
+              <ExternalLink href={SPACE_HELP_ARTICLE_LINK}>{t('spaces.spacesHelpArticle')}</ExternalLink>
             </Typography>
 
             {showButtons && (

@@ -150,15 +150,15 @@ export const CounterfactualForm = ({
         {cannotPropose ? (
           <NonOwnerError />
         ) : isExecutionLoop ? (
-          <ErrorMessage>
-            {t('counterfactual.cannotExecuteFromSafe')}
-          </ErrorMessage>
+          <ErrorMessage>{t('counterfactual.cannotExecuteFromSafe')}</ErrorMessage>
         ) : !walletCanPay ? (
           <ErrorMessage>{t('newSafe.insufficientFunds')}</ErrorMessage>
         ) : (
           gasLimitError && (
             <ErrorMessage error={gasLimitError}>
-              {t('counterfactual.txWillFail', { action: isCreation ? t('counterfactual.avoidCreating') : t('counterfactual.rejectTx') })}
+              {t('counterfactual.txWillFail', {
+                action: isCreation ? t('counterfactual.avoidCreating') : t('counterfactual.rejectTx'),
+              })}
             </ErrorMessage>
           )
         )}

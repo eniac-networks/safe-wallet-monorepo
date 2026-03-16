@@ -64,7 +64,11 @@ export const Positions = () => {
               },
             }}
           >
-            <Chip label={t('spaces.beta')} size="small" sx={{ backgroundColor: 'background.lightGrey', letterSpacing: '0.4px' }} />
+            <Chip
+              label={t('spaces.beta')}
+              size="small"
+              sx={{ backgroundColor: 'background.lightGrey', letterSpacing: '0.4px' }}
+            />
           </Tooltip>
         </Stack>
 

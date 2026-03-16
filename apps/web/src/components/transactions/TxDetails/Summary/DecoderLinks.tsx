@@ -9,8 +9,7 @@ const DecoderLinks = () => {
   const { t } = useTranslation()
   return (
     <Typography variant="body2" color="primary.light" mb={3}>
-      {t('transactions.crossVerifyData')}{' '}
-      <ExternalLink href={SAFE_UTILS_URL}>Safe Utils</ExternalLink> and{' '}
+      {t('transactions.crossVerifyData')} <ExternalLink href={SAFE_UTILS_URL}>Safe Utils</ExternalLink> and{' '}
       <ExternalLink href={TX_DECODER_URL}>Transaction Decoder</ExternalLink>.
     </Typography>
   )

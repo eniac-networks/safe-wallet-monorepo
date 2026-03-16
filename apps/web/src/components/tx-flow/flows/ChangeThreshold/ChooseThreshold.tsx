@@ -127,7 +127,9 @@ export const ChooseThreshold = () => {
                           mb: 2,
                         }}
                       >
-                        {fieldState.isDirty ? t('settings.previousPolicyWas') + ' ' : t('settings.currentPolicyIs') + ' '}
+                        {fieldState.isDirty
+                          ? t('settings.previousPolicyWas') + ' '
+                          : t('settings.currentPolicyIs') + ' '}
                         <b>
                           {safe.threshold} out of {safe.owners.length}
                         </b>

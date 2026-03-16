@@ -137,9 +137,7 @@ const ReviewSignMessageOnChain = ({ message, method, children, ...props }: SignM
 
       <Box display="flex" alignItems="center" my={2}>
         <SvgIcon component={WarningIcon} inheritViewBox color="warning" />
-        <Typography ml={1}>
-          {t('signMessage.requiresTransaction')}
-        </Typography>
+        <Typography ml={1}>{t('signMessage.requiresTransaction')}</Typography>
       </Box>
 
       {children}

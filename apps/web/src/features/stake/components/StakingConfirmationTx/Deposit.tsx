@@ -96,7 +96,9 @@ const StakingConfirmationTxDeposit = ({ order, isTxDetails }: StakingOrderConfir
           <FieldsGrid title={t('stake.validators')}>{order.numValidators}</FieldsGrid>
         )}
 
-        <FieldsGrid title={t('stake.activationTime')}>{formatDurationFromMilliseconds(order.estimatedEntryTime)}</FieldsGrid>
+        <FieldsGrid title={t('stake.activationTime')}>
+          {formatDurationFromMilliseconds(order.estimatedEntryTime)}
+        </FieldsGrid>
 
         <FieldsGrid title={t('stake.rewards')}>{t('stake.approxRewards')}</FieldsGrid>
 

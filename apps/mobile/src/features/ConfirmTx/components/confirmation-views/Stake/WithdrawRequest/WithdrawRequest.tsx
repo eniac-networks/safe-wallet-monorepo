@@ -49,10 +49,7 @@ export function StakingWithdrawRequest({ txInfo, executionInfo, txId }: StakingW
       </ListTable>
 
       <YStack gap="$3">
-        <Alert
-          type="warning"
-          message={t('staking.withdrawalRequestNote')}
-        />
+        <Alert type="warning" message={t('staking.withdrawalRequestNote')} />
       </YStack>
     </YStack>
   )

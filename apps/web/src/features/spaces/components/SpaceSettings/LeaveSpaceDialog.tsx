@@ -48,11 +48,9 @@ const LeaveSpaceDialog = ({ space, onClose }: { space: GetSpaceResponse | undefi
   }
 
   return (
-    <ModalDialog dialogTitle={t(‘spaces.leaveSpace’)} hideChainIndicator open onClose={onClose}>
+    <ModalDialog dialogTitle={t('spaces.leaveSpace')} hideChainIndicator open onClose={onClose}>
       <DialogContent sx={{ mt: 2 }}>
-        <Typography mb={2}>
-          {t(‘spaces.confirmLeaveSpace’)}
-        </Typography>
+        <Typography mb={2}>{t('spaces.confirmLeaveSpace')}</Typography>
 
         {error && (
           <Alert severity="error" sx={{ mt: 2 }}>

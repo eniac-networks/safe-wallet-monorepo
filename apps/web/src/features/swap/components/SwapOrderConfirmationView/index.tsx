@@ -137,7 +137,8 @@ export const SwapOrderConfirmation = ({ order, decodedData, settlementContract }
               <PartBuyAmount order={order} addonText={t('swap.perPart')} key="buy_part" />,
               <DataRow title={t('swap.startTime')} key="Start time">
                 {order.startTime.startType === StartTimeValue.AT_MINING_TIME && t('swap.now')}
-                {order.startTime.startType === StartTimeValue.AT_EPOCH && t('swap.atBlockNumber', { epoch: order.startTime.epoch })}
+                {order.startTime.startType === StartTimeValue.AT_EPOCH &&
+                  t('swap.atBlockNumber', { epoch: order.startTime.epoch })}
               </DataRow>,
               <PartDuration order={order} key="part_duration" />,
               <DataRow title={t('swap.totalDuration')} key="total_duration">

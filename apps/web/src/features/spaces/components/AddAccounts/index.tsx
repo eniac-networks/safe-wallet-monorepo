@@ -190,9 +190,7 @@ const AddAccounts = () => {
             <Typography component="div" variant="h1" mb={1}>
               {t('spaces.addSafeAccountsTitle')}
             </Typography>
-            <Typography mb={2}>
-              {t('spaces.addSafeAccountsLimit', { limit: SAFE_ACCOUNTS_LIMIT })}
-            </Typography>
+            <Typography mb={2}>{t('spaces.addSafeAccountsLimit', { limit: SAFE_ACCOUNTS_LIMIT })}</Typography>
             <Card>
               <FormProvider {...formMethods}>
                 <form onSubmit={onSubmit}>

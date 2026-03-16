@@ -126,7 +126,12 @@ export const SafeSetupOverview = ({
           </Tooltip>
         }
       />
-      {name && <ReviewRow name={t('newSafe.nameLabel')} value={<Typography data-testid="review-step-safe-name">{name}</Typography>} />}
+      {name && (
+        <ReviewRow
+          name={t('newSafe.nameLabel')}
+          value={<Typography data-testid="review-step-safe-name">{name}</Typography>}
+        />
+      )}
       <ReviewRow
         name={t('settings.signers')}
         value={
@@ -362,9 +367,7 @@ const ReviewStep = ({ data, onSubmit, onBack, setStep }: StepRenderProps<NewSafe
       }
     } catch (_err) {
       const error = asError(_err)
-      const submitError = isWalletRejection(error)
-        ? t('newSafe.userRejectedSigning')
-        : t('newSafe.errorCreatingSafe')
+      const submitError = isWalletRejection(error) ? t('newSafe.userRejectedSigning') : t('newSafe.errorCreatingSafe')
       setSubmitError(submitError)
 
       if (isWalletRejection(error)) {
@@ -494,11 +497,7 @@ const ReviewStep = ({ data, onSubmit, onBack, setStep }: StepRenderProps<NewSafe
 
             {showNetworkWarning && <NetworkWarning action={t('newSafe.createSafeAction')} />}
 
-            {!walletCanPay && !willRelay && (
-              <ErrorMessage>
-                {t('newSafe.insufficientFunds')}
-              </ErrorMessage>
-            )}
+            {!walletCanPay && !willRelay && <ErrorMessage>{t('newSafe.insufficientFunds')}</ErrorMessage>}
           </Box>
         </>
       )}

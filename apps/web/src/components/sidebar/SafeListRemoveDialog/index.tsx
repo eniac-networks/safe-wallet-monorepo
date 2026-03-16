@@ -50,9 +50,7 @@ const SafeListRemoveDialog = ({
   return (
     <ModalDialog open onClose={handleClose} dialogTitle={t('sidebar.removeAccountTitle')} chainId={chainId}>
       <DialogContent sx={{ p: '24px !important' }}>
-        <Typography>
-          {t('sidebar.removeAccountConfirm', { safe })}
-        </Typography>
+        <Typography>{t('sidebar.removeAccountConfirm', { safe })}</Typography>
       </DialogContent>
 
       <DialogActions>

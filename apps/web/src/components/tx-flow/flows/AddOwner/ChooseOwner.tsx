@@ -91,8 +91,7 @@ export const ChooseOwner = ({
                   mb: 1,
                 }}
               >
-                {params.removedOwner &&
-                  t('settings.reviewSignerToReplace')}
+                {params.removedOwner && t('settings.reviewSignerToReplace')}
               </Typography>
               <Box
                 sx={{

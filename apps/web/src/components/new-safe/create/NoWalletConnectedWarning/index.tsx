@@ -13,7 +13,8 @@ const NoWalletConnectedWarning = () => {
 
   return (
     <Alert severity="warning" sx={{ mt: 3 }}>
-      <AlertTitle sx={{ fontWeight: 700 }}>{t('noWallet.title')}</AlertTitle>{t('noWallet.message')}
+      <AlertTitle sx={{ fontWeight: 700 }}>{t('noWallet.title')}</AlertTitle>
+      {t('noWallet.message')}
       <Box
         sx={{
           mt: 2,

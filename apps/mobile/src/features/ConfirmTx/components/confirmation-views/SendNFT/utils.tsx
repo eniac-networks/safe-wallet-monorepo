@@ -11,7 +11,12 @@ import { shortenAddress } from '@safe-global/utils/utils/formatters'
 import { TouchableOpacity } from 'react-native'
 import { TFunction } from 'i18next'
 
-export const formatSendNFTItems = (txInfo: TransferTransactionInfo, chain: Chain, viewOnExplorer: () => void, t: TFunction) => {
+export const formatSendNFTItems = (
+  txInfo: TransferTransactionInfo,
+  chain: Chain,
+  viewOnExplorer: () => void,
+  t: TFunction,
+) => {
   return [
     {
       label: t('bridge.recipient'),

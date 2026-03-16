@@ -33,14 +33,14 @@ export function ImportError() {
             </View>
 
             <View margin="$10" width="100%" alignItems="center" gap="$4">
-              <LargeHeaderTitle textAlign="center">{t(‘importPrivateKey.notImported’)}</LargeHeaderTitle>
+              <LargeHeaderTitle textAlign="center">{t('importPrivateKey.notImported')}</LargeHeaderTitle>
 
               <Text textAlign="center" fontSize="$4">
-                {t(‘importPrivateKey.notImportedDesc’)}
+                {t('importPrivateKey.notImportedDesc')}
               </Text>
 
               <Text textAlign="center" fontSize="$4">
-                {t(‘importPrivateKey.notStoredWarning’)}
+                {t('importPrivateKey.notStoredWarning')}
               </Text>
             </View>
           </View>

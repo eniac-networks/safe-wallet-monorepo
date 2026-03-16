@@ -125,7 +125,11 @@ const DialogHeader = ({ threshold }: { threshold: number }) => {
             mb: 2,
           }}
         >
-          {t('signMessage.collectSignaturesFrom')} <b>{threshold} {t('signMessage.signersLabel')}</b> {t('signMessage.ofYourSafeAccount')}
+          {t('signMessage.collectSignaturesFrom')}{' '}
+          <b>
+            {threshold} {t('signMessage.signersLabel')}
+          </b>{' '}
+          {t('signMessage.ofYourSafeAccount')}
         </Typography>
       )}
     </>
@@ -382,9 +386,7 @@ const SignMessage = ({ message, origin, requestId }: SignMessageProps): ReactEle
             <InfoBox
               title={t('signMessage.collectAllConfirmations')}
               message={
-                requestId && !hasSignature
-                  ? t('signMessage.keepModalOpen')
-                  : t('signMessage.signatureSubmitted')
+                requestId && !hasSignature ? t('signMessage.keepModalOpen') : t('signMessage.signatureSubmitted')
               }
             >
               <MsgSigners

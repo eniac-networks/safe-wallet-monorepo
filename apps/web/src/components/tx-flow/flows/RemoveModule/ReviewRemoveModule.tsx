@@ -38,9 +38,7 @@ export const ReviewRemoveModule = ({
 
       <EthHashInfo address={params.address} showCopyButton hasExplorer shortAddress={false} />
 
-      <Typography my={2}>
-        {t('settings.removeModuleDescription')}
-      </Typography>
+      <Typography my={2}>{t('settings.removeModuleDescription')}</Typography>
 
       {children}
     </ReviewTransaction>

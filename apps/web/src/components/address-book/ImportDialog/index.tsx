@@ -159,10 +159,7 @@ const ImportDialog = ({ handleClose }: { handleClose: () => void }): ReactElemen
         <Typography>
           {t('addressBook.onlyCsvFiles', { brandName: BRAND_NAME })}
           <br />
-          <ExternalLink
-            href={HelpCenterArticle.ADDRESS_BOOK_DATA}
-            title={t('addressBook.learnAboutImportExport')}
-          >
+          <ExternalLink href={HelpCenterArticle.ADDRESS_BOOK_DATA} title={t('addressBook.learnAboutImportExport')}>
             {t('addressBook.learnAboutImportExport')}
           </ExternalLink>
         </Typography>

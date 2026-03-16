@@ -46,9 +46,7 @@ export const ImportSuccessScreenView = ({
 
                 {/* Subtitle */}
                 <Text fontSize="$4" textAlign="center" marginHorizontal={'$4'} color="$colorSecondary">
-                  {notImportedKeys.length > 0
-                    ? t('dataImport.partialSuccessDesc')
-                    : t('dataImport.successDesc')}
+                  {notImportedKeys.length > 0 ? t('dataImport.partialSuccessDesc') : t('dataImport.successDesc')}
                 </Text>
 
                 {/* Not Imported Keys Section */}

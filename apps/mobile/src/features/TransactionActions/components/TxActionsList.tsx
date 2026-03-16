@@ -68,7 +68,11 @@ const TxActionItem = ({ action, index, addressInfoIndex, txData }: TxActionItemP
             <View flexDirection="row" alignItems="center" gap={'$2'}>
               <Text fontSize="$4" flex={1} numberOfLines={1} ellipsizeMode="tail">
                 {t('transactionActions.sendTo', {
-                  amount: formatVisualAmount(transferTokenInfo.transferValue, transferTokenInfo?.tokenInfo?.decimals, 6),
+                  amount: formatVisualAmount(
+                    transferTokenInfo.transferValue,
+                    transferTokenInfo?.tokenInfo?.decimals,
+                    6,
+                  ),
                   symbol: transferTokenInfo.tokenInfo.symbol,
                 })}
               </Text>
@@ -101,7 +105,11 @@ export function TxActionsList({ txDetails }: TxActionsListProps) {
       pathname: '/action-details',
       params: {
         txId,
-        actionName: getActionName(action, addressInfoIndex as AddressInfoIndex, t('transactionActions.contractInteraction')),
+        actionName: getActionName(
+          action,
+          addressInfoIndex as AddressInfoIndex,
+          t('transactionActions.contractInteraction'),
+        ),
         action: JSON.stringify(action),
       },
     })

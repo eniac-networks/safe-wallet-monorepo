@@ -27,9 +27,7 @@ const RemoveDialog = ({ handleClose, address }: { handleClose: () => void; addre
   return (
     <ModalDialog open onClose={handleClose} dialogTitle={t('addressBook.deleteTitle')}>
       <DialogContent sx={{ p: '24px !important' }}>
-        <Typography>
-          {t('addressBook.deleteConfirm', { name })}
-        </Typography>
+        <Typography>{t('addressBook.deleteConfirm', { name })}</Typography>
       </DialogContent>
 
       <DialogActions>

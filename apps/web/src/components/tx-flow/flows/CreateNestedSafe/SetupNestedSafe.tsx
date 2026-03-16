@@ -88,11 +88,7 @@ export function SetUpNestedSafe(): ReactElement {
               InputLabelProps={{ shrink: true }}
               InputProps={{
                 endAdornment: (
-                  <Tooltip
-                    title={t('newSafe.nameTooltip')}
-                    arrow
-                    placement="top"
-                  >
+                  <Tooltip title={t('newSafe.nameTooltip')} arrow placement="top">
                     <InputAdornment position="end">
                       <SvgIcon component={InfoIcon} inheritViewBox />
                     </InputAdornment>

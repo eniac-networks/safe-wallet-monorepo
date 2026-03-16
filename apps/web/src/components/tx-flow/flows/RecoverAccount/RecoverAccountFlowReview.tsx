@@ -142,7 +142,8 @@ export function RecoverAccountFlowReview({ params }: { params: RecoverAccountFlo
             {t('recovery.afterRecoveryRequires')}
           </Typography>
           <Typography>
-            <b>{params.threshold}</b> out of <b>{params[RecoverAccountFlowFields.owners].length}</b>{' '}{t('recovery.signers')}
+            <b>{params.threshold}</b> out of <b>{params[RecoverAccountFlowFields.owners].length}</b>{' '}
+            {t('recovery.signers')}
           </Typography>
         </Box>
 
@@ -160,20 +161,14 @@ export function RecoverAccountFlowReview({ params }: { params: RecoverAccountFlo
           <ConfirmationTitle variant={ConfirmationTitleTypes.execute} />
 
           {safeTxError && (
-            <ErrorMessage error={safeTxError}>
-              {t('recovery.recoveryWillFailAvoidExecuting')}
-            </ErrorMessage>
+            <ErrorMessage error={safeTxError}>{t('recovery.recoveryWillFailAvoidExecuting')}</ErrorMessage>
           )}
 
           {executionValidationError && (
-            <ErrorMessage error={executionValidationError}>
-              {t('recovery.txWillFailAvoidExecuting')}
-            </ErrorMessage>
+            <ErrorMessage error={executionValidationError}>{t('recovery.txWillFailAvoidExecuting')}</ErrorMessage>
           )}
 
-          {submitError && (
-            <ErrorMessage error={submitError}>{t('counterfactual.errorSubmitting')}</ErrorMessage>
-          )}
+          {submitError && <ErrorMessage error={submitError}>{t('counterfactual.errorSubmitting')}</ErrorMessage>}
 
           <NetworkWarning />
 

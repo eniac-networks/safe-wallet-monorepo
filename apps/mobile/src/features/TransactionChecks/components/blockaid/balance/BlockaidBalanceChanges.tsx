@@ -74,10 +74,7 @@ export const BlockaidBalanceChanges = ({ blockaidResponse, fetchStatusLoading }:
         <Text fontWeight="700" marginBottom="$2">
           {t('transactionChecks.balanceChange')}
         </Text>
-        <InfoSheet
-          title={t('transactionChecks.balanceChange')}
-          info={t('transactionChecks.balanceChangeInfo')}
-        />
+        <InfoSheet title={t('transactionChecks.balanceChange')} info={t('transactionChecks.balanceChangeInfo')} />
       </XStack>
       {fetchStatusLoading ? (
         <XStack gap={'$2'}>

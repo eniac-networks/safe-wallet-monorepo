@@ -99,7 +99,9 @@ const CounterfactualSuccessScreen = () => {
           </Typography>
           <Typography variant="body2">
             {isCFCreation
-              ? (isMultiChain ? t('counterfactual.activateToUnlockMultichain') : t('counterfactual.activateToUnlock'))
+              ? isMultiChain
+                ? t('counterfactual.activateToUnlockMultichain')
+                : t('counterfactual.activateToUnlock')
               : t('counterfactual.startJourney')}
           </Typography>
           <Typography variant="body2">

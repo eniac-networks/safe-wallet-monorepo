@@ -20,7 +20,13 @@ const StakeBanner = ({ onDismiss }: { onDismiss: () => void }) => {
   return (
     <Card className={css.banner}>
       <Stack direction={{ xs: 'column', md: 'row' }} alignItems={{ xs: 'flex-start', md: 'center' }} spacing={2}>
-        <Image className={css.bannerImage} src={EarnIllustrationLight} alt={t('dashboard.earnIllustrationAlt')} width={95} height={95} />
+        <Image
+          className={css.bannerImage}
+          src={EarnIllustrationLight}
+          alt={t('dashboard.earnIllustrationAlt')}
+          width={95}
+          height={95}
+        />
         <Box>
           <Typography variant="h4" fontWeight="bold" color="static.main" className={css.bannerText}>
             {t('dashboard.stakeBannerTitle')}

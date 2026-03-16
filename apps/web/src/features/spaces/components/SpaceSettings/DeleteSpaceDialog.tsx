@@ -69,9 +69,7 @@ const DeleteSpaceDialog = ({ space, onClose }: { space: GetSpaceResponse | undef
   return (
     <ModalDialog dialogTitle={t('spaces.deleteSpace')} hideChainIndicator open onClose={onClose}>
       <DialogContent sx={{ mt: 2 }}>
-        <Typography mb={2}>
-          {t('spaces.confirmDeleteSpace', { name: space?.name })}
-        </Typography>
+        <Typography mb={2}>{t('spaces.confirmDeleteSpace', { name: space?.name })}</Typography>
 
         <List sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <ListItem disablePadding>

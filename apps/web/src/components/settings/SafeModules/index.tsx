@@ -84,7 +84,9 @@ const SafeModules = () => {
           <Box>
             <Typography>
               {t('settings.safeModulesDescription')}{' '}
-              <ExternalLink href="https://help.safe.global/en/articles/40827-what-is-a-module">{t('settings.here')}</ExternalLink>
+              <ExternalLink href="https://help.safe.global/en/articles/40827-what-is-a-module">
+                {t('settings.here')}
+              </ExternalLink>
             </Typography>
             {safeModules.length === 0 ? (
               <NoModules />

@@ -107,7 +107,13 @@ const formatHistoryTxDetails = ({ txDetails, t }: formatHistoryTxDetailsProps): 
         return <Text fontWeight={600}>0x</Text>
       }
 
-      return <HexDataDisplay data={txDetails.txData?.hexData || '0x'} title={t('transactions.hexData')} copyMessage={t('advancedDetails.dataCopied')} />
+      return (
+        <HexDataDisplay
+          data={txDetails.txData?.hexData || '0x'}
+          title={t('transactions.hexData')}
+          copyMessage={t('advancedDetails.dataCopied')}
+        />
+      )
     },
   })
 
@@ -166,7 +172,11 @@ const formatHistoryTxDetails = ({ txDetails, t }: formatHistoryTxDetailsProps): 
               <View flexDirection="row" alignItems="center" gap="$1">
                 <Text>{confirmation.signature ? `${confirmation.signature.length / 2 - 1} bytes` : '0 bytes'}</Text>
                 {confirmation.signature && (
-                  <CopyButton value={confirmation.signature} color={'$textSecondaryLight'} text={t('advancedDetails.signatureCopied')} />
+                  <CopyButton
+                    value={confirmation.signature}
+                    color={'$textSecondaryLight'}
+                    text={t('advancedDetails.signatureCopied')}
+                  />
                 )}
               </View>
             ),
@@ -179,7 +189,11 @@ const formatHistoryTxDetails = ({ txDetails, t }: formatHistoryTxDetailsProps): 
       decodedDataItems.push({
         label: t('transactions.rawData'),
         render: () => (
-          <HexDataDisplay data={txDetails.txData?.hexData} title={t('transactions.rawData')} copyMessage={t('advancedDetails.rawDataCopied')} />
+          <HexDataDisplay
+            data={txDetails.txData?.hexData}
+            title={t('transactions.rawData')}
+            copyMessage={t('advancedDetails.rawDataCopied')}
+          />
         ),
       })
     }

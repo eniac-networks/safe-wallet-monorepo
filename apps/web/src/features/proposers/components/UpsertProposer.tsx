@@ -165,12 +165,10 @@ const UpsertProposer = ({ onClose, onSuccess, proposer }: UpsertProposerProps) =
 
           <DialogContent>
             <Box mb={2}>
-              <Typography variant="body2">
-                {t('settings.upsertProposerDescription')}
-              </Typography>
+              <Typography variant="body2">{t('settings.upsertProposerDescription')}</Typography>
             </Box>
 
-            <Alert severity="info">{t(‘settings.proposerPubliclyVisible’)}</Alert>
+            <Alert severity="info">{t('settings.proposerPubliclyVisible')}</Alert>
 
             <Box my={2}>
               {isEditing ? (

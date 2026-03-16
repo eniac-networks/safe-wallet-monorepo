@@ -133,11 +133,7 @@ const OwnerPolicyStep = ({
             }}
           >
             {t('newSafe.threshold')}
-            <Tooltip
-              title={t('newSafe.thresholdTooltip')}
-              arrow
-              placement="top"
-            >
+            <Tooltip title={t('newSafe.thresholdTooltip')} arrow placement="top">
               <span style={{ display: 'flex' }}>
                 <SvgIcon component={InfoIcon} inheritViewBox color="border" fontSize="small" />
               </span>

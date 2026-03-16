@@ -43,7 +43,8 @@ const AdditionalRewards = ({ txInfo }: { txInfo: VaultRedeemTransactionInfo }) =
             gap={0.5}
             mt={1}
           >
-            {t('earn.poweredBy')} <IframeIcon src={txInfo.vaultInfo.logoUri} alt={t('earn.morphoLogo')} width={16} height={16} /> Morpho
+            {t('earn.poweredBy')}{' '}
+            <IframeIcon src={txInfo.vaultInfo.logoUri} alt={t('earn.morphoLogo')} width={16} height={16} /> Morpho
           </Typography>,
         ]}
       />

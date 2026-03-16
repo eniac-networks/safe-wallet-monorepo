@@ -71,10 +71,17 @@ function AcceptInviteDialog({ space, onClose }: { space: GetSpaceResponse; onClo
         <form onSubmit={onSubmit}>
           <DialogContent sx={{ py: 2 }}>
             <Box mb={2}>
-              <NameInput data-testid="invite-name-input" label={t('newSafe.nameLabel')} autoFocus name="name" required />
+              <NameInput
+                data-testid="invite-name-input"
+                label={t('newSafe.nameLabel')}
+                autoFocus
+                name="name"
+                required
+              />
             </Box>
             <Typography variant="body2" color="text.secondary">
-              {t('spaces.dataPrivacyPrefix')}<ExternalLink href={AppRoutes.privacy}>{t('newSafe.privacyPolicy')}</ExternalLink>
+              {t('spaces.dataPrivacyPrefix')}
+              <ExternalLink href={AppRoutes.privacy}>{t('newSafe.privacyPolicy')}</ExternalLink>
             </Typography>
 
             {error && (

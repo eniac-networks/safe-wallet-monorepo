@@ -42,5 +42,12 @@ export const ContactNameField = ({ isEditing, contact, control, errors, dirtyFie
     )
   }
 
-  return <SafeInputWithLabel label={t('addressBook.name')} value={contact?.name || t('addressBook.unnamedContact')} disabled editable={false} />
+  return (
+    <SafeInputWithLabel
+      label={t('addressBook.name')}
+      value={contact?.name || t('addressBook.unnamedContact')}
+      disabled
+      editable={false}
+    />
+  )
 }

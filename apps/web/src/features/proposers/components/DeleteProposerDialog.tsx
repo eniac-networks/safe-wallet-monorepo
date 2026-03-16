@@ -153,9 +153,7 @@ const InternalDeleteProposer = ({ wallet, safeAddress, chainId, proposer }: Dele
 
         <DialogContent>
           <Box mb={2}>
-            <Typography>
-              {t('settings.deleteProposerDescription')}
-            </Typography>
+            <Typography>{t('settings.deleteProposerDescription')}</Typography>
           </Box>
 
           {error && (

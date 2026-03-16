@@ -10,9 +10,7 @@ export const BlockaidError = () => {
       <Text fontWeight="700" fontSize={16} marginBottom="$2">
         {t('blockaid.proceedWithCaution')}
       </Text>
-      <Text fontSize={14}>
-        {t('blockaid.couldNotCheck')}
-      </Text>
+      <Text fontSize={14}>{t('blockaid.couldNotCheck')}</Text>
       <BlockaidMessage />
     </View>
   )

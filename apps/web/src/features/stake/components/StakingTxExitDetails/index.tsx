@@ -27,7 +27,9 @@ const StakingTxExitDetails = ({ info }: { info: StakingTxExitInfo }) => {
           )
         })}
       </FieldsGrid>
-      {info.status !== NativeStakingStatus.EXITED && <FieldsGrid title={t('stake.estExitTime')}>{t('stake.upTo', { duration: withdrawIn })}</FieldsGrid>}
+      {info.status !== NativeStakingStatus.EXITED && (
+        <FieldsGrid title={t('stake.estExitTime')}>{t('stake.upTo', { duration: withdrawIn })}</FieldsGrid>
+      )}
 
       <FieldsGrid title={t('stake.validatorStatus')}>
         <StakingStatus status={info.status} />

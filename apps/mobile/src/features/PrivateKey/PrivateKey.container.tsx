@@ -45,27 +45,24 @@ export const PrivateKeyContainer = ({ signerAddress }: Props) => {
   }, [signerAddress, t])
 
   const handleViewPrivateKey = useCallback(() => {
-    Alert.alert(
-      t('privateKey.viewConfirmTitle'),
-      t('privateKey.viewConfirmMsg'),
-      [
-        { text: t('common.cancel'), style: 'cancel' },
-        {
-          text: t('privateKey.yesShowKey'),
-          style: 'destructive',
-          onPress: executeViewPrivateKey,
-        },
-      ],
-    )
+    Alert.alert(t('privateKey.viewConfirmTitle'), t('privateKey.viewConfirmMsg'), [
+      { text: t('common.cancel'), style: 'cancel' },
+      {
+        text: t('privateKey.yesShowKey'),
+        style: 'destructive',
+        onPress: executeViewPrivateKey,
+      },
+    ])
   }, [executeViewPrivateKey, t])
 
-  const showDeleteFailureAlert = useCallback((message?: string) => {
-    Alert.alert(
-      t('privateKey.cannotDelete'),
-      message || t('privateKey.failedToUnsubscribe'),
-      [{ text: t('common.ok') }],
-    )
-  }, [t])
+  const showDeleteFailureAlert = useCallback(
+    (message?: string) => {
+      Alert.alert(t('privateKey.cannotDelete'), message || t('privateKey.failedToUnsubscribe'), [
+        { text: t('common.ok') },
+      ])
+    },
+    [t],
+  )
 
   const executeDeletePrivateKey = useCallback(async () => {
     setIsLoading(true)
@@ -88,18 +85,14 @@ export const PrivateKeyContainer = ({ signerAddress }: Props) => {
   }, [signerAddress, dispatch, removeAllDelegatesForOwner, router, showDeleteFailureAlert, t])
 
   const handleDeletePrivateKey = useCallback(() => {
-    Alert.alert(
-      t('privateKey.deleteConfirmTitle'),
-      t('privateKey.deleteConfirmMsg'),
-      [
-        { text: t('common.cancel'), style: 'cancel' },
-        {
-          text: t('privateKey.yesDelete'),
-          style: 'destructive',
-          onPress: executeDeletePrivateKey,
-        },
-      ],
-    )
+    Alert.alert(t('privateKey.deleteConfirmTitle'), t('privateKey.deleteConfirmMsg'), [
+      { text: t('common.cancel'), style: 'cancel' },
+      {
+        text: t('privateKey.yesDelete'),
+        style: 'destructive',
+        onPress: executeDeletePrivateKey,
+      },
+    ])
   }, [executeDeletePrivateKey, t])
 
   const handleHidePrivateKey = useCallback(() => {

@@ -188,9 +188,7 @@ const ReplaySafeDialog = ({
                 </Box>
               )}
 
-              <ErrorMessage level="info">
-                {t('multichain.initialSetupInfo')}
-              </ErrorMessage>
+              <ErrorMessage level="info">{t('multichain.initialSetupInfo')}</ErrorMessage>
 
               {safeCreationDataLoading ? (
                 <Stack
@@ -208,9 +206,7 @@ const ReplaySafeDialog = ({
                   {t('multichain.cannotDetermineParams')}
                 </ErrorMessage>
               ) : isUnsupportedSafeCreationVersion ? (
-                <ErrorMessage>
-                  {t('multichain.outdatedMastercopy')}
-                </ErrorMessage>
+                <ErrorMessage>{t('multichain.outdatedMastercopy')}</ErrorMessage>
               ) : noChainsAvailable ? (
                 <ErrorMessage level="error">{t('multichain.cannotReplayOnAnyChain')}</ErrorMessage>
               ) : (

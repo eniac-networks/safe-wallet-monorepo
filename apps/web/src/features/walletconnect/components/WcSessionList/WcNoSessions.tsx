@@ -54,7 +54,8 @@ const WcNoSessions = () => {
   return (
     <>
       <Typography variant="body2" textAlign="center" color="text.secondary">
-        {t('walletconnect.noDappsConnected')}{sampleDapps ? t('walletconnect.trySampleDapps') : ''}
+        {t('walletconnect.noDappsConnected')}
+        {sampleDapps ? t('walletconnect.trySampleDapps') : ''}
       </Typography>
 
       {sampleDapps}

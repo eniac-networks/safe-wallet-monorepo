@@ -43,20 +43,14 @@ const PayNowPayLater = ({
       <Typography variant="h4" fontWeight="bold">
         {t('counterfactual.beforeWeContinue')}
       </Typography>
-      {isMultiChain && (
-        <ErrorMessage level="info">
-          {t('counterfactual.activateSeparately')}
-        </ErrorMessage>
-      )}
+      {isMultiChain && <ErrorMessage level="info">{t('counterfactual.activateSeparately')}</ErrorMessage>}
       <List>
         {isMultiChain && (
           <ListItem disableGutters>
             <ListItemIcon className={css.listItem}>
               <CheckRoundedIcon fontSize="small" color="inherit" />
             </ListItemIcon>
-            <Typography variant="body2">
-              {t('counterfactual.startExploring')}
-            </Typography>
+            <Typography variant="body2">{t('counterfactual.startExploring')}</Typography>
           </ListItem>
         )}
         <ListItem disableGutters>
@@ -70,9 +64,7 @@ const PayNowPayLater = ({
             <ListItemIcon className={css.listItem}>
               <CheckRoundedIcon fontSize="small" color="inherit" />
             </ListItemIcon>
-            <Typography variant="body2">
-              {t('counterfactual.payLaterNote')}
-            </Typography>
+            <Typography variant="body2">{t('counterfactual.payLaterNote')}</Typography>
           </ListItem>
         )}
         <ListItem disableGutters>

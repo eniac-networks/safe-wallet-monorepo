@@ -60,9 +60,7 @@ const ContactsList = ({ contactItems }: { contactItems: ContactItem[] }) => {
 
               return (
                 <Tooltip
-                  title={
-                    isSameAddressSelected || alreadyAdded ? t('spaces.contactAlreadyAdded') : undefined
-                  }
+                  title={isSameAddressSelected || alreadyAdded ? t('spaces.contactAlreadyAdded') : undefined}
                   arrow
                 >
                   <ListItem className={css.safeItem} disablePadding>

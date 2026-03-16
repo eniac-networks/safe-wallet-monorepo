@@ -27,9 +27,7 @@ const QrModal = ({ onClose }: { onClose: () => void }): ReactElement => {
           {t('qrModal.networkWarning', { chainName })}
         </Box>
 
-        <Typography my={2}>
-          {t('qrModal.depositInstruction', { nativeToken })}
-        </Typography>
+        <Typography my={2}>{t('qrModal.depositInstruction', { nativeToken })}</Typography>
 
         <Box display="flex" flexDirection="column" flexWrap="wrap" justifyContent="center" alignItems="center" my={2}>
           <Box mt={1} mb={1} p={1} border="1px solid" borderColor="border.main" borderRadius={1}>

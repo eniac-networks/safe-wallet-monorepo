@@ -45,11 +45,7 @@ export const DataWidget = (): ReactElement => {
         title={
           <>
             <b>{hasData ? t('myAccounts.exportOrImportData') : t('myAccounts.importData')}</b>
-            <Tooltip
-              title={t('myAccounts.dataWidgetTooltip')}
-              placement="top"
-              arrow
-            >
+            <Tooltip title={t('myAccounts.dataWidgetTooltip')} placement="top" arrow>
               <span>
                 <InfoIcon className={css.infoIcon} />
               </span>

@@ -7,9 +7,7 @@ export function ReviewHeader() {
   return (
     <YStack space="$4" paddingTop="$4">
       <YStack space="$2">
-        <Text color="$colorSecondary">
-          {t('confirmTx.reviewDataHint')}
-        </Text>
+        <Text color="$colorSecondary">{t('confirmTx.reviewDataHint')}</Text>
       </YStack>
     </YStack>
   )

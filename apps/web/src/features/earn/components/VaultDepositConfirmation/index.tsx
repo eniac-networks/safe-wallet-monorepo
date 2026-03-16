@@ -44,7 +44,8 @@ const AdditionalRewards = ({ txInfo }: { txInfo: VaultDepositTransactionInfo }) 
             gap={0.5}
             mt={1}
           >
-            {t('earn.poweredBy')} <IframeIcon src={txInfo.vaultInfo.logoUri} alt={t('earn.morphoLogo')} width={16} height={16} /> Morpho
+            {t('earn.poweredBy')}{' '}
+            <IframeIcon src={txInfo.vaultInfo.logoUri} alt={t('earn.morphoLogo')} width={16} height={16} /> Morpho
           </Typography>,
         ]}
       />
@@ -173,9 +174,7 @@ const VaultDepositConfirmation = ({
             title={
               <>
                 {t('earn.performanceFee')}
-                <InfoTooltip
-                  title={t('earn.performanceFeeTooltip', { brandName: BRAND_NAME })}
-                />
+                <InfoTooltip title={t('earn.performanceFeeTooltip', { brandName: BRAND_NAME })} />
               </>
             }
           >
