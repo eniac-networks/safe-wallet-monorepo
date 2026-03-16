@@ -8,7 +8,7 @@ import SettingsIcon from '@/public/images/sidebar/settings.svg'
 import MembersIcon from '@/public/images/sidebar/members.svg'
 import AccountsIcon from '@/public/images/sidebar/wallet.svg'
 import { SvgIcon } from '@mui/material'
-import type { TFunction } from 'react-i18next'
+import type { TFunction } from 'i18next'
 
 export type DynamicNavItem = {
   label: string

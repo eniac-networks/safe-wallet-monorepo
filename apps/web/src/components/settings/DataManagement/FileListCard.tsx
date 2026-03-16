@@ -3,7 +3,7 @@ import type { ListItemTextProps } from '@mui/material'
 import type { CardHeaderProps } from '@mui/material'
 import type { ReactElement } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { TFunction } from 'react-i18next'
+import type { TFunction } from 'i18next'
 import FileIcon from '@/public/images/settings/data/file.svg'
 
 import useChains from '@/hooks/useChains'
