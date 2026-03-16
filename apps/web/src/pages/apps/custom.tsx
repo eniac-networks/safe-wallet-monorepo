@@ -10,8 +10,10 @@ import { RemoveCustomAppModal } from '@/components/safe-apps/RemoveCustomAppModa
 import type { SafeAppData } from '@safe-global/safe-gateway-typescript-sdk'
 import { SAFE_APPS_LABELS } from '@/services/analytics'
 import { BRAND_NAME } from '@/config/constants'
+import { useTranslation } from 'react-i18next'
 
 const CustomSafeApps: NextPage = () => {
+  const { t } = useTranslation()
   // TODO: create a custom hook instead of use useSafeApps
   const { customSafeApps, addCustomApp, removeCustomApp } = useSafeApps()
 
@@ -40,7 +42,7 @@ const CustomSafeApps: NextPage = () => {
 
       <main>
         <SafeAppList
-          title="Custom apps"
+          title={t('safeApps.customApps')}
           safeAppsList={customSafeApps}
           addCustomApp={addCustomApp}
           removeCustomApp={openRemoveCustomAppModal}

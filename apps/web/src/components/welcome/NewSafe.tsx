@@ -4,6 +4,7 @@ import css from './styles.module.css'
 import CheckFilled from '@/public/images/common/check-filled.svg'
 
 import WelcomeLogin from './WelcomeLogin'
+import { useTranslation } from 'react-i18next'
 
 const BulletListItem = ({ text }: { text: string }) => (
   <li>
@@ -20,6 +21,7 @@ const BulletListItem = ({ text }: { text: string }) => (
 )
 
 const NewSafe = () => {
+  const { t } = useTranslation()
   return (
     <>
       <Grid
@@ -53,7 +55,7 @@ const NewSafe = () => {
                 color: 'static.main',
               }}
             >
-              Unlock a new way of ownership
+              {t('welcome.unlockOwnership')}
             </Typography>
 
             <Typography
@@ -62,13 +64,13 @@ const NewSafe = () => {
                 color: 'static.main',
               }}
             >
-              The most trusted decentralized custody protocol and collective asset management platform.
+              {t('welcome.platformDesc')}
             </Typography>
 
             <ul className={css.bulletList}>
-              <BulletListItem text="Stealth security with multiple signers" />
-              <BulletListItem text="Make it yours with modules and guards" />
-              <BulletListItem text="Access 130+ ecosystem apps" />
+              <BulletListItem text={t('welcome.securityBullet')} />
+              <BulletListItem text={t('welcome.modulesBullet')} />
+              <BulletListItem text={t('welcome.appsBullet')} />
             </ul>
           </div>
         </Grid>

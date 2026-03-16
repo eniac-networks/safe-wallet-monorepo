@@ -5,10 +5,10 @@ import { useCurrentChain } from '@/hooks/useChains'
 import useSafeInfo from '@/hooks/useSafeInfo'
 import { useQueuedTxsLength } from '@/hooks/useTxQueue'
 import ExternalLink from '@/components/common/ExternalLink'
-import { maybePlural } from '@safe-global/utils/utils/formatters'
 import madProps from '@/utils/mad-props'
 import { type TransactionData } from '@safe-global/safe-gateway-typescript-sdk'
 import { extractTargetVersionFromUpdateSafeTx } from '@/services/tx/safeUpdateParams'
+import { useTranslation } from 'react-i18next'
 
 const QUEUE_WARNING_VERSION = '<1.3.0'
 
@@ -21,7 +21,9 @@ function BgBox({ children, light, warning }: { children: ReactNode; light?: bool
   )
 }
 
-export function _UpdateSafe({
+export const _UpdateSafe = UpdateSafeBase
+
+function UpdateSafeBase({
   safeInfo,
   queueSize,
   chain,
@@ -32,6 +34,7 @@ export function _UpdateSafe({
   chain: ReturnType<typeof useCurrentChain>
   txData: TransactionData | undefined
 }) {
+  const { t } = useTranslation()
   const { safe } = safeInfo
   if (!safe.version) {
     return null
@@ -42,36 +45,36 @@ export function _UpdateSafe({
   return (
     <>
       <Stack direction="row" alignItems="center" spacing={2}>
-        <BgBox>Current version: {safe.version}</BgBox>
+        <BgBox>
+          {t('updateSafe.currentVersion')} {safe.version}
+        </BgBox>
         <Box fontSize={28}>→</Box>
         {newVersion !== undefined ? (
           <BgBox light>
-            New version: {newVersion} {chain?.l2 ? '+L2' : ''}
+            {t('updateSafe.newVersion')} {newVersion} {chain?.l2 ? '+L2' : ''}
           </BgBox>
         ) : (
-          <BgBox warning>Unknown contract</BgBox>
+          <BgBox warning>{t('updateSafe.unknownContract')}</BgBox>
         )}
       </Stack>
       {newVersion !== undefined ? (
         <Typography>
-          Read about the updates in the new Safe contracts version in the{' '}
+          {t('updateSafe.readChangelog')}{' '}
           <ExternalLink href={`https://github.com/safe-global/safe-contracts/releases/tag/v${newVersion}`}>
-            version {newVersion} changelog
+            {t('updateSafe.versionChangelog', { version: newVersion })}
           </ExternalLink>
         </Typography>
       ) : (
         <Alert severity="error">
-          <AlertTitle sx={{ fontWeight: 700 }}>Unknown contract</AlertTitle>
-          The target contract for this upgrade is unknown. Verify the transaction data and the target contract address
-          before executing this transaction.
+          <AlertTitle sx={{ fontWeight: 700 }}>{t('updateSafe.unknownContract')}</AlertTitle>
+          {t('updateSafe.unknownContractDesc')}
         </Alert>
       )}
 
       {showQueueWarning && (
         <Alert severity="warning">
-          <AlertTitle sx={{ fontWeight: 700 }}>This upgrade will invalidate all queued transactions!</AlertTitle>
-          You have {queueSize} unexecuted transaction{maybePlural(parseInt(queueSize))}. Please make sure to execute or
-          delete them before upgrading, otherwise you&apos;ll have to reject or replace them after the upgrade.
+          <AlertTitle sx={{ fontWeight: 700 }}>{t('updateSafe.invalidateQueueTitle')}</AlertTitle>
+          {t('updateSafe.queueWarning', { count: parseInt(queueSize) })}
         </Alert>
       )}
 
@@ -80,7 +83,7 @@ export function _UpdateSafe({
   )
 }
 
-const UpdateSafe = madProps(_UpdateSafe, {
+const UpdateSafe = madProps(UpdateSafeBase, {
   chain: useCurrentChain,
   safeInfo: useSafeInfo,
   queueSize: useQueuedTxsLength,

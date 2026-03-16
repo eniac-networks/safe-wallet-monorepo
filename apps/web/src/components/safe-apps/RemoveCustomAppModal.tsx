@@ -2,6 +2,7 @@ import * as React from 'react'
 import { DialogActions, DialogContent, Typography, Button } from '@mui/material'
 import type { SafeAppData } from '@safe-global/safe-gateway-typescript-sdk'
 import ModalDialog from '@/components/common/ModalDialog'
+import { useTranslation } from 'react-i18next'
 
 type Props = {
   open: boolean
@@ -10,20 +11,23 @@ type Props = {
   onConfirm: (appId: number) => void
 }
 
-const RemoveCustomAppModal = ({ open, onClose, onConfirm, app }: Props) => (
-  <ModalDialog open={open} onClose={onClose} dialogTitle="Confirm Safe App removal">
-    <DialogContent>
-      <Typography variant="h6" pt={3}>
-        Are you sure you want to remove the <b>{app.name}</b> app?
-      </Typography>
-    </DialogContent>
-    <DialogActions disableSpacing>
-      <Button onClick={onClose}>Cancel</Button>
-      <Button variant="danger" onClick={() => onConfirm(app.id)}>
-        Remove
-      </Button>
-    </DialogActions>
-  </ModalDialog>
-)
+const RemoveCustomAppModal = ({ open, onClose, onConfirm, app }: Props) => {
+  const { t } = useTranslation()
+  return (
+    <ModalDialog open={open} onClose={onClose} dialogTitle={t('safeApps.removeCustomAppTitle')}>
+      <DialogContent>
+        <Typography variant="h6" pt={3}>
+          {t('safeApps.confirmRemoveApp', { appName: app.name })}
+        </Typography>
+      </DialogContent>
+      <DialogActions disableSpacing>
+        <Button onClick={onClose}>{t('common.cancel')}</Button>
+        <Button variant="danger" onClick={() => onConfirm(app.id)}>
+          {t('safeApps.remove')}
+        </Button>
+      </DialogActions>
+    </ModalDialog>
+  )
+}
 
 export { RemoveCustomAppModal }

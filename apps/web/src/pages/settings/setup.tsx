@@ -11,8 +11,10 @@ import ProposersList from 'src/components/settings/ProposersList'
 import SpendingLimits from '@/components/settings/SpendingLimits'
 import { BRAND_NAME } from '@/config/constants'
 import { NestedSafesList } from '@/components/settings/NestedSafesList'
+import { useTranslation } from 'react-i18next'
 
 const Setup: NextPage = () => {
+  const { t } = useTranslation()
   const { safe, safeLoaded } = useSafeInfo()
   const nonce = safe.nonce
   const ownerLength = safe.owners.length
@@ -31,12 +33,9 @@ const Setup: NextPage = () => {
           <Grid container spacing={3}>
             <Grid item lg={4} xs={12}>
               <Typography variant="h4" fontWeight={700}>
-                <Tooltip
-                  placement="top"
-                  title="For security reasons, transactions made with a Safe Account need to be executed in order. The nonce shows you which transaction will be executed next. You can find the nonce for a transaction in the transaction details."
-                >
+                <Tooltip placement="top" title={t('settings.nonceTooltip')}>
                   <span>
-                    Safe Account nonce
+                    {t('settings.safeAccountNonce')}
                     <SvgIcon
                       component={InfoIcon}
                       inheritViewBox
@@ -49,7 +48,7 @@ const Setup: NextPage = () => {
               </Typography>
 
               <Typography pt={1}>
-                Current nonce:{' '}
+                {t('settings.currentNonce')}{' '}
                 {safeLoaded ? <b>{nonce}</b> : <Skeleton width="30px" sx={{ display: 'inline-block' }} />}
               </Typography>
             </Grid>
@@ -64,7 +63,7 @@ const Setup: NextPage = () => {
           <Grid container spacing={3}>
             <Grid item lg={4} xs={12}>
               <Typography variant="h4" fontWeight={700}>
-                Members
+                {t('settings.members')}
               </Typography>
             </Grid>
 

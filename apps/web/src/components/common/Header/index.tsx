@@ -27,6 +27,7 @@ import { useIsOfficialHost } from '@/hooks/useIsOfficialHost'
 import { BRAND_LOGO, BRAND_NAME } from '@/config/constants'
 import { FEATURES } from '@safe-global/utils/utils/chains'
 import LanguageSwitcher from '@/components/common/LanguageSwitcher'
+import { useTranslation } from 'react-i18next'
 
 type HeaderProps = {
   onMenuToggle?: Dispatch<SetStateAction<boolean>>
@@ -42,6 +43,7 @@ function getLogoLink(router: ReturnType<typeof useRouter>): Url {
 }
 
 const Header = ({ onMenuToggle, onBatchToggle }: HeaderProps): ReactElement => {
+  const { t } = useTranslation()
   const safeAddress = useSafeAddress()
   const showSafeToken = useSafeTokenEnabled()
   const isProposer = useIsWalletProposer()
@@ -73,7 +75,7 @@ const Header = ({ onMenuToggle, onBatchToggle }: HeaderProps): ReactElement => {
     <Paper className={css.container}>
       <div className={classnames(css.element, css.menuButton)}>
         {onMenuToggle && (
-          <IconButton onClick={handleMenuToggle} size="large" color="default" aria-label="menu">
+          <IconButton onClick={handleMenuToggle} size="large" color="default" aria-label={t('header.menu')}>
             <MenuIcon />
           </IconButton>
         )}
@@ -81,7 +83,7 @@ const Header = ({ onMenuToggle, onBatchToggle }: HeaderProps): ReactElement => {
 
       <div className={classnames(css.element, css.logoMobile)}>
         <Link href={logoHref} passHref>
-          {isOfficialHost ? <SafeLogoMobile alt="Safe logo" /> : null}
+          {isOfficialHost ? <SafeLogoMobile alt={t('header.safeLogo')} /> : null}
         </Link>
       </div>
 

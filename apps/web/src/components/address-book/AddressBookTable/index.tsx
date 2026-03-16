@@ -1,4 +1,5 @@
 import { useContext, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Box } from '@mui/material'
 import type { ChainInfo } from '@safe-global/safe-gateway-typescript-sdk'
 
@@ -28,12 +29,6 @@ import { TokenTransferFlow } from '@/components/tx-flow/flows'
 import CheckWallet from '@/components/common/CheckWallet'
 import madProps from '@/utils/mad-props'
 
-const headCells = [
-  { id: 'name', label: 'Name' },
-  { id: 'address', label: 'Address' },
-  { id: 'actions', label: '' },
-]
-
 export enum ModalType {
   EXPORT = 'export',
   IMPORT = 'import',
@@ -54,9 +49,19 @@ type AddressBookTableProps = {
 }
 
 function AddressBookTable({ chain, setTxFlow }: AddressBookTableProps) {
+  const { t } = useTranslation()
   const [open, setOpen] = useState<typeof defaultOpen>(defaultOpen)
   const [searchQuery, setSearchQuery] = useState('')
   const [defaultValues, setDefaultValues] = useState<AddressEntry | undefined>(undefined)
+
+  const headCells = useMemo(
+    () => [
+      { id: 'name', label: t('addressBook.name') },
+      { id: 'address', label: t('addressBook.address') },
+      { id: 'actions', label: '' },
+    ],
+    [t],
+  )
 
   const handleOpenModal = (type: keyof typeof open) => () => {
     setOpen((prev) => ({ ...prev, [type]: true }))
@@ -90,11 +95,11 @@ function AddressBookTable({ chain, setTxFlow }: AddressBookTableProps) {
       name: {
         rawValue: name,
         content: name,
-        mobileLabel: 'Name',
+        mobileLabel: t('addressBook.name'),
       },
       address: {
         rawValue: address,
-        mobileLabel: 'Address',
+        mobileLabel: t('addressBook.address'),
         content: <EthHashInfo address={address} showName={false} shortAddress={false} hasExplorer showCopyButton />,
       },
       actions: {
@@ -103,7 +108,7 @@ function AddressBookTable({ chain, setTxFlow }: AddressBookTableProps) {
         content: (
           <div className={tableCss.actions}>
             <Track {...ADDRESS_BOOK_EVENTS.EDIT_ENTRY}>
-              <Tooltip title="Edit entry" placement="top">
+              <Tooltip title={t('addressBook.editEntry')} placement="top">
                 <IconButton onClick={() => handleOpenModalWithValues(ModalType.ENTRY, address, name)} size="small">
                   <SvgIcon component={EditIcon} inheritViewBox color="border" fontSize="small" />
                 </IconButton>
@@ -111,7 +116,7 @@ function AddressBookTable({ chain, setTxFlow }: AddressBookTableProps) {
             </Track>
 
             <Track {...ADDRESS_BOOK_EVENTS.DELETE_ENTRY}>
-              <Tooltip title="Delete entry" placement="top">
+              <Tooltip title={t('addressBook.deleteEntry')} placement="top">
                 <IconButton onClick={() => handleOpenModalWithValues(ModalType.REMOVE, address, name)} size="small">
                   <SvgIcon component={DeleteIcon} inheritViewBox color="error" fontSize="small" />
                 </IconButton>
@@ -129,7 +134,7 @@ function AddressBookTable({ chain, setTxFlow }: AddressBookTableProps) {
                     onClick={() => setTxFlow(<TokenTransferFlow recipients={[{ recipient: address }]} />)}
                     disabled={!isOk}
                   >
-                    Send
+                    {t('addressBook.send')}
                   </Button>
                 </Track>
               )}
@@ -155,7 +160,11 @@ function AddressBookTable({ chain, setTxFlow }: AddressBookTableProps) {
           <Box bgcolor="background.paper" borderRadius={1}>
             <PagePlaceholder
               img={<NoEntriesIcon />}
-              text={`No entries found${chain ? ` on ${chain.chainName}` : ''}`}
+              text={
+                chain
+                  ? t('addressBook.noEntriesFoundOnChain', { chainName: chain.chainName })
+                  : t('addressBook.noEntriesFound')
+              }
             />
           </Box>
         )}

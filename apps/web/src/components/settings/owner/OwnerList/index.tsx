@@ -17,10 +17,12 @@ import { TxModalContext } from '@/components/tx-flow'
 import ReplaceOwnerIcon from '@/public/images/settings/setup/replace-owner.svg'
 import DeleteIcon from '@/public/images/common/delete.svg'
 import type { AddressBook } from '@/store/addressBookSlice'
+import { useTranslation } from 'react-i18next'
 
 import tableCss from '@/components/common/EnhancedTable/styles.module.css'
 
 export const OwnerList = () => {
+  const { t } = useTranslation()
   const addressBook = useAddressBook()
   const { safe } = useSafeInfo()
   const { setTxFlow } = useContext(TxModalContext)
@@ -46,7 +48,7 @@ export const OwnerList = () => {
                 <CheckWallet>
                   {(isOk) => (
                     <Track {...SETTINGS_EVENTS.SETUP.REPLACE_OWNER}>
-                      <Tooltip title={isOk ? 'Replace signer' : undefined}>
+                      <Tooltip title={isOk ? t('settings.replaceSigner') : undefined}>
                         <span>
                           <IconButton
                             onClick={() => setTxFlow(<ReplaceOwnerFlow address={address} />)}
@@ -67,7 +69,7 @@ export const OwnerList = () => {
                   <CheckWallet>
                     {(isOk) => (
                       <Track {...SETTINGS_EVENTS.SETUP.REMOVE_OWNER}>
-                        <Tooltip title={isOk ? 'Remove signer' : undefined}>
+                        <Tooltip title={isOk ? t('settings.removeSigner') : undefined}>
                           <span>
                             <IconButton
                               onClick={() => setTxFlow(<RemoveOwnerFlow name={name} address={address} />)}
@@ -88,7 +90,7 @@ export const OwnerList = () => {
         },
       }
     })
-  }, [safe.owners, safe.chainId, addressBook, setTxFlow])
+  }, [safe.owners, safe.chainId, addressBook, setTxFlow, t])
 
   return (
     <Box
@@ -106,12 +108,9 @@ export const OwnerList = () => {
               mb: 2,
             }}
           >
-            Signers
+            {t('settings.signers')}
           </Typography>
-          <Typography mb={2}>
-            Signers have full control over the account, they can propose, sign and execute transactions, as well as
-            reject them.
-          </Typography>
+          <Typography mb={2}>{t('settings.signersDescription')}</Typography>
 
           <Box
             sx={{
@@ -131,14 +130,14 @@ export const OwnerList = () => {
                     disabled={!isOk}
                     size="compact"
                   >
-                    Manage signers
+                    {t('settings.manageSigners')}
                   </Button>
                 </Track>
               )}
             </CheckWallet>
 
             <Button variant="text" onClick={() => exportOwners(safe, addressBook)} size="compact">
-              Export as CSV
+              {t('settings.exportAsCsv')}
             </Button>
           </Box>
 

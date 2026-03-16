@@ -7,6 +7,7 @@ import {
 } from '@/hooks/safe-apps/permissions'
 import type { ReactElement } from 'react'
 import { useCallback, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import type { AllowedFeatures } from '@/components/safe-apps/types'
 import { PermissionStatus } from '@/components/safe-apps/types'
 import type { SafeAppData } from '@safe-global/safe-gateway-typescript-sdk'
@@ -15,6 +16,7 @@ import PermissionsCheckbox from '@/components/safe-apps/PermissionCheckbox'
 import DeleteIcon from '@/public/images/common/delete.svg'
 
 const SafeAppsPermissions = (): ReactElement => {
+  const { t } = useTranslation()
   const { allSafeApps } = useSafeApps()
   const {
     permissions: safePermissions,
@@ -97,12 +99,12 @@ const SafeAppsPermissions = (): ReactElement => {
   return (
     <Paper sx={{ padding: 4 }}>
       <Typography variant="h4" fontWeight={700}>
-        Safe Apps permissions
+        {t('settings.safeAppsPermissionsTitle')}
       </Typography>
       <br />
       {!domains.length && (
         <Typography variant="body1" sx={{ color: ({ palette }) => palette.primary.light }}>
-          There are no Safe Apps using permissions.
+          {t('settings.noAppsUsingPermissions')}
         </Typography>
       )}
       {domains.map((domain) => (
@@ -171,7 +173,7 @@ const SafeAppsPermissions = (): ReactElement => {
             }}
           >
             <Link href="#" onClick={(event) => handleAllowAll(event, domain)} sx={{ textDecoration: 'none' }}>
-              Allow all
+              {t('settings.allowAll')}
             </Link>
             <Link
               href="#"
@@ -180,7 +182,7 @@ const SafeAppsPermissions = (): ReactElement => {
               sx={{ textDecoration: 'none' }}
               ml={2}
             >
-              Clear all
+              {t('settings.clearAll')}
             </Link>
             <Link href="#" color="error" onClick={(event) => handleRemoveApp(event, domain)} ml={2}>
               <SvgIcon component={DeleteIcon} inheritViewBox color="error" fontSize="small" />

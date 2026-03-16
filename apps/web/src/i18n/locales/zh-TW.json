@@ -217,7 +217,11 @@
     "module": "模組",
     "transactionGuard": "交易守衛",
     "removeModuleDescription": "移除此模組後，使用此模組的任何功能或應用程式可能無法正常運作。如果此 Safe 帳戶需要多個簽名，則移除模組也必須得到其他簽名者的確認。",
-    "removeGuardDescription": "一旦移除交易守衛，後續交易將不會在執行前後進行守衛檢查。"
+    "removeGuardDescription": "一旦移除交易守衛，後續交易將不會在執行前後進行守衛檢查。",
+    "safeAccountNonce": "Safe 帳戶 Nonce",
+    "nonceTooltip": "基於安全原因，Safe 帳戶的交易需要按順序執行。Nonce 顯示下一筆待執行的交易編號。您可以在交易詳情中查看交易的 Nonce。",
+    "currentNonce": "目前 Nonce：",
+    "members": "成員"
   },
   "settingsHeader": {
     "settings": "設定",
@@ -318,7 +322,10 @@
     "required": "必填",
     "maxLength": "最多 50 個字元",
     "safeLoadError": "此 Safe 帳戶無法載入",
-    "safeLoadErrorImgAlt": "右下角有紅色圖示的保險庫"
+    "safeLoadErrorImgAlt": "右下角有紅色圖示的保險庫",
+    "details": "詳細資訊",
+    "sendingFrom": "從以下地址發送",
+    "unknownChain": "未知鏈"
   },
   "sidebar": {
     "newTransaction": "新交易",
@@ -392,7 +399,11 @@
     "nativeSwapsTitle": "原生兌換功能上線了！",
     "nativeSwapsDesc": "在原生兌換中享受更佳的解碼和安全性的無縫交易體驗。",
     "tryNow": "立即試用",
-    "dontShow": "不再顯示"
+    "dontShow": "不再顯示",
+    "pinnedApps": "我的釘選應用程式",
+    "featuredApps": "精選應用程式",
+    "allApps": "所有應用程式",
+    "customApps": "自訂應用程式"
   },
   "safeMessages": {
     "created": "已建立",
@@ -1316,5 +1327,61 @@
     "learnMore": "了解更多",
     "dontShowAgain": "不再顯示",
     "stake": "質押"
+  },
+  "walletInfo": {
+    "wallet": "錢包",
+    "balance": "餘額"
+  },
+  "welcome": {
+    "unlockOwnership": "開啟全新的所有權方式",
+    "platformDesc": "最值得信賴的去中心化保管協議和集體資產管理平台。",
+    "securityBullet": "多重簽名者的隱形安全性",
+    "modulesBullet": "透過模組和守衛打造專屬設定",
+    "appsBullet": "存取 130+ 個生態系統應用程式",
+    "getStarted": "開始使用",
+    "openOrCreate": "開啟現有的 Safe 帳戶或建立新帳戶",
+    "connectToOpenOrCreate": "連接您的錢包以建立新的 Safe 帳戶或開啟現有帳戶",
+    "or": "或",
+    "viewMyAccounts": "查看我的帳戶",
+    "watchAnyAccount": "監看任何帳戶",
+    "continueWith": "繼續使用",
+    "connectWallet": "連接錢包"
+  },
+  "gasParams": {
+    "estimatedFee": "預估費用",
+    "cannotEstimate": "無法估算",
+    "free": "免費",
+    "signingWithNonce": "使用 nonce 簽署交易",
+    "safeTxNonce": "Safe 帳戶交易 nonce",
+    "walletNonce": "錢包 nonce",
+    "gasLimit": "Gas 上限",
+    "gasLimitMin": "Gas 上限至少須為 21000",
+    "resetGasLimit": "重設為建議的 Gas 上限",
+    "maxPriorityFee": "最高優先費用（Gwei）",
+    "maxFee": "最高費用（Gwei）",
+    "gasPrice": "Gas 價格（Gwei）"
+  },
+  "confirmTx": {
+    "reviewWhatToSign": "審查您將簽署的內容",
+    "signingIrreversible": "簽署是不可逆的操作，請確保您了解所簽署的內容。",
+    "readMore": "了解更多",
+    "compareWithWallet": "與您的錢包比對",
+    "onceYouClickSign": "點擊「簽署」後，交易將出現在您的簽署錢包中。請確保所有細節相符。",
+    "verifyWithTools": "使用外部工具驗證",
+    "verifyDesc": "您還可以在第三方工具中交叉驗證您的交易資料，例如",
+    "compareWithDevice": "與您的裝置比對",
+    "hardwareWalletDesc": "如果您使用支援「盲簽名」的硬體錢包，請將裝置上顯示的內容與右側的雜湊值進行比對。",
+    "reviewDetails": "審查詳細資訊"
+  },
+  "updateSafe": {
+    "currentVersion": "目前版本：",
+    "newVersion": "新版本：",
+    "unknownContract": "未知合約",
+    "readChangelog": "在以下位置閱讀新 Safe 合約版本的更新內容",
+    "versionChangelog": "版本 {{version}} 變更日誌",
+    "unknownContractDesc": "此升級的目標合約未知。在執行此交易前，請驗證交易資料和目標合約地址。",
+    "invalidateQueueTitle": "此升級將使所有排隊中的交易失效！",
+    "queueWarning_one": "您有 {{count}} 筆未執行的交易。請在升級前確保執行或刪除，否則升級後您將需要拒絕或替換它們。",
+    "queueWarning_other": "您有 {{count}} 筆未執行的交易。請在升級前確保執行或刪除，否則升級後您將需要拒絕或替換它們。"
   }
 }

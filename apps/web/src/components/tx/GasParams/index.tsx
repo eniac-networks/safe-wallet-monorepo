@@ -12,6 +12,7 @@ import classnames from 'classnames'
 import css from './styles.module.css'
 import accordionCss from '@/styles/accordion.module.css'
 import madProps from '@/utils/mad-props'
+import { useTranslation } from 'react-i18next'
 
 const GasDetail = ({ name, value, isLoading }: { name: string; value: string; isLoading: boolean }): ReactElement => {
   const valueSkeleton = <Skeleton variant="text" sx={{ minWidth: '5em' }} />
@@ -34,7 +35,8 @@ type GasParamsProps = {
   willRelay?: boolean
 }
 
-export const _GasParams = ({
+export const _GasParams = GasParamsBase
+function GasParamsBase({
   params,
   isExecution,
   isEIP1559,
@@ -42,7 +44,8 @@ export const _GasParams = ({
   gasLimitError,
   willRelay,
   chain,
-}: GasParamsProps & { chain?: ChainInfo }): ReactElement => {
+}: GasParamsProps & { chain?: ChainInfo }): ReactElement {
+  const { t } = useTranslation()
   const { nonce, userNonce, safeTxGas, gasLimit, maxFeePerGas, maxPriorityFeePerGas } = params
 
   const onChangeExpand = (_: SyntheticEvent, expanded: boolean) => {
@@ -78,7 +81,7 @@ export const _GasParams = ({
             mt: 2,
           }}
         >
-          Edit
+          {t('common.edit')}
         </Link>
       ) : (
         <Skeleton variant="text" sx={{ display: 'inline-block', minWidth: '2em', mt: 2 }} />
@@ -102,7 +105,7 @@ export const _GasParams = ({
                 width: 1,
               }}
             >
-              <span style={{ flex: '1' }}>Estimated fee </span>
+              <span style={{ flex: '1' }}>{t('gasParams.estimatedFee')} </span>
               {gasLimitError ? (
                 <>
                   <SvgIcon
@@ -111,17 +114,17 @@ export const _GasParams = ({
                     fontSize="small"
                     sx={{ color: 'var(--color-error-main)', mr: 'var(--space-1)' }}
                   />
-                  <span style={{ fontWeight: 'normal' }}>Cannot Estimate</span>
+                  <span style={{ fontWeight: 'normal' }}>{t('gasParams.cannotEstimate')}</span>
                 </>
               ) : isLoading ? (
                 <Skeleton variant="text" sx={{ display: 'inline-block', minWidth: '7em' }} />
               ) : (
-                <span>{willRelay ? 'Free' : `${totalFee} ${chain?.nativeCurrency.symbol}`}</span>
+                <span>{willRelay ? t('gasParams.free') : `${totalFee} ${chain?.nativeCurrency.symbol}`}</span>
               )}
             </Typography>
           ) : (
             <Typography>
-              Signing the transaction with nonce&nbsp;
+              {t('gasParams.signingWithNonce')}&nbsp;
               {nonce !== undefined ? (
                 nonce
               ) : (
@@ -133,7 +136,7 @@ export const _GasParams = ({
 
         <AccordionDetails>
           {nonce !== undefined && (
-            <GasDetail isLoading={false} name="Safe Account transaction nonce" value={nonce.toString()} />
+            <GasDetail isLoading={false} name={t('gasParams.safeTxNonce')} value={nonce.toString()} />
           )}
 
           {safeTxGas !== undefined && <GasDetail isLoading={false} name="safeTxGas" value={safeTxGas.toString()} />}
@@ -141,18 +144,22 @@ export const _GasParams = ({
           {isExecution && (
             <>
               {userNonce !== undefined && (
-                <GasDetail isLoading={false} name="Wallet nonce" value={userNonce.toString()} />
+                <GasDetail isLoading={false} name={t('gasParams.walletNonce')} value={userNonce.toString()} />
               )}
 
-              <GasDetail isLoading={isLoading} name="Gas limit" value={isError ? 'Cannot estimate' : gasLimitString} />
+              <GasDetail
+                isLoading={isLoading}
+                name={t('gasParams.gasLimit')}
+                value={isError ? t('gasParams.cannotEstimate') : gasLimitString}
+              />
 
               {isEIP1559 ? (
                 <>
-                  <GasDetail isLoading={isLoading} name="Max priority fee (Gwei)" value={maxPrioGasGwei} />
-                  <GasDetail isLoading={isLoading} name="Max fee (Gwei)" value={maxFeePerGasGwei} />
+                  <GasDetail isLoading={isLoading} name={t('gasParams.maxPriorityFee')} value={maxPrioGasGwei} />
+                  <GasDetail isLoading={isLoading} name={t('gasParams.maxFee')} value={maxFeePerGasGwei} />
                 </>
               ) : (
-                <GasDetail isLoading={isLoading} name="Gas price (Gwei)" value={maxFeePerGasGwei} />
+                <GasDetail isLoading={isLoading} name={t('gasParams.gasPrice')} value={maxFeePerGasGwei} />
               )}
             </>
           )}
@@ -164,7 +171,7 @@ export const _GasParams = ({
   )
 }
 
-const GasParams = madProps(_GasParams, {
+const GasParams = madProps(GasParamsBase, {
   chain: useCurrentChain,
 })
 

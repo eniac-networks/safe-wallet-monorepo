@@ -3,6 +3,7 @@ import useWallet from '@/hooks/wallets/useWallet'
 import { Box, Button, Typography } from '@mui/material'
 import EthHashInfo from '@/components/common/EthHashInfo'
 import WalletIcon from '@/components/common/WalletIcon'
+import { useTranslation } from 'react-i18next'
 
 const WalletLogin = ({
   onLogin,
@@ -13,6 +14,7 @@ const WalletLogin = ({
   onContinue: () => void
   buttonText?: string
 }) => {
+  const { t } = useTranslation()
   const wallet = useWallet()
   const connectWallet = useConnectWallet()
 
@@ -27,7 +29,7 @@ const WalletLogin = ({
         <Box justifyContent="space-between" display="flex" flexDirection="row" alignItems="center" gap={1}>
           <Box display="flex" flexDirection="column" alignItems="flex-start">
             <Typography variant="subtitle2" fontWeight={700}>
-              {buttonText || 'Continue with'} {wallet.label}
+              {buttonText || t('welcome.continueWith')} {wallet.label}
             </Typography>
             {wallet.address && (
               <EthHashInfo address={wallet.address} shortAddress avatarSize={16} showName={false} copyAddress={false} />
@@ -41,7 +43,7 @@ const WalletLogin = ({
 
   return (
     <Button onClick={onConnectWallet} sx={{ minHeight: '42px' }} variant="contained" size="small" disableElevation>
-      Connect wallet
+      {t('welcome.connectWallet')}
     </Button>
   )
 }

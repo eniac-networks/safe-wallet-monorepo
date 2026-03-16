@@ -130,7 +130,9 @@ export const SwapOrderConfirmation = ({ order, decodedData, settlementContract }
               <Typography key="title" variant="body1" className={css.partsBlockTitle}>
                 <strong>
                   {t('swap.orderWillBeSplit')}{' '}
-                  <span className={css.numberOfPartsLabel}>{t('swap.equalParts', { count: order.numberOfParts })}</span>
+                  <span className={css.numberOfPartsLabel}>
+                    {t('swap.equalParts', { count: Number(order.numberOfParts) })}
+                  </span>
                 </strong>
               </Typography>,
               <PartSellAmount order={order} addonText={t('swap.perPart')} key="sell_part" />,

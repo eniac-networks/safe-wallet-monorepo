@@ -16,8 +16,10 @@ import { useHasFeature } from '@/hooks/useChains'
 import { SAFE_APPS_LABELS } from '@/services/analytics'
 import { BRAND_NAME } from '@/config/constants'
 import { FEATURES } from '@safe-global/utils/utils/chains'
+import { useTranslation } from 'react-i18next'
 
 const SafeApps: NextPage = () => {
+  const { t } = useTranslation()
   const router = useRouter()
   const { remoteSafeApps, remoteSafeAppsLoading, pinnedSafeApps, pinnedSafeAppIds } = useSafeApps()
   const { filteredApps, query, setQuery, setSelectedCategories, setOptimizedWithBatchFilter, selectedCategories } =
@@ -71,7 +73,7 @@ const SafeApps: NextPage = () => {
         {/* Pinned apps */}
         {!isFiltered && pinnedSafeApps.length > 0 && (
           <SafeAppList
-            title="My pinned apps"
+            title={t('safeApps.pinnedApps')}
             safeAppsList={pinnedSafeApps}
             bookmarkedSafeAppsId={pinnedSafeAppIds}
             eventLabel={SAFE_APPS_LABELS.apps_pinned}
@@ -81,7 +83,7 @@ const SafeApps: NextPage = () => {
         {/* Featured apps */}
         {!isFiltered && featuredSafeApps.length > 0 && (
           <SafeAppList
-            title="Featured apps"
+            title={t('safeApps.featuredApps')}
             safeAppsList={featuredSafeApps}
             bookmarkedSafeAppsId={pinnedSafeAppIds}
             eventLabel={SAFE_APPS_LABELS.apps_featured}
@@ -90,7 +92,7 @@ const SafeApps: NextPage = () => {
 
         {/* All apps */}
         <SafeAppList
-          title="All apps"
+          title={t('safeApps.allApps')}
           isFiltered={isFiltered}
           safeAppsList={isFiltered ? filteredApps : nonPinnedApps}
           safeAppsListLoading={remoteSafeAppsLoading}

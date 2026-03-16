@@ -4,6 +4,7 @@ import classNames from 'classnames'
 import WarningIcon from '@/public/images/notifications/warning.svg'
 import InfoIcon from '@/public/images/notifications/info.svg'
 import css from './styles.module.css'
+import { useTranslation } from 'react-i18next'
 
 const ETHERS_PREFIX = 'could not coalesce error'
 
@@ -20,6 +21,7 @@ const ErrorMessage = ({
   level?: 'error' | 'warning' | 'info'
   title?: string
 }): ReactElement => {
+  const { t } = useTranslation()
   const [showDetails, setShowDetails] = useState<boolean>(false)
 
   const onDetailsToggle = (e: SyntheticEvent) => {
@@ -61,7 +63,7 @@ const ErrorMessage = ({
                   display: 'block',
                 }}
               >
-                Details
+                {t('common.details')}
               </Link>
             )}
           </Typography>

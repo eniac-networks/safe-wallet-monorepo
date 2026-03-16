@@ -4,15 +4,17 @@ import SouthIcon from '@mui/icons-material/South'
 import css from './styles.module.css'
 import useSafeAddress from '@/hooks/useSafeAddress'
 import EthHashInfo from '@/components/common/EthHashInfo'
+import { useTranslation } from 'react-i18next'
 
 // TODO: Remove this file after replacing in all tx flow components
 const SendFromBlock = ({ title }: { title?: string }): ReactElement => {
+  const { t } = useTranslation()
   const address = useSafeAddress()
 
   return (
     <Box className={css.container} pb={2} mb={2}>
       <Typography color="text.secondary" pb={1}>
-        {title || 'Sending from'}
+        {title || t('common.sendingFrom')}
       </Typography>
 
       <Typography variant="body2" component="div">

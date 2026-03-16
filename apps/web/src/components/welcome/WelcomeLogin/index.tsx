@@ -10,8 +10,10 @@ import useHasSafes from '@/features/myAccounts/hooks/useHasSafes'
 import Track from '@/components/common/Track'
 import { useCallback, useEffect, useState } from 'react'
 import WalletLogin from './WalletLogin'
+import { useTranslation } from 'react-i18next'
 
 const WelcomeLogin = () => {
+  const { t } = useTranslation()
   const router = useRouter()
   const wallet = useWallet()
   const { isLoaded, hasSafes } = useHasSafes()
@@ -43,13 +45,11 @@ const WelcomeLogin = () => {
         <SvgIcon component={SafeLogo} inheritViewBox sx={{ height: '24px', width: '80px', ml: '-8px' }} />
 
         <Typography variant="h6" mt={6} fontWeight={700}>
-          Get started
+          {t('welcome.getStarted')}
         </Typography>
 
         <Typography mb={2} textAlign="center">
-          {wallet
-            ? 'Open your existing Safe Accounts or create a new one'
-            : 'Connect your wallet to create a new Safe Account or open an existing one'}
+          {wallet ? t('welcome.openOrCreate') : t('welcome.connectToOpenOrCreate')}
         </Typography>
 
         <Track {...OVERVIEW_EVENTS.OPEN_ONBOARD} label={OVERVIEW_LABELS.welcome_page}>
@@ -60,19 +60,19 @@ const WelcomeLogin = () => {
           <>
             <Divider sx={{ mt: 2, mb: 2, width: '100%' }}>
               <Typography color="text.secondary" fontWeight={700} variant="overline">
-                or
+                {t('welcome.or')}
               </Typography>
             </Divider>
             {hasSafes ? (
               <Link href={AppRoutes.welcome.accounts}>
                 <Button disableElevation size="small">
-                  View my accounts
+                  {t('welcome.viewMyAccounts')}
                 </Button>
               </Link>
             ) : (
               <Link href={AppRoutes.newSafe.load}>
                 <Button disableElevation size="small">
-                  Watch any account
+                  {t('welcome.watchAnyAccount')}
                 </Button>
               </Link>
             )}

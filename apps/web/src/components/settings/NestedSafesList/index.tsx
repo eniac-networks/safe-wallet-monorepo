@@ -2,6 +2,7 @@ import { Paper, Grid2, Typography, Button, SvgIcon, Tooltip, IconButton } from '
 import { skipToken } from '@reduxjs/toolkit/query'
 import { useContext, useMemo, useState } from 'react'
 import type { ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import AddIcon from '@/public/images/common/add.svg'
 import EditIcon from '@/public/images/common/edit.svg'
@@ -21,6 +22,7 @@ import tableCss from '@/components/common/EnhancedTable/styles.module.css'
 import { FEATURES } from '@safe-global/utils/utils/chains'
 
 export function NestedSafesList(): ReactElement | null {
+  const { t } = useTranslation()
   const isEnabled = useHasFeature(FEATURES.NESTED_SAFES)
   const { setTxFlow } = useContext(TxModalContext)
   const [addressToRename, setAddressToRename] = useState<string | null>(null)
@@ -48,7 +50,7 @@ export function NestedSafesList(): ReactElement | null {
                 <CheckWallet>
                   {(isOk) => (
                     <Track {...NESTED_SAFE_EVENTS.RENAME}>
-                      <Tooltip title={isOk ? 'Rename nested Safe' : undefined}>
+                      <Tooltip title={isOk ? t('settings.renameNestedSafe') : undefined}>
                         <span>
                           <IconButton onClick={() => setAddressToRename(nestedSafe)} size="small" disabled={!isOk}>
                             <SvgIcon component={EditIcon} inheritViewBox fontSize="small" color="border" />
@@ -64,7 +66,7 @@ export function NestedSafesList(): ReactElement | null {
         },
       }
     })
-  }, [nestedSafes?.safes])
+  }, [nestedSafes?.safes, t])
 
   if (!isEnabled) {
     return null
@@ -76,21 +78,14 @@ export function NestedSafesList(): ReactElement | null {
         <Grid2 container direction="row" justifyContent="space-between" spacing={3} mb={2}>
           <Grid2 size={{ lg: 4, xs: 12 }}>
             <Typography variant="h4" fontWeight={700}>
-              Nested Safes
+              {t('settings.nestedSafes')}
             </Typography>
           </Grid2>
 
           <Grid2 size="grow">
-            <Typography mb={3}>
-              Nested Safes are separate wallets owned by your main Account, perfect for organizing different funds and
-              projects.
-            </Typography>
+            <Typography mb={3}>{t('settings.nestedSafesDescription')}</Typography>
 
-            {nestedSafes?.safes.length === 0 && (
-              <Typography mb={3}>
-                You don&apos;t have any Nested Safes yet. Set one up now to better organize your assets
-              </Typography>
-            )}
+            {nestedSafes?.safes.length === 0 && <Typography mb={3}>{t('settings.noNestedSafes')}</Typography>}
 
             {safe.deployed && (
               <CheckWallet>
@@ -102,7 +97,7 @@ export function NestedSafesList(): ReactElement | null {
                     disabled={!isOk}
                     sx={{ mb: 3 }}
                   >
-                    Add nested Safe
+                    {t('settings.addNestedSafe')}
                   </Button>
                 )}
               </CheckWallet>

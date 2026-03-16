@@ -5,8 +5,10 @@ import { useFormContext } from 'react-hook-form'
 import { BASE_TX_GAS } from '@/config/constants'
 import { AdvancedField } from './types'
 import NumberField from '@/components/common/NumberField'
+import { useTranslation } from 'react-i18next'
 
 const GasLimitInput = ({ recommendedGasLimit }: { recommendedGasLimit?: string }) => {
+  const { t } = useTranslation()
   const { safe } = useSafeInfo()
 
   const {
@@ -31,16 +33,16 @@ const GasLimitInput = ({ recommendedGasLimit }: { recommendedGasLimit?: string }
       }
     | undefined
 
-  const errorMessage = error ? (error.type === 'min' ? 'Gas limit must be at least 21000' : error.message) : undefined
+  const errorMessage = error ? (error.type === 'min' ? t('gasParams.gasLimitMin') : error.message) : undefined
 
   return (
     <FormControl fullWidth>
       <NumberField
-        label={errorMessage || 'Gas limit'}
+        label={errorMessage || t('gasParams.gasLimit')}
         error={!!errorMessage}
         InputProps={{
           endAdornment: recommendedGasLimit && recommendedGasLimit !== currentGasLimit.toString() && (
-            <Tooltip title="Reset to recommended gas limit">
+            <Tooltip title={t('gasParams.resetGasLimit')}>
               <IconButton onClick={onResetGasLimit} size="small" color="primary">
                 <RotateLeftIcon />
               </IconButton>

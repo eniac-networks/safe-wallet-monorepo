@@ -217,7 +217,11 @@
     "module": "Module",
     "transactionGuard": "Transaction guard",
     "removeModuleDescription": "After removing this module, any feature or app that uses this module might no longer work. If this Safe Account requires more then one signature, the module removal will have to be confirmed by other signers as well.",
-    "removeGuardDescription": "Once the transaction guard has been removed, checks by the transaction guard will not be conducted before or after any subsequent transactions."
+    "removeGuardDescription": "Once the transaction guard has been removed, checks by the transaction guard will not be conducted before or after any subsequent transactions.",
+    "safeAccountNonce": "Safe Account nonce",
+    "nonceTooltip": "For security reasons, transactions made with a Safe Account need to be executed in order. The nonce shows you which transaction will be executed next. You can find the nonce for a transaction in the transaction details.",
+    "currentNonce": "Current nonce:",
+    "members": "Members"
   },
   "settingsHeader": {
     "settings": "Settings",
@@ -318,7 +322,10 @@
     "required": "Required",
     "maxLength": "Maximum 50 symbols",
     "safeLoadError": "This Safe Account couldn't be loaded",
-    "safeLoadErrorImgAlt": "A vault with a red icon in the bottom right corner"
+    "safeLoadErrorImgAlt": "A vault with a red icon in the bottom right corner",
+    "details": "Details",
+    "sendingFrom": "Sending from",
+    "unknownChain": "Unknown chain"
   },
   "sidebar": {
     "newTransaction": "New transaction",
@@ -392,7 +399,11 @@
     "nativeSwapsTitle": "Native swaps are here!",
     "nativeSwapsDesc": "Experience seamless trading with better decoding and security in native swaps.",
     "tryNow": "Try now",
-    "dontShow": "Don't show"
+    "dontShow": "Don't show",
+    "pinnedApps": "My pinned apps",
+    "featuredApps": "Featured apps",
+    "allApps": "All apps",
+    "customApps": "Custom apps"
   },
   "safeMessages": {
     "created": "Created",
@@ -1316,5 +1327,61 @@
     "learnMore": "Learn more",
     "dontShowAgain": "Don't show again",
     "stake": "Stake"
+  },
+  "walletInfo": {
+    "wallet": "Wallet",
+    "balance": "Balance"
+  },
+  "welcome": {
+    "unlockOwnership": "Unlock a new way of ownership",
+    "platformDesc": "The most trusted decentralized custody protocol and collective asset management platform.",
+    "securityBullet": "Stealth security with multiple signers",
+    "modulesBullet": "Make it yours with modules and guards",
+    "appsBullet": "Access 130+ ecosystem apps",
+    "getStarted": "Get started",
+    "openOrCreate": "Open your existing Safe Accounts or create a new one",
+    "connectToOpenOrCreate": "Connect your wallet to create a new Safe Account or open an existing one",
+    "or": "or",
+    "viewMyAccounts": "View my accounts",
+    "watchAnyAccount": "Watch any account",
+    "continueWith": "Continue with",
+    "connectWallet": "Connect wallet"
+  },
+  "gasParams": {
+    "estimatedFee": "Estimated fee",
+    "cannotEstimate": "Cannot estimate",
+    "free": "Free",
+    "signingWithNonce": "Signing the transaction with nonce",
+    "safeTxNonce": "Safe Account transaction nonce",
+    "walletNonce": "Wallet nonce",
+    "gasLimit": "Gas limit",
+    "gasLimitMin": "Gas limit must be at least 21000",
+    "resetGasLimit": "Reset to recommended gas limit",
+    "maxPriorityFee": "Max priority fee (Gwei)",
+    "maxFee": "Max fee (Gwei)",
+    "gasPrice": "Gas price (Gwei)"
+  },
+  "confirmTx": {
+    "reviewWhatToSign": "Review what you will sign",
+    "signingIrreversible": "Signing is an irreversible action so make sure you know what you are signing.",
+    "readMore": "Read more",
+    "compareWithWallet": "Compare with your wallet",
+    "onceYouClickSign": "Once you click Sign, the transaction will appear in your signing wallet. Make sure that all the details match.",
+    "verifyWithTools": "Verify with external tools",
+    "verifyDesc": "You can additionally cross-verify your transaction data in a third-party tool like",
+    "compareWithDevice": "Compare with your device",
+    "hardwareWalletDesc": "If you're using a hardware wallet with \"blind signing\", please compare what you see on your device with the hashes on the right.",
+    "reviewDetails": "Review details"
+  },
+  "updateSafe": {
+    "currentVersion": "Current version:",
+    "newVersion": "New version:",
+    "unknownContract": "Unknown contract",
+    "readChangelog": "Read about the updates in the new Safe contracts version in the",
+    "versionChangelog": "version {{version}} changelog",
+    "unknownContractDesc": "The target contract for this upgrade is unknown. Verify the transaction data and the target contract address before executing this transaction.",
+    "invalidateQueueTitle": "This upgrade will invalidate all queued transactions!",
+    "queueWarning_one": "You have {{count}} unexecuted transaction. Please make sure to execute or delete them before upgrading, otherwise you'll have to reject or replace them after the upgrade.",
+    "queueWarning_other": "You have {{count}} unexecuted transactions. Please make sure to execute or delete them before upgrading, otherwise you'll have to reject or replace them after the upgrade."
   }
 }

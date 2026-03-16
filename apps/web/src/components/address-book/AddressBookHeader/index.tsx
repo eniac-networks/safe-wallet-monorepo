@@ -22,6 +22,7 @@ import { isAuthenticated } from '@/store/authSlice'
 import { useSpacesGetOneV1Query } from '@safe-global/store/gateway/AUTO_GENERATED/spaces'
 import { useIsAdmin } from '@/features/spaces/hooks/useSpaceMembers'
 import useIsQualifiedSafe from '@/features/spaces/hooks/useIsQualifiedSafe'
+import { useTranslation } from 'react-i18next'
 
 const HeaderButton = ({
   icon,
@@ -44,6 +45,7 @@ const HeaderButton = ({
 }
 
 const SpaceAddressBookCTA = () => {
+  const { t } = useTranslation()
   const isQualifiedSafe = useIsQualifiedSafe()
   const isAdmin = useIsAdmin()
   const spaceId = useCurrentSpaceId()
@@ -55,10 +57,9 @@ const SpaceAddressBookCTA = () => {
   return (
     <Box width={1}>
       <Typography pl={1} mb={2} maxWidth="500px">
-        This data is stored in your local storage. Do you want to manage your <b>{space?.name}</b> space address book
-        instead?{' '}
+        {t('addressBook.spaceAddressBookCTA', { spaceName: space?.name })}{' '}
         <Link href={{ pathname: AppRoutes.spaces.addressBook, query: { spaceId } }} passHref>
-          <MUILink>Click here</MUILink>
+          <MUILink>{t('addressBook.clickHere')}</MUILink>
         </Link>
       </Typography>
     </Box>
@@ -78,11 +79,12 @@ function AddressBookHeader({
   searchQuery,
   onSearchQueryChange,
 }: Props): ReactElement {
+  const { t } = useTranslation()
   const canExport = Object.values(allAddressBooks).some((addressBook) => Object.keys(addressBook || {}).length > 0)
 
   return (
     <PageHeader
-      title="Address book"
+      title={t('addressBook.title')}
       noBorder
       action={
         <Grid
@@ -96,7 +98,7 @@ function AddressBookHeader({
 
           <Grid item xs={12} md={5} xl={4.5}>
             <TextField
-              placeholder="Search"
+              placeholder={t('addressBook.search')}
               variant="filled"
               hiddenLabel
               value={searchQuery}
@@ -127,19 +129,19 @@ function AddressBookHeader({
           >
             <Track {...ADDRESS_BOOK_EVENTS.IMPORT_BUTTON}>
               <HeaderButton onClick={handleOpenModal(ModalType.IMPORT)} icon={ImportIcon}>
-                Import
+                {t('addressBook.import')}
               </HeaderButton>
             </Track>
 
             <Track {...ADDRESS_BOOK_EVENTS.DOWNLOAD_BUTTON}>
               <HeaderButton onClick={handleOpenModal(ModalType.EXPORT)} icon={ExportIcon} disabled={!canExport}>
-                Export
+                {t('addressBook.export')}
               </HeaderButton>
             </Track>
 
             <Track {...ADDRESS_BOOK_EVENTS.CREATE_ENTRY}>
               <HeaderButton onClick={handleOpenModal(ModalType.ENTRY)} icon={AddCircleIcon}>
-                Create entry
+                {t('addressBook.createEntry')}
               </HeaderButton>
             </Track>
           </Grid>

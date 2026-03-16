@@ -14,6 +14,7 @@ import useChainId from '@/hooks/useChainId'
 import { useAuthLogoutV1Mutation } from '@safe-global/store/gateway/AUTO_GENERATED/auth'
 import { setUnauthenticated } from '@/store/authSlice'
 import { logError, Errors } from '@/services/exceptions'
+import { useTranslation } from 'react-i18next'
 
 type WalletInfoProps = {
   wallet: ConnectedWallet
@@ -25,6 +26,7 @@ type WalletInfoProps = {
 }
 
 export const WalletInfo = ({ wallet, balance, currentChainId, onboard, addressBook, handleClose }: WalletInfoProps) => {
+  const { t } = useTranslation()
   const [authLogout] = useAuthLogoutV1Mutation()
   const dispatch = useAppDispatch()
   const chainInfo = useAppSelector((state) => selectChainById(state, wallet.chainId))
@@ -72,14 +74,14 @@ export const WalletInfo = ({ wallet, balance, currentChainId, onboard, addressBo
       <Box className={css.rowContainer}>
         <Box className={css.row}>
           <Typography variant="body2" color="primary.light">
-            Wallet
+            {t('walletInfo.wallet')}
           </Typography>
           <Typography variant="body2">{wallet.label}</Typography>
         </Box>
 
         <Box className={css.row}>
           <Typography variant="body2" color="primary.light">
-            Balance
+            {t('walletInfo.balance')}
           </Typography>
           <Typography variant="body2" textAlign="right">
             <WalletBalance balance={balance} />
@@ -87,7 +89,7 @@ export const WalletInfo = ({ wallet, balance, currentChainId, onboard, addressBo
             {currentChainId !== chainInfo?.chainId && (
               <>
                 <Typography variant="body2" color="primary.light">
-                  ({chainInfo?.chainName || 'Unknown chain'})
+                  ({chainInfo?.chainName || t('common.unknownChain')})
                 </Typography>
               </>
             )}
@@ -99,7 +101,7 @@ export const WalletInfo = ({ wallet, balance, currentChainId, onboard, addressBo
         <ChainSwitcher fullWidth />
 
         <Button variant="contained" size="small" onClick={handleSwitchWallet} fullWidth>
-          Switch wallet
+          {t('safeMessages.switchWallet')}
         </Button>
 
         <Button
@@ -110,7 +112,7 @@ export const WalletInfo = ({ wallet, balance, currentChainId, onboard, addressBo
           disableElevation
           startIcon={<PowerSettingsNewIcon />}
         >
-          Disconnect
+          {t('common.disconnect')}
         </Button>
       </Box>
     </>

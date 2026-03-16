@@ -1,7 +1,7 @@
 import TxCard from '@/components/tx-flow/common/TxCard'
 import { Grid2 as Grid, Stack, StepIcon, Typography } from '@mui/material'
 import ExternalLink from '@/components/common/ExternalLink'
-import { type PropsWithChildren, useContext } from 'react'
+import { type PropsWithChildren, useContext, useMemo } from 'react'
 import { SafeTxContext } from '@/components/tx-flow/SafeTxProvider'
 import useTxPreview from '../confirmation-views/useTxPreview'
 import Track from '@/components/common/Track'
@@ -12,64 +12,63 @@ import { TxFlowStep } from '@/components/tx-flow/TxFlowStep'
 import { Receipt } from '../ConfirmTxDetails/Receipt'
 import { Slot, SlotName } from '@/components/tx-flow/slots'
 import { Sign } from '@/components/tx-flow/actions/Sign'
-
-const InfoSteps = [
-  {
-    label: 'Review what you will sign',
-    description: (
-      <Typography>
-        Signing is an irreversible action so make sure you know what you are signing.{' '}
-        <Track {...MODALS_EVENTS.SIGNING_ARTICLE}>
-          <ExternalLink href="https://help.safe.global/en/articles/276343-how-to-perform-basic-transactions-checks-on-safe-wallet">
-            Read more
-          </ExternalLink>
-        </Track>
-        .
-      </Typography>
-    ),
-  },
-  {
-    label: 'Compare with your wallet',
-    description: (
-      <Typography>
-        Once you click <b>Sign</b>, the transaction will appear in your signing wallet. Make sure that all the details
-        match.
-      </Typography>
-    ),
-  },
-  {
-    label: 'Verify with external tools',
-    description: (
-      <Typography>
-        You can additionally cross-verify your transaction data in a third-party tool like{' '}
-        <Track {...MODALS_EVENTS.OPEN_SAFE_UTILS}>
-          <ExternalLink href="https://safeutils.openzeppelin.com/">Safe Utils</ExternalLink>
-        </Track>
-        .
-      </Typography>
-    ),
-  },
-]
-
-const HardwareWalletStep = [
-  InfoSteps[1],
-  {
-    label: 'Compare with your device',
-    description: (
-      <Typography>
-        If you&apos;re using a hardware wallet with &ldquo;blind signing&rdquo;, please compare what you see on your
-        device with the hashes on the right.
-      </Typography>
-    ),
-  },
-  InfoSteps[2],
-]
+import { useTranslation } from 'react-i18next'
 
 export const ConfirmTxReceipt = ({ children, onSubmit }: PropsWithChildren<{ onSubmit: () => void }>) => {
+  const { t } = useTranslation()
   const { safeTx } = useContext(SafeTxContext)
   const [txPreview] = useTxPreview(safeTx?.data)
   const wallet = useWallet()
   const showHashes = wallet ? isHardwareWallet(wallet) || isLedgerLive(wallet) : false
+
+  const InfoSteps = useMemo(
+    () => [
+      {
+        label: t('confirmTx.reviewWhatToSign'),
+        description: (
+          <Typography>
+            {t('confirmTx.signingIrreversible')}{' '}
+            <Track {...MODALS_EVENTS.SIGNING_ARTICLE}>
+              <ExternalLink href="https://help.safe.global/en/articles/276343-how-to-perform-basic-transactions-checks-on-safe-wallet">
+                {t('confirmTx.readMore')}
+              </ExternalLink>
+            </Track>
+            .
+          </Typography>
+        ),
+      },
+      {
+        label: t('confirmTx.compareWithWallet'),
+        description: <Typography>{t('confirmTx.onceYouClickSign')}</Typography>,
+      },
+      {
+        label: t('confirmTx.verifyWithTools'),
+        description: (
+          <Typography>
+            {t('confirmTx.verifyDesc')}{' '}
+            <Track {...MODALS_EVENTS.OPEN_SAFE_UTILS}>
+              <ExternalLink href="https://safeutils.openzeppelin.com/">Safe Utils</ExternalLink>
+            </Track>
+            .
+          </Typography>
+        ),
+      },
+    ],
+    [t],
+  )
+
+  const HardwareWalletStep = useMemo(
+    () => [
+      InfoSteps[1],
+      {
+        label: t('confirmTx.compareWithDevice'),
+        description: <Typography>{t('confirmTx.hardwareWalletDesc')}</Typography>,
+      },
+      InfoSteps[2],
+    ],
+    [t, InfoSteps],
+  )
+
   const steps = showHashes ? HardwareWalletStep : InfoSteps
 
   if (!safeTx) {
@@ -77,7 +76,7 @@ export const ConfirmTxReceipt = ({ children, onSubmit }: PropsWithChildren<{ onS
   }
 
   return (
-    <TxFlowStep title="Review details" fixedNonce>
+    <TxFlowStep title={t('confirmTx.reviewDetails')} fixedNonce>
       <TxCard>
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, sm: 6 }}>
@@ -103,7 +102,7 @@ export const ConfirmTxReceipt = ({ children, onSubmit }: PropsWithChildren<{ onS
         <Slot name={SlotName.Submit} onSubmitSuccess={onSubmit}>
           <Sign
             onSubmitSuccess={onSubmit}
-            options={[{ id: 'sign', label: 'Sign' }]}
+            options={[{ id: 'sign', label: t('safeMessages.sign') }]}
             onChange={() => {}}
             slotId="sign"
           />
