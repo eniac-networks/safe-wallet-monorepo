@@ -30,7 +30,7 @@ const LanguageSwitcher = (): ReactElement => {
     <>
       <Tooltip title={t('language.switchLanguage')}>
         <IconButton onClick={handleOpen} size="small" color="default" aria-label={t('language.label')}>
-          <LanguageIcon fontSize="medium" />
+          <LanguageIcon fontSize="medium" sx={{ color: '#000' }} />
         </IconButton>
       </Tooltip>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
