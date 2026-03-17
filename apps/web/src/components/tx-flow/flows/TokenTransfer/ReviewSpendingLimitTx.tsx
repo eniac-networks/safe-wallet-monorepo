@@ -1,6 +1,7 @@
 import useWallet from '@/hooks/wallets/useWallet'
 import type { ReactElement, SyntheticEvent } from 'react'
 import { useContext, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { type BigNumberish, type BytesLike } from 'ethers'
 import { Button, CardActions, Typography } from '@mui/material'
 import SendToBlock from '@/components/tx/SendToBlock'
@@ -48,6 +49,7 @@ const ReviewSpendingLimitTx = ({
   params: TokenTransferParams
   onSubmit: SubmitCallback
 }): ReactElement => {
+  const { t } = useTranslation()
   const [isSubmittable, setIsSubmittable] = useState<boolean>(true)
   const [submitError, setSubmitError] = useState<Error | undefined>()
   const [isRejectedByUser, setIsRejectedByUser] = useState<Boolean>(false)
@@ -127,11 +129,7 @@ const ReviewSpendingLimitTx = ({
   return (
     <form onSubmit={handleSubmit}>
       <TxCard>
-        <Typography variant="body2">
-          Spending limit transactions only appear in the interface once they are successfully processed and indexed.
-          Pending transactions can only be viewed in your signer wallet application or under your wallet address on a
-          Blockchain Explorer.
-        </Typography>
+        <Typography variant="body2">{t('tokenTransfer.spendingLimitTxInfo')}</Typography>
 
         {token && <SendAmountBlock amountInWei={amountInWei} tokenInfo={token.tokenInfo} />}
 
@@ -141,21 +139,19 @@ const ReviewSpendingLimitTx = ({
 
         <NetworkWarning />
 
-        {submitError && (
-          <ErrorMessage error={submitError}>Error submitting the transaction. Please try again.</ErrorMessage>
-        )}
+        {submitError && <ErrorMessage error={submitError}>{t('tokenTransfer.submitError')}</ErrorMessage>}
 
         {isRejectedByUser && <WalletRejectionError />}
 
         <Typography variant="body2" color="primary.light" textAlign="center">
-          You&apos;re about to create a transaction and will need to confirm it with your currently connected wallet.
+          {t('tokenTransfer.confirmWithWallet')}
         </Typography>
 
         <CardActions>
           <CheckWallet allowNonOwner checkNetwork={!submitDisabled}>
             {(isOk) => (
               <Button variant="contained" type="submit" disabled={!isOk || submitDisabled}>
-                Execute
+                {t('transactions.execute')}
               </Button>
             )}
           </CheckWallet>

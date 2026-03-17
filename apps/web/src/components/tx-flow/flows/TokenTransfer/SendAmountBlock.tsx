@@ -4,12 +4,13 @@ import { Box, Typography } from '@mui/material'
 import TokenIcon from '@/components/common/TokenIcon'
 import FieldsGrid from '@/components/tx/FieldsGrid'
 import { formatVisualAmount } from '@safe-global/utils/utils/formatters'
+import { useTranslation } from 'react-i18next'
 
 const SendAmountBlock = ({
   amountInWei,
   tokenInfo,
   children,
-  title = 'Send',
+  title,
 }: {
   /** Amount in WEI */
   amountInWei: number | string
@@ -17,8 +18,9 @@ const SendAmountBlock = ({
   children?: ReactNode
   title?: string
 }) => {
+  const { t } = useTranslation()
   return (
-    <FieldsGrid title={title}>
+    <FieldsGrid title={title ?? t('transactions.send')}>
       <Box display="flex" alignItems="center" gap={1}>
         <TokenIcon logoUri={tokenInfo.logoUri} tokenSymbol={tokenInfo.symbol} />
 

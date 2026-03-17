@@ -617,7 +617,17 @@
     "messageDetails": "Message details",
     "filter": "Filter",
     "executed": "Executed",
-    "conflictingTxTooltip": "Why are transactions with the same nonce conflicting with each other?"
+    "conflictingTxTooltip": "Why are transactions with the same nonce conflicting with each other?",
+    "hashesTab": "Hashes",
+    "operationLabel": "Operation",
+    "callOperation": "call",
+    "delegateCallOperation": "delegate call",
+    "signatureN": "Signature {{number}}",
+    "safeTxGasLabel": "SafeTxGas",
+    "baseGasLabel": "BaseGas",
+    "gasPriceLabel": "GasPrice",
+    "gasTokenLabel": "GasToken",
+    "refundReceiverLabel": "RefundReceiver"
   },
   "addressBook": {
     "title": "Address book",
@@ -1429,5 +1439,27 @@
     "invalidateQueueTitle": "This upgrade will invalidate all queued transactions!",
     "queueWarning_one": "You have {{count}} unexecuted transaction. Please make sure to execute or delete them before upgrading, otherwise you'll have to reject or replace them after the upgrade.",
     "queueWarning_other": "You have {{count}} unexecuted transactions. Please make sure to execute or delete them before upgrading, otherwise you'll have to reject or replace them after the upgrade."
+  },
+  "tokenTransfer": {
+    "addRecipient": "Add recipient",
+    "removeRecipient": "Remove recipient",
+    "recipientN": "Recipient {{number}}",
+    "insufficientBalance": "Insufficient balance",
+    "insufficientBalanceMsg": "The total amount assigned to all recipients exceeds your available balance. Please adjust the amounts you want to send.",
+    "addMoreRecipientsInfo": "If you want to add more than {{max}} recipients, use",
+    "noMoreRecipients": "No more recipients can be added.",
+    "pleaseUse": "Please use",
+    "sendAs": "Send as",
+    "standardTransaction": "Standard transaction",
+    "standardTxTooltip": "A standard transaction requires the signatures of other signers before the specified funds can be transferred.",
+    "learnMoreSpendingLimits": "Learn more about spending limits",
+    "spendingLimitTxTooltip": "A spending limit transaction allows you to transfer the specified funds without the need to collect the signatures of other signers.",
+    "spendingLimitTxInfo": "Spending limit transactions only appear in the interface once they are successfully processed and indexed. Pending transactions can only be viewed in your signer wallet application or under your wallet address on a Blockchain Explorer.",
+    "submitError": "Error submitting the transaction. Please try again.",
+    "confirmWithWallet": "You're about to create a transaction and will need to confirm it with your currently connected wallet.",
+    "limitReached": "Limit reached",
+    "useCsvAirdrop": "Use CSV Airdrop",
+    "csvAirdropMsg": "You've reached the limit of 5 recipients. To add more use CSV Airdrop, where you can simply upload you CSV file and send to endless number of recipients.",
+    "openCsvAirdrop": "Open CSV Airdrop"
   }
 }

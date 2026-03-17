@@ -1,4 +1,5 @@
 import { isEmptyHexData } from '@/utils/hex'
+import { useTranslation } from 'react-i18next'
 import { type InternalTransaction, type TransactionData } from '@safe-global/safe-gateway-typescript-sdk'
 import type { AccordionProps } from '@mui/material/Accordion/Accordion'
 import { Accordion, AccordionDetails, AccordionSummary, Box, Stack, Typography } from '@mui/material'
@@ -35,9 +36,12 @@ export const SingleTxDecoded = ({
   isExecuted = false,
   actions,
 }: SingleTxDecodedProps) => {
+  const { t } = useTranslation()
   const chain = useCurrentChain()
   const isNativeTransfer = tx.value !== '0' && (!tx.data || isEmptyHexData(tx.data))
-  const method = tx.dataDecoded?.method || (isNativeTransfer ? 'native transfer' : 'contract interaction')
+  const method =
+    tx.dataDecoded?.method ||
+    (isNativeTransfer ? t('transactions.nativeTransfer') : t('transactions.contractInteraction'))
 
   const addressInfo = txData.addressInfoIndex?.[tx.to]
   const name = addressInfo?.name

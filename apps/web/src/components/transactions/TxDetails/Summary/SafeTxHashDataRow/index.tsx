@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { Stack } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 import { TxDataRow, generateDataRowValue } from '../TxDataRow'
 import { type SafeTransactionData, type SafeVersion } from '@safe-global/types-kit'
 import { calculateSafeTransactionHash } from '@safe-global/protocol-kit/dist/src/utils'
@@ -13,17 +14,18 @@ export const SafeTxHashDataRow = ({
   safeTxData: SafeTransactionData
   safeTxHash?: string
 }) => {
+  const { t } = useTranslation()
   const domainHash = useDomainHash()
   const messageHash = useMessageHash({ safeTxData })
   const computedSafeTxHash = useSafeTxHash({ safeTxData, safeTxHash })
 
   return (
     <Stack gap={1}>
-      <TxDataRow datatestid="tx-domain-hash" title="Domain hash:">
+      <TxDataRow datatestid="tx-domain-hash" title={t('transactions.domainHashLabel')}>
         {generateDataRowValue(domainHash ?? '', 'rawData')}
       </TxDataRow>
       {messageHash && (
-        <TxDataRow datatestid="tx-message-hash" title="Message hash:">
+        <TxDataRow datatestid="tx-message-hash" title={t('transactions.messageHashLabel')}>
           {generateDataRowValue(messageHash, 'rawData')}
         </TxDataRow>
       )}

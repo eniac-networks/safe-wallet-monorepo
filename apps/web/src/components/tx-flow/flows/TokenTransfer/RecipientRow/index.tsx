@@ -11,6 +11,7 @@ import { useTokenAmount } from '../utils'
 import { useHasPermission } from '@/permissions/hooks/useHasPermission'
 import { Permission } from '@/permissions/config'
 import { useCallback, useContext, useEffect, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { SafeTxContext } from '@/components/tx-flow/SafeTxProvider'
 import SpendingLimitRow from '../SpendingLimitRow'
 import { useSelector } from 'react-redux'
@@ -32,6 +33,7 @@ type RecipientRowProps = {
 }
 
 export const RecipientRow = ({ fieldArray, removable = true, remove, disableSpendingLimit }: RecipientRowProps) => {
+  const { t } = useTranslation()
   const { balances } = useVisibleBalances()
   const spendingLimits = useSelector(selectSpendingLimits)
 
@@ -111,12 +113,12 @@ export const RecipientRow = ({ fieldArray, removable = true, remove, disableSpen
               <Button
                 data-testid="remove-recipient-btn"
                 onClick={onRemove}
-                aria-label="Remove recipient"
+                aria-label={t('tokenTransfer.removeRecipient')}
                 variant="text"
                 startIcon={<SvgIcon component={DeleteIcon} inheritViewBox fontSize="small" />}
                 size="compact"
               >
-                Remove recipient
+                {t('tokenTransfer.removeRecipient')}
               </Button>
             </Track>
           </Box>

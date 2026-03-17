@@ -1,4 +1,5 @@
 import { type PropsWithChildren, useContext, useEffect, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import useBalances from '@/hooks/useBalances'
 import { createTokenTransferParams } from '@/services/tx/tokenTransferParams'
 import { createMultiSendCallOnlyTx } from '@/services/tx/tx-sender'
@@ -20,6 +21,7 @@ const ReviewTokenTransfer = ({
   onSubmit: () => void
   txNonce?: number
 }>) => {
+  const { t } = useTranslation()
   const { setSafeTx, setSafeTxError, setNonce, setIsMassPayout } = useContext(SafeTxContext)
   const { balances } = useBalances()
 
@@ -60,7 +62,7 @@ const ReviewTokenTransfer = ({
             <ReviewRecipientRow
               params={recipient}
               key={`${recipient.recipient}_${index}`}
-              name={`Recipient ${index + 1}`}
+              name={t('tokenTransfer.recipientN', { number: index + 1 })}
             />
           ))}
         </Stack>

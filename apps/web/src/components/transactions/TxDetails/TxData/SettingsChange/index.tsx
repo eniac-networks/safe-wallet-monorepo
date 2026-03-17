@@ -1,4 +1,5 @@
 import type { ComponentProps, ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import type { SettingsChange } from '@safe-global/safe-gateway-typescript-sdk'
 import { SettingsInfoType } from '@safe-global/safe-gateway-typescript-sdk'
 import EthHashInfo from '@/components/common/EthHashInfo'
@@ -22,6 +23,7 @@ export const SettingsChangeTxInfo = ({
   settingsInfo,
   isTxExecuted = false,
 }: SettingsChangeTxInfoProps): ReactElement | null => {
+  const { t } = useTranslation()
   const isUntrustedFallbackHandler = useHasUntrustedFallbackHandler(
     settingsInfo?.type === SettingsInfoType.SET_FALLBACK_HANDLER ? settingsInfo.handler.value : undefined,
   )
@@ -34,7 +36,7 @@ export const SettingsChangeTxInfo = ({
     case SettingsInfoType.SET_FALLBACK_HANDLER: {
       return (
         <>
-          <InfoDetails title="Set fallback handler:">
+          <InfoDetails title={t('transactions.setFallbackHandlerLabel')}>
             <EthHashInfo
               address={settingsInfo.handler.value}
               name={settingsInfo.handler?.name}
@@ -48,7 +50,10 @@ export const SettingsChangeTxInfo = ({
     }
     case SettingsInfoType.ADD_OWNER:
     case SettingsInfoType.REMOVE_OWNER: {
-      const title = settingsInfo.type === SettingsInfoType.ADD_OWNER ? 'Add signer:' : 'Remove signer:'
+      const title =
+        settingsInfo.type === SettingsInfoType.ADD_OWNER
+          ? t('transactions.addSignerLabel')
+          : t('transactions.removeSignerLabel')
       return (
         <>
           <ThresholdWarning />
@@ -59,7 +64,7 @@ export const SettingsChangeTxInfo = ({
               customAvatar={settingsInfo.owner?.logoUri}
               {...addressInfoProps}
             />
-            <InfoDetails datatestid="required-confirmations" title="Required confirmations for new transactions:">
+            <InfoDetails datatestid="required-confirmations" title={t('transactions.requiredConfirmationsNew')}>
               {settingsInfo.threshold}
             </InfoDetails>
           </InfoDetails>
@@ -68,8 +73,8 @@ export const SettingsChangeTxInfo = ({
     }
     case SettingsInfoType.SWAP_OWNER: {
       return (
-        <InfoDetails datatestid="swap-owner" title="Swap signer:">
-          <InfoDetails datatestid="old-owner" title="Old signer">
+        <InfoDetails datatestid="swap-owner" title={t('transactions.swapSignerLabel')}>
+          <InfoDetails datatestid="old-owner" title={t('transactions.oldSigner')}>
             <EthHashInfo
               address={settingsInfo.oldOwner.value}
               name={settingsInfo.oldOwner?.name}
@@ -77,7 +82,7 @@ export const SettingsChangeTxInfo = ({
               {...addressInfoProps}
             />
           </InfoDetails>
-          <InfoDetails datatestid="new-owner" title="New signer">
+          <InfoDetails datatestid="new-owner" title={t('transactions.newSigner')}>
             <EthHashInfo
               address={settingsInfo.newOwner.value}
               name={settingsInfo.newOwner?.name}
@@ -92,7 +97,7 @@ export const SettingsChangeTxInfo = ({
       return (
         <>
           <ThresholdWarning />
-          <InfoDetails datatestid="required-confirmations" title="Required confirmations for new transactions:">
+          <InfoDetails datatestid="required-confirmations" title={t('transactions.requiredConfirmationsNew')}>
             {settingsInfo.threshold}
           </InfoDetails>
         </>
@@ -100,7 +105,7 @@ export const SettingsChangeTxInfo = ({
     }
     case SettingsInfoType.CHANGE_IMPLEMENTATION: {
       return (
-        <InfoDetails title="Change implementation:">
+        <InfoDetails title={t('transactions.changeImplementationLabel')}>
           <EthHashInfo
             address={settingsInfo.implementation.value}
             name={settingsInfo.implementation?.name}
@@ -112,7 +117,10 @@ export const SettingsChangeTxInfo = ({
     }
     case SettingsInfoType.ENABLE_MODULE:
     case SettingsInfoType.DISABLE_MODULE: {
-      const title = settingsInfo.type === SettingsInfoType.ENABLE_MODULE ? 'Enable module:' : 'Disable module:'
+      const title =
+        settingsInfo.type === SettingsInfoType.ENABLE_MODULE
+          ? t('transactions.enableModuleLabel')
+          : t('transactions.disableModuleLabel')
       return (
         <InfoDetails datatestid="module-action" title={title}>
           <EthHashInfo
@@ -126,7 +134,7 @@ export const SettingsChangeTxInfo = ({
     }
     case SettingsInfoType.SET_GUARD: {
       return (
-        <InfoDetails title="Set guard:">
+        <InfoDetails title={t('transactions.setGuardLabel')}>
           <EthHashInfo
             address={settingsInfo.guard.value}
             name={settingsInfo.guard?.name}
@@ -137,7 +145,7 @@ export const SettingsChangeTxInfo = ({
       )
     }
     case SettingsInfoType.DELETE_GUARD: {
-      return <InfoDetails title="Delete guard" />
+      return <InfoDetails title={t('transactions.deleteGuardLabel')} />
     }
     default:
       return <></>

@@ -1,5 +1,6 @@
 import type { MouseEvent } from 'react'
 import { type ReactElement, useContext, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import IconButton from '@mui/material/IconButton'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import MenuItem from '@mui/material/MenuItem'
@@ -35,6 +36,7 @@ const TransferActions = ({
   txInfo: Transfer
   trusted: boolean
 }): ReactElement => {
+  const { t } = useTranslation()
   const [anchorEl, setAnchorEl] = useState<HTMLElement | undefined>()
   const [open, setOpen] = useState<typeof defaultOpen>(defaultOpen)
   const addressBook = useAddressBook()
@@ -91,14 +93,14 @@ const TransferActions = ({
                 }}
                 disabled={!isOk}
               >
-                <ListItemText>Send again</ListItemText>
+                <ListItemText>{t('transactions.sendAgain')}</ListItemText>
               </MenuItem>
             )}
           </CheckWallet>
         )}
 
         <MenuItem onClick={handleOpenModal(ModalType.ADD_TO_AB, TX_LIST_EVENTS.ADDRESS_BOOK)}>
-          <ListItemText>Add to address book</ListItemText>
+          <ListItemText>{t('transactions.addToAddressBook')}</ListItemText>
         </MenuItem>
       </ContextMenu>
 

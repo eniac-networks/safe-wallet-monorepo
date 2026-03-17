@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import { SafeTxContext } from '@/components/tx-flow/SafeTxProvider'
 import NumberField from '@/components/common/NumberField'
 import useSafeInfo from '@/hooks/useSafeInfo'
-
+import { useTranslation } from 'react-i18next'
 import { isLegacyVersion } from '@safe-global/utils/services/contracts/utils'
 
 type FormFields = {
@@ -12,6 +12,7 @@ type FormFields = {
 }
 
 const Form = ({ onSubmit }: { onSubmit: () => void }) => {
+  const { t } = useTranslation()
   const { safeTxGas = '0', setSafeTxGas } = useContext(SafeTxContext)
 
   const formMethods = useForm<FormFields>({
@@ -48,7 +49,7 @@ const Form = ({ onSubmit }: { onSubmit: () => void }) => {
           })}
         />
         <Button type="submit" size="small" variant="contained" sx={{ ml: 1 }}>
-          Save
+          {t('common.save')}
         </Button>
       </form>
     </Paper>
@@ -56,6 +57,7 @@ const Form = ({ onSubmit }: { onSubmit: () => void }) => {
 }
 
 const SafeTxGasForm = () => {
+  const { t } = useTranslation()
   const { safeTx, safeTxGas = 0, isReadOnly } = useContext(SafeTxContext)
   const { safe } = useSafeInfo()
   const isOldSafe = safe.version && isLegacyVersion(safe.version)
@@ -80,7 +82,7 @@ const SafeTxGasForm = () => {
             fontSize: 'small',
           }}
         >
-          Edit
+          {t('common.edit')}
         </Link>
       )}
       {editing && <Form onSubmit={() => setEditing(false)} />}

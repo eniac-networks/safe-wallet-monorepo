@@ -1,5 +1,6 @@
 import { useVisibleTokens } from '@/components/tx-flow/flows/TokenTransfer/utils'
 import { type ReactElement, useContext, useEffect, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { type TokenInfo } from '@safe-global/safe-gateway-typescript-sdk'
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form'
 import {
@@ -76,6 +77,7 @@ export type CreateTokenTransferProps = {
 }
 
 export const CreateTokenTransfer = ({ txNonce }: CreateTokenTransferProps): ReactElement => {
+  const { t } = useTranslation()
   const disableSpendingLimit = txNonce !== undefined
   const [csvAirdropModalOpen, setCsvAirdropModalOpen] = useState<boolean>(false)
   const [maxRecipientsInfo, setMaxRecipientsInfo] = useState<boolean>(false)
@@ -193,7 +195,7 @@ export const CreateTokenTransfer = ({ txNonce }: CreateTokenTransferProps): Reac
                       startIcon={<SvgIcon component={AddIcon} inheritViewBox fontSize="small" />}
                       size="large"
                     >
-                      Add recipient
+                      {t('tokenTransfer.addRecipient')}
                     </Button>
                   </Track>
                   <Typography
@@ -205,18 +207,15 @@ export const CreateTokenTransfer = ({ txNonce }: CreateTokenTransferProps): Reac
 
                 {hasInsufficientFunds && (
                   <Alert data-testid="insufficient-balance-error" severity="error">
-                    <AlertTitle>Insufficient balance</AlertTitle>
-                    <Typography variant="body2">
-                      The total amount assigned to all recipients exceeds your available balance. Please adjust the
-                      amounts you want to send.
-                    </Typography>
+                    <AlertTitle>{t('tokenTransfer.insufficientBalance')}</AlertTitle>
+                    <Typography variant="body2">{t('tokenTransfer.insufficientBalanceMsg')}</Typography>
                   </Alert>
                 )}
 
                 {canAddMoreRecipients && maxRecipientsInfo && !!csvAirdropAppUrl && (
                   <Alert severity="info" onClose={() => setMaxRecipientsInfo(false)}>
                     <Typography variant="body2">
-                      If you want to add more than {MAX_RECIPIENTS} recipients, use <CsvAirdropLink />
+                      {t('tokenTransfer.addMoreRecipientsInfo', { max: MAX_RECIPIENTS })} <CsvAirdropLink />
                     </Typography>
                   </Alert>
                 )}
@@ -224,11 +223,11 @@ export const CreateTokenTransfer = ({ txNonce }: CreateTokenTransferProps): Reac
                 {!canAddMoreRecipients && (
                   <Alert data-testid="max-recipients-reached" severity="warning">
                     <Typography variant="body2">
-                      No more recipients can be added.
+                      {t('tokenTransfer.noMoreRecipients')}
                       {!!csvAirdropAppUrl && (
                         <>
                           <br />
-                          Please use <CsvAirdropLink />
+                          {t('tokenTransfer.pleaseUse')} <CsvAirdropLink />
                         </>
                       )}
                     </Typography>
@@ -246,7 +245,7 @@ export const CreateTokenTransfer = ({ txNonce }: CreateTokenTransferProps): Reac
 
               <CardActions>
                 <Button variant="contained" type="submit" disabled={!formState.isValid}>
-                  Next
+                  {t('newSafe.next')}
                 </Button>
               </CardActions>
             </Box>

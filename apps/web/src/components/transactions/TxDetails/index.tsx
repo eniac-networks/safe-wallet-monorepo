@@ -144,7 +144,7 @@ const TxDetailsBlock = ({ txSummary, txDetails }: TxDetailsProps): ReactElement 
 
         <div className={css.txSummary}>
           {isUntrusted && !isPending && <UnsignedWarning />}
-          <ErrorBoundary fallback={<div>Error parsing data</div>}>
+          <ErrorBoundary fallback={<div>{t('transactions.errorParsingData')}</div>}>
             <Summary
               txDetails={txDetails}
               txData={txDetails.txData}

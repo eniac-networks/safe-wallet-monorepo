@@ -3,7 +3,7 @@ import { NOT_AVAILABLE } from '@/components/transactions/TxDetails'
 import type { MultisigExecutionDetails } from '@safe-global/safe-gateway-typescript-sdk'
 import { Box, Typography } from '@mui/material'
 import React from 'react'
-
+import { useTranslation } from 'react-i18next'
 import { HelpCenterArticle } from '@safe-global/utils/config/constants'
 
 interface Props {
@@ -12,14 +12,13 @@ interface Props {
 }
 
 const RejectionTxInfo = ({ nonce, isTxExecuted }: Props) => {
+  const { t } = useTranslation()
   const txNonce = nonce ?? NOT_AVAILABLE
-  const message = `This is an on-chain rejection that ${isTxExecuted ? "didn't" : "won't"} send any funds. ${
-    isTxExecuted
-      ? `This on-chain rejection replaced all transactions with nonce ${txNonce}.`
-      : `Executing this on-chain rejection will replace all currently awaiting transactions with nonce ${txNonce}.`
-  }`
+  const message = isTxExecuted
+    ? t('transactions.rejectionDidntSend', { nonce: txNonce })
+    : t('transactions.rejectionWontSend', { nonce: txNonce })
 
-  const title = 'Why do I need to pay to reject a transaction?'
+  const title = t('transactions.whyPayToReject')
 
   return (
     <>

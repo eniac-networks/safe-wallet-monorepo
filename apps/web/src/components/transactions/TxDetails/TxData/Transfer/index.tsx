@@ -5,6 +5,7 @@ import type { TransactionStatus, Transfer } from '@safe-global/safe-gateway-type
 import { TransferDirection } from '@safe-global/safe-gateway-typescript-sdk'
 import { Box, Stack, Typography } from '@mui/material'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 
 import TransferActions from '@/components/transactions/TxDetails/TxData/Transfer/TransferActions'
 import MaliciousTxWarning from '@/components/transactions/MaliciousTxWarning'
@@ -20,15 +21,20 @@ type TransferTxInfoProps = {
 }
 
 const TransferTxInfoMain = ({ txInfo, txStatus, trusted, imitation }: TransferTxInfoProps) => {
+  const { t } = useTranslation()
   const { direction } = txInfo
 
   return (
     <Box display="flex" flexDirection="row" alignItems="center" gap={1}>
-      {direction === TransferDirection.INCOMING ? 'Received' : isTxQueued(txStatus) ? 'Send' : 'Sent'}{' '}
+      {direction === TransferDirection.INCOMING
+        ? t('transactions.received')
+        : isTxQueued(txStatus)
+          ? t('transactions.send')
+          : t('transactions.sent')}{' '}
       <b>
         <TransferTx info={txInfo} omitSign preciseAmount />
       </b>
-      {direction === TransferDirection.INCOMING ? ' from' : ' to'}
+      {` ${direction === TransferDirection.INCOMING ? t('transactions.transferFrom') : t('transactions.transferTo')}`}
       {!trusted && !imitation && <MaliciousTxWarning />}
     </Box>
   )
@@ -68,9 +74,10 @@ export const InlineTransferTxInfo = ({
   tokenInfo: Erc20Token | NativeToken
   recipient: string
 }) => {
+  const { t } = useTranslation()
   return (
     <Stack direction="row" alignItems="center" spacing={1}>
-      <Typography>Send</Typography>
+      <Typography>{t('transactions.send')}</Typography>
       <TokenAmount
         value={value}
         decimals={tokenInfo.decimals}
@@ -78,7 +85,7 @@ export const InlineTransferTxInfo = ({
         tokenSymbol={tokenInfo.symbol}
         iconSize={16}
       />
-      <Typography>to</Typography>
+      <Typography>{t('transactions.transferTo')}</Typography>
       <NamedAddressInfo address={recipient} copyAddress={false} shortAddress={true} onlyName avatarSize={16} />
     </Stack>
   )

@@ -2,6 +2,7 @@ import { Operation } from '@safe-global/safe-gateway-typescript-sdk'
 import type { TransactionData } from '@safe-global/safe-gateway-typescript-sdk'
 import { useState, useEffect } from 'react'
 import type { Dispatch, ReactElement, SetStateAction } from 'react'
+import { useTranslation } from 'react-i18next'
 import type { AccordionProps } from '@mui/material/Accordion/Accordion'
 import SingleTxDecoded from '@/components/transactions/TxDetails/TxData/DecodedData/SingleTxDecoded'
 import { Button, Divider, Stack } from '@mui/material'
@@ -18,26 +19,27 @@ export const MultisendActionsHeader = ({
   setOpen,
   amount,
   compact = false,
-  title = 'All actions',
+  title,
 }: {
   setOpen: Dispatch<SetStateAction<Record<number, boolean> | undefined>>
   amount: number
   compact?: boolean
   title?: string
 }) => {
+  const { t } = useTranslation()
   const onClickAll = (expanded: boolean) => () => {
     setOpen(Array(amount).fill(expanded))
   }
 
   return (
     <div data-testid="all-actions" className={classnames(css.actionsHeader, { [css.compactHeader]: compact })}>
-      {title}
+      {title ?? t('transactions.allActions')}
       <Stack direction="row" divider={<Divider className={css.divider} />}>
         <Button data-testid="expande-all-btn" onClick={onClickAll(true)} variant="text">
-          Expand all
+          {t('transactions.expandAll')}
         </Button>
         <Button data-testid="collapse-all-btn" onClick={onClickAll(false)} variant="text">
-          Collapse all
+          {t('transactions.collapseAll')}
         </Button>
       </Stack>
     </div>

@@ -7,6 +7,7 @@ import { useMemo } from 'react'
 import { TxFlowType } from '@/services/analytics'
 import { TxFlow } from '../../TxFlow'
 import { TxFlowStep } from '../../TxFlowStep'
+import { useTranslation } from 'react-i18next'
 
 export enum TokenTransferType {
   multiSig = 'multiSig',
@@ -54,6 +55,7 @@ const defaultParams: MultiTokenTransferParams = {
 }
 
 const TokenTransferFlow = ({ txNonce, ...params }: MultiTokenTransferFlowProps) => {
+  const { t } = useTranslation()
   const initialData = useMemo<MultiTokenTransferParams>(
     () => ({
       ...defaultParams,
@@ -71,11 +73,11 @@ const TokenTransferFlow = ({ txNonce, ...params }: MultiTokenTransferFlowProps) 
     <TxFlow
       initialData={initialData}
       icon={AssetsIcon}
-      subtitle="Send tokens"
+      subtitle={t('sidebar.sendTokens')}
       eventCategory={TxFlowType.TOKEN_TRANSFER}
       ReviewTransactionComponent={ReviewTokenTx}
     >
-      <TxFlowStep title="New transaction">
+      <TxFlowStep title={t('sidebar.newTransaction')}>
         <CreateTokenTransfer txNonce={txNonce} />
       </TxFlowStep>
     </TxFlow>

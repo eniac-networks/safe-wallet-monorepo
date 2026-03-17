@@ -5,16 +5,18 @@ import { Button, DialogActions, DialogContent, Grid, Typography } from '@mui/mat
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import type { ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const CSVAirdropAppModal = ({ onClose, appUrl }: { onClose: () => void; appUrl?: string }): ReactElement => {
   const router = useRouter()
+  const { t } = useTranslation()
 
   return (
     <ModalDialog
       data-testid="csvairdrop-dialog"
       open
       onClose={onClose}
-      dialogTitle="Limit reached"
+      dialogTitle={t('tokenTransfer.limitReached')}
       hideChainIndicator
       maxWidth="xs"
     >
@@ -22,12 +24,9 @@ const CSVAirdropAppModal = ({ onClose, appUrl }: { onClose: () => void; appUrl?:
         <Grid>
           <CSVAirdropLogo />
           <Typography fontWeight="bold" sx={{ mt: 2, mb: 2 }}>
-            Use CSV Airdrop
+            {t('tokenTransfer.useCsvAirdrop')}
           </Typography>
-          <Typography variant="body2">
-            You&apos;ve reached the limit of 5 recipients. To add more use CSV Airdrop, where you can simply upload you
-            CSV file and send to endless number of recipients.
-          </Typography>
+          <Typography variant="body2">{t('tokenTransfer.csvAirdropMsg')}</Typography>
         </Grid>
       </DialogContent>
       {appUrl && (
@@ -43,7 +42,7 @@ const CSVAirdropAppModal = ({ onClose, appUrl }: { onClose: () => void; appUrl?:
             passHref
           >
             <Button variant="contained" data-testid="open-app-btn">
-              Open CSV Airdrop
+              {t('tokenTransfer.openCsvAirdrop')}
             </Button>
           </Link>
         </DialogActions>

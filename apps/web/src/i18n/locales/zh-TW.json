@@ -617,7 +617,17 @@
     "messageDetails": "訊息詳情",
     "filter": "篩選",
     "executed": "已執行",
-    "conflictingTxTooltip": "為什麼具有相同 nonce 的交易會互相衝突？"
+    "conflictingTxTooltip": "為什麼具有相同 nonce 的交易會互相衝突？",
+    "hashesTab": "雜湊",
+    "operationLabel": "操作",
+    "callOperation": "呼叫",
+    "delegateCallOperation": "委託呼叫",
+    "signatureN": "簽名 {{number}}",
+    "safeTxGasLabel": "SafeTxGas",
+    "baseGasLabel": "BaseGas",
+    "gasPriceLabel": "Gas 費率",
+    "gasTokenLabel": "Gas 代幣",
+    "refundReceiverLabel": "退款接收者"
   },
   "addressBook": {
     "title": "通訊錄",
@@ -1429,5 +1439,27 @@
     "invalidateQueueTitle": "此升級將使所有排隊中的交易失效！",
     "queueWarning_one": "您有 {{count}} 筆未執行的交易。請在升級前確保執行或刪除，否則升級後您將需要拒絕或替換它們。",
     "queueWarning_other": "您有 {{count}} 筆未執行的交易。請在升級前確保執行或刪除，否則升級後您將需要拒絕或替換它們。"
+  },
+  "tokenTransfer": {
+    "addRecipient": "新增收款人",
+    "removeRecipient": "移除收款人",
+    "recipientN": "收款人 {{number}}",
+    "insufficientBalance": "餘額不足",
+    "insufficientBalanceMsg": "分配給所有收款人的總金額超過您的可用餘額。請調整您要發送的金額。",
+    "addMoreRecipientsInfo": "如果您想新增超過 {{max}} 位收款人，請使用",
+    "noMoreRecipients": "無法再新增更多收款人。",
+    "pleaseUse": "請使用",
+    "sendAs": "發送方式",
+    "standardTransaction": "標準交易",
+    "standardTxTooltip": "標準交易需要其他簽署者的簽名，才能轉移指定的資金。",
+    "learnMoreSpendingLimits": "了解更多關於消費限制的資訊",
+    "spendingLimitTxTooltip": "消費限制交易允許您在無需收集其他簽署者簽名的情況下轉移指定資金。",
+    "spendingLimitTxInfo": "消費限制交易只有在成功處理並索引後才會出現在介面中。待處理的交易只能在您的簽署者錢包應用程式或區塊鏈瀏覽器上的錢包地址下查看。",
+    "submitError": "提交交易時出錯。請再試一次。",
+    "confirmWithWallet": "您即將建立一筆交易，需要使用目前連接的錢包確認。",
+    "limitReached": "已達上限",
+    "useCsvAirdrop": "使用 CSV 空投",
+    "csvAirdropMsg": "您已達到 5 位收款人的上限。如需新增更多，請使用 CSV 空投，您可以上傳 CSV 檔案並向無限數量的收款人發送。",
+    "openCsvAirdrop": "開啟 CSV 空投"
   }
 }

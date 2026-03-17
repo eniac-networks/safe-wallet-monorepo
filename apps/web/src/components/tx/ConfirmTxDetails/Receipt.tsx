@@ -1,4 +1,5 @@
 import { Fragment, useMemo, type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Box, Divider, Stack, Typography } from '@mui/material'
 import CheckIcon from '@mui/icons-material/Check'
 import type { SafeTransaction } from '@safe-global/types-kit'
@@ -30,6 +31,7 @@ const ScrollWrapper = ({ children }: { children: ReactElement | ReactElement[] }
 )
 
 export const Receipt = ({ safeTxData, txData, txDetails, txInfo, grid, withSignatures = false }: ReceiptProps) => {
+  const { t } = useTranslation()
   const safeTxHash = useSafeTxHash({ safeTxData })
   const domainHash = useDomainHash()
   const messageHash = useMessageHash({ safeTxData })
@@ -46,11 +48,11 @@ export const Receipt = ({ safeTxData, txData, txDetails, txInfo, grid, withSigna
     <PaperViewToggle activeView={0} leftAlign={grid}>
       {[
         {
-          title: 'Data',
+          title: t('transactions.dataLabel'),
           content: (
             <ScrollWrapper>
               <Stack spacing={1} divider={<Divider />}>
-                <TxDetailsRow label="To" grid={grid}>
+                <TxDetailsRow label={t('transactions.to')} grid={grid}>
                   <ToWrapper>
                     <NameChip txData={txData} txInfo={txInfo} />
 
@@ -76,36 +78,39 @@ export const Receipt = ({ safeTxData, txData, txDetails, txInfo, grid, withSigna
                   </ToWrapper>
                 </TxDetailsRow>
 
-                <TxDetailsRow label="Value" grid={grid}>
+                <TxDetailsRow label={t('transactions.valueLabel')} grid={grid}>
                   {safeTxData.value}
                 </TxDetailsRow>
 
-                <TxDetailsRow label="Data" grid={grid}>
+                <TxDetailsRow label={t('transactions.dataLabel')} grid={grid}>
                   <Typography variant="body2" width={grid ? '70%' : undefined}>
                     <HexEncodedData hexData={safeTxData.data} limit={140} />
                   </Typography>
                 </TxDetailsRow>
 
-                <TxDetailsRow label="Operation" grid={grid}>
+                <TxDetailsRow label={t('transactions.operationLabel')} grid={grid}>
                   <Typography variant="body2" display="flex" alignItems="center" gap={0.5}>
-                    {safeTxData.operation} ({operation === Operation.CALL ? 'call' : 'delegate call'})
-                    {operation === Operation.CALL && <CheckIcon color="success" fontSize="inherit" />}
+                    {safeTxData.operation} (
+                    {operation === Operation.CALL
+                      ? t('transactions.callOperation')
+                      : t('transactions.delegateCallOperation')}
+                    ){operation === Operation.CALL && <CheckIcon color="success" fontSize="inherit" />}
                   </Typography>
                 </TxDetailsRow>
 
-                <TxDetailsRow label="SafeTxGas" grid={grid}>
+                <TxDetailsRow label={t('transactions.safeTxGasLabel')} grid={grid}>
                   {safeTxData.safeTxGas}
                 </TxDetailsRow>
 
-                <TxDetailsRow label="BaseGas" grid={grid}>
+                <TxDetailsRow label={t('transactions.baseGasLabel')} grid={grid}>
                   {safeTxData.baseGas}
                 </TxDetailsRow>
 
-                <TxDetailsRow label="GasPrice" grid={grid}>
+                <TxDetailsRow label={t('transactions.gasPriceLabel')} grid={grid}>
                   {safeTxData.gasPrice}
                 </TxDetailsRow>
 
-                <TxDetailsRow label="GasToken" grid={grid}>
+                <TxDetailsRow label={t('transactions.gasTokenLabel')} grid={grid}>
                   <Typography variant="body2">
                     <EthHashInfo
                       address={safeTxData.gasToken}
@@ -118,7 +123,7 @@ export const Receipt = ({ safeTxData, txData, txDetails, txInfo, grid, withSigna
                   </Typography>
                 </TxDetailsRow>
 
-                <TxDetailsRow label="RefundReceiver" grid={grid}>
+                <TxDetailsRow label={t('transactions.refundReceiverLabel')} grid={grid}>
                   <Typography variant="body2">
                     <EthHashInfo
                       address={safeTxData.refundReceiver}
@@ -131,7 +136,7 @@ export const Receipt = ({ safeTxData, txData, txDetails, txInfo, grid, withSigna
                   </Typography>
                 </TxDetailsRow>
 
-                <TxDetailsRow label="Nonce" grid={grid}>
+                <TxDetailsRow label={t('transactions.nonce')} grid={grid}>
                   {safeTxData.nonce}
                 </TxDetailsRow>
 
@@ -141,7 +146,7 @@ export const Receipt = ({ safeTxData, txData, txDetails, txInfo, grid, withSigna
                       !!signature && (
                         <TxDetailsRow
                           data-testid="tx-signature"
-                          label={`Signature ${index + 1}`}
+                          label={t('transactions.signatureN', { number: index + 1 })}
                           key={`signature-${index}`}
                           grid={grid}
                         >
@@ -156,12 +161,12 @@ export const Receipt = ({ safeTxData, txData, txDetails, txInfo, grid, withSigna
           ),
         },
         {
-          title: 'Hashes',
+          title: t('transactions.hashesTab'),
           content: (
             <ScrollWrapper>
               <Stack spacing={1} divider={<Divider />}>
                 {domainHash && (
-                  <TxDetailsRow label="Domain hash" grid={grid}>
+                  <TxDetailsRow label={t('safeMessages.domainHash')} grid={grid}>
                     <Typography variant="body2" width="100%" sx={{ wordWrap: 'break-word' }}>
                       <HexEncodedData hexData={domainHash} limit={66} highlightFirstBytes={false} />
                     </Typography>
@@ -169,7 +174,7 @@ export const Receipt = ({ safeTxData, txData, txDetails, txInfo, grid, withSigna
                 )}
 
                 {messageHash && (
-                  <TxDetailsRow label="Message hash" grid={grid}>
+                  <TxDetailsRow label={t('safeMessages.messageHash')} grid={grid}>
                     <Typography variant="body2" width="100%" sx={{ wordWrap: 'break-word' }}>
                       <HexEncodedData hexData={messageHash} limit={66} highlightFirstBytes={false} />
                     </Typography>

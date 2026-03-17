@@ -1,4 +1,5 @@
 import { memo, type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { generateDataRowValue, TxDataRow } from '@/components/transactions/TxDetails/Summary/TxDataRow'
 import { isCustomTxInfo, isMultiSendTxInfo, isMultisigDetailedExecutionInfo } from '@/utils/transaction-guards'
 import type { TransactionDetails } from '@safe-global/safe-gateway-typescript-sdk'
@@ -31,6 +32,7 @@ const Summary = ({
   showMultisend = true,
   showDecodedData = true,
 }: Props): ReactElement => {
+  const { t } = useTranslation()
   const { txHash, executedAt } = txDetails ?? {}
   const customTxInfo = txInfo && isCustomTxInfo(txInfo) ? txInfo : undefined
   const toInfo = customTxInfo?.to || txData?.addressInfoIndex?.[txData?.to.value] || txData?.to
@@ -65,13 +67,13 @@ const Summary = ({
       )}
 
       {txHash && (
-        <TxDataRow datatestid="tx-hash" title="Transaction hash">
+        <TxDataRow datatestid="tx-hash" title={t('transactions.transactionHashRow')}>
           {generateDataRowValue(txHash, 'hash', true)}{' '}
         </TxDataRow>
       )}
 
       {submittedAt && (
-        <TxDataRow datatestid="tx-created-at" title="Created">
+        <TxDataRow datatestid="tx-created-at" title={t('transactions.createdRow')}>
           <Typography variant="body2" component="div">
             {dateString(submittedAt)}
           </Typography>
@@ -79,7 +81,7 @@ const Summary = ({
       )}
 
       {executedAt && (
-        <TxDataRow datatestid="tx-executed-at" title="Executed">
+        <TxDataRow datatestid="tx-executed-at" title={t('transactions.executedRow')}>
           <Typography variant="body2" component="div">
             {dateString(executedAt)}
           </Typography>
@@ -94,7 +96,7 @@ const Summary = ({
 
               <Box>
                 <Typography variant="subtitle2" fontWeight={700} mb={2}>
-                  Advanced details
+                  {t('transactions.advancedDetails')}
                 </Typography>
 
                 <DecoderLinks />

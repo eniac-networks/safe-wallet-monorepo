@@ -1,5 +1,6 @@
 import { Safe__factory } from '@safe-global/utils/types/contracts'
 import { Box, Skeleton, Stack } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 import { type TransactionData } from '@safe-global/safe-gateway-typescript-sdk'
 import ErrorMessage from '@/components/tx/ErrorMessage'
 
@@ -50,6 +51,7 @@ export const ExecTransaction = ({
   data?: TransactionData
   isConfirmationView?: boolean
 }) => {
+  const { t } = useTranslation()
   const chain = useCurrentChain()
   const safeAddress = useSafeAddress()
 
@@ -85,7 +87,7 @@ export const ExecTransaction = ({
               <TxSimulation
                 disabled={false}
                 transactions={childSafeTx}
-                title="Simulate nested transaction"
+                title={t('transactions.simulateNestedTx')}
                 executionOwner={safeAddress}
                 nestedSafe={data?.to.value}
               />
@@ -103,13 +105,13 @@ export const ExecTransaction = ({
                 passHref
                 legacyBehavior
               >
-                <ExternalLink>Open Safe</ExternalLink>
+                <ExternalLink>{t('transactions.openSafe')}</ExternalLink>
               </Link>
             </Box>
           )}
         </>
       ) : error ? (
-        <ErrorMessage>Could not load details on executed transaction.</ErrorMessage>
+        <ErrorMessage>{t('transactions.couldNotLoadExecutedDetails')}</ErrorMessage>
       ) : (
         <Skeleton />
       )}

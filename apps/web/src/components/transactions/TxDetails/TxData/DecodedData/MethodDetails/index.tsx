@@ -1,4 +1,5 @@
 import type { ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { generateDataRowValue, TxDataRow } from '@/components/transactions/TxDetails/Summary/TxDataRow'
 import { isAddress, isArrayParameter, isByte } from '@/utils/transaction-guards'
 import type { AddressEx, DataDecoded } from '@safe-global/safe-gateway-typescript-sdk'
@@ -15,14 +16,15 @@ type MethodDetailsProps = {
 }
 
 export const MethodDetails = ({ data, addressInfoIndex, hexData }: MethodDetailsProps): ReactElement | null => {
+  const { t } = useTranslation()
   const showHexData = data.method === 'fallback' && !data.parameters?.length && hexData
   if (!data.parameters?.length) {
     return (
       <>
         <Typography color="text.secondary" variant="body2">
-          No parameters
+          {t('transactions.noParameters')}
         </Typography>
-        {showHexData && <HexEncodedData title="Data" hexData={hexData} />}
+        {showHexData && <HexEncodedData title={t('transactions.dataLabel')} hexData={hexData} />}
       </>
     )
   }

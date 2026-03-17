@@ -1,8 +1,10 @@
 import { Box, Stack } from '@mui/material'
 import type { TransactionData } from '@safe-global/safe-gateway-typescript-sdk'
 import DecodedData from '../DecodedData'
+import { useTranslation } from 'react-i18next'
 
 function SafeUpdate({ txData }: { txData?: TransactionData }) {
+  const { t } = useTranslation()
   return (
     <Stack mr={5} spacing={2}>
       <Box
@@ -14,7 +16,7 @@ function SafeUpdate({ txData }: { txData?: TransactionData }) {
         borderRadius={1}
         width="100%"
       >
-        Safe version update
+        {t('transactions.safeVersionUpdate')}
       </Box>
 
       <DecodedData txData={txData} toInfo={txData?.to} />

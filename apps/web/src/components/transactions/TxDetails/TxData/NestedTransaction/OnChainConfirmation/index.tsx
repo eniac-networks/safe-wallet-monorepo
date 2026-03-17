@@ -1,5 +1,6 @@
 import useChainId from '@/hooks/useChainId'
 import { Skeleton, Stack } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 import { type TransactionData } from '@safe-global/safe-gateway-typescript-sdk'
 import ErrorMessage from '@/components/tx/ErrorMessage'
 import { useGetTransactionDetailsQuery } from '@/store/api/gateway'
@@ -20,6 +21,7 @@ export const OnChainConfirmation = ({
   data?: TransactionData
   isConfirmationView?: boolean
 }) => {
+  const { t } = useTranslation()
   const chainId = useChainId()
   const signedHash = useSignedHash(data)
   const safeAddress = useSafeAddress()
@@ -64,7 +66,7 @@ export const OnChainConfirmation = ({
               <TxSimulation
                 disabled={false}
                 transactions={nestedTx}
-                title="Simulate nested transaction"
+                title={t('transactions.simulateNestedTx')}
                 executionOwner={safeAddress}
                 nestedSafe={nestedTxDetails.safeAddress}
               />
@@ -73,7 +75,7 @@ export const OnChainConfirmation = ({
           )}
         </>
       ) : txDetailsError ? (
-        <ErrorMessage>Could not load details on hash to approve.</ErrorMessage>
+        <ErrorMessage>{t('transactions.couldNotLoadHashDetails')}</ErrorMessage>
       ) : (
         <Skeleton />
       )}

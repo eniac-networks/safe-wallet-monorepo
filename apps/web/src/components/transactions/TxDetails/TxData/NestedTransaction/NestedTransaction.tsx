@@ -5,6 +5,7 @@ import { Divider } from '@/components/tx/ColorCodedTxAccordion'
 
 import NestedTransactionIcon from '@/public/images/transactions/nestedTx.svg'
 import { type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import MethodCall from '../DecodedData/MethodCall'
 import { MethodDetails } from '../DecodedData/MethodDetails'
 import ExternalLink from '@/components/common/ExternalLink'
@@ -24,6 +25,7 @@ export const NestedTransaction = ({
   children: ReactElement
   isConfirmationView?: boolean
 }) => {
+  const { t } = useTranslation()
   const chain = useCurrentChain()
   const signedHash = useSignedHash(txData)
   return (
@@ -66,14 +68,14 @@ export const NestedTransaction = ({
                 >
                   <ExternalLink color="text.secondary">
                     <Typography variant="body2" fontWeight={700}>
-                      Open
+                      {t('transactions.open')}
                     </Typography>
                   </ExternalLink>
                 </Link>
               </Track>
             )
           }
-          title={<Typography variant="h5">Nested transaction</Typography>}
+          title={<Typography variant="h5">{t('transactions.nestedTransaction')}</Typography>}
         />
         <CardContent>
           <Stack spacing={4}>{children}</Stack>

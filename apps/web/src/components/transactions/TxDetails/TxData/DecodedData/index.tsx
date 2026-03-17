@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 import { Stack, Typography } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 import { type AddressEx, type TransactionDetails, Operation } from '@safe-global/safe-gateway-typescript-sdk'
 
 import { HexEncodedData } from '@/components/transactions/HexEncodedData'
@@ -18,6 +19,7 @@ interface Props {
 }
 
 export const DecodedData = ({ txData, toInfo, isTxExecuted = false }: Props): ReactElement | null => {
+  const { t } = useTranslation()
   const nativeTokenInfo = useNativeTokenInfo()
   const setsUntrustedFallbackHandler = useSetsUntrustedFallbackHandler(txData)
 
@@ -27,7 +29,7 @@ export const DecodedData = ({ txData, toInfo, isTxExecuted = false }: Props): Re
 
     return (
       <SendToBlock
-        title="Interact with"
+        title={t('transactions.interactWith')}
         address={toInfo.value}
         name={toInfo.name}
         customAvatar={toInfo.logoUri}
@@ -52,16 +54,24 @@ export const DecodedData = ({ txData, toInfo, isTxExecuted = false }: Props): Re
       {method ? (
         <MethodCall contractAddress={toAddress} contractName={name} contractLogo={avatar} method={method} />
       ) : (
-        <SendToBlock address={toAddress} name={name} title="Interacted with" avatarSize={20} customAvatar={avatar} />
+        <SendToBlock
+          address={toAddress}
+          name={name}
+          title={t('transactions.interactedWith')}
+          avatarSize={20}
+          customAvatar={avatar}
+        />
       )}
 
-      {amountInWei !== '0' && <SendAmountBlock title="Value" amountInWei={amountInWei} tokenInfo={nativeTokenInfo} />}
+      {amountInWei !== '0' && (
+        <SendAmountBlock title={t('transactions.valueLabel')} amountInWei={amountInWei} tokenInfo={nativeTokenInfo} />
+      )}
 
       {txData.dataDecoded ? (
         <MethodDetails data={txData.dataDecoded} hexData={txData.hexData} addressInfoIndex={txData.addressInfoIndex} />
       ) : txData.hexData ? (
         <Typography data-testid="hexData" variant="body2" component="div">
-          <HexEncodedData title="Data" hexData={txData.hexData} />
+          <HexEncodedData title={t('transactions.dataLabel')} hexData={txData.hexData} />
         </Typography>
       ) : null}
     </Stack>

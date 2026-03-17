@@ -14,6 +14,7 @@ import { SafeTxContext } from '@/components/tx-flow/SafeTxProvider'
 import { useHasPermission } from '@/permissions/hooks/useHasPermission'
 import { Permission } from '@/permissions/config'
 import { HelpCenterArticle } from '@safe-global/utils/config/constants'
+import { useTranslation } from 'react-i18next'
 
 const SpendingLimitRow = ({
   availableAmount,
@@ -22,6 +23,7 @@ const SpendingLimitRow = ({
   availableAmount: bigint
   selectedToken: TokenInfo | undefined
 }) => {
+  const { t } = useTranslation()
   const { control, trigger, resetField } = useFormContext()
   const canCreateStandardTx = useHasPermission(Permission.CreateTransaction)
   const canCreateSpendingLimitTx = useHasPermission(Permission.CreateSpendingLimitTransaction, {
@@ -41,7 +43,7 @@ const SpendingLimitRow = ({
   return (
     <FormControl>
       <InputLabel shrink required sx={{ backgroundColor: 'background.paper', px: '6px', mx: '-6px' }}>
-        Send as
+        {t('tokenTransfer.sendAs')}
       </InputLabel>
       <Controller
         rules={{ required: true }}
@@ -70,17 +72,16 @@ const SpendingLimitRow = ({
                 value={TokenTransferType.multiSig}
                 label={
                   <>
-                    Standard transaction
+                    {t('tokenTransfer.standardTransaction')}
                     <Tooltip
                       title={
                         <>
-                          A standard transaction requires the signatures of other signers before the specified funds can
-                          be transferred.&nbsp;
+                          {t('tokenTransfer.standardTxTooltip')}&nbsp;
                           <ExternalLink
                             href={HelpCenterArticle.SPENDING_LIMITS}
-                            title="Learn more about spending limits"
+                            title={t('tokenTransfer.learnMoreSpendingLimits')}
                           >
-                            Learn more about spending limits
+                            {t('tokenTransfer.learnMoreSpendingLimits')}
                           </ExternalLink>
                           .
                         </>
@@ -118,13 +119,12 @@ const SpendingLimitRow = ({
                     <Tooltip
                       title={
                         <>
-                          A spending limit transaction allows you to transfer the specified funds without the need to
-                          collect the signatures of other signers.&nbsp;
+                          {t('tokenTransfer.spendingLimitTxTooltip')}&nbsp;
                           <ExternalLink
                             href={HelpCenterArticle.SPENDING_LIMITS}
-                            title="Learn more about spending limits"
+                            title={t('tokenTransfer.learnMoreSpendingLimits')}
                           >
-                            Learn more about spending limits
+                            {t('tokenTransfer.learnMoreSpendingLimits')}
                           </ExternalLink>
                           .
                         </>

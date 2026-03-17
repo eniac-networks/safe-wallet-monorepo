@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 import React, { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import type { Custom, TransactionData } from '@safe-global/safe-gateway-typescript-sdk'
 import { Stack, Typography } from '@mui/material'
 import EthHashInfo from '@/components/common/EthHashInfo'
@@ -22,6 +23,7 @@ type SpendingLimitsProps = {
 }
 
 export const SpendingLimits = ({ txData, txInfo, type }: SpendingLimitsProps): ReactElement | null => {
+  const { t } = useTranslation()
   const chain = useCurrentChain()
   const tokens = useAppSelector(selectTokens)
   const isSetAllowanceMethod = useMemo(() => isSetAllowance(type), [type])
@@ -29,9 +31,24 @@ export const SpendingLimits = ({ txData, txInfo, type }: SpendingLimitsProps): R
   const [beneficiary, tokenAddress, amount, resetTimeMin] =
     txData?.dataDecoded?.parameters?.map(({ value }) => value) || []
 
+  const resetTimeLabelMap = useMemo<Record<string, string>>(
+    () => ({
+      '0': t('transactions.oneTime'),
+      '1440': t('transactions.oneDay'),
+      '10080': t('transactions.oneWeek'),
+      '43200': t('transactions.oneMonth'),
+      '5': t('transactions.fiveMinutes'),
+      '30': t('transactions.thirtyMinutes'),
+      '60': t('transactions.oneHour'),
+    }),
+    [t],
+  )
+
   const resetTimeLabel = useMemo(
-    () => getResetTimeOptions(chain?.chainId).find(({ value }) => +value === +resetTimeMin)?.label,
-    [chain?.chainId, resetTimeMin],
+    () =>
+      resetTimeLabelMap[String(resetTimeMin)] ??
+      getResetTimeOptions(chain?.chainId).find(({ value }) => +value === +resetTimeMin)?.label,
+    [chain?.chainId, resetTimeMin, resetTimeLabelMap],
   )
   const tokenInfo = useMemo(
     () => tokens.find(({ address }) => sameAddress(address, tokenAddress as string)),
@@ -44,10 +61,14 @@ export const SpendingLimits = ({ txData, txInfo, type }: SpendingLimitsProps): R
   return (
     <Stack spacing={1}>
       <Typography>
-        <b>{`${isSetAllowanceMethod ? 'Modify' : 'Delete'} spending limit:`}</b>
+        <b>
+          {isSetAllowanceMethod
+            ? t('transactions.modifySpendingLimitLabel')
+            : t('transactions.deleteSpendingLimitLabel')}
+        </b>
       </Typography>
 
-      <TxDetailsRow label="Beneficiary" grid>
+      <TxDetailsRow label={t('transactions.beneficiaryLabel')} grid>
         <EthHashInfo
           address={(beneficiary as string) || txTo?.value || '0x'}
           name={txTo.name}
@@ -58,7 +79,16 @@ export const SpendingLimits = ({ txData, txInfo, type }: SpendingLimitsProps): R
         />
       </TxDetailsRow>
 
-      <TxDetailsRow label={isSetAllowanceMethod ? (tokenInfo ? 'Amount' : 'Raw Amount (in decimals)') : 'Token'} grid>
+      <TxDetailsRow
+        label={
+          isSetAllowanceMethod
+            ? tokenInfo
+              ? t('transactions.amountLabel')
+              : t('transactions.rawAmountLabel')
+            : t('transactions.tokenLabel')
+        }
+        grid
+      >
         {tokenInfo && (
           <>
             <TokenIcon logoUri={tokenInfo.logoUri} size={32} tokenSymbol={tokenInfo.symbol} />
@@ -80,8 +110,11 @@ export const SpendingLimits = ({ txData, txInfo, type }: SpendingLimitsProps): R
       </TxDetailsRow>
 
       {isSetAllowanceMethod && (
-        <TxDetailsRow label="Reset time" grid>
-          <SpendingLimitLabel label={resetTimeLabel || 'One-time spending limit'} isOneTime={!resetTimeLabel} />
+        <TxDetailsRow label={t('transactions.resetTimeLabel')} grid>
+          <SpendingLimitLabel
+            label={resetTimeLabel || t('transactions.oneTimeSpendingLimit')}
+            isOneTime={!resetTimeLabel}
+          />
         </TxDetailsRow>
       )}
     </Stack>
