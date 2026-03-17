@@ -8,6 +8,7 @@ import Track from '@/components/common/Track'
 import { OVERVIEW_EVENTS } from '@/services/analytics/events/overview'
 import { AppRoutes } from '@/config/routes'
 import css from './styles.module.css'
+import { useTranslation } from 'react-i18next'
 
 const ChipLink = ({ children, color }: { children: ReactNode; color?: string }) => (
   <Chip
@@ -41,6 +42,7 @@ const QueueActions = ({
   awaitingConfirmation: number
   isMobile?: boolean
 }) => {
+  const { t } = useTranslation()
   const router = useRouter()
 
   const onQueueClick = useCallback(
@@ -64,14 +66,14 @@ const QueueActions = ({
         {queued > 0 && (
           <ChipLink>
             <SvgIcon component={TransactionsIcon} inheritViewBox sx={{ fontSize: 'small' }} />
-            {queued} pending
+            {t('myAccounts.pending', { count: queued })}
           </ChipLink>
         )}
 
         {awaitingConfirmation > 0 && (
           <ChipLink color="warning">
             <SvgIcon component={CheckIcon} inheritViewBox sx={{ fontSize: 'small', color: 'warning' }} />
-            {awaitingConfirmation} to confirm
+            {t('myAccounts.toConfirm', { count: awaitingConfirmation })}
           </ChipLink>
         )}
       </button>

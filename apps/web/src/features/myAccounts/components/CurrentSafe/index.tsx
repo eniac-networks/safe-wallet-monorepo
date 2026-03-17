@@ -5,6 +5,7 @@ import type { AllSafeItems } from '../../hooks/useAllSafesGrouped'
 import { useMemo } from 'react'
 import useAddressBook from '@/hooks/useAddressBook'
 import SingleAccountItem from '../AccountItems/SingleAccountItem'
+import { useTranslation } from 'react-i18next'
 
 function CurrentSafeList({
   safeAddress,
@@ -17,6 +18,7 @@ function CurrentSafeList({
   isReadOnly: boolean
   onLinkClick?: () => void
 }) {
+  const { t } = useTranslation()
   const addressBook = useAddressBook()
   const safeName = addressBook[safeAddress]
 
@@ -35,7 +37,7 @@ function CurrentSafeList({
   return (
     <Box data-testid="current-safe-section" mb={3}>
       <Typography variant="h5" fontWeight={700} mb={2}>
-        Current Safe Account
+        {t('myAccounts.currentSafeAccount')}
       </Typography>
 
       <SingleAccountItem onLinkClick={onLinkClick} safeItem={safeItem} />

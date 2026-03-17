@@ -9,14 +9,16 @@ import { BatchExecuteHoverProvider } from '@/components/transactions/BatchExecut
 import { usePendingTxsQueue, useShowUnsignedQueue } from '@/hooks/usePendingTxs'
 import RecoveryList from '@/features/recovery/components/RecoveryList'
 import { BRAND_NAME } from '@/config/constants'
+import { useTranslation } from 'react-i18next'
 
 const Queue: NextPage = () => {
+  const { t } = useTranslation()
   const showPending = useShowUnsignedQueue()
 
   return (
     <>
       <Head>
-        <title>{`${BRAND_NAME} – Transaction queue`}</title>
+        <title>{`${BRAND_NAME} – ${t('transactions.transactionQueue')}`}</title>
       </Head>
 
       <BatchExecuteHoverProvider>

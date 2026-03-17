@@ -10,6 +10,7 @@ import Divider from '@mui/material/Divider'
 import { isBefore, isAfter, startOfDay } from 'date-fns'
 import { Controller, FormProvider, useForm, useFormState, type DefaultValues } from 'react-hook-form'
 import { useMemo, type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import AddressBookInput from '@/components/common/AddressBookInput'
 import DatePickerInput from '@/components/common/DatePickerInput'
@@ -67,6 +68,7 @@ const getInitialFormValues = (filter: TxFilter | null): DefaultValues<TxFilterFo
 }
 
 const TxFilterForm = ({ toggleFilter }: { toggleFilter: () => void }): ReactElement => {
+  const { t } = useTranslation()
   const [filter, setFilter] = useTxFilter()
   const chain = useCurrentChain()
 
@@ -124,7 +126,9 @@ const TxFilterForm = ({ toggleFilter }: { toggleFilter: () => void }): ReactElem
           <Grid data-testid="filter-modal" container>
             <Grid item xs={12} md={3} sx={{ p: 4 }}>
               <FormControl>
-                <FormLabel sx={{ mb: 2, color: ({ palette }) => palette.primary.light }}>Transaction type</FormLabel>
+                <FormLabel sx={{ mb: 2, color: ({ palette }) => palette.primary.light }}>
+                  {t('transactions.transactionType')}
+                </FormLabel>
                 <Controller
                   name={TxFilterFormFieldNames.FILTER_TYPE}
                   control={control}
@@ -143,19 +147,21 @@ const TxFilterForm = ({ toggleFilter }: { toggleFilter: () => void }): ReactElem
 
             <Grid item xs={12} md={8} sx={{ p: 4 }}>
               <FormControl sx={{ width: '100%' }}>
-                <FormLabel sx={{ mb: 3, color: ({ palette }) => palette.primary.light }}>Parameters</FormLabel>
+                <FormLabel sx={{ mb: 3, color: ({ palette }) => palette.primary.light }}>
+                  {t('transactions.parameters')}
+                </FormLabel>
                 <Grid container item spacing={2} xs={12}>
                   {!isModuleFilter && (
                     <>
                       <Grid data-testid="start-date" item xs={12} md={6}>
                         <DatePickerInput
                           name={TxFilterFormFieldNames.DATE_FROM}
-                          label="From"
+                          label={t('transactions.from')}
                           deps={[TxFilterFormFieldNames.DATE_TO]}
                           validate={(val: TxFilterFormState[TxFilterFormFieldNames.DATE_FROM]) => {
                             const toDate = getValues(TxFilterFormFieldNames.DATE_TO)
                             if (val && toDate && isBefore(startOfDay(toDate), startOfDay(val))) {
-                              return 'Must be before "To" date'
+                              return t('transactions.mustBeBeforeTo')
                             }
                           }}
                         />
@@ -163,12 +169,12 @@ const TxFilterForm = ({ toggleFilter }: { toggleFilter: () => void }): ReactElem
                       <Grid data-testid="end-date" item xs={12} md={6}>
                         <DatePickerInput
                           name={TxFilterFormFieldNames.DATE_TO}
-                          label="To"
+                          label={t('transactions.to')}
                           deps={[TxFilterFormFieldNames.DATE_FROM]}
                           validate={(val: TxFilterFormState[TxFilterFormFieldNames.DATE_FROM]) => {
                             const fromDate = getValues(TxFilterFormFieldNames.DATE_FROM)
                             if (val && fromDate && isAfter(startOfDay(fromDate), startOfDay(val))) {
-                              return 'Must be after "From" date'
+                              return t('transactions.mustBeAfterFrom')
                             }
                           }}
                         />
@@ -191,7 +197,11 @@ const TxFilterForm = ({ toggleFilter }: { toggleFilter: () => void }): ReactElem
                               className={inputCss.input}
                               label={
                                 fieldState.error?.message ||
-                                (isIncomingFilter ? 'Amount' : `Amount (only ${chain?.nativeCurrency.symbol || 'ETH'})`)
+                                (isIncomingFilter
+                                  ? t('transactions.amountLabel')
+                                  : t('transactions.amountOnlyNative', {
+                                      symbol: chain?.nativeCurrency.symbol || 'ETH',
+                                    }))
                               }
                               error={!!fieldState.error}
                               {...field}
@@ -207,7 +217,7 @@ const TxFilterForm = ({ toggleFilter }: { toggleFilter: () => void }): ReactElem
                     <Grid item xs={12} md={6}>
                       <AddressInput
                         data-testid="token-input"
-                        label="Token address"
+                        label={t('transactions.tokenAddress')}
                         name={TxFilterFormFieldNames.TOKEN_ADDRESS}
                         required={false}
                         fullWidth
@@ -219,7 +229,7 @@ const TxFilterForm = ({ toggleFilter }: { toggleFilter: () => void }): ReactElem
                     <>
                       <Grid item xs={12} md={6}>
                         <AddressBookInput
-                          label="Recipient"
+                          label={t('transactions.recipient')}
                           name={TxFilterFormFieldNames.RECIPIENT}
                           required={false}
                           fullWidth
@@ -240,7 +250,7 @@ const TxFilterForm = ({ toggleFilter }: { toggleFilter: () => void }): ReactElem
                             <NumberField
                               data-testid="nonce-input"
                               className={inputCss.input}
-                              label={fieldState.error?.message || 'Nonce'}
+                              label={fieldState.error?.message || t('transactions.nonce')}
                               error={!!fieldState.error}
                               {...field}
                               fullWidth
@@ -254,7 +264,7 @@ const TxFilterForm = ({ toggleFilter }: { toggleFilter: () => void }): ReactElem
                   {isModuleFilter && (
                     <Grid item xs={12} md={6}>
                       <AddressBookInput
-                        label="Module"
+                        label={t('transactions.module')}
                         name={TxFilterFormFieldNames.MODULE}
                         required={false}
                         fullWidth
@@ -266,10 +276,10 @@ const TxFilterForm = ({ toggleFilter }: { toggleFilter: () => void }): ReactElem
 
               <Grid item container md={6} sx={{ gap: 2, mt: 3 }}>
                 <Button data-testid="clear-btn" variant="contained" onClick={clearFilter} disabled={!canClear}>
-                  Clear
+                  {t('transactions.clear')}
                 </Button>
                 <Button data-testid="apply-btn" type="submit" variant="contained" color="primary" disabled={!isValid}>
-                  Apply
+                  {t('transactions.apply')}
                 </Button>
               </Grid>
             </Grid>

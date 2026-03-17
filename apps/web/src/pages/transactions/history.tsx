@@ -15,8 +15,10 @@ import { BRAND_NAME } from '@/config/constants'
 import CsvTxExportButton from '@/components/transactions/CsvTxExportButton'
 import { useHasFeature } from '@/hooks/useChains'
 import { FEATURES } from '@safe-global/utils/utils/chains'
+import { useTranslation } from 'react-i18next'
 
 const History: NextPage = () => {
+  const { t } = useTranslation()
   const [filter] = useTxFilter()
   const isCsvExportEnabled = useHasFeature(FEATURES.CSV_TX_EXPORT)
 
@@ -30,14 +32,14 @@ const History: NextPage = () => {
   return (
     <>
       <Head>
-        <title>{`${BRAND_NAME} – Transaction history`}</title>
+        <title>{`${BRAND_NAME} – ${t('transactions.transactionHistory')}`}</title>
       </Head>
 
       <TxHeader>
         <TrustedToggle />
 
         <Button variant="outlined" onClick={toggleFilter} size="small" endIcon={<ExpandIcon />}>
-          {filter?.type ?? 'Filter'}
+          {filter?.type ?? t('transactions.filter')}
         </Button>
         {isCsvExportEnabled && <CsvTxExportButton hasActiveFilter={!!filter} />}
       </TxHeader>

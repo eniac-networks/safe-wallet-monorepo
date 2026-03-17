@@ -10,18 +10,24 @@ import { ASSETS_EVENTS, trackEvent } from '@/services/analytics'
 import { useHasFeature } from '@/hooks/useChains'
 import { FEATURES } from '@safe-global/utils/utils/chains'
 import { HelpCenterArticle } from '@safe-global/utils/config/constants'
+import { useTranslation } from 'react-i18next'
+import { useMemo } from 'react'
 
 const LS_TOKENLIST_ONBOARDING = 'tokenlist_onboarding'
 
-const TokenListLabel = {
-  [TOKEN_LISTS.TRUSTED]: 'Default tokens',
-  [TOKEN_LISTS.ALL]: 'All tokens',
-}
-
 const TokenListSelect = () => {
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const settings = useAppSelector(selectSettings)
   const hasDefaultTokenlist = useHasFeature(FEATURES.DEFAULT_TOKENLIST)
+
+  const TokenListLabel = useMemo(
+    () => ({
+      [TOKEN_LISTS.TRUSTED]: t('balances.defaultTokens'),
+      [TOKEN_LISTS.ALL]: t('balances.allTokens'),
+    }),
+    [t],
+  )
 
   const handleSelectTokenList = (event: SelectChangeEvent<TOKEN_LISTS>) => {
     const selectedString = event.target.value as TOKEN_LISTS
@@ -34,15 +40,15 @@ const TokenListSelect = () => {
 
   return (
     <FormControl size="small">
-      <InputLabel id="tokenlist-select-label">Token list</InputLabel>
+      <InputLabel id="tokenlist-select-label">{t('balances.tokenList')}</InputLabel>
 
       <OnboardingTooltip
         widgetLocalStorageId={LS_TOKENLIST_ONBOARDING}
         text={
           <>
-            Spam filter on!
+            {t('balances.spamFilterOn')}
             <br />
-            Switch to &quot;All tokens&quot; to see all of your tokens.
+            {t('balances.spamFilterTooltip')}
           </>
         }
       >
@@ -50,7 +56,7 @@ const TokenListSelect = () => {
           labelId="tokenlist-select-label"
           id="tokenlist-select"
           value={settings.tokenList}
-          label="Tokenlist"
+          label={t('balances.tokenList')}
           onChange={handleSelectTokenList}
           renderValue={(value) => TokenListLabel[value]}
           onOpen={() => trackEvent(ASSETS_EVENTS.OPEN_TOKEN_LIST_MENU)}
@@ -64,7 +70,8 @@ const TokenListSelect = () => {
                   arrow
                   title={
                     <Typography>
-                      Learn more about <ExternalLink href={HelpCenterArticle.SPAM_TOKENS}>default tokens</ExternalLink>
+                      {t('balances.learnMoreAbout')}{' '}
+                      <ExternalLink href={HelpCenterArticle.SPAM_TOKENS}>{t('balances.defaultTokens')}</ExternalLink>
                     </Typography>
                   }
                 >

@@ -10,8 +10,10 @@ import { AppRoutes } from '@/config/routes'
 import { useCurrentChain } from '@/hooks/useChains'
 import { BRAND_NAME } from '@/config/constants'
 import { FEATURES, hasFeature } from '@safe-global/utils/utils/chains'
+import { useTranslation } from 'react-i18next'
 
 const Messages: NextPage = () => {
+  const { t } = useTranslation()
   const chain = useCurrentChain()
   const router = useRouter()
 
@@ -26,7 +28,7 @@ const Messages: NextPage = () => {
   return (
     <>
       <Head>
-        <title>{`${BRAND_NAME} – Messages`}</title>
+        <title>{`${BRAND_NAME} – ${t('transactions.messages')}`}</title>
       </Head>
 
       <TxHeader>

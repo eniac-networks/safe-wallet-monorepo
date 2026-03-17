@@ -1,5 +1,6 @@
 import CheckBalance from '@/features/counterfactual/CheckBalance'
-import React, { type ReactElement } from 'react'
+import React, { type ReactElement, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Box, Card, Checkbox, IconButton, Skeleton, Stack, Tooltip, Typography } from '@mui/material'
 import css from './styles.module.css'
 import TokenAmount from '@/components/common/TokenAmount'
@@ -89,50 +90,6 @@ const isNativeToken = (tokenInfo: Balance['tokenInfo']) => {
   return tokenInfo.type === TokenType.NATIVE_TOKEN
 }
 
-const headCells = [
-  {
-    id: 'asset',
-    label: 'Asset',
-    width: '28%',
-  },
-  {
-    id: 'price',
-    label: 'Price',
-    width: '18%',
-    align: 'right',
-  },
-  {
-    id: 'balance',
-    label: 'Balance',
-    width: '18%',
-    align: 'right',
-  },
-  {
-    id: 'value',
-    label: 'Value',
-    width: '18%',
-    align: 'right',
-  },
-  {
-    id: 'weight',
-    label: (
-      <Tooltip title="Based on total portfolio value">
-        <Typography variant="caption" letterSpacing="normal" color="primary.light">
-          Weight
-        </Typography>
-      </Tooltip>
-    ),
-    width: '18%',
-    align: 'right',
-  },
-  {
-    id: 'actions',
-    label: '',
-    width: '15%',
-    sticky: true,
-  },
-]
-
 const AssetsTable = ({
   showHiddenAssets,
   setShowHiddenAssets,
@@ -140,6 +97,7 @@ const AssetsTable = ({
   showHiddenAssets: boolean
   setShowHiddenAssets: (hidden: boolean) => void
 }): ReactElement => {
+  const { t } = useTranslation()
   const { balances, loading } = useBalances()
   const { balances: visibleBalances } = useVisibleBalances()
 
@@ -156,6 +114,53 @@ const AssetsTable = ({
   const visibleAssets = showHiddenAssets ? balances.items : visible
   const hasNoAssets = !loading && balances.items.length === 1 && balances.items[0].balance === '0'
   const selectedAssetCount = visibleAssets?.filter((item) => isAssetSelected(item.tokenInfo.address)).length || 0
+
+  const headCells = useMemo(
+    () => [
+      {
+        id: 'asset',
+        label: t('balances.assetColumn'),
+        width: '28%',
+      },
+      {
+        id: 'price',
+        label: t('balances.priceColumn'),
+        width: '18%',
+        align: 'right',
+      },
+      {
+        id: 'balance',
+        label: t('balances.balanceColumn'),
+        width: '18%',
+        align: 'right',
+      },
+      {
+        id: 'value',
+        label: t('balances.valueColumn'),
+        width: '18%',
+        align: 'right',
+      },
+      {
+        id: 'weight',
+        label: (
+          <Tooltip title={t('balances.weightTooltip')}>
+            <Typography variant="caption" letterSpacing="normal" color="primary.light">
+              {t('balances.weightColumn')}
+            </Typography>
+          </Tooltip>
+        ),
+        width: '18%',
+        align: 'right',
+      },
+      {
+        id: 'actions',
+        label: '',
+        width: '15%',
+        sticky: true,
+      },
+    ],
+    [t],
+  )
 
   const rows = loading
     ? skeletonRows
@@ -277,7 +282,7 @@ const AssetsTable = ({
                       <Checkbox size="small" checked={isSelected} onClick={() => toggleAsset(item.tokenInfo.address)} />
                     ) : (
                       <Track {...ASSETS_EVENTS.HIDE_TOKEN}>
-                        <Tooltip title="Hide asset" arrow disableInteractive>
+                        <Tooltip title={t('balances.hideAsset')} arrow disableInteractive>
                           <IconButton
                             disabled={hidingAsset !== undefined}
                             size="medium"

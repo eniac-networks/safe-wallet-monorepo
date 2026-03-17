@@ -11,6 +11,7 @@ import { TxModalContext } from '..'
 import SwapIcon from '@/public/images/common/swap.svg'
 import AssetsIcon from '@/public/images/sidebar/assets.svg'
 import useIsSwapFeatureEnabled from '@/features/swap/hooks/useIsSwapFeatureEnabled'
+import { useTranslation } from 'react-i18next'
 
 const buttonSx = {
   height: '58px',
@@ -18,6 +19,7 @@ const buttonSx = {
 }
 
 export const SendTokensButton = ({ onClick, sx }: { onClick: () => void; sx?: ButtonProps['sx'] }) => {
+  const { t } = useTranslation()
   return (
     <Track {...MODALS_EVENTS.SEND_FUNDS}>
       <Button
@@ -28,13 +30,14 @@ export const SendTokensButton = ({ onClick, sx }: { onClick: () => void; sx?: Bu
         fullWidth
         startIcon={<AssetsIcon width={20} />}
       >
-        Send tokens
+        {t('sidebar.sendTokens')}
       </Button>
     </Track>
   )
 }
 
 export const TxBuilderButton = () => {
+  const { t } = useTranslation()
   const txBuilder = useTxBuilderApp()
   const router = useRouter()
   const { setTxFlow } = useContext(TxModalContext)
@@ -54,7 +57,7 @@ export const TxBuilderButton = () => {
           onClick={onClick}
           startIcon={<img src={txBuilder.app.iconUrl} height={24} width="auto" alt={txBuilder.app.name} />}
         >
-          Transaction Builder
+          {t('sidebar.transactionBuilder')}
         </Button>
       </Link>
     </Track>
@@ -62,6 +65,7 @@ export const TxBuilderButton = () => {
 }
 
 export const MakeASwapButton = () => {
+  const { t } = useTranslation()
   const router = useRouter()
   const { setTxFlow } = useContext(TxModalContext)
   const isSwapFeatureEnabled = useIsSwapFeatureEnabled()
@@ -74,7 +78,7 @@ export const MakeASwapButton = () => {
     <Track {...MODALS_EVENTS.SWAP}>
       <Link href={{ pathname: AppRoutes.swap, query: { safe: router.query.safe } }} passHref legacyBehavior>
         <Button variant="contained" sx={buttonSx} fullWidth onClick={onClick} startIcon={<SwapIcon width={20} />}>
-          Swap tokens
+          {t('sidebar.swapTokens')}
         </Button>
       </Link>
     </Track>

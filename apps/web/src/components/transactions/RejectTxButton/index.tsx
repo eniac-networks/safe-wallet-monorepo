@@ -3,6 +3,7 @@ import { Button } from '@mui/material'
 
 import type { ReactElement } from 'react'
 import { useContext } from 'react'
+import { useTranslation } from 'react-i18next'
 import { isMultisigExecutionInfo } from '@/utils/transaction-guards'
 import useIsPending from '@/hooks/useIsPending'
 import Track from '@/components/common/Track'
@@ -21,6 +22,7 @@ const RejectTxButton = ({
   safeTxHash?: string
   proposer?: string
 }): ReactElement | null => {
+  const { t } = useTranslation()
   const { setTxFlow } = useContext(TxModalContext)
   const txNonce = isMultisigExecutionInfo(txSummary.executionInfo) ? txSummary.executionInfo.nonce : undefined
   const isPending = useIsPending(txSummary.id)
@@ -43,7 +45,7 @@ const RejectTxButton = ({
             disabled={!isOk || isDisabled}
             size="stretched"
           >
-            Reject
+            {t('transactions.reject')}
           </Button>
         </Track>
       )}

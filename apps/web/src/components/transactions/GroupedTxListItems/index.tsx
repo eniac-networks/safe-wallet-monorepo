@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 import { useContext } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Box, Paper, Typography } from '@mui/material'
 import type { Transaction } from '@safe-global/safe-gateway-typescript-sdk'
 import { isMultisigExecutionInfo } from '@/utils/transaction-guards'
@@ -10,18 +11,21 @@ import ExternalLink from '@/components/common/ExternalLink'
 
 import { HelpCenterArticle } from '@safe-global/utils/config/constants'
 
-const Disclaimer = () => (
-  <Typography>
-    <b>Conflicting transactions</b>. Executing one will automatically replace the others.{' '}
-    <ExternalLink
-      href={HelpCenterArticle.CONFLICTING_TRANSACTIONS}
-      title="Why are transactions with the same nonce conflicting with each other?"
-      noIcon
-    >
-      Why did this happen?
-    </ExternalLink>
-  </Typography>
-)
+const Disclaimer = () => {
+  const { t } = useTranslation()
+  return (
+    <Typography>
+      <b>{t('transactions.conflictingTransactions')}</b>. {t('transactions.executingOneReplacesOthers')}{' '}
+      <ExternalLink
+        href={HelpCenterArticle.CONFLICTING_TRANSACTIONS}
+        title={t('transactions.conflictingTxTooltip')}
+        noIcon
+      >
+        {t('transactions.whyDidThisHappen')}
+      </ExternalLink>
+    </Typography>
+  )
+}
 
 const TxGroup = ({ groupedListItems }: { groupedListItems: Transaction[] }): ReactElement => {
   const nonce = isMultisigExecutionInfo(groupedListItems[0].transaction.executionInfo)

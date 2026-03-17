@@ -1,4 +1,5 @@
 import { useState, type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   Box,
   Link,
@@ -115,6 +116,7 @@ export const TxSigners = ({
   isTxFromProposer,
   proposer,
 }: TxSignersProps): ReactElement | null => {
+  const { t } = useTranslation()
   const { detailedExecutionInfo, txInfo, txId } = txDetails
   const [hideConfirmations, setHideConfirmations] = useState<boolean>(shouldHideConfirmations(detailedExecutionInfo))
   const isPending = useIsPending(txId)
@@ -147,7 +149,9 @@ export const TxSigners = ({
               <StyledListItemIcon $state={StepState.ERROR}>
                 <Cancel />
               </StyledListItemIcon>
-              <ListItemText primaryTypographyProps={{ fontWeight: 700 }}>On-chain rejection created</ListItemText>
+              <ListItemText primaryTypographyProps={{ fontWeight: 700 }}>
+                {t('transactions.onChainRejectionCreated')}
+              </ListItemText>
             </>
           ) : (
             <>
@@ -155,7 +159,7 @@ export const TxSigners = ({
                 <Created />
               </StyledListItemIcon>
               <ListItemText data-testid="create-action" primaryTypographyProps={{ fontWeight: 700 }}>
-                Created
+                {t('transactions.signersCreated')}
               </ListItemText>
             </>
           )}
@@ -178,8 +182,10 @@ export const TxSigners = ({
               {isConfirmed ? <Check /> : <MissingConfirmation />}
             </StyledListItemIcon>
             <ListItemText data-testid="confirmation-action" primaryTypographyProps={{ fontWeight: 700 }}>
-              Confirmations{' '}
-              <Box className={css.confirmationsTotal}>({`${confirmationsCount} of ${confirmationsRequired}`})</Box>
+              {t('transactions.signersConfirmations')}{' '}
+              <Box className={css.confirmationsTotal}>
+                {t('transactions.confirmationsOfTotal', { count: confirmationsCount, required: confirmationsRequired })}
+              </Box>
             </ListItemText>
           </ListItem>
         )}
@@ -209,7 +215,7 @@ export const TxSigners = ({
                   fontSize: 'medium',
                 }}
               >
-                {hideConfirmations ? 'Show all' : 'Hide all'}
+                {hideConfirmations ? t('transactions.showAll') : t('transactions.hideAll')}
               </Link>
             </ListItemText>
           </ListItem>
@@ -220,13 +226,15 @@ export const TxSigners = ({
           </StyledListItemIcon>
           <ListItemText
             primary={
-              executor ? 'Executed' : isPending ? txStatus : isTxFromProposer ? 'Signer review' : 'Can be executed'
+              executor
+                ? t('transactions.executed')
+                : isPending
+                  ? txStatus
+                  : isTxFromProposer
+                    ? t('transactions.signerReview')
+                    : t('transactions.canBeExecuted')
             }
-            secondary={
-              isTxFromProposer
-                ? 'This transaction was created by a Proposer. Please review and either confirm or reject it. Once confirmed, it can be finalized and executed.'
-                : undefined
-            }
+            secondary={isTxFromProposer ? t('transactions.proposerCreatedNote') : undefined}
             data-testid="tx-action-status"
             primaryTypographyProps={{ fontWeight: 700 }}
             secondaryTypographyProps={{ mt: 1 }}
@@ -247,7 +255,7 @@ export const TxSigners = ({
         !isConfirmed && (
           <Box className={css.listFooter}>
             <Typography sx={({ palette }) => ({ color: palette.border.main })}>
-              Can be executed once the threshold is reached
+              {t('transactions.canBeExecutedThreshold')}
             </Typography>
           </Box>
         )

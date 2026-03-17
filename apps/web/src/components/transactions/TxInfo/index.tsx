@@ -26,8 +26,9 @@ import {
   isVaultDepositTxInfo,
   isVaultRedeemTxInfo,
 } from '@/utils/transaction-guards'
-import { ellipsis, maybePlural, shortenAddress } from '@safe-global/utils/utils/formatters'
+import { ellipsis, shortenAddress } from '@safe-global/utils/utils/formatters'
 import { useCurrentChain } from '@/hooks/useChains'
+import { useTranslation } from 'react-i18next'
 import { SwapTx } from '@/features/swap/components/SwapTxInfo/SwapTx'
 import StakingTxExitInfo from '@/features/stake/components/StakingTxExitInfo'
 import StakingTxWithdrawInfo from '@/features/stake/components/StakingTxWithdrawInfo'
@@ -48,6 +49,7 @@ export const TransferTx = ({
   withLogo?: boolean
   preciseAmount?: boolean
 }): ReactElement => {
+  const { t } = useTranslation()
   const chainConfig = useCurrentChain()
   const { nativeCurrency } = chainConfig || {}
   const transfer = info.transferInfo
@@ -82,7 +84,7 @@ export const TransferTx = ({
       <TokenAmount
         {...transfer}
         tokenSymbol={ellipsis(
-          `${transfer.tokenSymbol ? transfer.tokenSymbol : 'Unknown NFT'} #${transfer.tokenId}`,
+          `${transfer.tokenSymbol ? transfer.tokenSymbol : t('transactions.unknownNft')} #${transfer.tokenId}`,
           withLogo ? 16 : 100,
         )}
         value="1"
@@ -102,15 +104,17 @@ const CustomTx = ({ info }: { info: Custom }): ReactElement => {
 }
 
 const CreationTx = ({ info }: { info: Creation }): ReactElement => {
-  return <Box className={css.txInfo}>Created by {shortenAddress(info.creator.value)}</Box>
+  const { t } = useTranslation()
+  return (
+    <Box className={css.txInfo}>
+      {t('transactions.createdByAddress', { address: shortenAddress(info.creator.value) })}
+    </Box>
+  )
 }
 
 const MultiSendTx = ({ info }: { info: MultiSend }): ReactElement => {
-  return (
-    <Box className={css.txInfo}>
-      {info.actionCount} {`action${maybePlural(info.actionCount)}`}
-    </Box>
-  )
+  const { t } = useTranslation()
+  return <Box className={css.txInfo}>{t('transactions.action', { count: info.actionCount })}</Box>
 }
 
 const SettingsChangeTx = ({ info }: { info: SettingsChange }): ReactElement => {
@@ -124,7 +128,8 @@ const SettingsChangeTx = ({ info }: { info: SettingsChange }): ReactElement => {
 }
 
 const MigrationToL2Tx = (): ReactElement => {
-  return <>Migrate base contract</>
+  const { t } = useTranslation()
+  return <>{t('transactions.migrateBaseContract')}</>
 }
 
 const TxInfo = ({ info, ...rest }: { info: TransactionInfo; omitSign?: boolean; withLogo?: boolean }): ReactElement => {

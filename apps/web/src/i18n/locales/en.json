@@ -343,7 +343,12 @@
     "showAllNestedSafes": "Show all Nested Safes",
     "addNestedSafe": "Add Nested Safe",
     "removeAccountTitle": "Delete entry",
-    "removeAccountConfirm": "Are you sure you want to remove the {{safe}} account?"
+    "removeAccountConfirm": "Are you sure you want to remove the {{safe}} account?",
+    "manageAssets": "Manage assets",
+    "interactWithContracts": "Interact with contracts",
+    "sendTokens": "Send tokens",
+    "transactionBuilder": "Transaction Builder",
+    "swapTokens": "Swap tokens"
   },
   "qrModal": {
     "receiveAssets": "Receive assets",
@@ -604,7 +609,15 @@
     "failedToLoadTransaction": "Failed to load transaction",
     "hideSuspicious": "Hide suspicious",
     "confirmationsOutOf": "{{submitted}} out of {{required}}",
-    "confirmationsOfTotal": "({{count}} of {{required}})"
+    "confirmationsOfTotal": "({{count}} of {{required}})",
+    "transactionHistory": "Transaction history",
+    "transactionQueue": "Transaction queue",
+    "transactionDetails": "Transaction details",
+    "messages": "Messages",
+    "messageDetails": "Message details",
+    "filter": "Filter",
+    "executed": "Executed",
+    "conflictingTxTooltip": "Why are transactions with the same nonce conflicting with each other?"
   },
   "addressBook": {
     "title": "Address book",
@@ -645,7 +658,25 @@
     "tokensSelected_one": "{{count}} token selected",
     "tokensSelected_other": "{{count}} tokens selected",
     "deselectAll": "Deselect all",
-    "totalAssetValue": "Total asset value"
+    "totalAssetValue": "Total asset value",
+    "errorLoadingAssets": "There was an error loading your assets",
+    "nftSafeApps": "NFT Safe Apps",
+    "assetColumn": "Asset",
+    "priceColumn": "Price",
+    "balanceColumn": "Balance",
+    "valueColumn": "Value",
+    "weightColumn": "Weight",
+    "weightTooltip": "Based on total portfolio value",
+    "fiatConversionTooltip": "Provided values are indicative and we are unable to accommodate pricing requests for individual assets",
+    "changeTooltip": "24h change",
+    "hideAsset": "Hide asset",
+    "currency": "Currency",
+    "defaultTokens": "Default tokens",
+    "allTokens": "All tokens",
+    "tokenList": "Token list",
+    "spamFilterOn": "Spam filter on!",
+    "spamFilterTooltip": "Switch to \"All tokens\" to see all of your tokens.",
+    "learnMoreAbout": "Learn more about"
   },
   "batch": {
     "title": "Batch",
@@ -1201,7 +1232,22 @@
     "dataWidgetTooltip": "Download or upload your local data with your added Safe Accounts, address book and settings.",
     "export": "Export",
     "import": "Import",
-    "spaces": "Spaces"
+    "spaces": "Spaces",
+    "activatingAccount": "Activating account",
+    "notActivated": "Not activated",
+    "readOnly": "Read-only",
+    "add": "Add",
+    "addAnotherNetwork": "Add another network",
+    "currentSafeAccount": "Current Safe Account",
+    "pending": "{{count}} pending",
+    "toConfirm": "{{count}} to confirm",
+    "foundResults_one": "Found {{count}} result",
+    "foundResults_other": "Found {{count}} results",
+    "pinned": "Pinned",
+    "pinnedSafesHintStart": "Personalize your account list by clicking the",
+    "pinnedSafesHintEnd": "icon on the accounts most important to you.",
+    "pinnedSafe": "Pinned Safe",
+    "unpinnedSafe": "Unpinned Safe"
   },
   "positions": {
     "topPositions": "Top positions",

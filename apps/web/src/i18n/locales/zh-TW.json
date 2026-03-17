@@ -343,7 +343,12 @@
     "showAllNestedSafes": "顯示所有巢狀 Safe",
     "addNestedSafe": "新增巢狀 Safe",
     "removeAccountTitle": "刪除項目",
-    "removeAccountConfirm": "您確定要移除 {{safe}} 帳戶嗎？"
+    "removeAccountConfirm": "您確定要移除 {{safe}} 帳戶嗎？",
+    "manageAssets": "管理資產",
+    "interactWithContracts": "與合約互動",
+    "sendTokens": "發送代幣",
+    "transactionBuilder": "交易建構器",
+    "swapTokens": "代幣兌換"
   },
   "qrModal": {
     "receiveAssets": "接收資產",
@@ -604,7 +609,15 @@
     "failedToLoadTransaction": "載入交易失敗",
     "hideSuspicious": "隱藏可疑",
     "confirmationsOutOf": "{{submitted}} / {{required}}",
-    "confirmationsOfTotal": "（{{count}} / {{required}}）"
+    "confirmationsOfTotal": "（{{count}} / {{required}}）",
+    "transactionHistory": "交易歷史",
+    "transactionQueue": "交易佇列",
+    "transactionDetails": "交易詳情",
+    "messages": "訊息",
+    "messageDetails": "訊息詳情",
+    "filter": "篩選",
+    "executed": "已執行",
+    "conflictingTxTooltip": "為什麼具有相同 nonce 的交易會互相衝突？"
   },
   "addressBook": {
     "title": "通訊錄",
@@ -645,7 +658,25 @@
     "tokensSelected_one": "已選擇 {{count}} 個代幣",
     "tokensSelected_other": "已選擇 {{count}} 個代幣",
     "deselectAll": "取消全選",
-    "totalAssetValue": "總資產價值"
+    "totalAssetValue": "總資產價值",
+    "errorLoadingAssets": "載入您的資產時發生錯誤",
+    "nftSafeApps": "NFT Safe Apps",
+    "assetColumn": "資產",
+    "priceColumn": "價格",
+    "balanceColumn": "餘額",
+    "valueColumn": "價值",
+    "weightColumn": "權重",
+    "weightTooltip": "基於總投資組合價值",
+    "fiatConversionTooltip": "提供的數值僅供參考，我們無法為個別資產提供定價請求",
+    "changeTooltip": "24 小時變化",
+    "hideAsset": "隱藏資產",
+    "currency": "貨幣",
+    "defaultTokens": "預設代幣",
+    "allTokens": "所有代幣",
+    "tokenList": "代幣列表",
+    "spamFilterOn": "垃圾篩選已開啟！",
+    "spamFilterTooltip": "切換到「所有代幣」以查看您的所有代幣。",
+    "learnMoreAbout": "進一步了解"
   },
   "batch": {
     "title": "批次",
@@ -1201,7 +1232,22 @@
     "dataWidgetTooltip": "下載或上傳您的本機資料，包含已新增的 Safe 帳戶、地址簿和設定。",
     "export": "匯出",
     "import": "匯入",
-    "spaces": "空間"
+    "spaces": "空間",
+    "activatingAccount": "帳戶啟動中",
+    "notActivated": "未啟動",
+    "readOnly": "唯讀",
+    "add": "新增",
+    "addAnotherNetwork": "新增其他網路",
+    "currentSafeAccount": "目前 Safe 帳戶",
+    "pending": "{{count}} 筆待處理",
+    "toConfirm": "{{count}} 筆待確認",
+    "foundResults_one": "找到 {{count}} 筆結果",
+    "foundResults_other": "找到 {{count}} 筆結果",
+    "pinned": "已釘選",
+    "pinnedSafesHintStart": "點擊最重要帳戶上的",
+    "pinnedSafesHintEnd": "圖示，以個人化您的帳戶列表。",
+    "pinnedSafe": "已釘選 Safe",
+    "unpinnedSafe": "已取消釘選 Safe"
   },
   "positions": {
     "topPositions": "主要部位",

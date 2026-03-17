@@ -12,8 +12,10 @@ import { FEATURES } from '@safe-global/utils/utils/chains'
 import { Box, Button, Link, SvgIcon, Typography } from '@mui/material'
 import classNames from 'classnames'
 import { useRouter } from 'next/router'
+import { useTranslation } from 'react-i18next'
 
 const AddSafeButton = ({ trackingLabel, onLinkClick }: { trackingLabel: string; onLinkClick?: () => void }) => {
+  const { t } = useTranslation()
   return (
     <Track {...OVERVIEW_EVENTS.ADD_TO_WATCHLIST} label={trackingLabel}>
       <Link href={AppRoutes.newSafe.load}>
@@ -26,7 +28,7 @@ const AddSafeButton = ({ trackingLabel, onLinkClick }: { trackingLabel: string; 
           startIcon={<SvgIcon component={AddIcon} inheritViewBox fontSize="small" />}
           sx={{ height: '36px', width: '100%', px: 2 }}
         >
-          <Box mt="1px">Add</Box>
+          <Box mt="1px">{t('myAccounts.add')}</Box>
         </Button>
       </Link>
     </Track>
@@ -34,6 +36,7 @@ const AddSafeButton = ({ trackingLabel, onLinkClick }: { trackingLabel: string; 
 }
 
 const AccountsHeader = ({ isSidebar, onLinkClick }: { isSidebar: boolean; onLinkClick?: () => void }) => {
+  const { t } = useTranslation()
   const wallet = useWallet()
   const router = useRouter()
   const isSpacesFeatureEnabled = useHasFeature(FEATURES.SPACES)
@@ -44,7 +47,7 @@ const AccountsHeader = ({ isSidebar, onLinkClick }: { isSidebar: boolean; onLink
     <Box className={classNames(css.header, { [css.sidebarHeader]: isSidebar })}>
       {isSidebar || !isSpacesFeatureEnabled ? (
         <Typography variant="h1" fontWeight={700} className={css.title}>
-          Accounts
+          {t('myAccounts.accounts')}
         </Typography>
       ) : (
         <AccountsNavigation />

@@ -3,8 +3,10 @@ import { type Balance } from '@safe-global/store/gateway/AUTO_GENERATED/balances
 import { formatPercentage } from '@safe-global/utils/utils/formatters'
 import ArrowDown from '@/public/images/balances/change-down.svg'
 import ArrowUp from '@/public/images/balances/change-up.svg'
+import { useTranslation } from 'react-i18next'
 
 export const FiatChange = ({ balanceItem, inline = false }: { balanceItem: Balance; inline?: boolean }) => {
+  const { t } = useTranslation()
   if (!balanceItem.fiatBalance24hChange) {
     return (
       <Typography variant="caption" color="text.secondary" paddingLeft={3} display="block">
@@ -22,7 +24,7 @@ export const FiatChange = ({ balanceItem, inline = false }: { balanceItem: Balan
   const color = direction === 'down' ? 'error.main' : direction === 'up' ? 'success.main' : 'default'
 
   return (
-    <Tooltip title="24h change">
+    <Tooltip title={t('balances.changeTooltip')}>
       <Chip
         size="small"
         sx={{

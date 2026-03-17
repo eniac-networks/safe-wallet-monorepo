@@ -9,8 +9,10 @@ import type { UrlObject } from 'url'
 import Link from 'next/link'
 import Track from '@/components/common/Track'
 import { OVERVIEW_EVENTS } from '@/services/analytics'
+import { useTranslation } from 'react-i18next'
 
 const AccountStatusChip = ({ isActivating }: { isActivating: boolean }) => {
+  const { t } = useTranslation()
   return (
     <Chip
       className={css.chip}
@@ -18,7 +20,7 @@ const AccountStatusChip = ({ isActivating }: { isActivating: boolean }) => {
         backgroundColor: isActivating ? 'var(--color-info-light)' : 'var(--color-warning-background)',
       }}
       size="small"
-      label={isActivating ? 'Activating account' : 'Not activated'}
+      label={isActivating ? t('myAccounts.activatingAccount') : t('myAccounts.notActivated')}
       icon={
         isActivating ? (
           <LoopIcon fontSize="small" className={css.pendingLoopIcon} sx={{ mr: '-4px', ml: '4px' }} />
@@ -31,6 +33,7 @@ const AccountStatusChip = ({ isActivating }: { isActivating: boolean }) => {
 }
 
 const ReadOnlyChip = () => {
+  const { t } = useTranslation()
   return (
     <Chip
       data-testid="read-only-chip"
@@ -41,7 +44,7 @@ const ReadOnlyChip = () => {
       icon={<VisibilityIcon className={css.visibilityIcon} />}
       label={
         <Typography variant="caption" display="flex" alignItems="center" gap={0.5}>
-          Read-only
+          {t('myAccounts.readOnly')}
         </Typography>
       }
     />

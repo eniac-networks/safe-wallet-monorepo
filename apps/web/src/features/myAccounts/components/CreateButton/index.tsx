@@ -1,10 +1,12 @@
 import { Button } from '@mui/material'
 import Link from 'next/link'
 import { AppRoutes } from '@/config/routes'
+import { useTranslation } from 'react-i18next'
 
 const buttonSx = { width: ['100%', 'auto'], height: '36px', px: 2 }
 
 const CreateButton = ({ isPrimary }: { isPrimary: boolean }) => {
+  const { t } = useTranslation()
   return (
     <Link href={AppRoutes.newSafe.create} passHref legacyBehavior>
       <Button
@@ -15,7 +17,7 @@ const CreateButton = ({ isPrimary }: { isPrimary: boolean }) => {
         sx={buttonSx}
         component="a"
       >
-        Create account
+        {t('newSafe.createAccount')}
       </Button>
     </Link>
   )

@@ -1,5 +1,6 @@
 import useIsExpiredSwap from '@/features/swap/hooks/useIsExpiredSwap'
 import React, { type ReactElement, useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import type { TransactionDetails, TransactionSummary } from '@safe-global/safe-gateway-typescript-sdk'
 import { Box, CircularProgress, Typography } from '@mui/material'
 
@@ -51,6 +52,7 @@ type TxDetailsProps = {
 }
 
 const TxDetailsBlock = ({ txSummary, txDetails }: TxDetailsProps): ReactElement => {
+  const { t } = useTranslation()
   const isPending = useIsPending(txSummary.id)
   const hasDefaultTokenlist = useHasFeature(FEATURES.DEFAULT_TOKENLIST)
   const isQueue = isTxQueued(txSummary.txStatus)
@@ -105,7 +107,7 @@ const TxDetailsBlock = ({ txSummary, txDetails }: TxDetailsProps): ReactElement 
           )}
 
           <div className={css.txData}>
-            <ErrorBoundary fallback={<div>Error parsing data</div>}>
+            <ErrorBoundary fallback={<div>{t('transactions.errorParsingData')}</div>}>
               <TxData
                 txData={txDetails.txData}
                 txInfo={txDetails.txInfo}
@@ -127,7 +129,7 @@ const TxDetailsBlock = ({ txSummary, txDetails }: TxDetailsProps): ReactElement 
         {/* Module information*/}
         {moduleAddress && (
           <div className={css.txModule}>
-            <InfoDetails title="Executed via module:">
+            <InfoDetails title={t('transactions.executedViaModule')}>
               <NamedAddressInfo
                 address={moduleAddress.value}
                 name={moduleAddressInfo?.name || moduleAddress.name}
@@ -158,7 +160,7 @@ const TxDetailsBlock = ({ txSummary, txDetails }: TxDetailsProps): ReactElement 
           isBridgeOrderTxInfo(txDetails.txInfo) ||
           isLifiSwapTxInfo(txDetails.txInfo)) && (
           <div className={css.multiSend}>
-            <ErrorBoundary fallback={<div>Error parsing data</div>}>
+            <ErrorBoundary fallback={<div>{t('transactions.errorParsingData')}</div>}>
               <Multisend txData={txDetails.txData} isExecuted={!!txDetails.executedAt} />
             </ErrorBoundary>
           </div>
@@ -185,7 +187,7 @@ const TxDetailsBlock = ({ txSummary, txDetails }: TxDetailsProps): ReactElement 
 
           {isQueue && expiredSwap && (
             <Typography color="text.secondary" mt={2}>
-              This order has expired. Reject this transaction and try again.
+              {t('transactions.orderExpired')}
             </Typography>
           )}
         </div>
@@ -201,6 +203,7 @@ const TxDetails = ({
   txSummary: TransactionSummary
   txDetails?: TransactionDetails // optional
 }): ReactElement => {
+  const { t } = useTranslation()
   const chainId = useChainId()
   const { safe } = useSafeInfo()
 
@@ -233,7 +236,7 @@ const TxDetails = ({
       ) : (
         error && (
           <div className={css.error}>
-            <ErrorMessage error={asError(error)}>Couldn&apos;t load the transaction details</ErrorMessage>
+            <ErrorMessage error={asError(error)}>{t('transactions.couldntLoadDetails')}</ErrorMessage>
           </div>
         )
       )}

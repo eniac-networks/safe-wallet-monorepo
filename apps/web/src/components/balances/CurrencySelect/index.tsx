@@ -5,8 +5,10 @@ import { useAppDispatch, useAppSelector } from '@/store'
 import { selectCurrency, setCurrency } from '@/store/settingsSlice'
 import useCurrencies from './useCurrencies'
 import { trackEvent, ASSETS_EVENTS } from '@/services/analytics'
+import { useTranslation } from 'react-i18next'
 
 const CurrencySelect = (): ReactElement => {
+  const { t } = useTranslation()
   const currency = useAppSelector(selectCurrency)
   const dispatch = useAppDispatch()
   const fiatCurrencies = useCurrencies() || [currency.toUpperCase()]
@@ -31,14 +33,14 @@ const CurrencySelect = (): ReactElement => {
 
   return (
     <FormControl size="small">
-      <InputLabel id="currency-label">Currency</InputLabel>
+      <InputLabel id="currency-label">{t('balances.currency')}</InputLabel>
 
       <Select
         data-testid="currency-selector"
         labelId="currency-label"
         id="currency"
         value={currency.toUpperCase()}
-        label="Currency"
+        label={t('balances.currency')}
         onChange={handleChange}
         onOpen={() => handleTrack('Open')}
         onClose={() => handleTrack('Close')}

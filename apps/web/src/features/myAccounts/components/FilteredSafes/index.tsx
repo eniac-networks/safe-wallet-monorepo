@@ -1,11 +1,11 @@
 import SafesList from '@/features/myAccounts/components/SafesList'
 import type { AllSafeItems } from '@/features/myAccounts/hooks/useAllSafesGrouped'
 import { useSafesSearch } from '@/features/myAccounts/hooks/useSafesSearch'
-import { maybePlural } from '@safe-global/utils/utils/formatters'
 import { OVERVIEW_EVENTS } from '@/services/analytics'
 import { trackEvent } from '@/services/analytics'
 import { Box, Typography } from '@mui/material'
 import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const FilteredSafes = ({
   searchQuery,
@@ -16,6 +16,7 @@ const FilteredSafes = ({
   allSafes: AllSafeItems
   onLinkClick?: () => void
 }) => {
+  const { t } = useTranslation()
   const filteredSafes = useSafesSearch(allSafes ?? [], searchQuery)
 
   useEffect(() => {
@@ -27,7 +28,7 @@ const FilteredSafes = ({
   return (
     <>
       <Typography variant="h5" fontWeight="normal" mb={2} color="primary.light">
-        Found {filteredSafes.length} result{maybePlural(filteredSafes)}
+        {t('myAccounts.foundResults', { count: filteredSafes.length })}
       </Typography>
       <Box mt={1}>
         <SafesList safes={filteredSafes} onLinkClick={onLinkClick} />

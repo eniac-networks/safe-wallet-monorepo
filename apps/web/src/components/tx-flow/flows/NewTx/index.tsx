@@ -1,4 +1,5 @@
 import { useCallback, useContext } from 'react'
+import { useTranslation } from 'react-i18next'
 import { MakeASwapButton, SendTokensButton, TxBuilderButton } from '@/components/tx-flow/common/TxButton'
 import { Container, Grid, Paper, Typography } from '@mui/material'
 import { TxModalContext } from '../../'
@@ -11,6 +12,7 @@ import NewTxIcon from '@/public/images/transactions/new-tx.svg'
 import css from './styles.module.css'
 
 const NewTxFlow = () => {
+  const { t } = useTranslation()
   const txBuilder = useTxBuilderApp()
   const { setTxFlow } = useContext(TxModalContext)
 
@@ -58,7 +60,7 @@ const NewTxFlow = () => {
               </div>
 
               <Typography variant="h1" className={css.title}>
-                New transaction
+                {t('sidebar.newTransaction')}
               </Typography>
             </Grid>
 
@@ -72,7 +74,7 @@ const NewTxFlow = () => {
               }}
             >
               <Typography variant="h4" className={css.type}>
-                Manage assets
+                {t('sidebar.manageAssets')}
               </Typography>
 
               <SendTokensButton onClick={onTokensClick} />
@@ -87,7 +89,7 @@ const NewTxFlow = () => {
                       mt: 3,
                     }}
                   >
-                    Interact with contracts
+                    {t('sidebar.interactWithContracts')}
                   </Typography>
 
                   <TxBuilderButton />

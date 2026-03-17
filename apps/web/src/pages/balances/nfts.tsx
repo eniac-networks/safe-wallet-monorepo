@@ -7,9 +7,11 @@ import NftCollections from '@/components/nfts/NftCollections'
 import SafeAppCard from '@/components/safe-apps/SafeAppCard'
 import { BRAND_NAME, SafeAppsTag } from '@/config/constants'
 import { useRemoteSafeApps } from '@/hooks/safe-apps/useRemoteSafeApps'
+import { useTranslation } from 'react-i18next'
 
 // `React.memo` requires a `displayName`
 const NftApps = memo(function NftApps(): ReactElement | null {
+  const { t } = useTranslation()
   const [nftApps] = useRemoteSafeApps({ tag: SafeAppsTag.NFT })
 
   if (nftApps?.length === 0) {
@@ -34,7 +36,7 @@ const NftApps = memo(function NftApps(): ReactElement | null {
           mt: 0.75,
         }}
       >
-        NFT Safe Apps
+        {t('balances.nftSafeApps')}
       </Typography>
       <Grid container spacing={3}>
         {nftApps ? (
@@ -54,10 +56,11 @@ const NftApps = memo(function NftApps(): ReactElement | null {
 })
 
 const NFTs: NextPage = () => {
+  const { t } = useTranslation()
   return (
     <>
       <Head>
-        <title>{`${BRAND_NAME} – NFTs`}</title>
+        <title>{`${BRAND_NAME} – ${t('nav.nfts')}`}</title>
       </Head>
 
       <AssetsHeader />

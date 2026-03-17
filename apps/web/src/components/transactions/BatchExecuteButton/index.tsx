@@ -1,4 +1,5 @@
 import { useCallback, useContext } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Button, Tooltip } from '@mui/material'
 import { BatchExecuteHoverContext } from '@/components/transactions/BatchExecuteButton/BatchExecuteHoverProvider'
 import { useAppSelector } from '@/store'
@@ -12,6 +13,7 @@ import useTxQueue from '@/hooks/useTxQueue'
 import { TxModalContext } from '@/components/tx-flow'
 
 const BatchExecuteButton = () => {
+  const { t } = useTranslation()
   const { setTxFlow } = useContext(TxModalContext)
   const pendingTxs = useAppSelector(selectPendingTxs)
   const hoverContext = useContext(BatchExecuteHoverContext)
@@ -46,9 +48,7 @@ const BatchExecuteButton = () => {
         placement="top-start"
         arrow
         title={
-          isDisabled
-            ? 'Batch execution is only available for transactions that have been fully signed and are strictly sequential in Safe Account nonce.'
-            : 'All highlighted transactions will be included in the batch execution.'
+          isDisabled ? t('transactions.batchExecuteDisabledTooltip') : t('transactions.batchExecuteEnabledTooltip')
         }
       >
         <span>
@@ -60,7 +60,9 @@ const BatchExecuteButton = () => {
             disabled={isDisabled}
             onClick={handleOpenModal}
           >
-            Bulk execute{isBatchable && ` ${batchableTransactions.length} transactions`}
+            {isBatchable
+              ? t('transactions.bulkExecuteCount', { count: batchableTransactions.length })
+              : t('transactions.bulkExecute')}
           </Button>
         </span>
       </Tooltip>

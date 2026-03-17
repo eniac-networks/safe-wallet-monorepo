@@ -1,5 +1,6 @@
 import { selectUndeployedSafe } from '@/features/counterfactual/store/undeployedSafesSlice'
 import type { SafeListProps } from '@/features/myAccounts/components/SafesList'
+import { useTranslation } from 'react-i18next'
 import SpaceSafeContextMenu from '@/features/spaces/components/SafeAccounts/SpaceSafeContextMenu'
 import { type SafeOverview } from '@safe-global/safe-gateway-typescript-sdk'
 import { useMemo, useRef } from 'react'
@@ -66,6 +67,7 @@ const SingleAccountItem = ({
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
   const trackingLabel = isWelcomePage
@@ -121,7 +123,7 @@ const SingleAccountItem = ({
 
     dispatch(
       showNotification({
-        title: 'Pinned Safe',
+        title: t('myAccounts.pinnedSafe'),
         message: name ?? shortenAddress(address),
         groupKey: `pin-safe-success-${address}`,
         variant: 'success',
@@ -136,7 +138,7 @@ const SingleAccountItem = ({
 
     dispatch(
       showNotification({
-        title: 'Unpinned Safe',
+        title: t('myAccounts.unpinnedSafe'),
         message: name ?? shortenAddress(address),
         groupKey: `unpin-safe-success-${address}`,
         variant: 'success',

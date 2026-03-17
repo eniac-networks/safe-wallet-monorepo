@@ -1,6 +1,7 @@
 import { useContext } from 'react'
 import type { TokenInfo } from '@safe-global/safe-gateway-typescript-sdk'
 import { Button } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 import ArrowIconNW from '@/public/images/common/arrow-top-right.svg'
 import CheckWallet from '@/components/common/CheckWallet'
 import useSpendingLimit from '@/hooks/useSpendingLimit'
@@ -10,6 +11,7 @@ import { TokenTransferFlow } from '@/components/tx-flow/flows'
 import { TxModalContext } from '@/components/tx-flow'
 
 const SendButton = ({ tokenInfo, light }: { tokenInfo: TokenInfo; light?: boolean }) => {
+  const { t } = useTranslation()
   const spendingLimit = useSpendingLimit(tokenInfo)
   const { setTxFlow } = useContext(TxModalContext)
 
@@ -31,7 +33,7 @@ const SendButton = ({ tokenInfo, light }: { tokenInfo: TokenInfo; light?: boolea
             disabled={!isOk}
             sx={{ height: 32, px: 2 }}
           >
-            Send
+            {t('transactions.send')}
           </Button>
         </Track>
       )}

@@ -1,5 +1,7 @@
 import type { ReactElement } from 'react'
+import { useMemo } from 'react'
 import { Box, Paper, SvgIcon, Typography } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 import type { Order, Transaction } from '@safe-global/safe-gateway-typescript-sdk'
 import { isMultisigExecutionInfo, isSwapTransferOrderTxInfo } from '@/utils/transaction-guards'
 import ExpandableTransactionItem from '@/components/transactions/TxListItem/ExpandableTransactionItem'
@@ -10,18 +12,6 @@ import { getBlockExplorerLink } from '@safe-global/utils/utils/chains'
 import { useCurrentChain } from '@/hooks/useChains'
 import { getOrderClass } from '@/features/swap/helpers/utils'
 
-const orderClassTitles: Record<string, string> = {
-  limit: 'Limit order settlement',
-  twap: 'TWAP order settlement',
-  liquidity: 'Liquidity order settlement',
-  market: 'Swap order settlement',
-}
-
-const getSettlementOrderTitle = (order: Order): string => {
-  const orderClass = getOrderClass(order)
-  return orderClassTitles[orderClass] || orderClassTitles['market']
-}
-
 const GroupedTxListItems = ({
   groupedListItems,
   transactionHash,
@@ -29,14 +19,26 @@ const GroupedTxListItems = ({
   groupedListItems: Transaction[]
   transactionHash: string
 }): ReactElement | null => {
+  const { t } = useTranslation()
   const chain = useCurrentChain()
   const explorerLink = chain && getBlockExplorerLink(chain, transactionHash)?.href
+
+  const orderClassTitles = useMemo<Record<string, string>>(
+    () => ({
+      limit: t('transactions.limitOrderSettlement'),
+      twap: t('transactions.twapOrderSettlement'),
+      liquidity: t('transactions.liquidityOrderSettlement'),
+      market: t('transactions.swapOrderSettlement'),
+    }),
+    [t],
+  )
+
   if (groupedListItems.length === 0) return null
-  let title = 'Bulk transactions'
   const isSwapTransfer = isSwapTransferOrderTxInfo(groupedListItems[0].transaction.txInfo)
-  if (isSwapTransfer) {
-    title = getSettlementOrderTitle(groupedListItems[0].transaction.txInfo as Order)
-  }
+  const title = isSwapTransfer
+    ? orderClassTitles[getOrderClass(groupedListItems[0].transaction.txInfo as Order)] || orderClassTitles['market']
+    : t('transactions.bulkTransactions')
+
   return (
     <Paper data-testid="grouped-items" className={css.container}>
       <Box gridArea="icon">
@@ -45,7 +47,7 @@ const GroupedTxListItems = ({
       <Box gridArea="info">
         <Typography noWrap>{title}</Typography>
       </Box>
-      <Box className={css.action}>{groupedListItems.length} transactions</Box>
+      <Box className={css.action}>{t('transactions.transactionsCount', { count: groupedListItems.length })}</Box>
       <Box className={css.hash}>
         <ExplorerButton href={explorerLink} isCompact={false} />
       </Box>

@@ -1,5 +1,6 @@
 import { useMemo, type ReactElement } from 'react'
 import { useForm, Controller, FormProvider } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import {
   DialogContent,
   DialogActions,
@@ -95,18 +96,30 @@ type CsvTxExportModalProps = {
 }
 
 const CsvTxExportModal = ({ onClose, onExport, hasActiveFilter }: CsvTxExportModalProps): ReactElement => {
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const safeAddress = useSafeAddress()
   const chainId = useChainId()
   const [launchExport] = useCsvExportLaunchExportV1Mutation()
+
+  const dateRangeLabels = useMemo<Record<DateRangeOption, string>>(
+    () => ({
+      [DateRangeOption.LAST_30_DAYS]: t('transactions.last30Days'),
+      [DateRangeOption.LAST_6_MONTHS]: t('transactions.last6Months'),
+      [DateRangeOption.LAST_12_MONTHS]: t('transactions.last12Months'),
+      [DateRangeOption.YTD]: t('transactions.yearToDate'),
+      [DateRangeOption.CUSTOM]: t('transactions.custom'),
+    }),
+    [t],
+  )
 
   const infoNotification = () => {
     dispatch(
       showNotification({
         variant: 'info',
         groupKey: 'export-csv-started',
-        title: 'Generating CSV export',
-        message: 'This might take a few minutes.',
+        title: t('transactions.generatingCsvExport'),
+        message: t('transactions.mightTakeFewMinutes'),
         icon: <SvgIcon component={UpdateIcon} inheritViewBox fontSize="inherit" />,
       }),
     )
@@ -117,8 +130,8 @@ const CsvTxExportModal = ({ onClose, onExport, hasActiveFilter }: CsvTxExportMod
       showNotification({
         variant: 'error',
         groupKey: 'export-csv-error',
-        title: 'Something went wrong',
-        message: 'Please try exporting the CSV again.',
+        title: t('transactions.somethingWentWrong'),
+        message: t('transactions.tryExportingAgain'),
       }),
     )
   }
@@ -184,7 +197,7 @@ const CsvTxExportModal = ({ onClose, onExport, hasActiveFilter }: CsvTxExportMod
       dialogTitle={
         <>
           <SvgIcon component={ExportIcon} inheritViewBox sx={{ mr: 1 }} />
-          Export CSV
+          {t('transactions.exportCsv')}
         </>
       }
       hideChainIndicator
@@ -193,13 +206,11 @@ const CsvTxExportModal = ({ onClose, onExport, hasActiveFilter }: CsvTxExportMod
       <FormProvider {...methods}>
         <form onSubmit={onSubmit}>
           <DialogContent sx={{ p: '24px !important' }}>
-            <Typography mb={3}>
-              The CSV includes transactions from the selected period, suitable for reporting.
-            </Typography>
+            <Typography mb={3}>{t('transactions.csvIncludesTransactions')}</Typography>
 
             {hasActiveFilter && (
               <Alert severity="info" color="background" sx={{ mb: 3 }}>
-                Transaction history filters won&apos;t apply here.
+                {t('transactions.filtersWontApply')}
               </Alert>
             )}
 
@@ -208,10 +219,10 @@ const CsvTxExportModal = ({ onClose, onExport, hasActiveFilter }: CsvTxExportMod
                 name={CsvTxExportField.RANGE}
                 control={control}
                 render={({ field }) => (
-                  <TextField select focused={false} label="Date range" fullWidth {...field}>
+                  <TextField select focused={false} label={t('transactions.dateRange')} fullWidth {...field}>
                     {Object.values(DateRangeOption).map((option) => (
                       <MenuItem key={option} value={option}>
-                        {DATE_RANGE_LABELS[option]}
+                        {dateRangeLabels[option]}
                       </MenuItem>
                     ))}
                   </TextField>
@@ -225,12 +236,12 @@ const CsvTxExportModal = ({ onClose, onExport, hasActiveFilter }: CsvTxExportMod
                   <Grid item xs={12} md={6}>
                     <DatePickerInput
                       name={CsvTxExportField.FROM}
-                      label="From"
+                      label={t('transactions.from')}
                       deps={[CsvTxExportField.TO]}
                       validate={(val) => {
                         const toDate = getValues(CsvTxExportField.TO)
                         if (val && toDate && isBefore(startOfDay(toDate), startOfDay(val))) {
-                          return 'Must be before "To" date'
+                          return t('transactions.mustBeBeforeTo')
                         }
                       }}
                     />
@@ -238,12 +249,12 @@ const CsvTxExportModal = ({ onClose, onExport, hasActiveFilter }: CsvTxExportMod
                   <Grid item xs={12} md={6}>
                     <DatePickerInput
                       name={CsvTxExportField.TO}
-                      label="To"
+                      label={t('transactions.to')}
                       deps={[CsvTxExportField.FROM]}
                       validate={(val) => {
                         const fromDate = getValues(CsvTxExportField.FROM)
                         if (val && fromDate && isAfter(startOfDay(fromDate), startOfDay(val))) {
-                          return 'Must be after "From" date'
+                          return t('transactions.mustBeAfterFrom')
                         }
                       }}
                     />
@@ -264,7 +275,7 @@ const CsvTxExportModal = ({ onClose, onExport, hasActiveFilter }: CsvTxExportMod
               disableElevation
               startIcon={<SvgIcon component={ExportIcon} inheritViewBox fontSize="small" />}
             >
-              Export
+              {t('transactions.export')}
             </Button>
           </DialogActions>
         </form>
@@ -274,14 +285,15 @@ const CsvTxExportModal = ({ onClose, onExport, hasActiveFilter }: CsvTxExportMod
 }
 
 const YearRangeAlert = ({ isOverYear }: { isOverYear: boolean }): ReactElement => {
+  const { t } = useTranslation()
   const { severity, message } = isOverYear
     ? {
         severity: 'warning' as const,
-        message: 'Date range cannot exceed 12 months.',
+        message: t('transactions.dateRangeExceeds'),
       }
     : {
         severity: 'info' as const,
-        message: 'You can select up to 12 months.',
+        message: t('transactions.selectUpTo12Months'),
       }
 
   return <Alert severity={severity}>{message}</Alert>

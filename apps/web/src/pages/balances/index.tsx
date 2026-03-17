@@ -16,8 +16,10 @@ import useIsStakingBannerEnabled from '@/features/stake/hooks/useIsStakingBanner
 import { Box } from '@mui/material'
 import { BRAND_NAME } from '@/config/constants'
 import TotalAssetValue from '@/components/balances/TotalAssetValue'
+import { useTranslation } from 'react-i18next'
 
 const Balances: NextPage = () => {
+  const { t } = useTranslation()
   const { balances, error } = useVisibleBalances()
   const [showHiddenAssets, setShowHiddenAssets] = useState(false)
   const toggleShowHiddenAssets = () => setShowHiddenAssets((prev) => !prev)
@@ -28,7 +30,7 @@ const Balances: NextPage = () => {
   return (
     <>
       <Head>
-        <title>{`${BRAND_NAME} – Assets`}</title>
+        <title>{`${BRAND_NAME} – ${t('nav.assets')}`}</title>
       </Head>
 
       <AssetsHeader>
@@ -45,7 +47,7 @@ const Balances: NextPage = () => {
         )}
 
         {error ? (
-          <PagePlaceholder img={<NoAssetsIcon />} text="There was an error loading your assets" />
+          <PagePlaceholder img={<NoAssetsIcon />} text={t('balances.errorLoadingAssets')} />
         ) : (
           <>
             <Box mb={2}>
