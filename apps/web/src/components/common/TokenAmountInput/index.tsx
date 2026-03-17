@@ -7,6 +7,7 @@ import { type SafeBalanceResponse } from '@safe-global/safe-gateway-typescript-s
 import classNames from 'classnames'
 import { useCallback } from 'react'
 import { get, useFormContext } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import type { FieldArrayPath, FieldValues } from 'react-hook-form'
 import css from './styles.module.css'
 import { MultiTokenTransferFields, type MultiTokenTransferParams } from '@/components/tx-flow/flows/TokenTransfer'
@@ -39,6 +40,7 @@ const TokenAmountInput = ({
   fieldArray,
   deps,
 }: TokenAmountInputProps) => {
+  const { t } = useTranslation()
   const {
     formState: { errors, defaultValues },
     register,
@@ -111,7 +113,7 @@ const TokenAmountInput = ({
       <InputLabel shrink required className={css.label}>
         {get(errors, tokenAddressField)?.message?.toString() ||
           get(errors, amountField)?.message?.toString() ||
-          'Amount'}
+          t('tokenTransfer.amountLabel')}
       </InputLabel>
       <div className={css.inputs}>
         <NumberField

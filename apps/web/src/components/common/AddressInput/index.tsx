@@ -3,6 +3,7 @@ import useAddressBook from '@/hooks/useAddressBook'
 import type { ChainInfo } from '@safe-global/safe-gateway-typescript-sdk'
 import type { ReactElement } from 'react'
 import { useEffect, useCallback, useRef, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   InputAdornment,
   TextField,
@@ -53,6 +54,7 @@ const AddressInput = ({
   onReset,
   ...props
 }: AddressInputProps): ReactElement => {
+  const { t } = useTranslation()
   const {
     register,
     setValue,
@@ -163,7 +165,13 @@ const AddressInput = ({
         className={inputCss.input}
         autoComplete="off"
         autoFocus={props.focused}
-        label={<>{error?.message || props.label || `Recipient address${isDomainLookupEnabled ? ' or ENS' : ''}`}</>}
+        label={
+          <>
+            {error?.message ||
+              props.label ||
+              t(isDomainLookupEnabled ? 'tokenTransfer.recipientAddressOrEns' : 'tokenTransfer.recipientAddress')}
+          </>
+        }
         error={!!error}
         fullWidth
         onClick={resetName}

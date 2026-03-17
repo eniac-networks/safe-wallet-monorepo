@@ -1,9 +1,12 @@
 import { SafeTxContext } from '@/components/tx-flow/SafeTxProvider'
 import { useCallback, useContext } from 'react'
+import type { PropsWithChildren } from 'react'
+import { useTranslation } from 'react-i18next'
 import { TxFlowContext } from '../../TxFlowProvider'
 import SignForm from './SignForm'
 import useIsCounterfactualSafe from '@/features/counterfactual/hooks/useIsCounterfactualSafe'
-import { type SlotComponentProps, SlotName, withSlot } from '../../slots'
+import { type SlotComponentProps, SlotName } from '../../slots'
+import { useRegisterSlot } from '../../slots/hooks'
 import type { SubmitCallback } from '../../TxFlow'
 import { useAlreadySigned } from '@/components/tx/SignOrExecuteForm/hooks'
 import useSafeInfo from '@/hooks/useSafeInfo'
@@ -50,12 +53,17 @@ const useShouldRegisterSlot = () => {
   return !!safeTx && !hasSigned && !isFullySigned && !isCounterfactualSafe && !willExecuteThroughRole && !isProposing
 }
 
-const SignSlot = withSlot({
-  Component: Sign,
-  label: 'Sign',
-  slotName: SlotName.ComboSubmit,
-  id: 'sign',
-  useSlotCondition: useShouldRegisterSlot,
-})
+const SignSlot = ({ children }: PropsWithChildren) => {
+  const { t } = useTranslation()
+  const condition = useShouldRegisterSlot()
+  useRegisterSlot({
+    slotName: SlotName.ComboSubmit,
+    id: 'sign',
+    Component: Sign,
+    label: t('safeMessages.sign'),
+    condition,
+  })
+  return children
+}
 
 export default SignSlot

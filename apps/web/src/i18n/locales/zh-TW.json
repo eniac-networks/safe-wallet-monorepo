@@ -1523,6 +1523,9 @@
     "limitReached": "已達上限",
     "useCsvAirdrop": "使用 CSV 空投",
     "csvAirdropMsg": "您已達到 5 位收款人的上限。如需新增更多，請使用 CSV 空投，您可以上傳 CSV 檔案並向無限數量的收款人發送。",
-    "openCsvAirdrop": "開啟 CSV 空投"
+    "openCsvAirdrop": "開啟 CSV 空投",
+    "recipientAddressOrEns": "收款人地址或 ENS",
+    "recipientAddress": "收款人地址",
+    "amountLabel": "金額"
   }
 }

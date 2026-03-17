@@ -1,4 +1,6 @@
 import { useContext, type SyntheticEvent } from 'react'
+import type { PropsWithChildren } from 'react'
+import { useTranslation } from 'react-i18next'
 import { SafeTxContext } from '@/components/tx-flow/SafeTxProvider'
 import { useTxActions } from '@/components/tx/SignOrExecuteForm/hooks'
 import useIsSafeOwner from '@/hooks/useIsSafeOwner'
@@ -6,7 +8,8 @@ import { isDelegateCall as checkIsDelegateCall } from '@/services/tx/tx-sender/s
 import { TxModalContext } from '@/components/tx-flow'
 import { TxFlowContext } from '../../TxFlowProvider'
 import useIsCounterfactualSafe from '@/features/counterfactual/hooks/useIsCounterfactualSafe'
-import { type SlotComponentProps, SlotName, withSlot } from '../../slots'
+import { type SlotComponentProps, SlotName } from '../../slots'
+import { useRegisterSlot } from '../../slots/hooks'
 import { asError } from '@safe-global/utils/services/exceptions/utils'
 import { Errors, logError } from '@/services/exceptions'
 import SplitMenuButton from '@/components/common/SplitMenuButton'
@@ -101,12 +104,17 @@ const useShouldRegisterSlot = () => {
   )
 }
 
-const BatchingSlot = withSlot({
-  Component: Batching,
-  label: 'Add to batch',
-  slotName: SlotName.ComboSubmit,
-  id: 'batching',
-  useSlotCondition: useShouldRegisterSlot,
-})
+const BatchingSlot = ({ children }: PropsWithChildren) => {
+  const { t } = useTranslation()
+  const condition = useShouldRegisterSlot()
+  useRegisterSlot({
+    slotName: SlotName.ComboSubmit,
+    id: 'batching',
+    Component: Batching,
+    label: t('transactions.addToBatch'),
+    condition,
+  })
+  return children
+}
 
 export default BatchingSlot
