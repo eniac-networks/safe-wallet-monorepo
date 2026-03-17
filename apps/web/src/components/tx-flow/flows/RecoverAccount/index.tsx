@@ -1,4 +1,5 @@
 import type { ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import type { AddressEx } from '@safe-global/safe-gateway-typescript-sdk'
 import TxLayout from '@/components/tx-flow/common/TxLayout'
 import SaveAddressIcon from '@/public/images/common/save-address.svg'
@@ -19,6 +20,7 @@ export type RecoverAccountFlowProps = {
 }
 
 function RecoverAccountFlow(): ReactElement {
+  const { t } = useTranslation()
   const { data, step, nextStep, prevStep } = useTxStepper<RecoverAccountFlowProps>(
     {
       [RecoverAccountFlowFields.owners]: [{ value: '' }],
@@ -34,8 +36,8 @@ function RecoverAccountFlow(): ReactElement {
 
   return (
     <TxLayout
-      title={step === 0 ? 'Start Account recovery' : 'Confirm transaction'}
-      subtitle="Change Account settings"
+      title={step === 0 ? t('transactions.startAccountRecovery') : t('batch.confirmTransaction')}
+      subtitle={t('transactions.changeAccountSettings')}
       icon={SaveAddressIcon}
       step={step}
       onBack={prevStep}

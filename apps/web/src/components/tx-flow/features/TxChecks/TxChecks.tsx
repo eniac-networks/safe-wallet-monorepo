@@ -1,5 +1,6 @@
 import { useCurrentChain, useHasFeature } from '@/hooks/useChains'
 import { type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { TxSimulation, TxSimulationMessage } from '@/components/tx/security/tenderly'
 import TxCard from '@/components/tx-flow/common/TxCard'
 import { Box, Typography } from '@mui/material'
@@ -19,13 +20,14 @@ const TxChecks = ({
   disabled?: boolean
   transaction: SafeTransaction | Array<MetaTransactionData>
 }): ReactElement | null => {
+  const { t } = useTranslation()
   const chain = useCurrentChain()
   const isRiskMitigationFeatureEnabled = useHasFeature(FEATURES.RISK_MITIGATION)
   const isTxSimulationFeatureEnabled = isTxSimulationEnabled(chain)
 
   return (
     <TxCard>
-      <Typography variant="h5">Transaction checks</Typography>
+      <Typography variant="h5">{t('transactions.transactionChecks')}</Typography>
 
       {(isTxSimulationFeatureEnabled || isRiskMitigationFeatureEnabled) && (
         <>

@@ -1,4 +1,5 @@
 import { Box, Step, StepConnector, Stepper, Typography } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 import css from '@/components/new-safe/create/steps/StatusStep/styles.module.css'
 import EthHashInfo from '@/components/common/EthHashInfo'
 import StatusStep from '@/components/new-safe/create/steps/StatusStep/StatusStep'
@@ -6,6 +7,7 @@ import useSafeInfo from '@/hooks/useSafeInfo'
 import { PendingStatus } from '@/store/pendingTxsSlice'
 
 const StatusStepper = ({ status, txHash }: { status?: PendingStatus; txHash?: string }) => {
+  const { t } = useTranslation()
   const { safeAddress } = useSafeInfo()
 
   const isProcessing = status === PendingStatus.PROCESSING || status === PendingStatus.INDEXING || status === undefined
@@ -18,7 +20,7 @@ const StatusStepper = ({ status, txHash }: { status?: PendingStatus; txHash?: st
         <StatusStep isLoading={!isProcessing} safeAddress={safeAddress}>
           <Box>
             <Typography variant="body2" fontWeight="700">
-              Your transaction
+              {t('transactions.yourTransaction')}
             </Typography>
             {txHash && (
               <EthHashInfo
@@ -37,7 +39,7 @@ const StatusStepper = ({ status, txHash }: { status?: PendingStatus; txHash?: st
         <StatusStep isLoading={!isProcessed} safeAddress={safeAddress}>
           <Box>
             <Typography variant="body2" fontWeight="700">
-              {isProcessed ? 'Processed' : 'Processing'}
+              {isProcessed ? t('transactions.processed') : t('transactions.processing')}
             </Typography>
           </Box>
         </StatusStep>
@@ -45,14 +47,14 @@ const StatusStepper = ({ status, txHash }: { status?: PendingStatus; txHash?: st
       <Step>
         <StatusStep isLoading={!isSuccess} safeAddress={safeAddress}>
           <Typography variant="body2" fontWeight="700">
-            {isSuccess ? 'Indexed' : 'Indexing'}
+            {isSuccess ? t('transactions.indexed') : t('transactions.indexing')}
           </Typography>
         </StatusStep>
       </Step>
       <Step>
         <StatusStep isLoading={!isSuccess} safeAddress={safeAddress}>
           <Typography variant="body2" fontWeight="700">
-            Transaction is executed
+            {t('transactions.txIsExecuted')}
           </Typography>
         </StatusStep>
       </Step>

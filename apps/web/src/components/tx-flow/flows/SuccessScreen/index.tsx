@@ -1,4 +1,5 @@
 import StatusStepper from './StatusStepper'
+import { useTranslation } from 'react-i18next'
 import { Button, Container, Divider, Paper } from '@mui/material'
 import classnames from 'classnames'
 import Link from 'next/link'
@@ -30,6 +31,7 @@ interface Props {
 }
 
 const SuccessScreen = ({ txId, txHash }: Props) => {
+  const { t } = useTranslation()
   const [localTxHash, setLocalTxHash] = useState<string | undefined>(txHash)
   const [error, setError] = useState<Error>()
   const { setTxFlow } = useContext(TxModalContext)
@@ -109,7 +111,7 @@ const SuccessScreen = ({ txId, txHash }: Props) => {
       <div className={classnames(css.row, css.buttons)}>
         {isSwapOrder && (
           <Button data-testid="finish-transaction-btn" variant="outlined" size="small" onClick={onClose}>
-            Back to swaps
+            {t('transactions.backToSwaps')}
           </Button>
         )}
 
@@ -121,7 +123,7 @@ const SuccessScreen = ({ txId, txHash }: Props) => {
               size="small"
               onClick={onClose}
             >
-              View transaction
+              {t('transactions.viewTransaction')}
             </Button>
           </Link>
         )}
@@ -141,13 +143,13 @@ const SuccessScreen = ({ txId, txHash }: Props) => {
                   onClick={onClose}
                   disabled={!isSuccess}
                 >
-                  Go to Nested Safe
+                  {t('transactions.goToNestedSafe')}
                 </Button>
               </Link>
             </Track>
           ) : (
             <Button data-testid="finish-transaction-btn" variant="contained" size="small" onClick={onClose}>
-              Finish
+              {t('transactions.finish')}
             </Button>
           ))}
       </div>

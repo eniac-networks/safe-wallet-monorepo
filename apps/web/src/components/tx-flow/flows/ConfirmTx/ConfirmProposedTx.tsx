@@ -1,4 +1,5 @@
 import { type PropsWithChildren, type ReactElement, useContext, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Typography } from '@mui/material'
 import { useChainId } from '@/hooks/useChainId'
 import { createExistingTx } from '@/services/tx/tx-sender'
@@ -13,11 +14,8 @@ type ConfirmProposedTxProps = PropsWithChildren<
   } & ReviewTransactionContentProps
 >
 
-const SIGN_TEXT = 'Sign this transaction.'
-const EXECUTE_TEXT = 'Submit the form to execute this transaction.'
-const SIGN_EXECUTE_TEXT = 'Sign or immediately execute this transaction.'
-
 const ConfirmProposedTx = ({ txNonce, children, ...props }: ConfirmProposedTxProps): ReactElement => {
+  const { t } = useTranslation()
   const chainId = useChainId()
   const { setSafeTx, setSafeTxError, setNonce, setIsReadOnly } = useContext(SafeTxContext)
   const { txId, onlyExecute, isExecutable } = useContext(TxFlowContext)
@@ -34,7 +32,11 @@ const ConfirmProposedTx = ({ txNonce, children, ...props }: ConfirmProposedTxPro
     }
   }, [txId, chainId, setSafeTx, setSafeTxError])
 
-  const text = !onlyExecute ? (isExecutable ? SIGN_EXECUTE_TEXT : SIGN_TEXT) : EXECUTE_TEXT
+  const text = !onlyExecute
+    ? isExecutable
+      ? t('transactions.signOrExecuteThisTx')
+      : t('transactions.signThisTx')
+    : t('transactions.executeThisTx')
 
   return (
     <ReviewTransaction {...props}>

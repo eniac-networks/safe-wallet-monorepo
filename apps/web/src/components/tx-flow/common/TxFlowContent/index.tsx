@@ -1,5 +1,6 @@
 import { TxFlowContext } from '../../TxFlowProvider'
 import { type ReactNode, useContext, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Box, Container, Grid, Typography, Button, Paper, IconButton, useMediaQuery } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { useTheme } from '@mui/material/styles'
@@ -40,6 +41,7 @@ export const TxFlowContent = ({ children }: { children?: ReactNode[] | ReactNode
 
   const childrenArray = Array.isArray(children) ? children : [children]
 
+  const { t } = useTranslation()
   const [statusVisible, setStatusVisible] = useState<boolean>(true)
 
   const theme = useTheme()
@@ -58,7 +60,12 @@ export const TxFlowContent = ({ children }: { children?: ReactNode[] | ReactNode
     <>
       {/* Header status button */}
       {!isReplacement && (
-        <IconButton className={css.statusButton} aria-label="Transaction status" size="large" onClick={toggleStatus}>
+        <IconButton
+          className={css.statusButton}
+          aria-label={t('transactions.transactionStatus')}
+          size="large"
+          onClick={toggleStatus}
+        >
           <SafeLogo width={16} height={16} />
         </IconButton>
       )}
@@ -110,7 +117,7 @@ export const TxFlowContent = ({ children }: { children?: ReactNode[] | ReactNode
                   className={css.backButton}
                   startIcon={<ArrowBackIcon fontSize="small" />}
                 >
-                  Back
+                  {t('newSafe.back')}
                 </Button>
               )}
             </div>

@@ -1,4 +1,5 @@
 import { useContext } from 'react'
+import { useTranslation } from 'react-i18next'
 import { SafeTxContext } from '@/components/tx-flow/SafeTxProvider'
 import ReviewTransactionSkeleton from './ReviewTransactionSkeleton'
 import useTxPreview from '../confirmation-views/useTxPreview'
@@ -12,6 +13,7 @@ export type ReviewTransactionProps = {
 } & ReviewTransactionContentProps
 
 const ReviewTransaction = ({ title, ...props }: ReviewTransactionProps) => {
+  const { t } = useTranslation()
   const { safeTx, safeTxError } = useContext(SafeTxContext)
   const { txId, txDetails, txDetailsLoading } = useContext(TxFlowContext)
   const [txPreview, , txPreviewLoading] = useTxPreview(safeTx?.data, undefined, txId)
@@ -21,7 +23,7 @@ const ReviewTransaction = ({ title, ...props }: ReviewTransactionProps) => {
   }
 
   return (
-    <TxFlowStep title={title ?? 'Confirm transaction'}>
+    <TxFlowStep title={title ?? t('batch.confirmTransaction')}>
       <ReviewTransactionContent {...props} txDetails={txDetails} txPreview={txPreview}>
         {props.children}
       </ReviewTransactionContent>

@@ -1,5 +1,6 @@
 import useSafeInfo from '@/hooks/useSafeInfo'
 import { type ComponentType, type ReactElement, type ReactNode, useContext, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Box, Container, Grid, Typography, Button, Paper, SvgIcon, IconButton, useMediaQuery } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { useTheme } from '@mui/material/styles'
@@ -97,6 +98,7 @@ const TxLayout = ({
   isReplacement = false,
   isMessage = false,
 }: TxLayoutProps): ReactElement => {
+  const { t } = useTranslation()
   const [statusVisible, setStatusVisible] = useState<boolean>(true)
 
   const theme = useTheme()
@@ -123,7 +125,7 @@ const TxLayout = ({
             {!isReplacement && (
               <IconButton
                 className={css.statusButton}
-                aria-label="Transaction status"
+                aria-label={t('transactions.transactionStatus')}
                 size="large"
                 onClick={toggleStatus}
               >
@@ -178,7 +180,7 @@ const TxLayout = ({
                         className={css.backButton}
                         startIcon={<ArrowBackIcon fontSize="small" />}
                       >
-                        Back
+                        {t('newSafe.back')}
                       </Button>
                     )}
                   </div>

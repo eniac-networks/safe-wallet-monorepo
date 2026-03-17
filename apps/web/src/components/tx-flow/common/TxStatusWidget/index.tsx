@@ -1,4 +1,5 @@
 import { useContext } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Divider, IconButton, List, ListItem, ListItemIcon, ListItemText, Paper, Typography } from '@mui/material'
 import CreatedIcon from '@/public/images/messages/created.svg'
 import SignedIcon from '@/public/images/messages/signed.svg'
@@ -27,6 +28,7 @@ const TxStatusWidget = ({
   isMessage?: boolean
   isLastStep?: boolean
 }) => {
+  const { t } = useTranslation()
   const wallet = useWallet()
   const { safe } = useSafeInfo()
   const { nonceNeeded } = useContext(SafeTxContext)
@@ -50,7 +52,7 @@ const TxStatusWidget = ({
       <div className={css.header}>
         <Typography fontWeight="700" display="flex" alignItems="center" gap={1}>
           <SafeLogo width={16} height={16} className={css.logo} />
-          {isMessage ? 'Message' : 'Transaction'} status
+          {isMessage ? t('transactions.messageStatus') : t('transactions.transactionStatus')}
         </Typography>
 
         <IconButton className={css.close} aria-label="close" onClick={handleClose} size="small">
@@ -68,7 +70,7 @@ const TxStatusWidget = ({
             </ListItemIcon>
 
             <ListItemText primaryTypographyProps={{ fontWeight: 700 }}>
-              {isBatch ? 'Queue transactions' : 'Create'}
+              {isBatch ? t('transactions.queueTransactions') : t('transactions.statusCreate')}
             </ListItemText>
           </ListItem>
 
@@ -79,14 +81,14 @@ const TxStatusWidget = ({
 
             <ListItemText primaryTypographyProps={{ fontWeight: 700 }}>
               {isBatch ? (
-                'Create batch'
+                t('transactions.createBatch')
               ) : !nonceNeeded ? (
-                'Confirmed'
+                t('transactions.confirmedStatus')
               ) : isMessage ? (
-                'Collect signatures'
+                t('transactions.collectSignatures')
               ) : (
                 <>
-                  Confirmed ({confirmationsSubmitted} of {threshold})
+                  {t('transactions.confirmedNOfM', { submitted: confirmationsSubmitted, threshold })}
                   {canSign && (
                     <Typography variant="body2" component="span" className={css.badge}>
                       +1
@@ -102,7 +104,9 @@ const TxStatusWidget = ({
               <SignedIcon />
             </ListItemIcon>
 
-            <ListItemText primaryTypographyProps={{ fontWeight: 700 }}>{isMessage ? 'Done' : 'Execute'}</ListItemText>
+            <ListItemText primaryTypographyProps={{ fontWeight: 700 }}>
+              {isMessage ? t('transactions.done') : t('transactions.execute')}
+            </ListItemText>
           </ListItem>
         </List>
       </div>

@@ -1,6 +1,7 @@
 import useWalletCanPay from '@/hooks/useWalletCanPay'
 import madProps from '@/utils/mad-props'
 import { type ReactElement, type SyntheticEvent, useContext, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Box, CardActions, Divider, Tooltip } from '@mui/material'
 import classNames from 'classnames'
 
@@ -66,6 +67,7 @@ export const ExecuteForm = ({
   const [isSubmitLoadingLocal, setIsSubmitLoadingLocal] = useState<boolean>(false) // TODO: remove this local state and use only the one from TxFlowContext when tx-flow refactor is done
 
   // Hooks
+  const { t } = useTranslation()
   const currentChain = useCurrentChain()
   const { executeTx } = txActions
   const { setTxFlow } = useContext(TxModalContext)
@@ -176,18 +178,13 @@ export const ExecuteForm = ({
         {cannotPropose ? (
           <NonOwnerError />
         ) : isExecutionLoop ? (
-          <ErrorMessage>
-            Cannot execute a transaction from the Safe Account itself, please connect a different account.
-          </ErrorMessage>
+          <ErrorMessage>{t('transactions.cannotExecuteFromSafe')}</ErrorMessage>
         ) : !walletCanPay && !willRelay ? (
-          <ErrorMessage level="info">
-            Your connected wallet doesn&apos;t have enough funds to execute this transaction.
-          </ErrorMessage>
+          <ErrorMessage level="info">{t('transactions.notEnoughFunds')}</ErrorMessage>
         ) : (
           (executionValidationError || gasLimitError) && (
             <ErrorMessage error={executionValidationError || gasLimitError}>
-              This transaction will most likely fail.
-              {` To save gas costs, ${isCreation ? 'avoid creating' : 'reject'} this transaction.`}
+              {isCreation ? t('transactions.txWillLikelyFailCreate') : t('transactions.txWillLikelyFailReject')}
             </ErrorMessage>
           )
         )}

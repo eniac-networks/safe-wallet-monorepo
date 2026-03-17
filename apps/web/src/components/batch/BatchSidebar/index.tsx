@@ -1,5 +1,6 @@
 import { type SyntheticEvent, useEffect } from 'react'
 import { useCallback, useContext } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Button, Divider, Drawer, IconButton, SvgIcon, Typography } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import { useDraftBatch, useUpdateBatch } from '@/hooks/useDraftBatch'
@@ -15,6 +16,7 @@ import EmptyBatch from './EmptyBatch'
 import BatchTxList from './BatchTxList'
 
 const BatchSidebar = ({ isOpen, onToggle }: { isOpen: boolean; onToggle: (open: boolean) => void }) => {
+  const { t } = useTranslation()
   const { txFlow, setTxFlow } = useContext(TxModalContext)
   const batchTxs = useDraftBatch()
   const [, deleteTx] = useUpdateBatch()
@@ -63,7 +65,7 @@ const BatchSidebar = ({ isOpen, onToggle }: { isOpen: boolean; onToggle: (open: 
     <Drawer variant="temporary" anchor="right" open={isOpen} onClose={closeSidebar} transitionDuration={100}>
       <aside className={css.aside}>
         <Typography variant="h4" fontWeight={700} mb={1}>
-          Batched transactions
+          {t('batch.batchedTransactions')}
         </Typography>
 
         <Divider />
@@ -79,7 +81,7 @@ const BatchSidebar = ({ isOpen, onToggle }: { isOpen: boolean; onToggle: (open: 
                 <Track {...BATCH_EVENTS.BATCH_NEW_TX}>
                   <Button onClick={onAddClick} disabled={!isOk}>
                     <SvgIcon component={PlusIcon} inheritViewBox fontSize="small" sx={{ mr: 1 }} />
-                    Add new transaction
+                    {t('batch.addNewTransaction')}
                   </Button>
                 </Track>
               )}
@@ -96,7 +98,7 @@ const BatchSidebar = ({ isOpen, onToggle }: { isOpen: boolean; onToggle: (open: 
                     disabled={!batchTxs.length || !isOk}
                     className={css.confirmButton}
                   >
-                    Confirm batch
+                    {t('batch.confirmBatch')}
                   </Button>
                 </Track>
               )}
@@ -108,7 +110,7 @@ const BatchSidebar = ({ isOpen, onToggle }: { isOpen: boolean; onToggle: (open: 
               {(isOk) => (
                 <Track {...BATCH_EVENTS.BATCH_NEW_TX}>
                   <Button onClick={onAddClick} variant="contained" disabled={!isOk}>
-                    New transaction
+                    {t('sidebar.newTransaction')}
                   </Button>
                 </Track>
               )}

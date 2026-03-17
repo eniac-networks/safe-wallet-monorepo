@@ -2,6 +2,7 @@ import useIsSafeOwner from '@/hooks/useIsSafeOwner'
 import { Alert, Box, Button, Paper, SvgIcon, Tooltip, Typography } from '@mui/material'
 import { useContext, useEffect } from 'react'
 import type { ReactElement } from 'react'
+import { Trans, useTranslation } from 'react-i18next'
 
 import useSafeInfo from '@/hooks/useSafeInfo'
 import { useSigner } from '@/hooks/wallets/useWallet'
@@ -27,12 +28,22 @@ import { MODALS_EVENTS } from '@/services/analytics'
 import useAsync from '@safe-global/utils/hooks/useAsync'
 import { getSafeInfo } from '@safe-global/safe-gateway-typescript-sdk'
 
-const renderSimulationStatus = (isSuccess: boolean, isError: boolean, isCallTraceError: boolean) => {
+const SimulationStatus = ({
+  isSuccess,
+  isError,
+  isCallTraceError,
+}: {
+  isSuccess: boolean
+  isError: boolean
+  isCallTraceError: boolean
+}) => {
+  const { t } = useTranslation()
+
   if (!isSuccess || isError) {
     return (
       <Typography variant="body2" className={sharedCss.result} sx={{ color: 'error.main' }}>
         <SvgIcon component={CloseIcon} inheritViewBox fontSize="small" sx={{ verticalAlign: 'middle', mr: 1 }} />
-        Error
+        {t('common.error')}
       </Typography>
     )
   }
@@ -46,7 +57,7 @@ const renderSimulationStatus = (isSuccess: boolean, isError: boolean, isCallTrac
         sx={{ color: 'warning.main' }}
       >
         <SvgIcon component={WarningIcon} inheritViewBox fontSize="small" sx={{ verticalAlign: 'middle', mr: 1 }} />
-        Warning
+        {t('common.warning')}
       </Typography>
     )
   }
@@ -59,7 +70,7 @@ const renderSimulationStatus = (isSuccess: boolean, isError: boolean, isCallTrac
       sx={{ color: 'success.main' }}
     >
       <SvgIcon component={CheckIcon} inheritViewBox fontSize="small" sx={{ verticalAlign: 'middle', mr: 1 }} />
-      Success
+      {t('common.success')}
     </Typography>
   )
 }
@@ -82,8 +93,10 @@ const TxSimulationBlock = ({
   gasLimit,
   executionOwner,
   nestedSafe,
-  title = 'Run a simulation',
+  title,
 }: TxSimulationProps): ReactElement => {
+  const { t } = useTranslation()
+  const resolvedTitle = title ?? t('transactions.runSimulation')
   const { safe } = useSafeInfo()
   const chain = useCurrentChain()
   const signer = useSigner()
@@ -133,13 +146,9 @@ const TxSimulationBlock = ({
       <Paper variant="outlined" className={sharedCss.wrapper} sx={{ backgroundColor: 'transparent' }}>
         <div className={css.wrapper}>
           <Typography variant="body2" fontWeight={700}>
-            {title}
+            {resolvedTitle}
 
-            <Tooltip
-              title="This transaction can be simulated before execution to ensure that it will be succeed, generating a detailed report of the transaction execution."
-              arrow
-              placement="top"
-            >
+            <Tooltip title={t('transactions.simulationTooltip')} arrow placement="top">
               <span>
                 <SvgIcon
                   component={InfoIcon}
@@ -155,7 +164,7 @@ const TxSimulationBlock = ({
             </Tooltip>
           </Typography>
           <Typography variant="caption" className={sharedCss.poweredBy}>
-            Powered by{' '}
+            {t('common.poweredBy')}{' '}
             <img
               src={isDarkMode ? '/images/transactions/tenderly-light.svg' : '/images/transactions/tenderly-dark.svg'}
               alt="Tenderly"
@@ -174,7 +183,7 @@ const TxSimulationBlock = ({
               }}
             />
           ) : isFinished ? (
-            renderSimulationStatus(isSuccess, isError, isCallTraceError)
+            <SimulationStatus isSuccess={isSuccess} isError={isError} isCallTraceError={isCallTraceError} />
           ) : (
             <Track {...MODALS_EVENTS.SIMULATE_TX}>
               <Button
@@ -185,7 +194,7 @@ const TxSimulationBlock = ({
                 onClick={handleSimulation}
                 disabled={!transactions || disabled}
               >
-                Simulate
+                {t('transactions.simulate')}
               </Button>
             </Track>
           )}
@@ -205,30 +214,47 @@ export const TxSimulation = (props: TxSimulationProps): ReactElement | null => {
   return <TxSimulationBlock {...props} />
 }
 
-const renderSimulationMessage = (
-  isSuccess: boolean,
-  isError: boolean,
-  isCallTraceError: boolean,
-  simulationLink: string | undefined,
-  simulationData: any,
-  requestError: string | undefined,
-) => {
+const SimulationMessage = ({
+  isSuccess,
+  isError,
+  isCallTraceError,
+  simulationLink,
+  simulationData,
+  requestError,
+}: {
+  isSuccess: boolean
+  isError: boolean
+  isCallTraceError: boolean
+  simulationLink: string | undefined
+  simulationData: any
+  requestError: string | undefined
+}) => {
+  const { t } = useTranslation()
+
   if (!isSuccess || isError) {
     return (
       <Alert severity="error" sx={{ border: 'unset' }}>
         <Typography variant="body1" fontWeight={700}>
-          Simulation failed
+          {t('transactions.simulationFailed')}
         </Typography>
         {requestError ? (
           <Typography color="error" variant="body2">
-            An unexpected error occurred during simulation: <b>{requestError}</b>.
+            <Trans
+              i18nKey="transactions.simulationUnexpectedError"
+              values={{ error: requestError }}
+              components={[<span key="0" />, <b key="1" />]}
+            />
           </Typography>
         ) : (
           <Typography variant="body2">
-            The transaction failed during the simulation throwing error{' '}
-            <b>{simulationData?.transaction.error_message}</b> in the contract at{' '}
-            <b>{simulationData?.transaction.error_info?.address}</b>. Full simulation report is available{' '}
-            <ExternalLink href={simulationLink}>on Tenderly</ExternalLink>.
+            <Trans
+              i18nKey="transactions.simulationFailedDetails"
+              values={{
+                errorMessage: simulationData?.transaction.error_message,
+                address: simulationData?.transaction.error_info?.address,
+              }}
+              components={[<b key="0" />, <b key="1" />, <b key="2" />, <ExternalLink key="3" href={simulationLink} />]}
+            />
           </Typography>
         )}
       </Alert>
@@ -238,18 +264,22 @@ const renderSimulationMessage = (
   if (isCallTraceError) {
     return (
       <Alert severity="warning" sx={{ border: 'unset' }}>
-        <Typography fontWeight={700}>Simulation successful with warnings</Typography>
-        Transaction will execute successfully on-chain, but contains internal reverts. Some contract logic may not
-        execute as expected. Full simulation report available{' '}
-        <ExternalLink href={simulationLink}>on Tenderly</ExternalLink>.
+        <Typography fontWeight={700}>{t('transactions.simulationSuccessWithWarnings')}</Typography>
+        <Trans
+          i18nKey="transactions.simulationWarningDetails"
+          components={[<span key="0" />, <ExternalLink key="1" href={simulationLink} />]}
+        />
       </Alert>
     )
   }
 
   return (
     <Alert severity="info" sx={{ border: 'unset' }}>
-      <Typography fontWeight={700}>Simulation successful</Typography>
-      Full simulation report is available <ExternalLink href={simulationLink}>on Tenderly</ExternalLink>.
+      <Typography fontWeight={700}>{t('transactions.simulationSuccessful')}</Typography>
+      <Trans
+        i18nKey="transactions.simulationSuccessDetails"
+        components={[<span key="0" />, <ExternalLink key="1" href={simulationLink} />]}
+      />
     </Alert>
   )
 }
@@ -265,5 +295,14 @@ export const TxSimulationMessage = ({ isNested = false }: { isNested?: boolean }
     return null
   }
 
-  return renderSimulationMessage(isSuccess, isError, isCallTraceError, simulationLink, simulationData, requestError)
+  return (
+    <SimulationMessage
+      isSuccess={isSuccess}
+      isError={isError}
+      isCallTraceError={isCallTraceError}
+      simulationLink={simulationLink}
+      simulationData={simulationData}
+      requestError={requestError}
+    />
+  )
 }

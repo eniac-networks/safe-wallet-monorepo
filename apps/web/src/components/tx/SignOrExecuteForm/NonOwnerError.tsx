@@ -1,11 +1,9 @@
+import { useTranslation } from 'react-i18next'
 import ErrorMessage from '@/components/tx/ErrorMessage'
 
 const NonOwnerError = () => {
-  return (
-    <ErrorMessage>
-      You are currently not a signer of this Safe Account and won&apos;t be able to submit this transaction.
-    </ErrorMessage>
-  )
+  const { t } = useTranslation()
+  return <ErrorMessage>{t('transactions.notASigner')}</ErrorMessage>
 }
 
 export default NonOwnerError

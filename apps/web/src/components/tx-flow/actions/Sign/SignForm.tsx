@@ -1,5 +1,6 @@
 import madProps from '@/utils/mad-props'
 import { type ReactElement, type SyntheticEvent, useContext, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Box, Divider, Stack } from '@mui/material'
 import ErrorMessage from '@/components/tx/ErrorMessage'
 import { trackError, Errors } from '@/services/exceptions'
@@ -48,6 +49,7 @@ export const SignForm = ({
   const [isSubmitLoadingLocal, setIsSubmitLoadingLocal] = useState<boolean>(false) // TODO: remove this local state and use only the one from TxFlowContext when tx-flow refactor is done
 
   // Hooks
+  const { t } = useTranslation()
   const { signTx } = txActions
   const { setTxFlow } = useContext(TxModalContext)
   const { isSubmitDisabled, isSubmitLoading, setIsSubmitLoading, setSubmitError, setIsRejectedByUser } =
@@ -116,7 +118,7 @@ export const SignForm = ({
 
   return (
     <Stack gap={3}>
-      {hasSigned && <ErrorMessage level="warning">You have already signed this transaction.</ErrorMessage>}
+      {hasSigned && <ErrorMessage level="warning">{t('transactions.alreadySignedThisTx')}</ErrorMessage>}
 
       {cannotPropose && <NonOwnerError />}
 

@@ -1,6 +1,7 @@
 import WalletRejectionError from '@/components/tx/SignOrExecuteForm/WalletRejectionError'
 import { isWalletRejection } from '@/utils/wallets'
 import { type ReactElement, type SyntheticEvent, useContext, useState } from 'react'
+import { Trans, useTranslation } from 'react-i18next'
 import { Box, Button, CircularProgress, Divider, Typography } from '@mui/material'
 import type { SafeTransaction } from '@safe-global/types-kit'
 import CheckWallet from '@/components/common/CheckWallet'
@@ -32,6 +33,7 @@ export const ProposerForm = ({
   const [isRejectedByUser, setIsRejectedByUser] = useState<Boolean>(false)
 
   // Hooks
+  const { t } = useTranslation()
   const wallet = useWallet()
   const { signProposerTx } = txActions
   const { setTxFlow } = useContext(TxModalContext)
@@ -73,8 +75,7 @@ export const ProposerForm = ({
   return (
     <form onSubmit={handleSubmit}>
       <Typography>
-        As a <strong>Proposer</strong>, you&apos;re creating this transaction without any signatures. It will need
-        approval from a signer before it becomes a valid transaction.
+        <Trans i18nKey="transactions.proposerInfo" components={[<span key="0" />, <strong key="1" />]} />
       </Typography>
 
       {isRejectedByUser && (
@@ -96,7 +97,7 @@ export const ProposerForm = ({
               disabled={!isOk || submitDisabled}
               sx={{ minWidth: '82px', order: '1', width: ['100%', '100%', '100%', 'auto'] }}
             >
-              {!isSubmittable ? <CircularProgress size={20} /> : 'Propose transaction'}
+              {!isSubmittable ? <CircularProgress size={20} /> : t('transactions.proposeTransaction')}
             </Button>
           )}
         </CheckWallet>

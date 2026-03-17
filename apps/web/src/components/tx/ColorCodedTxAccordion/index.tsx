@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { type SyntheticEvent, type ReactElement, memo, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { isNativeTokenTransfer, isTransferTxInfo } from '@/utils/transaction-guards'
 import {
   Accordion,
@@ -90,6 +91,7 @@ const onChangeExpand = (_: SyntheticEvent, expanded: boolean) => {
 }
 
 const ColorCodedTxAccordion = ({ txInfo, txData, children, defaultExpanded }: DecodedTxProps): ReactElement => {
+  const { t } = useTranslation()
   const isDarkMode = useDarkMode()
   const decodedData = txData?.dataDecoded
   const level = useMemo(() => getMethodLevel(txInfo?.type), [txInfo?.type])
@@ -97,7 +99,7 @@ const ColorCodedTxAccordion = ({ txInfo, txData, children, defaultExpanded }: De
 
   const methodLabel =
     txInfo && isTransferTxInfo(txInfo) && isNativeTokenTransfer(txInfo.transferInfo)
-      ? 'native transfer'
+      ? t('transactions.nativeTransfer')
       : decodedData?.method
 
   return (
@@ -109,7 +111,7 @@ const ColorCodedTxAccordion = ({ txInfo, txData, children, defaultExpanded }: De
       >
         <Stack direction="row" justifyContent="space-between" alignItems="center" width="100%">
           <Typography variant="subtitle2" fontWeight={700} data-testid="tx-advanced-details">
-            Transaction details
+            {t('transactions.transactionDetails')}
             <HelpTooltip />
           </Typography>
 

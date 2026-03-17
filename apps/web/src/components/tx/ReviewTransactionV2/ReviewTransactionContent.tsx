@@ -1,5 +1,6 @@
 import type { PropsWithChildren, ReactElement } from 'react'
 import { useCallback, useContext } from 'react'
+import { useTranslation } from 'react-i18next'
 import madProps from '@/utils/mad-props'
 import { SafeTxContext } from '@/components/tx-flow/SafeTxProvider'
 import ErrorMessage from '../ErrorMessage'
@@ -38,6 +39,7 @@ export const ReviewTransactionContent = ({
   txDetails?: TransactionDetails
   txPreview?: TransactionPreview
 }): ReactElement => {
+  const { t } = useTranslation()
   const { willExecute, isBatch, isCreation, isProposing, isRejection, isSubmitLoading, isSubmitDisabled, onlyExecute } =
     useContext(TxFlowContext)
 
@@ -65,7 +67,7 @@ export const ReviewTransactionContent = ({
           withDecodedData={withDecodedData}
         >
           {!isRejection && (
-            <ErrorBoundary fallback={<div>Error parsing data</div>}>
+            <ErrorBoundary fallback={<div>{t('transactions.errorParsingData')}</div>}>
               {isApproval && <ApprovalEditor safeTransaction={safeTx} />}
             </ErrorBoundary>
           )}
@@ -87,11 +89,7 @@ export const ReviewTransactionContent = ({
           }
           isCreation={isCreation}
         />
-        {safeTxError && (
-          <ErrorMessage error={safeTxError}>
-            This transaction will most likely fail. To save gas costs, avoid confirming the transaction.
-          </ErrorMessage>
-        )}
+        {safeTxError && <ErrorMessage error={safeTxError}>{t('transactions.txWillLikelyFail')}</ErrorMessage>}
 
         <Slot name={SlotName.Footer} />
         <NetworkWarning />
@@ -109,7 +107,7 @@ export const ReviewTransactionContent = ({
                 disabled={!isOk || isSubmitDisabled}
                 sx={{ minWidth: '82px', order: '1', width: ['100%', '100%', '100%', 'auto'] }}
               >
-                {isSubmitLoading ? <CircularProgress size={20} /> : 'Continue'}
+                {isSubmitLoading ? <CircularProgress size={20} /> : t('common.continue')}
               </Button>
             )}
           </CheckWallet>

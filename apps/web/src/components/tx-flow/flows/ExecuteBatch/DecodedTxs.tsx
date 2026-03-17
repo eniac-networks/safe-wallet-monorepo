@@ -1,5 +1,6 @@
 import type { DataDecoded, TransactionDetails } from '@safe-global/safe-gateway-typescript-sdk'
 import { Box } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 import extractTxInfo from '@/services/tx/extractTxInfo'
 import { isCustomTxInfo, isNativeTokenTransfer, isTransferTxInfo } from '@/utils/transaction-guards'
 import SingleTxDecoded from '@/components/transactions/TxDetails/TxData/DecodedData/SingleTxDecoded'
@@ -9,13 +10,14 @@ import { MultisendActionsHeader } from '@/components/transactions/TxDetails/TxDa
 import { type AccordionProps } from '@mui/material/Accordion/Accordion'
 
 const DecodedTxs = ({ txs }: { txs: TransactionDetails[] | undefined }) => {
+  const { t } = useTranslation()
   const [openMap, setOpenMap] = useState<Record<number, boolean>>()
 
   if (!txs) return null
 
   return (
     <>
-      <MultisendActionsHeader title="Batched transactions" setOpen={setOpenMap} amount={txs.length} compact />
+      <MultisendActionsHeader title={t('batch.batchedTransactions')} setOpen={setOpenMap} amount={txs.length} compact />
 
       <Box className={css.compact}>
         {txs.map((transaction, idx) => {
@@ -36,11 +38,11 @@ const DecodedTxs = ({ txs }: { txs: TransactionDetails[] | undefined }) => {
           }
 
           if (isCustomTxInfo(transaction.txInfo) && transaction.txInfo.isCancellation) {
-            decodedDataParams.method = 'On-chain rejection'
+            decodedDataParams.method = t('transactions.onChainRejection')
           }
 
           if (isTransferTxInfo(transaction.txInfo) && isNativeTokenTransfer(transaction.txInfo.transferInfo)) {
-            decodedDataParams.method = 'transfer'
+            decodedDataParams.method = t('transactions.transfer')
           }
 
           const dataDecoded = transaction.txData.dataDecoded || decodedDataParams
