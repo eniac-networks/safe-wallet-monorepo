@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import type { SafeAppData } from '@safe-global/safe-gateway-typescript-sdk'
 import { Typography, SvgIcon } from '@mui/material'
 import CheckIcon from '@mui/icons-material/Check'
@@ -15,6 +16,7 @@ type CustomAppProps = {
 }
 
 const CustomApp = ({ safeApp, shareUrl }: CustomAppProps) => {
+  const { t } = useTranslation()
   const handleCopy = useCallback(() => {
     trackSafeAppEvent(SAFE_APPS_EVENTS.COPY_SHARE_URL, safeApp.name)
   }, [safeApp])
@@ -35,7 +37,7 @@ const CustomApp = ({ safeApp, shareUrl }: CustomAppProps) => {
         <CopyButton
           className={css.customAppCheckIcon}
           text={shareUrl}
-          initialToolTipText={`Copy share URL for ${safeApp.name}`}
+          initialToolTipText={t('safeApps.copyShareUrl', { name: safeApp.name })}
           onCopy={handleCopy}
         >
           <SvgIcon component={ShareIcon} inheritViewBox color="border" fontSize="small" />

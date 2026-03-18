@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import type { SubmitHandler } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 import {
@@ -46,11 +47,9 @@ type CustomAppFormData = {
 }
 
 const HELP_LINK = 'https://docs.safe.global/apps-sdk-overview'
-const APP_ALREADY_IN_THE_LIST_ERROR = 'This Safe App is already in the list'
-const MANIFEST_ERROR = "The app doesn't support Safe App functionality"
-const INVALID_URL_ERROR = 'The url is invalid'
 
 export const AddCustomAppModal = ({ open, onClose, onSave, safeAppsList }: Props) => {
+  const { t } = useTranslation()
   const currentChain = useCurrentChain()
 
   const {
@@ -94,22 +93,22 @@ export const AddCustomAppModal = ({ open, onClose, onSave, safeAppsList }: Props
   const isCustomAppInTheDefaultList = errors?.appUrl?.type === 'alreadyExists'
 
   return (
-    <ModalDialog open={open} onClose={handleClose} dialogTitle="Add custom Safe App">
+    <ModalDialog open={open} onClose={handleClose} dialogTitle={t('safeApps.addCustomApp')}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <DialogContent className={css.addCustomAppContainer}>
           <div className={css.addCustomAppFields}>
             <TextField
               required
-              label="Safe App URL"
+              label={t('safeApps.safeAppUrl')}
               error={errors?.appUrl?.type === 'validUrl'}
               helperText={errors?.appUrl?.type === 'validUrl' && errors?.appUrl?.message}
               autoComplete="off"
               {...register('appUrl', {
                 required: true,
                 validate: {
-                  validUrl: (val: string) => (isValidURL(val) ? undefined : INVALID_URL_ERROR),
+                  validUrl: (val: string) => (isValidURL(val) ? undefined : t('safeApps.invalidUrl')),
                   alreadyExists: (val: string) =>
-                    isAppAlreadyInTheList(val) ? APP_ALREADY_IN_THE_LIST_ERROR : undefined,
+                    isAppAlreadyInTheList(val) ? t('safeApps.appAlreadyInList') : undefined,
                 },
               })}
             />
@@ -135,7 +134,7 @@ export const AddCustomAppModal = ({ open, onClose, onSave, safeAppsList }: Props
                           ml: 1,
                         }}
                       >
-                        This Safe App is already registered
+                        {t('safeApps.appAlreadyRegistered')}
                       </Typography>
                     </Box>
                   ) : (
@@ -149,18 +148,20 @@ export const AddCustomAppModal = ({ open, onClose, onSave, safeAppsList }: Props
                             })}
                           />
                         }
-                        label={`This Safe App is not part of ${BRAND_NAME} and I agree to use it at my own risk.`}
+                        label={t('safeApps.riskAcknowledgement', { brandName: BRAND_NAME })}
                         sx={{ mt: 2 }}
                       />
 
                       {errors.riskAcknowledgement && (
-                        <FormHelperText error>Accepting the disclaimer is mandatory</FormHelperText>
+                        <FormHelperText error>{t('safeApps.acceptDisclaimerMandatory')}</FormHelperText>
                       )}
                     </>
                   )}
                 </>
               ) : (
-                <CustomAppPlaceholder error={isValidURL(debouncedUrl) && manifestError ? MANIFEST_ERROR : ''} />
+                <CustomAppPlaceholder
+                  error={isValidURL(debouncedUrl) && manifestError ? t('safeApps.manifestError') : ''}
+                />
               )}
             </Box>
           </div>
@@ -172,7 +173,7 @@ export const AddCustomAppModal = ({ open, onClose, onSave, safeAppsList }: Props
                 ml: 0.5,
               }}
             >
-              Learn more about building
+              {t('safeApps.learnMoreBuilding')}
             </Typography>
             <ExternalLink className={css.addCustomAppHelpLink} href={HELP_LINK} fontWeight={700}>
               Safe Apps
@@ -182,9 +183,9 @@ export const AddCustomAppModal = ({ open, onClose, onSave, safeAppsList }: Props
         </DialogContent>
 
         <DialogActions disableSpacing>
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleClose}>{t('common.cancel')}</Button>
           <Button type="submit" variant="contained" disabled={!isSafeAppValid}>
-            Add
+            {t('safeApps.add')}
           </Button>
         </DialogActions>
       </form>

@@ -1,6 +1,8 @@
 import { getOrderClass } from '@/features/swap/helpers/utils'
 import type { ReactElement } from 'react'
 import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
+import type { TFunction } from 'i18next'
 import {
   type AddressEx,
   SettingsInfoType,
@@ -24,7 +26,7 @@ import {
 } from '@/utils/transaction-guards'
 import useAddressBook from './useAddressBook'
 import type { AddressBook } from '@/store/addressBookSlice'
-import { TWAP_ORDER_TITLE } from '@/features/swap/constants'
+
 import { SvgIcon } from '@mui/material'
 
 const getTxTo = ({ txInfo }: Pick<TransactionSummary, 'txInfo'>): AddressEx | undefined => {
@@ -49,7 +51,7 @@ type TxType = {
   text: string
 }
 
-export const getTransactionType = (tx: TransactionSummary, addressBook: AddressBook): TxType => {
+export const getTransactionType = (tx: TransactionSummary, addressBook: AddressBook, t: TFunction): TxType => {
   const toAddress = getTxTo(tx)
   const addressBookName = toAddress?.value ? addressBook[toAddress.value] : undefined
 
@@ -57,7 +59,7 @@ export const getTransactionType = (tx: TransactionSummary, addressBook: AddressB
     case TransactionInfoType.CREATION: {
       return {
         icon: toAddress?.logoUri || '/images/transactions/settings.svg',
-        text: 'Safe Account created',
+        text: t('transactions.safeAccountCreated'),
       }
     }
     case TransactionInfoType.SWAP_TRANSFER:
@@ -66,7 +68,11 @@ export const getTransactionType = (tx: TransactionSummary, addressBook: AddressB
 
       return {
         icon: isSendTx ? '/images/transactions/outgoing.svg' : '/images/transactions/incoming.svg',
-        text: isSendTx ? (isTxQueued(tx.txStatus) ? 'Send' : 'Sent') : 'Received',
+        text: isSendTx
+          ? isTxQueued(tx.txStatus)
+            ? t('transactions.send')
+            : t('transactions.sent')
+          : t('transactions.received'),
       }
     }
     case TransactionInfoType.SETTINGS_CHANGE: {
@@ -76,12 +82,12 @@ export const getTransactionType = (tx: TransactionSummary, addressBook: AddressB
 
       return {
         icon: '/images/transactions/settings.svg',
-        text: isDeleteGuard ? 'deleteGuard' : tx.txInfo.dataDecoded.method,
+        text: isDeleteGuard ? t('transactions.deleteGuardLabel') : tx.txInfo.dataDecoded.method,
       }
     }
     case TransactionInfoType.SWAP_ORDER: {
       const orderClass = getOrderClass(tx.txInfo)
-      const altText = orderClass === 'limit' ? 'Limit order' : 'Swap order'
+      const altText = orderClass === 'limit' ? t('transactions.limitOrder') : t('transactions.swapOrder')
 
       return {
         icon: <SvgIcon component={SwapIcon} inheritViewBox fontSize="small" alt={altText} />,
@@ -89,57 +95,65 @@ export const getTransactionType = (tx: TransactionSummary, addressBook: AddressB
       }
     }
     case TransactionInfoType.TWAP_ORDER: {
+      const twapText = t('transactions.twapOrder')
       return {
-        icon: <SvgIcon component={SwapIcon} inheritViewBox fontSize="small" alt="Twap Order" />,
-        text: TWAP_ORDER_TITLE,
+        icon: <SvgIcon component={SwapIcon} inheritViewBox fontSize="small" alt={twapText} />,
+        text: twapText,
       }
     }
     case TransactionInfoType.NATIVE_STAKING_DEPOSIT: {
+      const stakeText = t('transactions.stakeAction')
       return {
-        icon: <SvgIcon component={StakeIcon} inheritViewBox fontSize="small" alt="Stake" />,
-        text: 'Stake',
+        icon: <SvgIcon component={StakeIcon} inheritViewBox fontSize="small" alt={stakeText} />,
+        text: stakeText,
       }
     }
     case TransactionInfoType.NATIVE_STAKING_VALIDATORS_EXIT: {
+      const withdrawRequestText = t('transactions.withdrawRequest')
       return {
-        icon: <SvgIcon component={StakeIcon} inheritViewBox fontSize="small" alt="Withdraw request" />,
-        text: 'Withdraw request',
+        icon: <SvgIcon component={StakeIcon} inheritViewBox fontSize="small" alt={withdrawRequestText} />,
+        text: withdrawRequestText,
       }
     }
     case TransactionInfoType.NATIVE_STAKING_WITHDRAW: {
+      const claimText = t('transactions.claimAction')
       return {
-        icon: <SvgIcon component={StakeIcon} inheritViewBox fontSize="small" alt="Claim" />,
-        text: 'Claim',
+        icon: <SvgIcon component={StakeIcon} inheritViewBox fontSize="small" alt={claimText} />,
+        text: claimText,
       }
     }
     // @ts-ignore TODO: Add types to old SDK or switch to auto-generated
     case 'VaultDeposit': {
+      const depositText = t('transactions.depositAction')
       return {
-        icon: <SvgIcon component={EarnIcon} inheritViewBox fontSize="small" alt="Deposit icon" />,
-        text: 'Deposit',
+        icon: <SvgIcon component={EarnIcon} inheritViewBox fontSize="small" alt={depositText} />,
+        text: depositText,
       }
     }
     // @ts-ignore TODO: Add types to old SDK or switch to auto-generated
     case 'VaultRedeem': {
+      const withdrawText = t('transactions.withdrawAction')
       return {
-        icon: <SvgIcon component={EarnIcon} inheritViewBox fontSize="small" alt="Withdraw icon" />,
-        text: 'Withdraw',
+        icon: <SvgIcon component={EarnIcon} inheritViewBox fontSize="small" alt={withdrawText} />,
+        text: withdrawText,
       }
     }
 
     // @ts-ignore TODO: Add types to old SDK or switch to auto-generated
     case 'SwapAndBridge': {
+      const bridgeText = t('transactions.bridgeAction')
       return {
-        icon: <SvgIcon component={BridgeIcon} inheritViewBox fontSize="small" alt="Swap and Bridge" />,
-        text: 'Bridge',
+        icon: <SvgIcon component={BridgeIcon} inheritViewBox fontSize="small" alt={bridgeText} />,
+        text: bridgeText,
       }
     }
 
     // @ts-ignore TODO: Add types to old SDK or switch to auto-generated
     case 'Swap': {
+      const swapText = t('transactions.swapAction')
       return {
-        icon: <SvgIcon component={SwapIcon} inheritViewBox fontSize="small" alt="Swap" />,
-        text: 'Swap',
+        icon: <SvgIcon component={SwapIcon} inheritViewBox fontSize="small" alt={swapText} />,
+        text: swapText,
       }
     }
 
@@ -152,42 +166,52 @@ export const getTransactionType = (tx: TransactionSummary, addressBook: AddressB
       }
 
       if (isMultiSendTxInfo(tx.txInfo)) {
+        const batchText = t('transactions.batchAction')
         return {
-          icon: <SvgIcon component={BatchIcon} inheritViewBox fontSize="small" alt="Batch" />,
-          text: 'Batch',
+          icon: <SvgIcon component={BatchIcon} inheritViewBox fontSize="small" alt={batchText} />,
+          text: batchText,
         }
       }
 
       if (isModuleExecutionInfo(tx.executionInfo)) {
         return {
           icon: toAddress?.logoUri || '/images/transactions/custom.svg',
-          text: toAddress?.name || 'Contract interaction',
+          text: toAddress?.name || t('transactions.contractInteractionLabel'),
         }
       }
 
       if (isCancellationTxInfo(tx.txInfo)) {
         return {
           icon: '/images/transactions/circle-cross-red.svg',
-          text: 'On-chain rejection',
+          text: t('transactions.onChainRejection'),
         }
       }
 
       if (isNestedConfirmationTxInfo(tx.txInfo)) {
         return {
-          icon: <SvgIcon component={NestedSafeIcon} inheritViewBox fontSize="small" alt="Nested Safe" />,
-          text: `Nested Safe${addressBookName ? `: ${addressBookName}` : ''}`,
+          icon: (
+            <SvgIcon
+              component={NestedSafeIcon}
+              inheritViewBox
+              fontSize="small"
+              alt={t('transactions.nestedSafeAction')}
+            />
+          ),
+          text: addressBookName
+            ? t('transactions.nestedSafeWithName', { name: addressBookName })
+            : t('transactions.nestedSafeAction'),
         }
       }
 
       return {
         icon: toAddress?.logoUri || '/images/transactions/custom.svg',
-        text: addressBookName || toAddress?.name || 'Contract interaction',
+        text: addressBookName || toAddress?.name || t('transactions.contractInteractionLabel'),
       }
     }
     default: {
       return {
         icon: '/images/transactions/custom.svg',
-        text: addressBookName || 'Contract interaction',
+        text: addressBookName || t('transactions.contractInteractionLabel'),
       }
     }
   }
@@ -195,8 +219,9 @@ export const getTransactionType = (tx: TransactionSummary, addressBook: AddressB
 
 export const useTransactionType = (tx: TransactionSummary): TxType => {
   const addressBook = useAddressBook()
+  const { t } = useTranslation()
 
   return useMemo(() => {
-    return getTransactionType(tx, addressBook)
-  }, [tx, addressBook])
+    return getTransactionType(tx, addressBook, t)
+  }, [tx, addressBook, t])
 }

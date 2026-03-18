@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useTranslation } from 'react-i18next'
 import Drawer from '@mui/material/Drawer'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -29,6 +30,7 @@ type SafeAppPreviewDrawerProps = {
 }
 
 const SafeAppPreviewDrawer = ({ isOpen, safeApp, isBookmarked, onClose, onBookmark }: SafeAppPreviewDrawerProps) => {
+  const { t } = useTranslation()
   const { markSafeAppOpened } = useOpenedSafeApps()
   const router = useRouter()
   const safeAppUrl = getSafeAppUrl(router, safeApp?.url || '')
@@ -50,7 +52,7 @@ const SafeAppPreviewDrawer = ({ isOpen, safeApp, isBookmarked, onClose, onBookma
         {safeApp && (
           <Box display="flex" justifyContent="right">
             <SafeAppActionButtons safeApp={safeApp} isBookmarked={isBookmarked} onBookmarkSafeApp={onBookmark} />
-            <Tooltip title={`Close ${safeApp.name} preview`} placement="top">
+            <Tooltip title={t('safeApps.closeAppPreview', { name: safeApp.name })} placement="top">
               <IconButton
                 onClick={onClose}
                 size="small"
@@ -83,7 +85,7 @@ const SafeAppPreviewDrawer = ({ isOpen, safeApp, isBookmarked, onClose, onBookma
 
         {/* Networks */}
         <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
-          Available networks
+          {t('safeApps.availableNetworks')}
         </Typography>
 
         <Box sx={{ display: 'flex', gap: 2, mt: 2, flexWrap: 'wrap' }}>
@@ -104,7 +106,7 @@ const SafeAppPreviewDrawer = ({ isOpen, safeApp, isBookmarked, onClose, onBookma
             sx={{ mt: 3 }}
             onClick={onOpenSafe}
           >
-            Open Safe App
+            {t('safeApps.openSafeApp')}
           </Button>
         </Link>
 

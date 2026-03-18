@@ -413,7 +413,13 @@
     "pinnedApps": "我的釘選應用程式",
     "featuredApps": "精選應用程式",
     "allApps": "所有應用程式",
-    "customApps": "自訂應用程式"
+    "customApps": "自訂應用程式",
+    "add": "新增",
+    "copyShareUrl": "複製 {{name}} 的分享 URL",
+    "pinApp": "釘選 {{name}}",
+    "unpinApp": "取消釘選 {{name}}",
+    "deleteApp": "刪除 {{name}}",
+    "closeAppPreview": "關閉 {{name}} 預覽"
   },
   "safeMessages": {
     "created": "已建立",
@@ -443,7 +449,8 @@
     "copyMessageUrl": "複製訊息 URL",
     "copyLink": "複製連結",
     "share": "分享",
-    "switchWallet": "切換錢包"
+    "switchWallet": "切換錢包",
+    "domainHash": "域哈希值"
   },
   "transactions": {
     "batchExecuteDisabledTooltip": "批次執行僅適用於已完全簽署且在 Safe 帳戶 nonce 中嚴格依序排列的交易。",
@@ -682,7 +689,32 @@
     "simulationWarningDetails": "交易將在鏈上成功執行，但包含內部回滾。某些合約邏輯可能無法如預期執行。完整模擬報告可在 <1>Tenderly</1> 上查看。",
     "simulationSuccessDetails": "完整模擬報告可在 <1>Tenderly</1> 上查看。",
     "simulationUnexpectedError": "模擬期間發生意外錯誤：<1>{{error}}</1>。",
-    "simulationFailedDetails": "交易在模擬期間失敗，在合約 <2>{{address}}</2> 中拋出錯誤 <1>{{errorMessage}}</1>。完整模擬報告可在 <3>Tenderly</3> 上查看。"
+    "simulationFailedDetails": "交易在模擬期間失敗，在合約 <2>{{address}}</2> 中拋出錯誤 <1>{{errorMessage}}</1>。完整模擬報告可在 <3>Tenderly</3> 上查看。",
+    "safeAccountCreated": "Safe 帳戶已建立",
+    "limitOrder": "限價訂單",
+    "swapOrder": "兌換訂單",
+    "twapOrder": "TWAP 訂單",
+    "stakeAction": "質押",
+    "withdrawRequest": "提款請求",
+    "claimAction": "領取",
+    "depositAction": "存入",
+    "withdrawAction": "提款",
+    "bridgeAction": "跨鏈橋",
+    "swapAction": "兌換",
+    "batchAction": "批次",
+    "nestedSafeAction": "巢狀 Safe",
+    "nestedSafeWithName": "巢狀 Safe：{{name}}",
+    "contractInteractionLabel": "合約互動",
+    "awaitingConfirmations": "等待確認",
+    "awaitingExecution": "等待執行",
+    "cancelled": "已取消",
+    "failed": "失敗",
+    "success": "成功",
+    "submitting": "提交中",
+    "relaying": "轉發中",
+    "signing": "簽署中",
+    "willBeReplaced": "交易將被替換",
+    "needsYourConfirmation": "需要您的確認"
   },
   "addressBook": {
     "title": "通訊錄",
@@ -1527,5 +1559,16 @@
     "recipientAddressOrEns": "收款人地址或 ENS",
     "recipientAddress": "收款人地址",
     "amountLabel": "金額"
+  },
+  "notificationCenter": {
+    "title": "通知",
+    "clearAll": "清除全部",
+    "noNotifications": "無通知",
+    "hide": "隱藏",
+    "otherNotifications_one": "{{count}} 則其他通知",
+    "otherNotifications_other": "{{count}} 則其他通知",
+    "pushNotificationsSettings": "推播通知設定",
+    "signatureNeeded": "需要簽名",
+    "signNow": "立即簽名"
   }
 }

@@ -3,6 +3,7 @@ import Card from '@mui/material/Card'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import type { SafeAppData } from '@safe-global/safe-gateway-typescript-sdk'
+import { useTranslation } from 'react-i18next'
 
 import AddCustomAppIcon from '@/public/images/apps/add-custom-app.svg'
 import { AddCustomAppModal } from '@/components/safe-apps/AddCustomAppModal'
@@ -10,6 +11,7 @@ import { AddCustomAppModal } from '@/components/safe-apps/AddCustomAppModal'
 type Props = { onSave: (data: SafeAppData) => void; safeAppList: SafeAppData[] }
 
 const AddCustomSafeAppCard = ({ onSave, safeAppList }: Props) => {
+  const { t } = useTranslation()
   const [addCustomAppModalOpen, setAddCustomAppModalOpen] = useState<boolean>(false)
 
   return (
@@ -28,7 +30,7 @@ const AddCustomSafeAppCard = ({ onSave, safeAppList }: Props) => {
               mt: 3,
             }}
           >
-            Add custom Safe App
+            {t('safeApps.addCustomApp')}
           </Button>
         </Box>
       </Card>

@@ -1,4 +1,5 @@
 import type { SafeAppData } from '@safe-global/safe-gateway-typescript-sdk'
+import { useTranslation } from 'react-i18next'
 import Box from '@mui/material/Box'
 import IconButton from '@mui/material/IconButton'
 import Tooltip from '@mui/material/Tooltip'
@@ -28,6 +29,7 @@ const SafeAppActionButtons = ({
   removeCustomApp,
   openPreviewDrawer,
 }: SafeAppActionButtonsProps) => {
+  const { t } = useTranslation()
   const isCustomApp = safeApp.id < 1
   const shareSafeAppUrl = useShareSafeAppUrl(safeApp.url)
 
@@ -54,7 +56,7 @@ const SafeAppActionButtons = ({
 
       {/* Copy share Safe App url button */}
       <CopyButton
-        initialToolTipText={`Copy share URL for ${safeApp.name}`}
+        initialToolTipText={t('safeApps.copyShareUrl', { name: safeApp.name })}
         onCopy={handleCopyShareSafeAppUrl}
         text={shareSafeAppUrl}
       >
@@ -65,7 +67,10 @@ const SafeAppActionButtons = ({
 
       {/* Bookmark Safe App button */}
       {onBookmarkSafeApp && (
-        <Tooltip title={`${isBookmarked ? 'Unpin' : 'Pin'} ${safeApp.name}`} placement="top">
+        <Tooltip
+          title={t(isBookmarked ? 'safeApps.unpinApp' : 'safeApps.pinApp', { name: safeApp.name })}
+          placement="top"
+        >
           <IconButton
             size="small"
             onClick={(event) => {
@@ -86,7 +91,7 @@ const SafeAppActionButtons = ({
 
       {/* Remove Custom Safe App button */}
       {removeCustomApp && (
-        <Tooltip title={`Delete ${safeApp.name}`} placement="top">
+        <Tooltip title={t('safeApps.deleteApp', { name: safeApp.name })} placement="top">
           <IconButton
             size="small"
             onClick={(event) => {

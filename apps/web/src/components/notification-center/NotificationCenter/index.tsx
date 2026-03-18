@@ -1,4 +1,5 @@
 import { useState, useMemo, type ReactElement, type MouseEvent } from 'react'
+import { useTranslation } from 'react-i18next'
 import ButtonBase from '@mui/material/ButtonBase'
 import Popover from '@mui/material/Popover'
 import Paper from '@mui/material/Paper'
@@ -32,6 +33,7 @@ import { FEATURES } from '@safe-global/utils/utils/chains'
 const NOTIFICATION_CENTER_LIMIT = 4
 
 const NotificationCenter = (): ReactElement => {
+  const { t } = useTranslation()
   const router = useRouter()
   const [showAll, setShowAll] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
@@ -140,7 +142,7 @@ const NotificationCenter = (): ReactElement => {
           <div className={css.popoverHeader}>
             <div>
               <Typography data-testid="notifications-title" variant="h4" component="span" fontWeight={700}>
-                Notifications
+                {t('notificationCenter.title')}
               </Typography>
               {hasUnread && (
                 <Typography variant="caption" className={css.unreadCount}>
@@ -150,7 +152,7 @@ const NotificationCenter = (): ReactElement => {
             </div>
             {notifications.length > 0 && (
               <MuiLink onClick={handleClear} variant="body2" component="button" sx={{ textDecoration: 'unset' }}>
-                Clear all
+                {t('notificationCenter.clearAll')}
               </MuiLink>
             )}
           </div>
@@ -174,7 +176,11 @@ const NotificationCenter = (): ReactElement => {
                   </UnreadBadge>
                 </IconButton>
                 <Typography sx={{ color: ({ palette }) => palette.border.main }}>
-                  {showAll ? 'Hide' : `${notifications.length - NOTIFICATION_CENTER_LIMIT} other notifications`}
+                  {showAll
+                    ? t('notificationCenter.hide')
+                    : t('notificationCenter.otherNotifications', {
+                        count: notifications.length - NOTIFICATION_CENTER_LIMIT,
+                      })}
                 </Typography>
               </>
             )}
@@ -194,7 +200,8 @@ const NotificationCenter = (): ReactElement => {
                   variant="body2"
                   onClick={onSettingsClick}
                 >
-                  <SvgIcon component={SettingsIcon} inheritViewBox fontSize="small" /> Push notifications settings
+                  <SvgIcon component={SettingsIcon} inheritViewBox fontSize="small" />{' '}
+                  {t('notificationCenter.pushNotificationsSettings')}
                 </MuiLink>
               </Link>
             )}

@@ -413,7 +413,13 @@
     "pinnedApps": "My pinned apps",
     "featuredApps": "Featured apps",
     "allApps": "All apps",
-    "customApps": "Custom apps"
+    "customApps": "Custom apps",
+    "add": "Add",
+    "copyShareUrl": "Copy share URL for {{name}}",
+    "pinApp": "Pin {{name}}",
+    "unpinApp": "Unpin {{name}}",
+    "deleteApp": "Delete {{name}}",
+    "closeAppPreview": "Close {{name}} preview"
   },
   "safeMessages": {
     "created": "Created",
@@ -443,7 +449,8 @@
     "copyMessageUrl": "Copy the message URL",
     "copyLink": "Copy link",
     "share": "Share",
-    "switchWallet": "Switch wallet"
+    "switchWallet": "Switch wallet",
+    "domainHash": "Domain hash"
   },
   "transactions": {
     "batchExecuteDisabledTooltip": "Batch execution is only available for transactions that have been fully signed and are strictly sequential in Safe Account nonce.",
@@ -682,7 +689,32 @@
     "simulationWarningDetails": "Transaction will execute successfully on-chain, but contains internal reverts. Some contract logic may not execute as expected. Full simulation report available <1>on Tenderly</1>.",
     "simulationSuccessDetails": "Full simulation report is available <1>on Tenderly</1>.",
     "simulationUnexpectedError": "An unexpected error occurred during simulation: <1>{{error}}</1>.",
-    "simulationFailedDetails": "The transaction failed during the simulation throwing error <1>{{errorMessage}}</1> in the contract at <2>{{address}}</2>. Full simulation report is available <3>on Tenderly</3>."
+    "simulationFailedDetails": "The transaction failed during the simulation throwing error <1>{{errorMessage}}</1> in the contract at <2>{{address}}</2>. Full simulation report is available <3>on Tenderly</3>.",
+    "safeAccountCreated": "Safe Account created",
+    "limitOrder": "Limit order",
+    "swapOrder": "Swap order",
+    "twapOrder": "TWAP order",
+    "stakeAction": "Stake",
+    "withdrawRequest": "Withdraw request",
+    "claimAction": "Claim",
+    "depositAction": "Deposit",
+    "withdrawAction": "Withdraw",
+    "bridgeAction": "Bridge",
+    "swapAction": "Swap",
+    "batchAction": "Batch",
+    "nestedSafeAction": "Nested Safe",
+    "nestedSafeWithName": "Nested Safe: {{name}}",
+    "contractInteractionLabel": "Contract interaction",
+    "awaitingConfirmations": "Awaiting confirmations",
+    "awaitingExecution": "Awaiting execution",
+    "cancelled": "Cancelled",
+    "failed": "Failed",
+    "success": "Success",
+    "submitting": "Submitting",
+    "relaying": "Relaying",
+    "signing": "Signing",
+    "willBeReplaced": "Transaction will be replaced",
+    "needsYourConfirmation": "Needs your confirmation"
   },
   "addressBook": {
     "title": "Address book",
@@ -1527,5 +1559,16 @@
     "recipientAddressOrEns": "Recipient address or ENS",
     "recipientAddress": "Recipient address",
     "amountLabel": "Amount"
+  },
+  "notificationCenter": {
+    "title": "Notifications",
+    "clearAll": "Clear all",
+    "noNotifications": "No notifications",
+    "hide": "Hide",
+    "otherNotifications_one": "{{count}} other notification",
+    "otherNotifications_other": "{{count}} other notifications",
+    "pushNotificationsSettings": "Push notifications settings",
+    "signatureNeeded": "Signature needed",
+    "signNow": "Sign now"
   }
 }

@@ -1,4 +1,5 @@
 import { memo, type ReactElement, useContext, useMemo, useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   Autocomplete,
   Box,
@@ -56,6 +57,7 @@ const NonceFormOption = memo(function NonceFormOption({
   nonce: string
   menuItemProps: MenuItemProps
 }): ReactElement {
+  const { t } = useTranslation()
   const addressBook = useAddressBook()
   const transactions = useQueuedTxByNonce(Number(nonce))
 
@@ -67,10 +69,10 @@ const NonceFormOption = memo(function NonceFormOption({
     }
 
     const [{ transaction }] = latestTransactions
-    return transaction.txInfo.humanDescription || `${getTransactionType(transaction, addressBook).text} transaction`
-  }, [addressBook, transactions])
+    return transaction.txInfo.humanDescription || `${getTransactionType(transaction, addressBook, t).text} transaction`
+  }, [addressBook, transactions, t])
 
-  const label = txLabel || 'New transaction'
+  const label = txLabel || t('sidebar.newTransaction')
 
   return (
     <MenuItem {...menuItemProps}>

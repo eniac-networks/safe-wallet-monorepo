@@ -1,4 +1,5 @@
 import type { ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import Typography from '@mui/material/Typography'
 import List from '@mui/material/List'
 import Box from '@mui/material/Box'
@@ -15,6 +16,8 @@ type NotificationCenterListProps = {
 }
 
 const NotificationCenterList = ({ notifications, handleClose }: NotificationCenterListProps): ReactElement => {
+  const { t } = useTranslation()
+
   if (!notifications.length) {
     return (
       <div className={css.wrapper}>
@@ -24,7 +27,7 @@ const NotificationCenterList = ({ notifications, handleClose }: NotificationCent
             paddingTop: '8px',
           }}
         >
-          No notifications
+          {t('notificationCenter.noNotifications')}
         </Typography>
       </div>
     )

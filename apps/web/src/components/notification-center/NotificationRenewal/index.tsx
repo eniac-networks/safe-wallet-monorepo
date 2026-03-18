@@ -1,4 +1,5 @@
 import { useState, type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Alert, Box, Button, Typography } from '@mui/material'
 import useSafeInfo from '@/hooks/useSafeInfo'
 import CheckWalletWithPermission from '@/components/common/CheckWalletWithPermission'
@@ -8,6 +9,7 @@ import { RENEWAL_MESSAGE } from '@/components/settings/PushNotifications/constan
 import { Permission } from '@/permissions/config'
 
 const NotificationRenewal = (): ReactElement => {
+  const { t } = useTranslation()
   const { safe } = useSafeInfo()
   const [isRegistering, setIsRegistering] = useState(false)
   const { renewNotifications, needsRenewal } = useNotificationsRenewal()
@@ -28,7 +30,7 @@ const NotificationRenewal = (): ReactElement => {
     <>
       <Alert severity="warning">
         <Typography variant="body2" fontWeight={700} mb={1}>
-          Signature needed
+          {t('notificationCenter.signatureNeeded')}
         </Typography>
         <Typography variant="body2">{RENEWAL_MESSAGE}</Typography>
       </Alert>
@@ -45,7 +47,7 @@ const NotificationRenewal = (): ReactElement => {
               onClick={handeSignClick}
               disabled={!isOk || isRegistering || !safe.deployed}
             >
-              Sign now
+              {t('notificationCenter.signNow')}
             </Button>
           )}
         </CheckWalletWithPermission>
