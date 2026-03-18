@@ -1,4 +1,5 @@
 import { format, formatDistanceToNow, formatRelative } from 'date-fns'
+import type { Locale } from 'date-fns'
 import { maybePlural } from './formatters'
 
 export const currentMinutes = (): number => Math.floor(Date.now() / (1000 * 60))
@@ -21,7 +22,8 @@ export const formatTime = (timestamp: number): string => formatWithSchema(timest
 
 export const formatDateTime = (timestamp: number): string => formatWithSchema(timestamp, 'MMM d, yyyy - h:mm:ss a')
 
-export const formatTimeInWords = (timestamp: number): string => formatDistanceToNow(timestamp, { addSuffix: true })
+export const formatTimeInWords = (timestamp: number, locale?: Locale): string =>
+  formatDistanceToNow(timestamp, { addSuffix: true, locale })
 
 export function getCountdown(seconds: number): { days: number; hours: number; minutes: number } {
   const MINUTE_IN_SECONDS = 60

@@ -1,5 +1,6 @@
 import { type SyntheticEvent } from 'react'
 import { Button, DialogActions, FormControl, Grid, Typography, DialogContent } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 import { FormProvider, useForm } from 'react-hook-form'
 import { safeFormatUnits, safeParseUnits } from '@safe-global/utils/utils/formatters'
 import { FLOAT_REGEX } from '@safe-global/utils/utils/validation'
@@ -28,6 +29,7 @@ type FormData = {
 }
 
 const AdvancedParamsForm = ({ params, ...props }: AdvancedParamsFormProps) => {
+  const { t } = useTranslation()
   const formMethods = useForm<FormData>({
     mode: 'onChange',
     defaultValues: {
@@ -68,14 +70,14 @@ const AdvancedParamsForm = ({ params, ...props }: AdvancedParamsFormProps) => {
   }
 
   return (
-    <ModalDialog open dialogTitle="Advanced parameters" hideChainIndicator>
+    <ModalDialog open dialogTitle={t('gasParams.advancedParamsTitle')} hideChainIndicator>
       <FormProvider {...formMethods}>
         <form onSubmit={onFormSubmit}>
           <DialogContent>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <Typography variant="body1" fontWeight={700}>
-                  Execution parameters
+                  {t('gasParams.executionParams')}
                 </Typography>
               </Grid>
 
@@ -84,7 +86,7 @@ const AdvancedParamsForm = ({ params, ...props }: AdvancedParamsFormProps) => {
                 <FormControl fullWidth>
                   <NumberField
                     disabled={props.willRelay}
-                    label={errors.userNonce?.message || 'Wallet nonce'}
+                    label={errors.userNonce?.message || t('gasParams.walletNonce')}
                     error={!!errors.userNonce}
                     {...register(AdvancedField.userNonce)}
                   />
@@ -102,7 +104,7 @@ const AdvancedParamsForm = ({ params, ...props }: AdvancedParamsFormProps) => {
                   <FormControl fullWidth>
                     <NumberField
                       disabled={props.willRelay}
-                      label={errors.maxPriorityFeePerGas?.message || 'Max priority fee (Gwei)'}
+                      label={errors.maxPriorityFeePerGas?.message || t('gasParams.maxPriorityFee')}
                       error={!!errors.maxPriorityFeePerGas}
                       required
                       {...register(AdvancedField.maxPriorityFeePerGas, {
@@ -119,7 +121,10 @@ const AdvancedParamsForm = ({ params, ...props }: AdvancedParamsFormProps) => {
                 <FormControl fullWidth>
                   <NumberField
                     disabled={props.willRelay}
-                    label={errors.maxFeePerGas?.message || props.isEIP1559 ? 'Max fee (Gwei)' : 'Gas price (Gwei)'}
+                    label={
+                      errors.maxFeePerGas?.message ||
+                      (props.isEIP1559 ? t('gasParams.maxFee') : t('gasParams.gasPrice'))
+                    }
                     error={!!errors.maxFeePerGas}
                     required
                     {...register(AdvancedField.maxFeePerGas, { required: true, pattern: FLOAT_REGEX, min: 0 })}
@@ -130,20 +135,18 @@ const AdvancedParamsForm = ({ params, ...props }: AdvancedParamsFormProps) => {
 
             {/* Help link */}
             <Typography mt={2}>
-              <ExternalLink href={HelpCenterArticle.ADVANCED_PARAMS}>
-                How can I configure these parameters manually?
-              </ExternalLink>
+              <ExternalLink href={HelpCenterArticle.ADVANCED_PARAMS}>{t('gasParams.advancedParamsHelp')}</ExternalLink>
             </Typography>
           </DialogContent>
 
           {/* Buttons */}
           <DialogActions>
             <Button color="inherit" onClick={onBack}>
-              Back
+              {t('newSafe.back')}
             </Button>
 
             <Button variant="contained" type="submit">
-              Confirm
+              {t('common.confirm')}
             </Button>
           </DialogActions>
         </form>

@@ -330,7 +330,8 @@
     "error": "錯誤",
     "warning": "警告",
     "success": "成功",
-    "poweredBy": "技術支持"
+    "poweredBy": "技術支持",
+    "rowsPerPage": "每頁行數："
   },
   "sidebar": {
     "newTransaction": "新交易",
@@ -1514,7 +1515,10 @@
     "resetGasLimit": "重設為建議的 Gas 上限",
     "maxPriorityFee": "最高優先費用（Gwei）",
     "maxFee": "最高費用（Gwei）",
-    "gasPrice": "Gas 價格（Gwei）"
+    "gasPrice": "Gas 價格（Gwei）",
+    "advancedParamsTitle": "進階參數",
+    "executionParams": "執行參數",
+    "advancedParamsHelp": "如何手動設定這些參數？"
   },
   "confirmTx": {
     "reviewWhatToSign": "審查您將簽署的內容",

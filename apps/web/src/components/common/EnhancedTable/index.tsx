@@ -1,5 +1,6 @@
 import type { ChangeEvent, ReactNode } from 'react'
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import Box from '@mui/material/Box'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -129,6 +130,7 @@ export type EnhancedTableProps = {
 const pageSizes = [10, 25, 100]
 
 function EnhancedTable({ rows, headCells, mobileVariant, compact }: EnhancedTableProps) {
+  const { t } = useTranslation()
   const [order, setOrder] = useState<'asc' | 'desc'>('asc')
   const [orderBy, setOrderBy] = useState<string>('')
   const [page, setPage] = useState<number>(0)
@@ -221,6 +223,7 @@ function EnhancedTable({ rows, headCells, mobileVariant, compact }: EnhancedTabl
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage={t('common.rowsPerPage')}
           sx={{
             borderTopLeftRadius: 0,
             borderTopRightRadius: 0,

@@ -87,7 +87,7 @@ const useTxNotifications = (): void => {
             groupKey,
             variant: isError ? Variant.ERROR : isSuccess ? Variant.SUCCESS : Variant.INFO,
             link: txId
-              ? getTxLink(txId, chain, safeAddress)
+              ? getTxLink(txId, chain, safeAddress, t('transactions.viewTransaction'))
               : txHash
                 ? getExplorerLink(txHash, chain.blockExplorerUriTemplate)
                 : undefined,
@@ -141,7 +141,7 @@ const useTxNotifications = (): void => {
       showNotification({
         variant: 'info',
         message: t('notifications.txRequiresConfirmation'),
-        link: chain && getTxLink(txId, chain, safeAddress),
+        link: chain && getTxLink(txId, chain, safeAddress, t('transactions.viewTransaction')),
         groupKey: txId,
       }),
     )

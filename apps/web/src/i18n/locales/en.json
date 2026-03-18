@@ -330,7 +330,8 @@
     "error": "Error",
     "warning": "Warning",
     "success": "Success",
-    "poweredBy": "Powered by"
+    "poweredBy": "Powered by",
+    "rowsPerPage": "Rows per page:"
   },
   "sidebar": {
     "newTransaction": "New transaction",
@@ -1514,7 +1515,10 @@
     "resetGasLimit": "Reset to recommended gas limit",
     "maxPriorityFee": "Max priority fee (Gwei)",
     "maxFee": "Max fee (Gwei)",
-    "gasPrice": "Gas price (Gwei)"
+    "gasPrice": "Gas price (Gwei)",
+    "advancedParamsTitle": "Advanced parameters",
+    "executionParams": "Execution parameters",
+    "advancedParamsHelp": "How can I configure these parameters manually?"
   },
   "confirmTx": {
     "reviewWhatToSign": "Review what you will sign",

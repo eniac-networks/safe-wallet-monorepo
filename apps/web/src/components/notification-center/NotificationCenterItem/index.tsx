@@ -8,10 +8,17 @@ import SuccessIcon from '@/public/images/notifications/success.svg'
 import { NotificationLink } from '@/components/common/Notifications'
 import type { AlertColor } from '@mui/material/Alert'
 import type { ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
+import { zhTW } from 'date-fns/locale'
+import type { Locale } from 'date-fns'
 
 import type { Notification } from '@/store/notificationsSlice'
 import UnreadBadge from '@/components/common/UnreadBadge'
 import { formatTimeInWords } from '@safe-global/utils/utils/date'
+
+const DATE_LOCALES: Record<string, Locale> = {
+  'zh-TW': zhTW,
+}
 
 import css from './styles.module.css'
 import classnames from 'classnames'
@@ -38,11 +45,13 @@ const NotificationCenterItem = ({
   handleClose,
   title,
 }: Notification & { handleClose: () => void }): ReactElement => {
+  const { i18n } = useTranslation()
+  const dateLocale = DATE_LOCALES[i18n.language]
   const requiresAction = !isRead && !!link
 
   const secondaryText = (
     <span className={css.secondaryText}>
-      <span>{formatTimeInWords(timestamp)}</span>
+      <span>{formatTimeInWords(timestamp, dateLocale)}</span>
       <NotificationLink link={link} onClick={handleClose} />
     </span>
   )
