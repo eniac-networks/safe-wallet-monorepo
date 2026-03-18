@@ -1459,7 +1459,11 @@
     "txIndexingDesc": "It is now being indexed.",
     "txFailed": "Transaction failed",
     "txSuccessful": "Transaction was successful",
-    "txTimedOut": "Transaction timed out"
+    "txTimedOut": "Transaction timed out",
+    "nestedSafeCreating": "Nested Safe is now being created",
+    "nestedSafeProcessingDesc": "Your Nested Safe was confirmed and is now being processed.",
+    "nestedSafeProcessed": "Nested Safe was processed",
+    "nestedSafeCreated": "Nested Safe was created"
   },
   "networkWarning": {
     "title": "Change your wallet network",
@@ -1570,5 +1574,37 @@
     "pushNotificationsSettings": "Push notifications settings",
     "signatureNeeded": "Signature needed",
     "signNow": "Sign now"
+  },
+  "notifications": {
+    "details": "Details",
+    "txSignFailed": "Failed to sign. Please try again.",
+    "txProposed": "Successfully added to queue.",
+    "txProposeFailed": "Failed to add to queue. Please try again.",
+    "txDeleted": "Successfully deleted transaction.",
+    "txSignatureProposed": "Successfully signed.",
+    "txSignatureProposeFailed": "Failed to send signature. Please try again.",
+    "txExecuting": "Confirm the execution in your wallet.",
+    "txProcessing": "Validating...",
+    "txProcessingModule": "Validating module interaction...",
+    "txOnchainSignatureRequested": "Confirm on-chain signature in your wallet.",
+    "txOnchainSignatureSuccess": "On-chain signature request confirmed.",
+    "txProcessed": "Successfully validated. Indexing...",
+    "txReverted": "Reverted. Please check your gas settings.",
+    "txSuccess": "Successfully executed.",
+    "txFailed": "Failed.",
+    "txRequiresConfirmation": "A transaction requires your confirmation.",
+    "safeVersionUnsupported": "Safe Account version {{version}} is not supported by this web app anymore. You can update your Safe Account via the CLI.",
+    "safeVersionOutdated": "Your Safe Account version {{version}} is out of date. Please update it.",
+    "getCli": "Get CLI",
+    "updateSafeAccount": "Update Safe Account",
+    "safeUnsupportedContractMigration": "This Safe Account was created with an unsupported base contract. It is possible to migrate it to a compatible base contract. You can migrate it to a compatible contract on the Home screen.",
+    "safeUnsupportedContractWarning": "This Safe Account was created with an unsupported base contract. The web interface might not work correctly. We recommend using the command line interface instead.",
+    "msgSigned": "You successfully signed the message.",
+    "msgSignFailed": "Signing the message failed. Please try again.",
+    "msgConfirmed": "You successfully confirmed the message.",
+    "msgConfirmFailed": "Confirming the message failed. Please try again.",
+    "msgSignaturePrepared": "The message was successfully confirmed.",
+    "msgRequiresConfirmation": "A message requires your confirmation.",
+    "viewMessages": "View messages"
   }
 }

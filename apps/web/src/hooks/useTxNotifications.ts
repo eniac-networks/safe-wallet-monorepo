@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { formatError } from '@safe-global/utils/utils/formatters'
 import { selectNotifications, showNotification } from '@/store/notificationsSlice'
 import { useAppDispatch, useAppSelector } from '@/store'
@@ -17,21 +18,21 @@ import { useLazyGetTransactionDetailsQuery } from '@/store/api/gateway'
 import { getExplorerLink } from '@safe-global/utils/utils/gateway'
 
 const TxNotifications = {
-  [TxEvent.SIGN_FAILED]: 'Failed to sign. Please try again.',
-  [TxEvent.PROPOSED]: 'Successfully added to queue.',
-  [TxEvent.PROPOSE_FAILED]: 'Failed to add to queue. Please try again.',
-  [TxEvent.DELETED]: 'Successfully deleted transaction.',
-  [TxEvent.SIGNATURE_PROPOSED]: 'Successfully signed.',
-  [TxEvent.SIGNATURE_PROPOSE_FAILED]: 'Failed to send signature. Please try again.',
-  [TxEvent.EXECUTING]: 'Confirm the execution in your wallet.',
-  [TxEvent.PROCESSING]: 'Validating...',
-  [TxEvent.PROCESSING_MODULE]: 'Validating module interaction...',
-  [TxEvent.ONCHAIN_SIGNATURE_REQUESTED]: 'Confirm on-chain signature in your wallet.',
-  [TxEvent.ONCHAIN_SIGNATURE_SUCCESS]: 'On-chain signature request confirmed.',
-  [TxEvent.PROCESSED]: 'Successfully validated. Indexing...',
-  [TxEvent.REVERTED]: 'Reverted. Please check your gas settings.',
-  [TxEvent.SUCCESS]: 'Successfully executed.',
-  [TxEvent.FAILED]: 'Failed.',
+  [TxEvent.SIGN_FAILED]: 'notifications.txSignFailed',
+  [TxEvent.PROPOSED]: 'notifications.txProposed',
+  [TxEvent.PROPOSE_FAILED]: 'notifications.txProposeFailed',
+  [TxEvent.DELETED]: 'notifications.txDeleted',
+  [TxEvent.SIGNATURE_PROPOSED]: 'notifications.txSignatureProposed',
+  [TxEvent.SIGNATURE_PROPOSE_FAILED]: 'notifications.txSignatureProposeFailed',
+  [TxEvent.EXECUTING]: 'notifications.txExecuting',
+  [TxEvent.PROCESSING]: 'notifications.txProcessing',
+  [TxEvent.PROCESSING_MODULE]: 'notifications.txProcessingModule',
+  [TxEvent.ONCHAIN_SIGNATURE_REQUESTED]: 'notifications.txOnchainSignatureRequested',
+  [TxEvent.ONCHAIN_SIGNATURE_SUCCESS]: 'notifications.txOnchainSignatureSuccess',
+  [TxEvent.PROCESSED]: 'notifications.txProcessed',
+  [TxEvent.REVERTED]: 'notifications.txReverted',
+  [TxEvent.SUCCESS]: 'notifications.txSuccess',
+  [TxEvent.FAILED]: 'notifications.txFailed',
 }
 
 enum Variant {
@@ -44,6 +45,7 @@ const successEvents = [TxEvent.PROPOSED, TxEvent.SIGNATURE_PROPOSED, TxEvent.ONC
 
 const useTxNotifications = (): void => {
   const dispatch = useAppDispatch()
+  const { t } = useTranslation()
   const chain = useCurrentChain()
   const safeAddress = useSafeAddress()
   const [trigger] = useLazyGetTransactionDetailsQuery()
@@ -57,11 +59,12 @@ const useTxNotifications = (): void => {
 
     const entries = Object.entries(TxNotifications) as [keyof typeof TxNotifications, string][]
 
-    const unsubFns = entries.map(([event, baseMessage]) =>
+    const unsubFns = entries.map(([event, msgKey]) =>
       txSubscribe(event, async (detail) => {
         const isError = 'error' in detail
         if (isError && isWalletRejection(detail.error)) return
         const isSuccess = successEvents.includes(event)
+        const baseMessage = t(msgKey)
         const message = isError ? `${baseMessage} ${formatError(detail.error)}` : baseMessage
         const txId = 'txId' in detail ? detail.txId : undefined
         const txHash = 'txHash' in detail ? detail.txHash : undefined
@@ -96,7 +99,7 @@ const useTxNotifications = (): void => {
     return () => {
       unsubFns.forEach((unsub) => unsub())
     }
-  }, [dispatch, safeAddress, chain, trigger])
+  }, [dispatch, safeAddress, chain, trigger, t])
 
   /**
    * If there's at least one transaction awaiting confirmations, show a notification for it
@@ -137,14 +140,14 @@ const useTxNotifications = (): void => {
     dispatch(
       showNotification({
         variant: 'info',
-        message: 'A transaction requires your confirmation.',
+        message: t('notifications.txRequiresConfirmation'),
         link: chain && getTxLink(txId, chain, safeAddress),
         groupKey: txId,
       }),
     )
 
     notifiedAwaitingTxIds.current.push(txId)
-  }, [chain, dispatch, isOwner, notifications, safeAddress, txsAwaitingConfirmation])
+  }, [chain, dispatch, isOwner, notifications, safeAddress, txsAwaitingConfirmation, t])
 }
 
 export default useTxNotifications

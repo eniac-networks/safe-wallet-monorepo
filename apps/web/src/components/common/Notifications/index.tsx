@@ -1,5 +1,6 @@
 import type { ReactElement, SyntheticEvent } from 'react'
 import React, { useCallback, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import groupBy from 'lodash/groupBy'
 import { useAppDispatch, useAppSelector } from '@/store'
 import type { Notification } from '@/store/notificationsSlice'
@@ -77,6 +78,7 @@ const Toast = ({
   onClose: () => void
 } & Notification) => {
   const dispatch = useAppDispatch()
+  const { t } = useTranslation()
 
   const handleClose = (_: Event | SyntheticEvent, reason?: SnackbarCloseReason) => {
     if (reason === 'clickaway') return
@@ -104,7 +106,7 @@ const Toast = ({
 
         {detailedMessage && (
           <details>
-            <Link component="summary">Details</Link>
+            <Link component="summary">{t('notifications.details')}</Link>
             <pre>{detailedMessage}</pre>
           </details>
         )}

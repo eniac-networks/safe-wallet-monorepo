@@ -1459,7 +1459,11 @@
     "txIndexingDesc": "目前正在建立索引。",
     "txFailed": "交易失敗",
     "txSuccessful": "交易成功",
-    "txTimedOut": "交易逾時"
+    "txTimedOut": "交易逾時",
+    "nestedSafeCreating": "巢狀 Safe 正在建立中",
+    "nestedSafeProcessingDesc": "您的巢狀 Safe 已確認，目前正在處理。",
+    "nestedSafeProcessed": "巢狀 Safe 已處理",
+    "nestedSafeCreated": "巢狀 Safe 已建立"
   },
   "networkWarning": {
     "title": "請更換您的錢包網路",
@@ -1570,5 +1574,37 @@
     "pushNotificationsSettings": "推播通知設定",
     "signatureNeeded": "需要簽名",
     "signNow": "立即簽名"
+  },
+  "notifications": {
+    "details": "詳細資訊",
+    "txSignFailed": "簽署失敗，請再試一次。",
+    "txProposed": "已成功加入佇列。",
+    "txProposeFailed": "加入佇列失敗，請再試一次。",
+    "txDeleted": "已成功刪除交易。",
+    "txSignatureProposed": "已成功簽署。",
+    "txSignatureProposeFailed": "傳送簽名失敗，請再試一次。",
+    "txExecuting": "請在您的錢包中確認執行。",
+    "txProcessing": "驗證中⋯",
+    "txProcessingModule": "驗證模組互動中⋯",
+    "txOnchainSignatureRequested": "請在您的錢包中確認鏈上簽名。",
+    "txOnchainSignatureSuccess": "鏈上簽名請求已確認。",
+    "txProcessed": "已成功驗證，索引中⋯",
+    "txReverted": "已回滾，請檢查您的 Gas 設定。",
+    "txSuccess": "已成功執行。",
+    "txFailed": "失敗。",
+    "txRequiresConfirmation": "有一筆交易需要您的確認。",
+    "safeVersionUnsupported": "Safe 帳戶版本 {{version}} 已不再受此網頁應用支援，您可透過 CLI 更新您的 Safe 帳戶。",
+    "safeVersionOutdated": "您的 Safe 帳戶版本 {{version}} 已過時，請更新。",
+    "getCli": "取得 CLI",
+    "updateSafeAccount": "更新 Safe 帳戶",
+    "safeUnsupportedContractMigration": "此 Safe 帳戶使用不支援的基礎合約建立，可以將其遷移至相容的基礎合約，您可在首頁進行遷移。",
+    "safeUnsupportedContractWarning": "此 Safe 帳戶使用不支援的基礎合約建立，網頁介面可能無法正常運作，建議改用命令列介面。",
+    "msgSigned": "您已成功簽署訊息。",
+    "msgSignFailed": "簽署訊息失敗，請再試一次。",
+    "msgConfirmed": "您已成功確認訊息。",
+    "msgConfirmFailed": "確認訊息失敗，請再試一次。",
+    "msgSignaturePrepared": "訊息已成功確認。",
+    "msgRequiresConfirmation": "有一則訊息需要您的確認。",
+    "viewMessages": "查看訊息"
   }
 }

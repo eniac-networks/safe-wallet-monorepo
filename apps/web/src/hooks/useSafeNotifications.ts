@@ -1,4 +1,5 @@
 import { useCallback, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { showNotification, closeNotification } from '@/store/notificationsSlice'
 import { ImplementationVersionState } from '@safe-global/safe-gateway-typescript-sdk'
 import useSafeInfo from './useSafeInfo'
@@ -12,10 +13,7 @@ import useLocalStorage from '@/services/local-storage/useLocalStorage'
 import { isValidSafeVersion } from '@safe-global/utils/services/contracts/utils'
 import { isNonCriticalUpdate } from '@safe-global/utils/utils/chains'
 
-const CLI_LINK = {
-  href: 'https://github.com/5afe/safe-cli',
-  title: 'Get CLI',
-}
+const CLI_LINK_HREF = 'https://github.com/5afe/safe-cli'
 
 type DismissedUpdateNotifications = {
   [chainId: string]: {
@@ -37,6 +35,7 @@ const useSafeNotifications = (): void => {
   const [dismissedUpdateNotifications, setDismissedUpdateNotifications] =
     useLocalStorage<DismissedUpdateNotifications>(DISMISS_NOTIFICATION_KEY)
   const dispatch = useAppDispatch()
+  const { t } = useTranslation()
   const { query } = useRouter()
   const { safe, safeAddress } = useSafeInfo()
   const { chainId, version, implementationVersionState } = safe
@@ -96,17 +95,17 @@ const useSafeNotifications = (): void => {
         groupKey: OUTDATED_VERSION_KEY,
 
         message: isUnsupported
-          ? `Safe Account version ${version} is not supported by this web app anymore. You can update your Safe Account via the CLI.`
-          : `Your Safe Account version ${version} is out of date. Please update it.`,
+          ? t('notifications.safeVersionUnsupported', { version })
+          : t('notifications.safeVersionOutdated', { version }),
 
         link: isUnsupported
-          ? CLI_LINK
+          ? { href: CLI_LINK_HREF, title: t('notifications.getCli') }
           : {
               href: {
                 pathname: AppRoutes.settings.setup,
                 query: { safe: query.safe },
               },
-              title: 'Update Safe Account',
+              title: t('notifications.updateSafeAccount'),
             },
 
         onClose: () => dismissUpdateNotification(OUTDATED_VERSION_KEY),
@@ -128,6 +127,7 @@ const useSafeNotifications = (): void => {
     dismissedUpdateNotifications,
     setDismissedUpdateNotifications,
     dismissUpdateNotification,
+    t,
   ])
 
   /**
@@ -139,25 +139,22 @@ const useSafeNotifications = (): void => {
     const isMigrationPossible = isMigrationToL2Possible(safe)
 
     const message = isMigrationPossible
-      ? `This Safe Account was created with an unsupported base contract.
-           It is possible to migrate it to a compatible base contract. You can migrate it to a compatible contract on the Home screen.`
-      : `This Safe Account was created with an unsupported base contract.
-           The web interface might not work correctly.
-           We recommend using the command line interface instead.`
+      ? t('notifications.safeUnsupportedContractMigration')
+      : t('notifications.safeUnsupportedContractWarning')
 
     const id = dispatch(
       showNotification({
         variant: isMigrationPossible ? 'info' : 'warning',
         message,
         groupKey: 'invalid-mastercopy',
-        link: isMigrationPossible ? undefined : CLI_LINK,
+        link: isMigrationPossible ? undefined : { href: CLI_LINK_HREF, title: t('notifications.getCli') },
       }),
     )
 
     return () => {
       dispatch(closeNotification({ id }))
     }
-  }, [dispatch, safe, safe.implementationVersionState])
+  }, [dispatch, safe, safe.implementationVersionState, t])
 }
 
 export default useSafeNotifications

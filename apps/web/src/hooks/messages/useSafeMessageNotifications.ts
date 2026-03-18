@@ -1,5 +1,6 @@
 import type { SafeMessageListItem } from '@safe-global/store/gateway/types'
 import { useEffect, useMemo, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { SafeMsgEvent, safeMsgSubscribe } from '@/services/safe-messages/safeMsgEvents'
 import { useAppDispatch, useAppSelector } from '@/store'
@@ -17,11 +18,11 @@ import type { PendingSafeMessagesState } from '@/store/pendingSafeMessagesSlice'
 import { isWalletRejection } from '@/utils/wallets'
 
 const SafeMessageNotifications: Partial<Record<SafeMsgEvent, string>> = {
-  [SafeMsgEvent.PROPOSE]: 'You successfully signed the message.',
-  [SafeMsgEvent.PROPOSE_FAILED]: 'Signing the message failed. Please try again.',
-  [SafeMsgEvent.CONFIRM_PROPOSE]: 'You successfully confirmed the message.',
-  [SafeMsgEvent.CONFIRM_PROPOSE_FAILED]: 'Confirming the message failed. Please try again.',
-  [SafeMsgEvent.SIGNATURE_PREPARED]: 'The message was successfully confirmed.',
+  [SafeMsgEvent.PROPOSE]: 'notifications.msgSigned',
+  [SafeMsgEvent.PROPOSE_FAILED]: 'notifications.msgSignFailed',
+  [SafeMsgEvent.CONFIRM_PROPOSE]: 'notifications.msgConfirmed',
+  [SafeMsgEvent.CONFIRM_PROPOSE_FAILED]: 'notifications.msgConfirmFailed',
+  [SafeMsgEvent.SIGNATURE_PREPARED]: 'notifications.msgSignaturePrepared',
 }
 
 export const _getSafeMessagesAwaitingConfirmations = (
@@ -39,6 +40,7 @@ export const _getSafeMessagesAwaitingConfirmations = (
 
 const useSafeMessageNotifications = () => {
   const dispatch = useAppDispatch()
+  const { t } = useTranslation()
 
   /**
    * Show notifications of a messages's lifecycle
@@ -47,11 +49,12 @@ const useSafeMessageNotifications = () => {
   useEffect(() => {
     const entries = Object.entries(SafeMessageNotifications) as [keyof typeof SafeMessageNotifications, string][]
 
-    const unsubFns = entries.map(([event, baseMessage]) =>
+    const unsubFns = entries.map(([event, msgKey]) =>
       safeMsgSubscribe(event, (detail) => {
         const isError = 'error' in detail
         if (isError && isWalletRejection(detail.error)) return
         const isSuccess = event === SafeMsgEvent.PROPOSE || event === SafeMsgEvent.SIGNATURE_PREPARED
+        const baseMessage = t(msgKey)
         const message = isError ? `${baseMessage}${formatError(detail.error)}` : baseMessage
 
         dispatch(
@@ -68,7 +71,7 @@ const useSafeMessageNotifications = () => {
     return () => {
       unsubFns.forEach((unsub) => unsub())
     }
-  }, [dispatch])
+  }, [dispatch, t])
 
   /**
    * If there's at least one message awaiting confirmations, show a notification for it
@@ -106,17 +109,17 @@ const useSafeMessageNotifications = () => {
     dispatch(
       showNotification({
         variant: 'info',
-        message: 'A message requires your confirmation.',
+        message: t('notifications.msgRequiresConfirmation'),
         link: {
           href: `${AppRoutes.transactions.messages}?safe=${chain?.shortName}:${safeAddress}`,
-          title: 'View messages',
+          title: t('notifications.viewMessages'),
         },
         groupKey: messageHash,
       }),
     )
 
     notifiedAwaitingMessageHashes.current.push(messageHash)
-  }, [dispatch, isOwner, notifications, msgsNeedingConfirmation, chain?.shortName, safeAddress])
+  }, [dispatch, isOwner, notifications, msgsNeedingConfirmation, chain?.shortName, safeAddress, t])
 }
 
 export default useSafeMessageNotifications
